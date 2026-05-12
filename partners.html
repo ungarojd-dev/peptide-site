@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>Vendor Partner Info — MyPeptidePrice.com</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Nunito:wght@400;500;600;700&display=swap" rel="stylesheet"/>
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --cream:  #F7F3EA;
+    --white:  #FFFFFF;
+    --forest: #1F3A2D;
+    --olive:  #4E5D3C;
+    --sand:   #D8C7A7;
+    --sand-lt:#EDE5D4;
+    --border: #E2D9C8;
+    --muted:  #6B7280;
+    --text:   #2A2A2A;
+  }
+
+  body {
+    font-family: 'Nunito', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    line-height: 1.7;
+    font-size: 15px;
+  }
+
+  /* HERO */
+  .hero {
+    background: var(--forest);
+    color: white;
+    padding: 52px 24px 48px;
+    text-align: center;
+  }
+  .hero-label {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--sand);
+    margin-bottom: 12px;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 34px;
+    margin-bottom: 12px;
+  }
+  .hero p {
+    color: rgba(255,255,255,0.75);
+    font-size: 15px;
+    max-width: 500px;
+    margin: 0 auto;
+  }
+
+  /* LAYOUT */
+  .wrapper { max-width: 720px; margin: 0 auto; padding: 48px 24px 80px; }
+
+  /* SECTION */
+  .section {
+    background: var(--white);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 32px 36px;
+    margin-bottom: 24px;
+  }
+  .section h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 20px;
+    color: var(--forest);
+    margin-bottom: 14px;
+  }
+  .section p { color: #444; margin-bottom: 10px; }
+  .section p:last-child { margin-bottom: 0; }
+
+  /* STEPS */
+  .steps { display: flex; flex-direction: column; gap: 16px; margin-top: 4px; }
+  .step { display: flex; gap: 16px; align-items: flex-start; }
+  .step-num {
+    flex-shrink: 0;
+    width: 32px; height: 32px;
+    border-radius: 50%;
+    background: var(--forest);
+    color: white;
+    font-weight: 700;
+    font-size: 14px;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .step-body h3 { font-size: 14px; font-weight: 700; color: var(--forest); margin-bottom: 2px; }
+  .step-body p  { font-size: 14px; color: #555; margin: 0; }
+
+  /* TABLE */
+  .table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid var(--border); margin-top: 16px; }
+  table { width: 100%; border-collapse: collapse; font-size: 13.5px; }
+  thead tr { background: var(--forest); }
+  thead th { color: white; font-weight: 700; padding: 11px 14px; text-align: left; white-space: nowrap; font-size: 12px; }
+  tbody tr:nth-child(odd)  { background: var(--cream); }
+  tbody tr:nth-child(even) { background: var(--white); }
+  tbody td { padding: 10px 14px; border-bottom: 1px solid var(--border); color: var(--muted); font-style: italic; font-size: 13px; }
+  tbody tr:last-child td { border-bottom: none; }
+
+  /* EMAIL BLOCK */
+  .email-block {
+    background: var(--cream);
+    border-left: 4px solid var(--forest);
+    border-radius: 0 8px 8px 0;
+    padding: 18px 22px;
+    margin-top: 16px;
+    font-family: 'Courier New', monospace;
+    font-size: 13px;
+    line-height: 2;
+    color: #333;
+  }
+  .email-block .subj { font-weight: 700; color: var(--forest); display: block; margin-bottom: 8px; }
+
+  /* CONTACT */
+  .contact-card {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: var(--forest);
+    color: white;
+    border-radius: 12px;
+    padding: 22px 26px;
+    margin-top: 16px;
+    text-decoration: none;
+  }
+  .contact-card:hover { opacity: 0.9; }
+  .contact-icon {
+    width: 44px; height: 44px;
+    background: rgba(255,255,255,0.12);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .contact-lbl  { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--sand); margin-bottom: 2px; }
+  .contact-email { font-size: 16px; font-weight: 700; }
+
+  /* NOTE BOX */
+  .note {
+    background: var(--sand-lt);
+    border: 1px solid var(--sand);
+    border-radius: 8px;
+    padding: 14px 18px;
+    font-size: 13.5px;
+    color: #444;
+    margin-top: 14px;
+  }
+  .note strong { color: var(--forest); }
+
+  /* FOOTER */
+  .footer { text-align: center; color: var(--muted); font-size: 12.5px; margin-top: 8px; }
+  .footer a { color: var(--olive); text-decoration: none; }
+
+  @media (max-width: 560px) {
+    .hero h1 { font-size: 26px; }
+    .section { padding: 24px 20px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="hero-label">Partner Info</div>
+  <h1>MyPeptidePrice.com<br>Vendor Guide</h1>
+  <p>Simple instructions for getting your products listed and keeping pricing current.</p>
+</div>
+
+<div class="wrapper">
+
+  <!-- HOW IT WORKS -->
+  <div class="section">
+    <h2>How It Works</h2>
+    <div class="steps">
+      <div class="step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <h3>Initial Setup — One Time</h3>
+          <p>Send us your full product catalog using the format below. We'll have you live within 2 business days.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <h3>Weekly Updates — Every Monday</h3>
+          <p>Email your updated price sheet each Monday. We update the site same day. No update = we carry forward last week's pricing.</p>
+        </div>
+      </div>
+      <div class="step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <h3>Product Changes — As Needed</h3>
+          <p>Adding or removing a product? Update your sheet and flag it in your email. We'll handle the rest.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PRODUCT SHEET -->
+  <div class="section">
+    <h2>Product Sheet Format</h2>
+    <p>Send your sheet as a CSV, Excel file, or Google Sheets link. Use exactly these 7 columns in this order.</p>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>SKU</th>
+            <th>Product Name</th>
+            <th>Compound</th>
+            <th>Form</th>
+            <th>Mg / Unit</th>
+            <th>Price ($)</th>
+            <th>In Stock</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>BPC-5MG</td>
+            <td>BPC-157 5mg Vial</td>
+            <td>BPC-157</td>
+            <td>Lyophilized</td>
+            <td>5</td>
+            <td>39.99</td>
+            <td>Yes</td>
+          </tr>
+          <tr>
+            <td>TB500-10MG</td>
+            <td>TB-500 10mg Vial</td>
+            <td>TB-500</td>
+            <td>Lyophilized</td>
+            <td>10</td>
+            <td>59.99</td>
+            <td>No</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="note">
+      <strong>A few rules:</strong> SKU — no spaces, hyphens only &nbsp;·&nbsp; Price — plain number, no $ sign &nbsp;·&nbsp; In Stock — Yes or No only &nbsp;·&nbsp; Form — use: Lyophilized, Nasal Spray, Oral, Cream, or Tablet
+    </div>
+  </div>
+
+  <!-- WEEKLY EMAIL -->
+  <div class="section">
+    <h2>Weekly Email Format</h2>
+    <p>Use this format every Monday. Attach your updated sheet or paste a Google Sheets link.</p>
+    <div class="email-block">
+      <span class="subj">Subject: [Your Company] — Weekly Pricing Update [Date]</span>
+      Hi team,<br>
+      Attached is our updated sheet for the week of [Date].<br>
+      Changes: [e.g. Updated BPC-5MG price / Added SEMAX-30ML / No changes]<br><br>
+      Thanks, [Your Name]
+    </div>
+  </div>
+
+  <!-- CONTACT -->
+  <div class="section">
+    <h2>Send Everything Here</h2>
+    <p>Initial setup, weekly updates, questions — one email address for all of it.</p>
+    <a class="contact-card" href="mailto:contact@mypeptideprice.com">
+      <div class="contact-icon">✉</div>
+      <div>
+        <div class="contact-lbl">Partner Email</div>
+        <div class="contact-email">contact@mypeptideprice.com</div>
+      </div>
+    </a>
+  </div>
+
+  <div class="footer">
+    <p>© 2025 MyPeptidePrice.com &nbsp;·&nbsp; <a href="mailto:contact@mypeptideprice.com">contact@mypeptideprice.com</a></p>
+    <p style="margin-top:4px;">For vendor partners only — please do not share this page publicly.</p>
+  </div>
+
+</div>
+</body>
+</html>
