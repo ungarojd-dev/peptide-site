@@ -205,6 +205,12 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .code-tag{display:inline-block;padding:2px 9px;border-radius:999px;font-size:10px;font-weight:700;background:var(--sand-lt);color:var(--walnut);border:1px solid var(--border-2);white-space:nowrap}
     .btn-link{display:inline-flex;align-items:center;gap:4px;padding:6px 14px;border-radius:999px;font-family:var(--fb);font-size:12px;font-weight:700;text-decoration:none;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-2);transition:all .18s;white-space:nowrap}
     .btn-link:hover{border-color:var(--forest);color:var(--forest);background:var(--olive-lt)}
+    .td-sku{font-size:9px;color:var(--ink-3);margin-top:2px;font-family:monospace;letter-spacing:.3px}
+    .stock-in{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:#2d7a4f;background:#e4f5ec;border:1px solid #a8dfc0;border-radius:999px;padding:2px 8px;white-space:nowrap}
+    .stock-in::before{content:'';width:5px;height:5px;background:#2d7a4f;border-radius:50%;display:inline-block}
+    .stock-out{display:inline-flex;align-items:center;gap:4px;font-size:10px;font-weight:700;color:var(--ink-3);background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:2px 8px;white-space:nowrap}
+    .stock-out::before{content:'';width:5px;height:5px;background:var(--ink-3);border-radius:50%;display:inline-block}
+    .stock-na{font-size:10px;color:var(--border-2);white-space:nowrap}
 
     /* CAT TAGS */
     .cat-tag{display:inline-block;padding:2px 9px;border-radius:999px;font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;line-height:1.6}
@@ -358,6 +364,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             <th onclick="sortTable('company')" id="th-company">Vendor</th>
             <th onclick="sortTable('price')" id="th-price">Price Before Discount</th>
             <th onclick="sortTable('discount')" id="th-discount">Discount %</th>
+            <th onclick="sortTable('stock')" id="th-stock">In Stock</th>
             <th>Code</th>
             <th>Link</th>
           </tr></thead>
@@ -444,6 +451,7 @@ function applySort(){
     let va,vb;
     if(sortCol==="price"){va=parsePrice(a.price);vb=parsePrice(b.price);}
     else if(sortCol==="discount"){va=VENDOR_DISCOUNT[a.company]||0;vb=VENDOR_DISCOUNT[b.company]||0;}
+    else if(sortCol==="stock"){va=a.in_stock===true?1:a.in_stock===false?0:-1;vb=b.in_stock===true?1:b.in_stock===false?0:-1;}
     else{va=(a[sortCol]||"").toLowerCase();vb=(b[sortCol]||"").toLowerCase();}
     return va<vb?(sortDir==="asc"?-1:1):va>vb?(sortDir==="asc"?1:-1):0;
   });
@@ -465,13 +473,18 @@ function renderTable(){
     const vc=VENDOR_CONFIG[p.company]||{},cc=CAT_CLASS[p.category]||"cat-other",pct=VENDOR_DISCOUNT[p.company]||0;
     const logoSrc=vc.logo?FULL_LOGOS[vc.logo]:"";
     const vendorEl=logoSrc?`<div class="td-vendor"><img src="${logoSrc}" alt="${p.company}"/><span class="td-vendor-name">${p.company}</span></div>`:`<div class="td-vendor"><span class="td-vendor-name">${p.company}</span></div>`;
+    const skuEl = p.sku ? `<div class="td-sku">${p.sku}</div>` : '';
+    let stockEl = '<span class="stock-na">—</span>';
+    if (p.in_stock === true)  stockEl = '<span class="stock-in">In Stock</span>';
+    if (p.in_stock === false) stockEl = '<span class="stock-out">Out of Stock</span>';
     const tr=document.createElement("tr");
     tr.innerHTML=`
-      <td><div class="td-product">${p.product}</div>${p.listing&&p.listing!==p.product?`<div class="td-listing">${p.listing}</div>`:""}</td>
+      <td><div class="td-product">${p.product}</div>${p.listing&&p.listing!==p.product?`<div class="td-listing">${p.listing}</div>`:""}${skuEl}</td>
       <td><span class="cat-tag ${cc}">${p.category}</span></td>
       <td>${vendorEl}</td>
       <td><span class="td-price">${p.price}</span></td>
       <td><span class="disc-pct">${pct}% off</span></td>
+      <td>${stockEl}</td>
       <td><span class="code-tag">SammyC</span></td>
       <td><a href="${vc.url||"#"}" target="_blank" rel="noopener sponsored" class="btn-link">Visit →</a></td>`;
     frag.appendChild(tr);
@@ -497,5 +510,45 @@ const urlCat=new URLSearchParams(window.location.search).get("cat");
 if(urlCat)filterCat(urlCat);
 document.getElementById("totalCount").textContent=PRODUCTS.length;
 document.getElementById("th-product").classList.add("sort-asc");
-applyFilters();
+
+// ── Glacier Live API Feed ─────────────────────────────────────
+// Fetches live pricing from Glacier Aminos via Netlify function.
+// Falls back to static data silently if API is unavailable.
+(async function loadGlacierLive(){
+  try {
+    const resp = await fetch("/.netlify/functions/glacier-products");
+    if (!resp.ok) throw new Error("API unavailable");
+    const data = await resp.json();
+    if (!data.products || data.products.length === 0) throw new Error("No products");
+
+    // Remove existing static Glacier entries
+    const nonGlacier = PRODUCTS.filter(p => p.company !== "Glacier Aminos");
+
+    // Merge live Glacier data
+    const merged = [...nonGlacier, ...data.products];
+
+    // Update global PRODUCTS array
+    PRODUCTS.length = 0;
+    merged.forEach(p => PRODUCTS.push(p));
+
+    // Update count and re-render
+    document.getElementById("totalCount").textContent = PRODUCTS.length;
+
+    // Show live indicator on Glacier vendor button
+    const glacierBtn = document.querySelector('[data-vendor="Glacier Aminos"]');
+    if (glacierBtn) {
+      const dot = document.createElement("span");
+      dot.style.cssText = "width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
+      dot.title = "Live pricing";
+      glacierBtn.appendChild(dot);
+    }
+
+    applyFilters();
+    console.log(`Glacier live feed loaded: ${data.products.length} products as of ${data.fetched_at}`);
+  } catch(e) {
+    // Silent fallback to static data — user never knows
+    applyFilters();
+    console.log("Glacier live feed unavailable, using static data.");
+  }
+})();
 </script></body></html>
