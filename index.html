@@ -136,9 +136,59 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       body{padding-bottom:64px}
     }
     @media(max-width:768px){
+      /* Nav */
       .nav-links{display:none}.hamburger{display:block}
       .nav-links.open{display:flex;flex-direction:column;position:absolute;top:64px;left:0;right:0;background:var(--surface);border-bottom:1px solid var(--border);padding:10px 24px;gap:2px;box-shadow:var(--shadow);z-index:99}
+
+      /* Footer */
       .fgrid{grid-template-columns:1fr;gap:24px}
+
+      /* Hero */
+      .hero{padding:28px 0 24px}
+      .hero h1{font-size:clamp(22px,7vw,32px);letter-spacing:-.5px;margin-bottom:10px}
+      .hero-desc{font-size:12px;margin-bottom:14px}
+      .hero-pills{gap:5px}
+      .pill{font-size:10px;padding:3px 9px}
+
+      /* Section + wrap */
+      .section{padding:28px 0}
+      .wrap{padding:0 14px}
+
+      /* Search bar */
+      .search-bar{padding:14px 14px;border-radius:var(--r-lg)}
+      .search-input{font-size:13px}
+      .filter-label{font-size:9px}
+      .filter-wrap{gap:5px}
+      .filter-btn{font-size:11px;padding:5px 10px}
+      .filter-section{margin-top:12px}
+      .vendor-filter-row{gap:5px}
+      .vendor-btn{font-size:11px;padding:4px 9px}
+      .vendor-btn img{height:12px;max-width:44px}
+      .results-meta{margin-top:8px}
+      .results-count{font-size:11px}
+
+      /* Hide desktop table entirely on mobile */
+      .table-wrap table{display:none !important}
+      .table-wrap thead{display:none !important}
+
+      /* Mobile card grid — 2 columns like a shop */
+      .m-cards{display:grid !important;grid-template-columns:1fr 1fr;gap:12px;padding:12px}
+      .m-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-sm)}
+      .m-card-img{display:none}
+      .m-card-body{padding:10px;flex:1;display:flex;flex-direction:column;gap:4px}
+      .m-card-name{font-weight:700;font-size:12px;color:var(--ink);line-height:1.3}
+      .m-card-listing{font-size:9px;color:var(--ink-3);line-height:1.3}
+      .m-card-vendor{display:flex;align-items:center;gap:4px;margin-top:2px}
+      .m-card-vendor img{height:11px;max-width:44px;object-fit:contain}
+      .m-card-vendor-name{font-size:10px;font-weight:600;color:var(--ink-3)}
+      .m-card-price{font-family:var(--fd);font-weight:800;font-size:14px;color:var(--ink);margin-top:4px}
+      .m-card-badges{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:4px}
+      .m-card-footer{padding:8px 10px;border-top:1px solid var(--border);margin-top:auto}
+      .m-btn{display:block;text-align:center;padding:8px;border-radius:999px;font-family:var(--fb);font-size:12px;font-weight:800;text-decoration:none;background:var(--forest);color:#fff;width:100%}
+
+      /* Intro para */
+      .intro-para{padding:12px 14px}
+      .intro-para p{font-size:12px}
     }
 
     /* HERO — dark forest */
@@ -184,6 +234,8 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
 
     /* TABLE */
     .table-wrap{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-sm)}
+    .m-cards{display:none} /* hidden on desktop, shown on mobile via @media */
+    .table-wrap table{display:table} /* always visible on desktop */
     .table-scroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
     table{width:100%;border-collapse:collapse;min-width:900px}
     thead tr{background:var(--surface-2)}
@@ -371,6 +423,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <tbody id="tableBody"></tbody>
         </table>
       </div>
+      <!-- Mobile card list — rendered by JS, shown only on small screens -->
+      <div class="m-cards" id="mobileCards"></div>
       <div class="no-results" id="noResults">
         <div class="no-results-icon">🔍</div>
         <div class="no-results-text">No products found</div>
@@ -465,10 +519,13 @@ function sortTable(col){
 }
 function renderTable(){
   const tbody=document.getElementById("tableBody"),noRes=document.getElementById("noResults");
+  const mobileCards=document.getElementById("mobileCards");
   tbody.innerHTML="";
+  mobileCards.innerHTML="";
   document.getElementById("visibleCount").textContent=filtered.length;
   noRes.classList.toggle("show",filtered.length===0);
   const frag=document.createDocumentFragment();
+  const mFrag=document.createDocumentFragment();
   filtered.forEach(p=>{
     const vc=VENDOR_CONFIG[p.company]||{},cc=CAT_CLASS[p.category]||"cat-other",pct=VENDOR_DISCOUNT[p.company]||0;
     const logoSrc=vc.logo?FULL_LOGOS[vc.logo]:"";
@@ -477,6 +534,8 @@ function renderTable(){
     let stockEl = '<span class="stock-na">—</span>';
     if (p.in_stock === true)  stockEl = '<span class="stock-in">In Stock</span>';
     if (p.in_stock === false) stockEl = '<span class="stock-out">Out of Stock</span>';
+
+    // ── Desktop table row ──────────────────────────────────
     const tr=document.createElement("tr");
     tr.innerHTML=`
       <td><div class="td-product">${p.product}</div>${p.listing&&p.listing!==p.product?`<div class="td-listing">${p.listing}</div>`:""}${skuEl}</td>
@@ -488,8 +547,30 @@ function renderTable(){
       <td><span class="code-tag">SammyC</span></td>
       <td><a href="${vc.url||"#"}" target="_blank" rel="noopener sponsored" class="btn-link">Visit →</a></td>`;
     frag.appendChild(tr);
+
+
+    // ── Mobile card — 2-column grid layout ─────────────────
+    const mLogoEl = logoSrc ? `<img src="${logoSrc}" alt="${p.company}"/>` : '';
+    const card=document.createElement("div");
+    card.className="m-card";
+    card.innerHTML=`
+      <div class="m-card-body">
+        <div class="m-card-name">${p.product}</div>
+        ${p.listing&&p.listing!==p.product?`<div class="m-card-listing">${p.listing}</div>`:""}
+        <div class="m-card-vendor">${mLogoEl}<span class="m-card-vendor-name">${p.company}</span></div>
+        <div class="m-card-price">${p.price}</div>
+        <div class="m-card-badges">
+          <span class="disc-pct">${pct}% off</span>
+          ${p.in_stock===true?'<span class="stock-in">In Stock</span>':p.in_stock===false?'<span class="stock-out">Out of Stock</span>':''}
+        </div>
+      </div>
+      <div class="m-card-footer">
+        <a href="${vc.url||"#"}" target="_blank" rel="noopener sponsored" class="m-btn">Visit →</a>
+      </div>`;
+    mFrag.appendChild(card);
   });
   tbody.appendChild(frag);
+  mobileCards.appendChild(mFrag);
 }
 function filterCat(cat){activeCat=cat;document.querySelectorAll(".filter-btn").forEach(b=>b.classList.toggle("active",b.dataset.cat===cat));applyFilters();}
 function clearFilters(){
@@ -521,20 +602,12 @@ document.getElementById("th-product").classList.add("sort-asc");
     const data = await resp.json();
     if (!data.products || data.products.length === 0) throw new Error("No products");
 
-    // Remove existing static Glacier entries
     const nonGlacier = PRODUCTS.filter(p => p.company !== "Glacier Aminos");
-
-    // Merge live Glacier data
     const merged = [...nonGlacier, ...data.products];
-
-    // Update global PRODUCTS array
     PRODUCTS.length = 0;
     merged.forEach(p => PRODUCTS.push(p));
-
-    // Update count and re-render
     document.getElementById("totalCount").textContent = PRODUCTS.length;
 
-    // Show live indicator on Glacier vendor button
     const glacierBtn = document.querySelector('[data-vendor="Glacier Aminos"]');
     if (glacierBtn) {
       const dot = document.createElement("span");
@@ -546,9 +619,38 @@ document.getElementById("th-product").classList.add("sort-asc");
     applyFilters();
     console.log(`Glacier live feed loaded: ${data.products.length} products as of ${data.fetched_at}`);
   } catch(e) {
-    // Silent fallback to static data — user never knows
     applyFilters();
     console.log("Glacier live feed unavailable, using static data.");
+  }
+})();
+
+// ── Southern Aminos Live API Feed ────────────────────────────
+(async function loadSouthernLive(){
+  try {
+    const resp = await fetch("/.netlify/functions/southern-products");
+    if (!resp.ok) throw new Error("API unavailable");
+    const data = await resp.json();
+    if (!data.products || data.products.length === 0) throw new Error("No products");
+
+    const nonSouthern = PRODUCTS.filter(p => p.company !== "Southern Aminos");
+    const merged = [...nonSouthern, ...data.products];
+    PRODUCTS.length = 0;
+    merged.forEach(p => PRODUCTS.push(p));
+    document.getElementById("totalCount").textContent = PRODUCTS.length;
+
+    const southernBtn = document.querySelector('[data-vendor="Southern Aminos"]');
+    if (southernBtn) {
+      const dot = document.createElement("span");
+      dot.style.cssText = "width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
+      dot.title = "Live pricing";
+      southernBtn.appendChild(dot);
+    }
+
+    applyFilters();
+    console.log(`Southern Aminos live feed loaded: ${data.products.length} products as of ${data.fetched_at}`);
+  } catch(e) {
+    applyFilters();
+    console.log("Southern Aminos live feed unavailable, using static data.");
   }
 })();
 </script></body></html>
