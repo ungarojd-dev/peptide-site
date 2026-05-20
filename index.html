@@ -704,4 +704,23 @@ document.getElementById("th-product").classList.add("sort-asc");
     console.log(`Glow Aminos live feed loaded: ${data.products.length} products`);
   } catch(e) { applyFilters(); console.log("Glow Aminos live feed unavailable, using static data."); }
 })();
+
+// ── Mile High Peptides Live API Feed ─────────────────────────
+(async function loadMileHighLive(){
+  try {
+    const resp = await fetch("/.netlify/functions/milehigh-products");
+    if (!resp.ok) throw new Error("API unavailable");
+    const data = await resp.json();
+    if (!data.products || data.products.length === 0) throw new Error("No products");
+    const filtered = PRODUCTS.filter(p => p.company !== "Mile High Peptides");
+    const merged = [...filtered, ...data.products];
+    PRODUCTS.length = 0;
+    merged.forEach(p => PRODUCTS.push(p));
+    document.getElementById("totalCount").textContent = PRODUCTS.length;
+    const btn = document.querySelector('[data-vendor="Mile High Peptides"]');
+    if (btn) { const dot = document.createElement("span"); dot.style.cssText = "width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;"; dot.title = "Live pricing"; btn.appendChild(dot); }
+    applyFilters();
+    console.log(`Mile High live feed loaded: ${data.products.length} products`);
+  } catch(e) { applyFilters(); console.log("Mile High live feed unavailable, using static data."); }
+})();
 </script></body></html>
