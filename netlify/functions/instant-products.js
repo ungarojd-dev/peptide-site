@@ -57,7 +57,7 @@ export const handler = async (event) => {
           price: `$${parseFloat(v.price).toFixed(2)}`,
           sku: `${v.size}${v.unit}-${v.form}-x${v.pack_qty}`,
           in_stock: v.in_stock === true,
-          url: p.url,
+          url: p.url ? (p.url + (p.url.includes("?") ? "&" : "?") + "ref=SAMMYC") : null,
           source: "api"
         });
       }
