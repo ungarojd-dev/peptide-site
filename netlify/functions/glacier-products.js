@@ -13,7 +13,9 @@ async function fetchAllProducts() {
 
   while (true) {
     const url = `${BASE}/products?per_page=100&page=${page}&consumer_key=${CK}&consumer_secret=${CS}&status=publish`;
-    const resp = await fetch(url);
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 10000);
+    const resp = await fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(tid));
 
     if (!resp.ok) {
       throw new Error(`WooCommerce API error: ${resp.status}`);
@@ -35,7 +37,9 @@ async function fetchAllProducts() {
 // Fetch variations for variable products
 async function fetchVariations(productId) {
   const url = `${BASE}/products/${productId}/variations?per_page=100&consumer_key=${CK}&consumer_secret=${CS}`;
-  const resp = await fetch(url);
+  const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 10000);
+    const resp = await fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(tid));
   if (!resp.ok) return [];
   return await resp.json();
 }
@@ -87,12 +91,13 @@ async function transformProduct(p) {
   const category = mapCategory(p.categories || []);
   const results = [];
 
+  // Get primary product image
+  const image = p.images && p.images.length > 0 ? p.images[0].src : null;
+
   if (p.type === "variable") {
-    // Fetch variations
     const variations = await fetchVariations(p.id);
 
     if (variations.length === 0) {
-      // Fallback — add parent product
       results.push({
         product: p.name,
         listing: p.name,
@@ -101,13 +106,15 @@ async function transformProduct(p) {
         price: formatPrice(p.regular_price, p.sale_price),
         sku: p.sku,
         in_stock: p.stock_status === "instock",
+        image,
         source: "api"
       });
     } else {
       for (const v of variations) {
-        // Build variation label from attributes
         const attrs = (v.attributes || []).map(a => a.option).join(" / ");
         const name = attrs ? `${p.name} — ${attrs}` : p.name;
+        // Use variation image if available, fall back to parent image
+        const varImage = v.image && v.image.src ? v.image.src : image;
         results.push({
           product: p.name,
           listing: name,
@@ -116,6 +123,7 @@ async function transformProduct(p) {
           price: formatPrice(v.regular_price, v.sale_price),
           sku: v.sku || p.sku,
           in_stock: v.stock_status === "instock",
+          image: varImage,
           source: "api"
         });
       }
@@ -129,6 +137,7 @@ async function transformProduct(p) {
       price: formatPrice(p.regular_price, p.sale_price),
       sku: p.sku,
       in_stock: p.stock_status === "instock",
+      image,
       source: "api"
     });
   }

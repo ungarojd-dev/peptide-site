@@ -12,7 +12,9 @@ async function fetchAllProducts() {
 
   while (true) {
     const url = `${BASE}/products?per_page=100&page=${page}&consumer_key=${CK}&consumer_secret=${CS}&status=publish`;
-    const resp = await fetch(url);
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 10000);
+    const resp = await fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(tid));
 
     if (!resp.ok) {
       throw new Error(`WooCommerce API error: ${resp.status}`);
@@ -33,7 +35,9 @@ async function fetchAllProducts() {
 
 async function fetchVariations(productId) {
   const url = `${BASE}/products/${productId}/variations?per_page=100&consumer_key=${CK}&consumer_secret=${CS}`;
-  const resp = await fetch(url);
+  const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 10000);
+    const resp = await fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(tid));
   if (!resp.ok) return [];
   return await resp.json();
 }
