@@ -217,24 +217,24 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       .table-section{padding:12px 0 0}
       .table-wrap table{display:none}
       .m-cards{display:block}
-      .m-card{background:var(--surface);border-bottom:1px solid var(--border);padding:12px 14px}
-      .m-card:last-child{border-bottom:none}
-      .m-card-header{display:flex;justify-content:space-between;align-items:flex-start;gap:8px;margin-bottom:8px}
-      .m-card-name{font-weight:800;font-size:13px;color:var(--ink);line-height:1.3;flex:1}
-      .m-card-cat{font-size:9px;font-weight:700;padding:2px 7px;border-radius:999px;white-space:nowrap;flex-shrink:0;margin-top:2px}
-      .m-card-vendors{display:flex;flex-direction:column;gap:8px}
-      .m-vendor-row{display:flex;align-items:center;gap:8px;padding:8px 10px;background:var(--surface-2);border-radius:var(--r-md);border:1px solid var(--border)}
-      .m-vendor-info{display:flex;align-items:center;gap:6px;flex:1;min-width:0}
-      .m-vendor-logo{height:12px;max-width:42px;object-fit:contain;flex-shrink:0}
-      .m-vendor-name{font-size:11px;font-weight:700;color:var(--ink-2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-      .m-vendor-prices{display:flex;flex-direction:column;align-items:flex-end;gap:1px;flex-shrink:0}
-      .m-price{font-size:13px;font-weight:800;color:var(--ink)}
+      /* Mobile card grid — 2 cols */
+      .m-cards{display:grid !important;grid-template-columns:1fr 1fr;gap:10px;padding:12px}
+      .m-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;display:flex;flex-direction:column;box-shadow:var(--shadow-sm)}
+      .m-card-body{padding:10px;flex:1;display:flex;flex-direction:column;gap:3px}
+      .m-card-name{font-weight:800;font-size:12px;color:var(--ink);line-height:1.3}
+      .m-card-listing{font-size:9px;color:var(--ink-3);line-height:1.2;margin-top:1px}
+      .m-card-vendor{display:flex;align-items:center;gap:4px;margin-top:4px}
+      .m-vendor-logo{height:11px;max-width:42px;object-fit:contain}
+      .m-vendor-name{font-size:10px;font-weight:600;color:var(--ink-2)}
+      .m-price{font-family:var(--fd);font-weight:800;font-size:14px;color:var(--ink);margin-top:5px}
       .m-price-after{font-size:10px;font-weight:700;color:var(--forest)}
+      .m-badges{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:4px}
       .m-discount{font-size:9px;font-weight:700;color:var(--olive);background:var(--olive-lt);border-radius:999px;padding:1px 6px}
-      .m-visit-btn{display:flex;align-items:center;justify-content:center;width:34px;height:34px;border-radius:999px;background:var(--forest);color:#fff;font-size:14px;flex-shrink:0;text-decoration:none;transition:background .15s}
+      .m-stock-in{font-size:9px;font-weight:700;color:var(--green);background:var(--green-bg);border-radius:999px;padding:1px 6px}
+      .m-stock-out{font-size:9px;font-weight:700;color:var(--ink-3);background:var(--surface-2);border-radius:999px;padding:1px 6px;border:1px solid var(--border)}
+      .m-card-footer{padding:8px 10px;border-top:1px solid var(--border);margin-top:auto}
+      .m-visit-btn{display:block;text-align:center;padding:8px;border-radius:999px;font-family:var(--fb);font-size:12px;font-weight:800;text-decoration:none;background:var(--forest);color:#fff;width:100%;transition:background .15s}
       .m-visit-btn:hover{background:var(--forest-2)}
-      .m-stock-in{display:inline-block;width:6px;height:6px;background:var(--green);border-radius:50%;flex-shrink:0}
-      .m-stock-out{display:inline-block;width:6px;height:6px;background:var(--ink-3);border-radius:50%;flex-shrink:0}
       .m-loading{text-align:center;padding:40px 20px;color:var(--ink-3);font-size:13px;display:none}
       .m-loading.show{display:block}
       .m-spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--forest);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px}
@@ -269,6 +269,29 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       .fbot{flex-direction:column;text-align:center}
       footer{margin-top:24px}
     }
+
+    /* ── MEMORIAL DAY SALE BANNER ─────────────────────────── */
+    .sale-banner{background:linear-gradient(135deg,#b22234 0%,#8b1a1a 50%,#1a1a5e 100%);padding:12px 20px;position:relative;overflow:hidden}
+    .sale-banner::before{content:'★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★';position:absolute;top:0;left:0;right:0;font-size:8px;color:rgba(255,255,255,.08);letter-spacing:6px;white-space:nowrap;overflow:hidden;padding:2px 8px}
+    .sale-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
+    .sale-left{display:flex;align-items:center;gap:12px;flex-shrink:0}
+    .sale-flag{font-size:24px;animation:waveflag 2s ease-in-out infinite}
+    @keyframes waveflag{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+    .sale-title{font-family:var(--fd);font-size:16px;font-weight:800;color:#fff;letter-spacing:-.3px}
+    .sale-sub{font-size:11px;color:rgba(255,255,255,.7);margin-top:1px}
+    .sale-sub strong{color:#fff;background:rgba(255,255,255,.2);padding:1px 6px;border-radius:4px}
+    .sale-vendors{display:flex;gap:10px;flex-wrap:wrap;flex:1}
+    .sale-item{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:var(--r-md);padding:6px 12px;display:flex;flex-direction:column;gap:2px;min-width:160px;text-decoration:none;transition:background .15s;cursor:pointer}
+    .sale-item:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4);transform:translateY(-1px)}
+    .sale-vendor{font-size:11px;font-weight:800;color:#fff}
+    .sale-pct{font-size:10px;color:rgba(255,255,255,.8);font-weight:600}
+    .sale-pct strong{color:#ffd700;font-weight:800}
+    @media(max-width:768px){
+      .sale-inner{flex-direction:column;align-items:flex-start;gap:10px}
+      .sale-vendors{width:100%;grid-template-columns:1fr 1fr;display:grid;gap:6px}
+      .sale-item{min-width:0}
+      .sale-title{font-size:14px}
+    }
   </style>
 </head>
 <body>
@@ -293,6 +316,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </nav>
 
+<div class="sale-banner">
+  <div class="sale-inner">
+    <div class="sale-left">
+      <span class="sale-flag">🇺🇸</span>
+      <div>
+        <div class="sale-title">Memorial Day Flash Sale</div>
+        <div class="sale-sub">Use code <strong>SAMMYC</strong> for additional savings at checkout</div>
+      </div>
+    </div>
+    <div class="sale-vendors">
+      <a href="https://southernaminos.com/?coupon=sammyc" target="_blank" rel="noopener sponsored" class="sale-item"><span class="sale-vendor">Southern Aminos</span><span class="sale-pct">30% off + <strong>extra 15%</strong> with SAMMYC</span></a>
+      <a href="https://flawlesscompounds.com/shop/?coupon=SammyC" target="_blank" rel="noopener sponsored" class="sale-item"><span class="sale-vendor">Flawless Compounds</span><span class="sale-pct">30% off + <strong>extra 15%</strong> with SAMMYC</span></a>
+      <a href="https://glowaminos.com/shop/?coupon=SammyC" target="_blank" rel="noopener sponsored" class="sale-item"><span class="sale-vendor">Glow Aminos</span><span class="sale-pct">30% off + <strong>extra 15%</strong> with SAMMYC</span></a>
+      <a href="https://instantpeptides.com?ref=SAMMYC" target="_blank" rel="noopener sponsored" class="sale-item"><span class="sale-vendor">Instant Peptides</span><span class="sale-pct">20% off + <strong>extra 15%</strong> with SAMMYC</span></a>
+    </div>
+  </div>
+</div>
 <div class="astrip">
   📌 Affiliate disclosure: links include our referral code. <strong>SAMMYC</strong> may apply an additional discount at checkout depending on the vendor.
 </div>
@@ -549,62 +589,35 @@ function renderMobile(rows){
   const container = document.getElementById("mobileCards");
   container.innerHTML = "";
   if(rows.length===0) return;
-
-  // Group by product name for product-first layout
-  const grouped = {};
-  rows.forEach(p=>{
-    const key = p.product;
-    if(!grouped[key]) grouped[key] = {name:p.product, category:p.category, vendors:[]};
-    grouped[key].vendors.push(p);
-  });
-
-  // Sort groups by product name (or keep sort order of first item)
-  const groups = Object.values(grouped);
-
   const frag = document.createDocumentFragment();
-  groups.forEach(g=>{
-    const cc = CAT_CLASS[g.category]||"cat-other";
+  rows.forEach(p=>{
+    const vc = VENDOR_CONFIG[p.company]||{};
+    const pct = VENDOR_DISCOUNT[p.company]||0;
+    const logoSrc = vc.logo ? FULL_LOGOS[vc.logo] : "";
+    const logoEl = logoSrc ? `<img class="m-vendor-logo" src="${logoSrc}" alt="${p.company}"/>` : '';
+    const base = parsePrice(p.price);
+    const after = base>0 ? `$${(base*(1-pct/100)).toFixed(2)}` : null;
+    const href = p.company==="Instant Peptides"&&p.url ? p.url : (vc.url||"#");
+    let stockEl = '';
+    if(p.in_stock===true) stockEl='<span class="m-stock-in">In Stock</span>';
+    else if(p.in_stock===false) stockEl='<span class="m-stock-out">Out of Stock</span>';
     const card = document.createElement("div");
     card.className = "m-card";
-
-    // Sort vendors within card by after-discount price
-    g.vendors.sort((a,b)=>{
-      const da = VENDOR_DISCOUNT[a.company]||0, db = VENDOR_DISCOUNT[b.company]||0;
-      return parsePrice(a.price)*(1-da/100) - parsePrice(b.price)*(1-db/100);
-    });
-
-    const vendorRows = g.vendors.map(p=>{
-      const vc = VENDOR_CONFIG[p.company]||{};
-      const pct = VENDOR_DISCOUNT[p.company]||0;
-      const logoSrc = vc.logo ? FULL_LOGOS[vc.logo] : "";
-      const logoEl = logoSrc ? `<img class="m-vendor-logo" src="${logoSrc}" alt="${p.company}"/>` : '';
-      const base = parsePrice(p.price);
-      const after = base>0 ? `${(base*(1-pct/100)).toFixed(2)}` : null;
-      const href = p.company==="Instant Peptides"&&p.url ? p.url : (vc.url||"#");
-      const stockDot = p.in_stock===true ? '<span class="m-stock-in"></span>' : p.in_stock===false ? '<span class="m-stock-out"></span>' : '';
-      return `<div class="m-vendor-row">
-        <div class="m-vendor-info">
-          ${logoEl}
-          <div>
-            <div class="m-vendor-name">${stockDot} ${p.company}</div>
-            ${p.listing&&p.listing!==p.product?`<div style="font-size:9px;color:var(--ink-3);margin-top:1px;line-height:1.2">${p.listing.length>40?p.listing.substring(0,40)+'…':p.listing}</div>`:"" }
-          </div>
-        </div>
-        <div class="m-vendor-prices">
-          <div class="m-price">${p.price}</div>
-          ${after?`<div class="m-price-after">→ $${after}</div>`:"" }
-          <div class="m-discount">${pct}% off</div>
-        </div>
-        <a href="${href}" target="_blank" rel="noopener sponsored" class="m-visit-btn">→</a>
-      </div>`;
-    }).join("");
-
     card.innerHTML = `
-      <div class="m-card-header">
-        <div class="m-card-name">${g.name}</div>
-        <span class="m-card-cat cat-tag ${cc}">${g.category}</span>
+      <div class="m-card-body">
+        <div class="m-card-name">${p.product}</div>
+        ${p.listing&&p.listing!==p.product?`<div class="m-card-listing">${p.listing.length>45?p.listing.substring(0,45)+'…':p.listing}</div>`:''}
+        <div class="m-card-vendor">${logoEl}<span class="m-vendor-name">${p.company}</span></div>
+        <div class="m-price">${p.price}</div>
+        ${after?`<div class="m-price-after">→ ${after} after code</div>`:''}
+        <div class="m-badges">
+          <span class="m-discount">${pct}% off</span>
+          ${stockEl}
+        </div>
       </div>
-      <div class="m-card-vendors">${vendorRows}</div>`;
+      <div class="m-card-footer">
+        <a href="${href}" target="_blank" rel="noopener sponsored" class="m-visit-btn">Visit →</a>
+      </div>`;
     frag.appendChild(card);
   });
   container.appendChild(frag);
