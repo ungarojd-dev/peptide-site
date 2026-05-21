@@ -59,17 +59,10 @@ async function transformProduct(p) {
   const image = p.images && p.images.length > 0 ? p.images[0].src : null;
 
   if (p.type === "variable") {
-    const variations = await fetchVariations(p.id);
-    if (variations.length === 0) {
-      results.push({ product: p.name, listing: p.name, company: "Glow Aminos", category, price: formatPrice(p.regular_price, p.sale_price), sku: p.sku, in_stock: p.stock_status === "instock", image, source: "api" });
-    } else {
-      for (const v of variations) {
-        const attrs = (v.attributes || []).map(a => a.option).join(" / ");
-        const name = attrs ? `${p.name} — ${attrs}` : p.name;
-        const varImage = v.image && v.image.src ? v.image.src : image;
-        results.push({ product: p.name, listing: name, company: "Glow Aminos", category, price: formatPrice(v.regular_price, v.sale_price), sku: v.sku || p.sku, in_stock: v.stock_status === "instock", image: varImage, source: "api" });
-      }
-    }
+    // Use parent product price range to avoid per-variation API calls
+    const minPrice = p.price_html ? p.price_html.replace(/<[^>]+>/g,"").match(/[\d.]+/g) : null;
+    const priceDisplay = p.price ? `$${parseFloat(p.price).toFixed(2)}` : "Contact for price";
+    results.push({ product: p.name, listing: p.name, company: "Glow Aminos", category, price: priceDisplay, sku: p.sku, in_stock: p.stock_status === "instock", image, source: "api" });
   } else {
     results.push({ product: p.name, listing: p.name, company: "Glow Aminos", category, price: formatPrice(p.regular_price, p.sale_price), sku: p.sku, in_stock: p.stock_status === "instock", image, source: "api" });
   }
@@ -81,7 +74,7 @@ export const handler = async (event) => {
     "Access-Control-Allow-Origin": "https://mypeptideprice.com",
     "Access-Control-Allow-Methods": "GET",
     "Content-Type": "application/json",
-    "Cache-Control": "public, max-age=3600"
+    "Cache-Control": "public, max-age=21600, stale-while-revalidate=86400"
   };
   if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };
   try {

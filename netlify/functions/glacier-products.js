@@ -151,7 +151,7 @@ export const handler = async (event) => {
     "Access-Control-Allow-Origin": "https://mypeptideprice.com",
     "Access-Control-Allow-Methods": "GET",
     "Content-Type": "application/json",
-    "Cache-Control": "public, max-age=3600" // Cache for 1 hour
+    "Cache-Control": "public, max-age=21600, stale-while-revalidate=86400" // Cache for 1 hour
   };
 
   // Handle preflight
