@@ -126,7 +126,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .hs-val{color:#fff;font-weight:800;font-size:13px}
 
     /* ── SEARCH & FILTERS ─────────────────────────────────── */
-    .search-section{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:60px;z-index:100;box-shadow:var(--shadow-sm)}
+    .search-section{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm)}
     .search-inner{max-width:1200px;margin:0 auto;padding:10px 20px}
     .search-row{display:flex;align-items:center;gap:10px;margin-bottom:8px}
     .search-wrap{flex:1;position:relative}
@@ -206,7 +206,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       .hero{padding:22px 0 18px}
       .hero h1{font-size:clamp(20px,6vw,28px)}
       .hero-sub{font-size:12px;margin-bottom:10px}
-      .search-section{top:60px}
+      .search-section{top:0}
       .search-inner{padding:8px 12px}
       .search-input{font-size:13px}
       .filters-row{gap:5px}
@@ -271,20 +271,20 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     }
 
     /* ── MEMORIAL DAY SALE BANNER ─────────────────────────── */
-    .sale-banner{background:linear-gradient(135deg,#b22234 0%,#8b1a1a 50%,#1a1a5e 100%);padding:12px 20px;position:relative;overflow:hidden}
+    .sale-banner{background:linear-gradient(135deg,#b22234 0%,#8b1a1a 50%,#1a1a5e 100%);padding:16px 20px;position:sticky;top:0;z-index:300;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.3)}
     .sale-banner::before{content:'★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★';position:absolute;top:0;left:0;right:0;font-size:8px;color:rgba(255,255,255,.08);letter-spacing:6px;white-space:nowrap;overflow:hidden;padding:2px 8px}
     .sale-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:20px;flex-wrap:wrap}
     .sale-left{display:flex;align-items:center;gap:12px;flex-shrink:0}
-    .sale-flag{font-size:24px;animation:waveflag 2s ease-in-out infinite}
+    .sale-flag{font-size:30px;animation:waveflag 2s ease-in-out infinite}
     @keyframes waveflag{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
-    .sale-title{font-family:var(--fd);font-size:16px;font-weight:800;color:#fff;letter-spacing:-.3px}
-    .sale-sub{font-size:11px;color:rgba(255,255,255,.7);margin-top:1px}
+    .sale-title{font-family:var(--fd);font-size:19px;font-weight:800;color:#fff;letter-spacing:-.3px}
+    .sale-sub{font-size:12px;color:rgba(255,255,255,.7);margin-top:3px}
     .sale-sub strong{color:#fff;background:rgba(255,255,255,.2);padding:1px 6px;border-radius:4px}
     .sale-vendors{display:flex;gap:10px;flex-wrap:wrap;flex:1}
-    .sale-item{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:var(--r-md);padding:6px 12px;display:flex;flex-direction:column;gap:2px;min-width:160px;text-decoration:none;transition:background .15s;cursor:pointer}
+    .sale-item{background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);border-radius:var(--r-md);padding:9px 14px;display:flex;flex-direction:column;gap:3px;min-width:170px;text-decoration:none;transition:all .15s;cursor:pointer}
     .sale-item:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4);transform:translateY(-1px)}
-    .sale-vendor{font-size:11px;font-weight:800;color:#fff}
-    .sale-pct{font-size:10px;color:rgba(255,255,255,.8);font-weight:600}
+    .sale-vendor{font-size:13px;font-weight:800;color:#fff}
+    .sale-pct{font-size:11px;color:rgba(255,255,255,.8);font-weight:600}
     .sale-pct strong{color:#ffd700;font-weight:800}
     @media(max-width:768px){
       .sale-inner{flex-direction:column;align-items:flex-start;gap:10px}
