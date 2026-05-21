@@ -561,7 +561,7 @@ function renderTable(){
       <td><span class="td-price">${p.price}</span></td>
       <td>${(()=>{const b=parsePrice(p.price);return b>0?'<div><span class="td-price-after">$'+(b*(1-pct/100)).toFixed(2)+'</span><div class="td-sku" style="margin-top:2px">code: SammyC · '+pct+'% off</div></div>':'<span class="stock-na">—</span>';})()}</td>
       <td>${stockEl}</td>
-      <td><a href="${p.url||vc.url||"#"}" target="_blank" rel="noopener sponsored" class="btn-link">Visit →</a></td>`;
+      <td><a href="${p.company==="Instant Peptides"&&p.url?(p.url+(p.url.includes("?")?"&":"?")+"ref=SAMMYC"):(p.url||vc.url||"#")}" target="_blank" rel="noopener sponsored" class="btn-link">Visit →</a></td>`;
     frag.appendChild(tr);
 
 
@@ -582,7 +582,7 @@ function renderTable(){
         </div>
       </div>
       <div class="m-card-footer">
-        <a href="${p.url||vc.url||"#"}" target="_blank" rel="noopener sponsored" class="m-btn">Visit →</a>
+        <a href="${p.company==="Instant Peptides"&&p.url?(p.url+(p.url.includes("?")?"&":"?")+"ref=SAMMYC"):(p.url||vc.url||"#")}" target="_blank" rel="noopener sponsored" class="m-btn">Visit →</a>
       </div>`;
     mFrag.appendChild(card);
   });
