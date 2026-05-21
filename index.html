@@ -621,7 +621,7 @@ document.getElementById("th-product").classList.add("sort-asc");
 // Uses Promise.allSettled so a slow/failed vendor never blocks others.
 // 8-second timeout per vendor — fails fast and falls back to static data.
 
-function fetchWithTimeout(url, ms=8000){
+function fetchWithTimeout(url, ms=20000){
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), ms);
   return fetch(url, {signal: controller.signal})
@@ -657,32 +657,27 @@ window._apisLoading = true;
     {url:"/.netlify/functions/instant-products",   vendor:"Instant Peptides"},
   ];
 
-  const results = await Promise.allSettled(
-    feeds.map(f =>
-      fetchWithTimeout(f.url)
-        .then(r => { if(!r.ok) throw new Error(`${r.status}`); return r.json(); })
-        .then(data => ({...f, data}))
-    )
+  // Each vendor updates the UI as soon as IT finishes — don't wait for slowest
+  const promises = feeds.map(f =>
+    fetchWithTimeout(f.url, 20000)
+      .then(r => { if(!r.ok) throw new Error(`${r.status}`); return r.json(); })
+      .then(data => {
+        if(data.products && data.products.length > 0){
+          mergeLiveProducts(f.vendor, data.products);
+          addLiveDot(f.vendor);
+          document.getElementById("totalCount").textContent = PRODUCTS.length;
+          applyFilters();
+          console.log(`✓ ${f.vendor}: ${data.products.length} products`);
+        }
+      })
+      .catch(e => console.log(`✗ ${f.vendor}: ${e.message}`))
   );
 
-  let anyUpdated = false;
-
-  results.forEach((result, i) => {
-    if(result.status === "fulfilled"){
-      const {vendor, data} = result.value;
-      if(data.products && data.products.length > 0){
-        mergeLiveProducts(vendor, data.products);
-        addLiveDot(vendor);
-        anyUpdated = true;
-        console.log(`✓ ${vendor}: ${data.products.length} products`);
-      }
-    } else {
-      console.log(`✗ ${feeds[i].vendor}: ${result.reason?.message || "failed"}`);
-    }
-  });
-
+  // After all settle (success or fail), clear loading state
+  await Promise.allSettled(promises);
   window._apisLoading = false;
-  if(mLoading) mLoading.classList.remove("show");
+  const mLoading2 = document.getElementById("mCardsLoading");
+  if(mLoading2) mLoading2.classList.remove("show");
   document.getElementById("totalCount").textContent = PRODUCTS.length;
   applyFilters();
 })();
