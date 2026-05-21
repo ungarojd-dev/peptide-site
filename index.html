@@ -13,6 +13,7 @@ j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
   <title>MyPeptidePrice.com — Research Peptide Price Tracker</title>
   <meta name="description" content="Compare BPC-157, semaglutide, tirzepatide & 500+ peptide prices across 9 vendors meeting the 7/7 testing standard. Updated weekly. Code SAMMYC saves up to 15%."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <!-- Meta Pixel Code -->
 <script>
@@ -48,7 +49,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       --surface-3:  #E8E2D5;
       --ink:        #1E1E1B;
       --ink-2:      #3D3528;
-      --ink-3:      #8a7e70;
+      --ink-3:      #6b5d4f;
       --forest:     #1F3A2D;
       --forest-2:   #162a20;
       --forest-lt:  #2d5040;
@@ -180,7 +181,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       .m-card-listing{font-size:9px;color:var(--ink-3);line-height:1.3}
       .m-card-vendor{display:flex;align-items:center;gap:4px;margin-top:2px}
       .m-card-vendor img{height:11px;max-width:44px;object-fit:contain}
-      .m-card-vendor-name{font-size:10px;font-weight:600;color:var(--ink-3)}
+      .m-card-vendor-name{font-size:10px;font-weight:600;color:var(--ink-2)}
       .m-card-price{font-family:var(--fd);font-weight:800;font-size:14px;color:var(--ink);margin-top:4px}
       .m-card-badges{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:4px}
       .m-card-footer{padding:8px 10px;border-top:1px solid var(--border);margin-top:auto}
@@ -227,7 +228,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .vendor-btn.active{background:var(--forest);border-color:var(--forest);color:#fff}
     .vendor-btn.active img{filter:brightness(0) invert(1)}
     .results-meta{display:flex;align-items:center;justify-content:space-between;margin-top:12px;flex-wrap:wrap;gap:8px}
-    .results-count{font-size:12px;color:var(--ink-3);font-weight:600}
+    .results-count{font-size:12px;color:var(--ink-2);font-weight:600}
     .results-count span{color:var(--forest);font-weight:800}
     .clear-btn{font-size:12px;font-weight:700;color:var(--ink-3);background:none;border:none;cursor:pointer;padding:0;text-decoration:underline;text-underline-offset:2px}
     .clear-btn:hover{color:var(--forest)}
@@ -467,7 +468,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </ul></div>
   </div>
   <div class="fbot">
-    <p>© 2025 MyPeptidePrice.com · <strong>Affiliate Disclosure:</strong> We may earn commissions from links on this site. All products listed are for research purposes only. Not medical advice.</p>
+    <p>© 2026 MyPeptidePrice.com · <strong>Affiliate Disclosure:</strong> We may earn commissions from links on this site. All products listed are for research purposes only. Not medical advice.</p>
     <p>Last updated: May 2026</p>
   </div>
 </div></footer>
@@ -608,141 +609,72 @@ if(urlCat)filterCat(urlCat);
 document.getElementById("totalCount").textContent=PRODUCTS.length;
 document.getElementById("th-product").classList.add("sort-asc");
 
-// ── Glacier Live API Feed ─────────────────────────────────────
-// Fetches live pricing from Glacier Aminos via Netlify function.
-// Falls back to static data silently if API is unavailable.
-(async function loadGlacierLive(){
-  try {
-    const resp = await fetch("/.netlify/functions/glacier-products");
-    if (!resp.ok) throw new Error("API unavailable");
-    const data = await resp.json();
-    if (!data.products || data.products.length === 0) throw new Error("No products");
+// ── Live API Feeds — all vendors fetched in parallel ─────────
+// Uses Promise.allSettled so a slow/failed vendor never blocks others.
+// 8-second timeout per vendor — fails fast and falls back to static data.
 
-    const nonGlacier = PRODUCTS.filter(p => p.company !== "Glacier Aminos");
-    const merged = [...nonGlacier, ...data.products];
-    PRODUCTS.length = 0;
-    merged.forEach(p => PRODUCTS.push(p));
-    document.getElementById("totalCount").textContent = PRODUCTS.length;
+function fetchWithTimeout(url, ms=8000){
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), ms);
+  return fetch(url, {signal: controller.signal})
+    .finally(() => clearTimeout(timer));
+}
 
-    const glacierBtn = document.querySelector('[data-vendor="Glacier Aminos"]');
-    if (glacierBtn) {
-      const dot = document.createElement("span");
-      dot.style.cssText = "width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
-      dot.title = "Live pricing";
-      glacierBtn.appendChild(dot);
-    }
+function mergeLiveProducts(vendorName, liveProducts){
+  const others = PRODUCTS.filter(p => p.company !== vendorName);
+  const merged = [...others, ...liveProducts];
+  PRODUCTS.length = 0;
+  merged.forEach(p => PRODUCTS.push(p));
+}
 
-    applyFilters();
-    console.log(`Glacier live feed loaded: ${data.products.length} products as of ${data.fetched_at}`);
-  } catch(e) {
-    applyFilters();
-    console.log("Glacier live feed unavailable, using static data.");
+function addLiveDot(vendorName){
+  const btn = document.querySelector(`[data-vendor="${vendorName}"]`);
+  if(btn && !btn.querySelector('.live-dot')){
+    const dot = document.createElement("span");
+    dot.className = "live-dot";
+    dot.style.cssText = "width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
+    dot.title = "Live pricing";
+    btn.appendChild(dot);
   }
-})();
+}
 
-// ── Southern Aminos Live API Feed ────────────────────────────
-(async function loadSouthernLive(){
-  try {
-    const resp = await fetch("/.netlify/functions/southern-products");
-    if (!resp.ok) throw new Error("API unavailable");
-    const data = await resp.json();
-    if (!data.products || data.products.length === 0) throw new Error("No products");
+(async function loadAllLiveFeeds(){
+  const feeds = [
+    {url:"/.netlify/functions/glacier-products",  vendor:"Glacier Aminos"},
+    {url:"/.netlify/functions/southern-products",  vendor:"Southern Aminos"},
+    {url:"/.netlify/functions/flawless-products",  vendor:"Flawless Compounds"},
+    {url:"/.netlify/functions/glow-products",      vendor:"Glow Aminos"},
+    {url:"/.netlify/functions/milehigh-products",  vendor:"Mile High Peptides"},
+    {url:"/.netlify/functions/instant-products",   vendor:"Instant Peptides"},
+  ];
 
-    const nonSouthern = PRODUCTS.filter(p => p.company !== "Southern Aminos");
-    const merged = [...nonSouthern, ...data.products];
-    PRODUCTS.length = 0;
-    merged.forEach(p => PRODUCTS.push(p));
-    document.getElementById("totalCount").textContent = PRODUCTS.length;
+  const results = await Promise.allSettled(
+    feeds.map(f =>
+      fetchWithTimeout(f.url)
+        .then(r => { if(!r.ok) throw new Error(`${r.status}`); return r.json(); })
+        .then(data => ({...f, data}))
+    )
+  );
 
-    const southernBtn = document.querySelector('[data-vendor="Southern Aminos"]');
-    if (southernBtn) {
-      const dot = document.createElement("span");
-      dot.style.cssText = "width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
-      dot.title = "Live pricing";
-      southernBtn.appendChild(dot);
+  let anyUpdated = false;
+
+  results.forEach((result, i) => {
+    if(result.status === "fulfilled"){
+      const {vendor, data} = result.value;
+      if(data.products && data.products.length > 0){
+        mergeLiveProducts(vendor, data.products);
+        addLiveDot(vendor);
+        anyUpdated = true;
+        console.log(`✓ ${vendor}: ${data.products.length} products`);
+      }
+    } else {
+      console.log(`✗ ${feeds[i].vendor}: ${result.reason?.message || "failed"}`);
     }
+  });
 
+  if(anyUpdated){
+    document.getElementById("totalCount").textContent = PRODUCTS.length;
     applyFilters();
-    console.log(`Southern Aminos live feed loaded: ${data.products.length} products as of ${data.fetched_at}`);
-  } catch(e) {
-    applyFilters();
-    console.log("Southern Aminos live feed unavailable, using static data.");
   }
-})();
-
-// ── Flawless Compounds Live API Feed ─────────────────────────
-(async function loadFlawlessLive(){
-  try {
-    const resp = await fetch("/.netlify/functions/flawless-products");
-    if (!resp.ok) throw new Error("API unavailable");
-    const data = await resp.json();
-    if (!data.products || data.products.length === 0) throw new Error("No products");
-    const nonFlawless = PRODUCTS.filter(p => p.company !== "Flawless Compounds");
-    const merged = [...nonFlawless, ...data.products];
-    PRODUCTS.length = 0;
-    merged.forEach(p => PRODUCTS.push(p));
-    document.getElementById("totalCount").textContent = PRODUCTS.length;
-    const btn = document.querySelector('[data-vendor="Flawless Compounds"]');
-    if (btn) { const dot = document.createElement("span"); dot.style.cssText = "width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;"; dot.title = "Live pricing"; btn.appendChild(dot); }
-    applyFilters();
-    console.log(`Flawless live feed loaded: ${data.products.length} products`);
-  } catch(e) { applyFilters(); console.log("Flawless live feed unavailable, using static data."); }
-})();
-
-// ── Glow Aminos Live API Feed ─────────────────────────────────
-(async function loadGlowLive(){
-  try {
-    const resp = await fetch("/.netlify/functions/glow-products");
-    if (!resp.ok) throw new Error("API unavailable");
-    const data = await resp.json();
-    if (!data.products || data.products.length === 0) throw new Error("No products");
-    const nonGlow = PRODUCTS.filter(p => p.company !== "Glow Aminos");
-    const merged = [...nonGlow, ...data.products];
-    PRODUCTS.length = 0;
-    merged.forEach(p => PRODUCTS.push(p));
-    document.getElementById("totalCount").textContent = PRODUCTS.length;
-    const btn = document.querySelector('[data-vendor="Glow Aminos"]');
-    if (btn) { const dot = document.createElement("span"); dot.style.cssText = "width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;"; dot.title = "Live pricing"; btn.appendChild(dot); }
-    applyFilters();
-    console.log(`Glow Aminos live feed loaded: ${data.products.length} products`);
-  } catch(e) { applyFilters(); console.log("Glow Aminos live feed unavailable, using static data."); }
-})();
-
-// ── Mile High Peptides Live API Feed ─────────────────────────
-(async function loadMileHighLive(){
-  try {
-    const resp = await fetch("/.netlify/functions/milehigh-products");
-    if (!resp.ok) throw new Error("API unavailable");
-    const data = await resp.json();
-    if (!data.products || data.products.length === 0) throw new Error("No products");
-    const filtered = PRODUCTS.filter(p => p.company !== "Mile High Peptides");
-    const merged = [...filtered, ...data.products];
-    PRODUCTS.length = 0;
-    merged.forEach(p => PRODUCTS.push(p));
-    document.getElementById("totalCount").textContent = PRODUCTS.length;
-    const btn = document.querySelector('[data-vendor="Mile High Peptides"]');
-    if (btn) { const dot = document.createElement("span"); dot.style.cssText = "width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;"; dot.title = "Live pricing"; btn.appendChild(dot); }
-    applyFilters();
-    console.log(`Mile High live feed loaded: ${data.products.length} products`);
-  } catch(e) { applyFilters(); console.log("Mile High live feed unavailable, using static data."); }
-})();
-
-// ── Instant Peptides Live Feed ────────────────────────────────
-(async function loadInstantLive(){
-  try {
-    const resp = await fetch("/.netlify/functions/instant-products");
-    if (!resp.ok) throw new Error("API unavailable");
-    const data = await resp.json();
-    if (!data.products || data.products.length === 0) throw new Error("No products");
-    const filtered = PRODUCTS.filter(p => p.company !== "Instant Peptides");
-    const merged = [...filtered, ...data.products];
-    PRODUCTS.length = 0;
-    merged.forEach(p => PRODUCTS.push(p));
-    document.getElementById("totalCount").textContent = PRODUCTS.length;
-    const btn = document.querySelector('[data-vendor="Instant Peptides"]');
-    if (btn) { const dot = document.createElement("span"); dot.style.cssText = "width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;"; dot.title = "Live pricing"; btn.appendChild(dot); }
-    applyFilters();
-    console.log(`Instant Peptides live feed loaded: ${data.products.length} products`);
-  } catch(e) { applyFilters(); console.log("Instant Peptides feed unavailable, using static data."); }
 })();
 </script></body></html>
