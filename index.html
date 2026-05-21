@@ -185,6 +185,10 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       .m-card-price{font-family:var(--fd);font-weight:800;font-size:14px;color:var(--ink);margin-top:4px}
       .m-card-badges{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:4px}
       .m-card-footer{padding:8px 10px;border-top:1px solid var(--border);margin-top:auto}
+    .m-cards-loading{display:none;padding:32px 16px;text-align:center;color:var(--ink-3);font-size:13px}
+    .m-cards-loading.show{display:block}
+    .loading-spinner{width:28px;height:28px;border:3px solid var(--border);border-top-color:var(--forest);border-radius:50%;animation:spin .7s linear infinite;margin:0 auto 10px}
+    @keyframes spin{to{transform:rotate(360deg)}}
       .m-btn{display:block;text-align:center;padding:8px;border-radius:999px;font-family:var(--fb);font-size:12px;font-weight:800;text-decoration:none;background:var(--forest);color:#fff;width:100%}
 
       /* Intro para */
@@ -430,6 +434,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <!-- Mobile card list — rendered by JS, shown only on small screens -->
       <div class="m-cards" id="mobileCards"></div>
+      <div class="m-cards-loading" id="mCardsLoading"><div class="loading-spinner"></div>Loading live prices…</div>
       <div class="no-results" id="noResults">
         <div class="no-results-icon">🔍</div>
         <div class="no-results-text">No products found</div>
@@ -537,10 +542,13 @@ function sortTable(col){
 function renderTable(){
   const tbody=document.getElementById("tableBody"),noRes=document.getElementById("noResults");
   const mobileCards=document.getElementById("mobileCards");
+  const mLoading=document.getElementById("mCardsLoading");
   tbody.innerHTML="";
   mobileCards.innerHTML="";
   document.getElementById("visibleCount").textContent=filtered.length;
-  noRes.classList.toggle("show",filtered.length===0);
+  const noProducts = filtered.length===0;
+  noRes.classList.toggle("show", noProducts && !window._apisLoading);
+  if(mLoading) mLoading.classList.toggle("show", noProducts && window._apisLoading);
   const frag=document.createDocumentFragment();
   const mFrag=document.createDocumentFragment();
   filtered.forEach(p=>{
@@ -638,6 +646,7 @@ function addLiveDot(vendorName){
   }
 }
 
+window._apisLoading = true;
 (async function loadAllLiveFeeds(){
   const feeds = [
     {url:"/.netlify/functions/glacier-products",  vendor:"Glacier Aminos"},
@@ -672,9 +681,9 @@ function addLiveDot(vendorName){
     }
   });
 
-  if(anyUpdated){
-    document.getElementById("totalCount").textContent = PRODUCTS.length;
-    applyFilters();
-  }
+  window._apisLoading = false;
+  if(mLoading) mLoading.classList.remove("show");
+  document.getElementById("totalCount").textContent = PRODUCTS.length;
+  applyFilters();
 })();
 </script></body></html>
