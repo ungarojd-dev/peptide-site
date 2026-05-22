@@ -866,6 +866,31 @@ function addLiveDot(vendorName){
   document.getElementById("totalCount").textContent=PRODUCTS.length;
   applyFilters();
 })();
+
+// ── Disclaimer Modal ──────────────────────────────────────
+(function(){
+  if(sessionStorage.getItem('disclaimer_accepted')) return;
+  const overlay = document.getElementById('disclaimerOverlay');
+  if(overlay){ overlay.classList.remove('hidden'); document.body.style.overflow='hidden'; }
+})();
+
+function updateDisclaimer(){
+  const all=['check1','check2','check3','check4'].every(id=>document.getElementById(id).checked);
+  const btn=document.getElementById('disclaimerAccept');
+  if(btn) btn.disabled=!all;
+  ['check1','check2','check3','check4'].forEach(id=>{
+    const lbl=document.getElementById(id+'-label');
+    if(lbl) lbl.classList.toggle('checked',document.getElementById(id).checked);
+  });
+}
+function acceptDisclaimer(){
+  sessionStorage.setItem('disclaimer_accepted','1');
+  document.getElementById('disclaimerOverlay').classList.add('hidden');
+  document.body.style.overflow='';
+}
+function declineDisclaimer(){ window.location.href='https://www.google.com'; }
+function openFullDisclaimer(){ document.getElementById('fullDisclaimerOverlay').classList.remove('hidden'); }
+function closeFullDisclaimer(){ document.getElementById('fullDisclaimerOverlay').classList.add('hidden'); }
 </script>
 </body>
 </html>
