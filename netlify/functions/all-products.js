@@ -9,7 +9,8 @@ const FEEDS = [
   { vendor: "Glow Aminos", path: "/.netlify/functions/glow-products" },
   { vendor: "Mile High Peptides", path: "/.netlify/functions/milehigh-products" },
   { vendor: "Instant Peptides", path: "/.netlify/functions/instant-products" },
-  { vendor: "LabSourced Peptides", path: "/.netlify/functions/labsourced-products" }
+  { vendor: "LabSourced Peptides", path: "/.netlify/functions/labsourced-products" },
+  { vendor: "Solyn Labs", path: "/.netlify/functions/solyn-products" }
 ];
 
 function getOrigin(event) {
