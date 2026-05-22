@@ -696,8 +696,9 @@ function applyFilters(){
   const mLoading = document.getElementById("mLoading");
   const isMobile = window.innerWidth <= 768;
 
-  noRes.classList.toggle("show", count===0 && !window._apisLoading);
-  if(mLoading) mLoading.classList.toggle("show", count===0 && window._apisLoading);
+  const waitingForSelectedVendor = activeVendor !== "all" && window._liveVendorLoading && window._liveVendorLoading.has(activeVendor);
+  noRes.classList.toggle("show", count===0 && !waitingForSelectedVendor);
+  if(mLoading) mLoading.classList.toggle("show", count===0 && waitingForSelectedVendor);
 
   renderDesktop(filtered);
   if(isMobile) renderMobile(filtered);
@@ -809,77 +810,104 @@ document.getElementById("totalCount").textContent=PRODUCTS.length;
 document.getElementById("th-product").classList.add("sort-asc");
 applyFilters();
 
-// ── Live API Feed, one cached request instead of 7 browser requests ──
-function fetchWithTimeout(url, ms=8000){
+// ── Live API Feeds, non-blocking per vendor ──
+// The static catalog renders first. Each API vendor refreshes in the background.
+// This prevents one slow vendor from making the whole product table look empty.
+const LIVE_FEEDS = {
+  "Glacier Aminos": "/.netlify/functions/glacier-products",
+  "Southern Aminos": "/.netlify/functions/southern-products",
+  "Flawless Compounds": "/.netlify/functions/flawless-products",
+  "Glow Aminos": "/.netlify/functions/glow-products",
+  "Mile High Peptides": "/.netlify/functions/milehigh-products",
+  "Instant Peptides": "/.netlify/functions/instant-products",
+  "LabSourced Peptides": "/.netlify/functions/labsourced-products"
+};
+window._apisLoading = false;
+window._liveVendorLoading = new Set(Object.keys(LIVE_FEEDS));
+
+function fetchWithTimeout(url, ms=5000){
   const ctrl = new AbortController();
   const timer = setTimeout(()=>ctrl.abort(), ms);
   return fetch(url, {signal:ctrl.signal}).finally(()=>clearTimeout(timer));
 }
 
-function mergeLiveProductsByVendor(liveProducts){
-  const liveVendors = new Set((liveProducts || []).map(p=>p.company).filter(Boolean));
-  if(liveVendors.size===0) return;
-  const staticFallback = PRODUCTS.filter(p=>!liveVendors.has(p.company));
-  PRODUCTS.length=0;
-  [...staticFallback, ...liveProducts].forEach(p=>PRODUCTS.push(p));
-}
+function mergeLiveVendorProducts(vendorName, liveProducts){
+  if(!Array.isArray(liveProducts) || liveProducts.length===0) return false;
+  const normalized = liveProducts.filter(p=>p && p.product).map(p=>({ ...p, company: p.company || vendorName }));
+  if(normalized.length===0) return false;
 
-function addLiveDots(vendors){
-  (vendors || []).forEach(vendorName=>{
-    const btn=document.querySelector(`[data-vendor="${vendorName}"]`);
-    if(btn&&!btn.querySelector('.live-dot')){
-      const dot=document.createElement("span");
-      dot.className="live-dot";
-      dot.style.cssText="width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
-      dot.title="Live pricing loaded";
-      btn.appendChild(dot);
-    }
-  });
-}
-
-function applyLivePayload(data){
-  if(!data || !Array.isArray(data.products) || data.products.length===0) return false;
-  mergeLiveProductsByVendor(data.products);
-  addLiveDots(data.vendors || [...new Set(data.products.map(p=>p.company).filter(Boolean))]);
-  document.getElementById("totalCount").textContent=PRODUCTS.length;
-  applyFilters();
+  const fallback = PRODUCTS.filter(p=>p.company !== vendorName);
+  PRODUCTS.length = 0;
+  [...fallback, ...normalized].forEach(p=>PRODUCTS.push(p));
   return true;
 }
 
-(async function loadCachedLiveFeed(){
-  const cacheKey = "mpp_live_products_v1";
+function addLiveDot(vendorName){
+  const btn=document.querySelector(`[data-vendor="${vendorName}"]`);
+  if(btn&&!btn.querySelector('.live-dot')){
+    const dot=document.createElement("span");
+    dot.className="live-dot";
+    dot.style.cssText="width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
+    dot.title="Live pricing loaded";
+    btn.appendChild(dot);
+  }
+}
 
+function applyLiveVendorPayload(vendorName, data){
+  if(!data || !Array.isArray(data.products) || data.products.length===0) return false;
+  const changed = mergeLiveVendorProducts(vendorName, data.products);
+  if(changed){
+    addLiveDot(vendorName);
+    document.getElementById("totalCount").textContent=PRODUCTS.length;
+    applyFilters();
+  }
+  return changed;
+}
+
+function loadCachedVendor(vendorName){
   try{
-    const cached = localStorage.getItem(cacheKey);
-    if(cached){
-      const parsed = JSON.parse(cached);
-      const age = Date.now() - (parsed.saved_at || 0);
-      if(age < 6 * 60 * 60 * 1000 && applyLivePayload(parsed.data)){
-        console.log(`✓ Loaded cached live products: ${parsed.data.count || parsed.data.products.length}`);
-      }
+    const key = `mpp_live_vendor_${vendorName}`;
+    const cached = localStorage.getItem(key);
+    if(!cached) return false;
+    const parsed = JSON.parse(cached);
+    const age = Date.now() - (parsed.saved_at || 0);
+    if(age < 6 * 60 * 60 * 1000){
+      return applyLiveVendorPayload(vendorName, parsed.data);
     }
   }catch(e){
-    console.log("Live product cache skipped", e.message);
+    console.log(`Live cache skipped for ${vendorName}: ${e.message}`);
   }
+  return false;
+}
+
+async function refreshVendor(vendorName, endpoint){
+  const key = `mpp_live_vendor_${vendorName}`;
+  loadCachedVendor(vendorName);
+  applyFilters();
 
   try{
-    const resp = await fetchWithTimeout("/.netlify/functions/all-products", 8000);
+    const resp = await fetchWithTimeout(endpoint, 5000);
     if(!resp.ok) throw new Error(`${resp.status}`);
     const data = await resp.json();
-    if(applyLivePayload(data)){
-      localStorage.setItem(cacheKey, JSON.stringify({saved_at:Date.now(), data}));
-      console.log(`✓ Refreshed live products: ${data.count || data.products.length}`);
+    if(applyLiveVendorPayload(vendorName, data)){
+      localStorage.setItem(key, JSON.stringify({saved_at:Date.now(), data}));
+      console.log(`✓ Refreshed ${vendorName}: ${data.products.length} products`);
     }
   }catch(e){
-    console.log(`✗ Live product refresh skipped: ${e.message}`);
+    console.log(`✗ ${vendorName} live refresh skipped: ${e.message}`);
   }finally{
-    window._apisLoading=false;
+    window._liveVendorLoading.delete(vendorName);
     const ml=document.getElementById("mLoading");
     if(ml) ml.classList.remove("show");
     document.getElementById("totalCount").textContent=PRODUCTS.length;
     applyFilters();
   }
-})();
+}
+
+// Delay live calls slightly so the static table paints first on mobile.
+setTimeout(()=>{
+  Object.entries(LIVE_FEEDS).forEach(([vendorName, endpoint])=>refreshVendor(vendorName, endpoint));
+}, 600);
 
 // ── Disclaimer Modal ──────────────────────────────────────
 (function(){
