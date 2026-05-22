@@ -809,63 +809,76 @@ document.getElementById("totalCount").textContent=PRODUCTS.length;
 document.getElementById("th-product").classList.add("sort-asc");
 applyFilters();
 
-// ── Live API Feeds ─────────────────────────────────────────
-function fetchWithTimeout(url, ms=20000){
+// ── Live API Feed, one cached request instead of 7 browser requests ──
+function fetchWithTimeout(url, ms=8000){
   const ctrl = new AbortController();
   const timer = setTimeout(()=>ctrl.abort(), ms);
   return fetch(url, {signal:ctrl.signal}).finally(()=>clearTimeout(timer));
 }
 
-function mergeLiveProducts(vendorName, liveProducts){
-  const others = PRODUCTS.filter(p=>p.company!==vendorName);
-  const merged = [...others, ...liveProducts];
+function mergeLiveProductsByVendor(liveProducts){
+  const liveVendors = new Set((liveProducts || []).map(p=>p.company).filter(Boolean));
+  if(liveVendors.size===0) return;
+  const staticFallback = PRODUCTS.filter(p=>!liveVendors.has(p.company));
   PRODUCTS.length=0;
-  merged.forEach(p=>PRODUCTS.push(p));
+  [...staticFallback, ...liveProducts].forEach(p=>PRODUCTS.push(p));
 }
 
-function addLiveDot(vendorName){
-  const btn=document.querySelector(`[data-vendor="${vendorName}"]`);
-  if(btn&&!btn.querySelector('.live-dot')){
-    const dot=document.createElement("span");
-    dot.className="live-dot";
-    dot.style.cssText="width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
-    dot.title="Live pricing";
-    btn.appendChild(dot);
-  }
+function addLiveDots(vendors){
+  (vendors || []).forEach(vendorName=>{
+    const btn=document.querySelector(`[data-vendor="${vendorName}"]`);
+    if(btn&&!btn.querySelector('.live-dot')){
+      const dot=document.createElement("span");
+      dot.className="live-dot";
+      dot.style.cssText="width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
+      dot.title="Live pricing loaded";
+      btn.appendChild(dot);
+    }
+  });
 }
 
-(async function loadAllLiveFeeds(){
-  const feeds=[
-    {url:"/.netlify/functions/glacier-products",  vendor:"Glacier Aminos"},
-    {url:"/.netlify/functions/southern-products",  vendor:"Southern Aminos"},
-    {url:"/.netlify/functions/flawless-products",  vendor:"Flawless Compounds"},
-    {url:"/.netlify/functions/glow-products",      vendor:"Glow Aminos"},
-    {url:"/.netlify/functions/milehigh-products",  vendor:"Mile High Peptides"},
-    {url:"/.netlify/functions/instant-products",   vendor:"Instant Peptides"},
-    {url:"/.netlify/functions/labsourced-products", vendor:"LabSourced Peptides"},
-  ];
-
-  const promises=feeds.map(f=>
-    fetchWithTimeout(f.url)
-      .then(r=>{if(!r.ok)throw new Error(`${r.status}`);return r.json();})
-      .then(data=>{
-        if(data.products&&data.products.length>0){
-          mergeLiveProducts(f.vendor, data.products);
-          addLiveDot(f.vendor);
-          document.getElementById("totalCount").textContent=PRODUCTS.length;
-          applyFilters();
-          console.log(`✓ ${f.vendor}: ${data.products.length} products`);
-        }
-      })
-      .catch(e=>console.log(`✗ ${f.vendor}: ${e.message}`))
-  );
-
-  await Promise.allSettled(promises);
-  window._apisLoading=false;
-  const ml=document.getElementById("mLoading");
-  if(ml) ml.classList.remove("show");
+function applyLivePayload(data){
+  if(!data || !Array.isArray(data.products) || data.products.length===0) return false;
+  mergeLiveProductsByVendor(data.products);
+  addLiveDots(data.vendors || [...new Set(data.products.map(p=>p.company).filter(Boolean))]);
   document.getElementById("totalCount").textContent=PRODUCTS.length;
   applyFilters();
+  return true;
+}
+
+(async function loadCachedLiveFeed(){
+  const cacheKey = "mpp_live_products_v1";
+
+  try{
+    const cached = localStorage.getItem(cacheKey);
+    if(cached){
+      const parsed = JSON.parse(cached);
+      const age = Date.now() - (parsed.saved_at || 0);
+      if(age < 6 * 60 * 60 * 1000 && applyLivePayload(parsed.data)){
+        console.log(`✓ Loaded cached live products: ${parsed.data.count || parsed.data.products.length}`);
+      }
+    }
+  }catch(e){
+    console.log("Live product cache skipped", e.message);
+  }
+
+  try{
+    const resp = await fetchWithTimeout("/.netlify/functions/all-products", 8000);
+    if(!resp.ok) throw new Error(`${resp.status}`);
+    const data = await resp.json();
+    if(applyLivePayload(data)){
+      localStorage.setItem(cacheKey, JSON.stringify({saved_at:Date.now(), data}));
+      console.log(`✓ Refreshed live products: ${data.count || data.products.length}`);
+    }
+  }catch(e){
+    console.log(`✗ Live product refresh skipped: ${e.message}`);
+  }finally{
+    window._apisLoading=false;
+    const ml=document.getElementById("mLoading");
+    if(ml) ml.classList.remove("show");
+    document.getElementById("totalCount").textContent=PRODUCTS.length;
+    applyFilters();
+  }
 })();
 
 // ── Disclaimer Modal ──────────────────────────────────────
