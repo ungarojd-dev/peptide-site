@@ -277,6 +277,8 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .sale-item:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4);transform:translateY(-1px)}
     .sale-vendor{font-size:13px;font-weight:800;color:#fff}
     .sale-pct{font-size:11px;color:rgba(255,255,255,.8);font-weight:600}
+    .sale-pct-extra{font-size:9px;color:rgba(255,255,255,.6);font-weight:600;margin-top:2px}
+    .sale-ends{font-size:9px;background:rgba(255,215,0,.25);color:#ffd700;border:1px solid rgba(255,215,0,.4);border-radius:999px;padding:1px 6px;margin-left:5px;font-weight:700;vertical-align:middle}
     .sale-pct strong{color:#ffd700;font-weight:800}
     @media(max-width:768px){
       .sale-inner{flex-direction:column;align-items:flex-start;gap:10px}
@@ -308,20 +310,28 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </nav>
 
-<div class="sale-banner">
-  <div class="sale-inner">
-    <div class="sale-left">
-      <span class="sale-flag">🇺🇸</span>
-      <div>
-        <div class="sale-title">Memorial Day Flash Sale</div>
-        <div class="sale-sub">Use code <strong>SAMMYC</strong> for additional savings at checkout</div>
-      </div>
-    </div>
-    <div class="sale-vendors">
-      <a href="https://southernaminos.com/?coupon=sammyc" target="_blank" rel="noopener sponsored" class="sale-item"><span class="sale-vendor">Southern Aminos</span><span class="sale-pct">30% off + <strong>extra 15%</strong> with SAMMYC</span></a>
-      <a href="https://flawlesscompounds.com/shop/?coupon=SammyC" target="_blank" rel="noopener sponsored" class="sale-item"><span class="sale-vendor">Flawless Compounds</span><span class="sale-pct">30% off + <strong>extra 15%</strong> with SAMMYC</span></a>
-      <a href="https://glowaminos.com/shop/?coupon=SammyC" target="_blank" rel="noopener sponsored" class="sale-item"><span class="sale-vendor">Glow Aminos</span><span class="sale-pct">30% off + <strong>extra 15%</strong> with SAMMYC</span></a>
-      <a href="https://instantpeptides.com?ref=SAMMYC" target="_blank" rel="noopener sponsored" class="sale-item"><span class="sale-vendor">Instant Peptides</span><span class="sale-pct">20% off + <strong>extra 15%</strong> with SAMMYC</span></a>
+<div class="sale-banner" role="marquee" aria-label="Memorial Day Flash Sale">
+  <div class="ticker-label">
+    <span class="ticker-flag">🇺🇸</span>
+    <span class="ticker-title">Memorial Day Sale</span>
+    <span class="ticker-ends">ends May 25</span>
+  </div>
+  <div class="ticker-track">
+    <div class="ticker-inner" id="tickerInner">
+      <!-- First copy -->
+      <a href="https://southernaminos.com/?coupon=sammyc" target="_blank" rel="noopener sponsored" class="ticker-item"><span class="ticker-vendor">Southern Aminos</span><span class="ticker-deal"><strong>30% off</strong> + extra 15% with SAMMYC</span></a>
+      <a href="https://flawlesscompounds.com/shop/?coupon=SammyC" target="_blank" rel="noopener sponsored" class="ticker-item"><span class="ticker-vendor">Flawless Compounds</span><span class="ticker-deal"><strong>30% off</strong> + extra 15% with SAMMYC</span></a>
+      <a href="https://glowaminos.com/shop/?coupon=SammyC" target="_blank" rel="noopener sponsored" class="ticker-item"><span class="ticker-vendor">Glow Aminos</span><span class="ticker-deal"><strong>30% off</strong> + extra 15% with SAMMYC</span></a>
+      <a href="https://instantpeptides.com?ref=SAMMYC" target="_blank" rel="noopener sponsored" class="ticker-item"><span class="ticker-vendor">Instant Peptides</span><span class="ticker-deal"><strong>20% off</strong> + extra 15% with SAMMYC</span></a>
+      <a href="https://labsourced.com/?ref=SammyC" target="_blank" rel="noopener sponsored" class="ticker-item"><span class="ticker-vendor">LabSourced Peptides</span><span class="ticker-deal"><strong>15% + 15%</strong> SAMMYC · 20% on 20+ items · 7% Zelle</span></a>
+      <span class="ticker-sep">★</span>
+      <!-- Duplicate for seamless loop -->
+      <a href="https://southernaminos.com/?coupon=sammyc" target="_blank" rel="noopener sponsored" class="ticker-item"><span class="ticker-vendor">Southern Aminos</span><span class="ticker-deal"><strong>30% off</strong> + extra 15% with SAMMYC</span></a>
+      <a href="https://flawlesscompounds.com/shop/?coupon=SammyC" target="_blank" rel="noopener sponsored" class="ticker-item"><span class="ticker-vendor">Flawless Compounds</span><span class="ticker-deal"><strong>30% off</strong> + extra 15% with SAMMYC</span></a>
+      <a href="https://glowaminos.com/shop/?coupon=SammyC" target="_blank" rel="noopener sponsored" class="ticker-item"><span class="ticker-vendor">Glow Aminos</span><span class="ticker-deal"><strong>30% off</strong> + extra 15% with SAMMYC</span></a>
+      <a href="https://instantpeptides.com?ref=SAMMYC" target="_blank" rel="noopener sponsored" class="ticker-item"><span class="ticker-vendor">Instant Peptides</span><span class="ticker-deal"><strong>20% off</strong> + extra 15% with SAMMYC</span></a>
+      <a href="https://labsourced.com/?ref=SammyC" target="_blank" rel="noopener sponsored" class="ticker-item"><span class="ticker-vendor">LabSourced Peptides</span><span class="ticker-deal"><strong>15% + 15%</strong> SAMMYC · 20% on 20+ items · 7% Zelle</span></a>
+      <span class="ticker-sep">★</span>
     </div>
   </div>
 </div>
