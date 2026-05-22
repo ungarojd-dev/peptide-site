@@ -3,7 +3,7 @@
 MyPeptidePrice.com is an independent research peptide price comparison and tracking tool.
 
 ## What it is
-A weekly-updated price tracker that displays current pricing for 300+ research peptide products across 6 vetted vendors. The site does not sell products, make recommendations, or rank vendors. It displays pricing data only.
+A research peptide price tracker that displays current pricing for 300+ baseline product listings across tracked vendors, with live API feeds used where available. The site does not sell products, make recommendations, or rank vendors. It displays pricing data only.
 
 ## What data it shows
 - Product name and listing name
@@ -20,10 +20,10 @@ Prices are manually verified and updated every week.
 Vendors must publish third-party Certificates of Analysis (COAs) covering all 7 of the following testing categories to be listed: Net Purity, Net Content, Heavy Metals, Endotoxins, Identification, Sterility, Conformity.
 
 ## Main pages
-- https://mypeptideprice.com/ — Full price comparison table with search and filters
-- https://mypeptideprice.com/vendors.html — Vendor directory with discount codes
-- https://mypeptideprice.com/faq.html — FAQ, testing standards, affiliate disclosure
-- https://mypeptideprice.com/glp-weight-loss.html — GLP-1 and weight loss peptide prices
+- https://mypeptideprice.com/, Full price comparison table with search and filters
+- https://mypeptideprice.com/vendors.html, Vendor directory with discount codes
+- https://mypeptideprice.com/faq.html, FAQ, testing standards, affiliate disclosure
+- https://mypeptideprice.com/glp-weight-loss.html, GLP-1 and weight loss peptide prices
 
 ## Affiliate disclosure
 This site earns affiliate commissions when users click through to vendors. All products are for laboratory research purposes only and are not intended for human consumption.
