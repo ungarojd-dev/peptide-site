@@ -286,9 +286,161 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       .sale-item{min-width:0}
       .sale-title{font-size:14px}
     }
+
+    /* ── DISCLAIMER MODAL ─────────────────────────────────── */
+    .disclaimer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+    .disclaimer-overlay.hidden{display:none}
+    .disclaimer-modal{background:#fff;border-radius:var(--r-xl);max-width:540px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.4)}
+    .disclaimer-header{background:linear-gradient(135deg,var(--forest) 0%,var(--forest-lt) 100%);padding:20px 24px;border-radius:var(--r-xl) var(--r-xl) 0 0;display:flex;align-items:flex-start;gap:12px}
+    .disclaimer-icon{font-size:22px;flex-shrink:0;margin-top:2px}
+    .disclaimer-header h2{font-family:var(--fd);font-size:18px;font-weight:800;color:#fff;margin-bottom:4px}
+    .disclaimer-header p{font-size:12px;color:rgba(255,255,255,.75);line-height:1.5}
+    .disclaimer-body{padding:20px 24px}
+    .disclaimer-body p{font-size:13px;color:var(--ink-2);line-height:1.65;margin-bottom:14px}
+    .disclaimer-list{margin:0 0 16px 0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
+    .disclaimer-list li{font-size:13px;color:var(--ink-2);line-height:1.55}
+    .disclaimer-list li strong{color:var(--ink)}
+    .disclaimer-checks{display:flex;flex-direction:column;gap:8px;margin:16px 0}
+    .disclaimer-check{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--r-md);cursor:pointer;transition:all .15s;user-select:none}
+    .disclaimer-check:hover{border-color:var(--forest);background:var(--olive-lt)}
+    .disclaimer-check.checked{border-color:var(--forest);background:var(--olive-lt)}
+    .disclaimer-check input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:1px;accent-color:var(--forest);cursor:pointer}
+    .disclaimer-check span{font-size:12px;color:var(--ink-2);line-height:1.5;font-weight:600}
+    .disclaimer-note{font-size:11px;color:var(--ink-3);line-height:1.55;margin-top:12px}
+    .disclaimer-footer{padding:16px 24px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+    .disclaimer-accept{flex:1;padding:12px 20px;border-radius:999px;background:var(--forest);color:#fff;font-family:var(--fb);font-size:13px;font-weight:800;border:none;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:6px}
+    .disclaimer-accept:hover{background:var(--forest-2)}
+    .disclaimer-accept:disabled{background:var(--border);cursor:not-allowed;color:var(--ink-3)}
+    .disclaimer-decline{padding:12px 16px;border-radius:999px;background:none;border:1.5px solid var(--border);color:var(--ink-3);font-family:var(--fb);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
+    .disclaimer-decline:hover{border-color:var(--ink-2);color:var(--ink-2)}
+    .disclaimer-link{font-size:11px;color:var(--forest);text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--fb)}
+    @media(max-width:480px){
+      .disclaimer-header{padding:16px 18px}
+      .disclaimer-body{padding:16px 18px}
+      .disclaimer-footer{padding:14px 18px 18px}
+      .disclaimer-header h2{font-size:16px}
+    }
+
+    /* ── FULL DISCLAIMER OVERLAY ──────────────────────────── */
+    .full-disclaimer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px}
+    .full-disclaimer-overlay.hidden{display:none}
+    .full-disclaimer-modal{background:#1a1a2e;border-radius:var(--r-xl);max-width:600px;width:100%;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.6);border:1px solid rgba(255,255,255,.1)}
+    .full-disclaimer-header{background:linear-gradient(135deg,#c0392b,#e67e22);padding:16px 20px;border-radius:var(--r-xl) var(--r-xl) 0 0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-shrink:0}
+    .full-disclaimer-header-left{display:flex;align-items:flex-start;gap:10px}
+    .full-disclaimer-header h3{font-family:var(--fd);font-size:16px;font-weight:800;color:#fff;margin-bottom:3px}
+    .full-disclaimer-header p{font-size:11px;color:rgba(255,255,255,.8)}
+    .full-disclaimer-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
+    .full-disclaimer-close:hover{background:rgba(255,255,255,.35)}
+    .full-disclaimer-body{overflow-y:auto;padding:20px 24px;flex:1;color:rgba(255,255,255,.85);font-size:12px;line-height:1.7}
+    .full-disclaimer-body h4{font-size:13px;font-weight:800;color:#fff;margin:18px 0 6px;padding-bottom:4px;border-bottom:1px solid rgba(255,255,255,.1)}
+    .full-disclaimer-body h4:first-child{margin-top:0}
+    .full-disclaimer-body p{margin-bottom:10px;color:rgba(255,255,255,.8)}
+    .full-disclaimer-body ul{margin:6px 0 10px 18px;display:flex;flex-direction:column;gap:4px}
+    .full-disclaimer-body li{color:rgba(255,255,255,.75)}
+    .full-disclaimer-reminder{background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:var(--r-md);padding:10px 14px;margin-top:16px;font-size:11px;color:rgba(255,255,255,.7);line-height:1.6}
+    .full-disclaimer-footer{padding:14px 20px;border-top:1px solid rgba(255,255,255,.1);flex-shrink:0}
+    .full-disclaimer-return{width:100%;padding:11px;border-radius:999px;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;font-family:var(--fb);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
+    .full-disclaimer-return:hover{background:rgba(255,255,255,.2)}
   </style>
 </head>
 <body>
+
+
+<!-- Full Disclaimers Modal -->
+<div class="full-disclaimer-overlay hidden" id="fullDisclaimerOverlay">
+  <div class="full-disclaimer-modal">
+    <div class="full-disclaimer-header">
+      <div class="full-disclaimer-header-left">
+        <span style="font-size:20px">📋</span>
+        <div>
+          <h3>Full Legal Disclosures</h3>
+          <p>For reference only. Close this to return to the entry screen.</p>
+        </div>
+      </div>
+      <button class="full-disclaimer-close" onclick="closeFullDisclaimer()">✕</button>
+    </div>
+    <div class="full-disclaimer-body">
+      <h4>What MyPeptidePrice.com Is</h4>
+      <p>MyPeptidePrice.com is an independent price comparison and data aggregation platform. We track and display pricing information from third-party vendors who sell research compounds. We do not manufacture, sell, distribute, ship, or handle any products. Every purchase you make happens directly between you and the vendor — we are not involved in that transaction in any way.</p>
+
+      <h4>Research Use Only</h4>
+      <p>Every product displayed on this site is listed by third-party vendors as a research-use-only (RUO) compound. This means:</p>
+      <ul>
+        <li>These compounds are intended strictly for in-vitro laboratory research and are not approved for human or animal consumption.</li>
+        <li>Nothing on this site has been evaluated by the FDA. These products are not intended to diagnose, treat, cure, or prevent any disease.</li>
+        <li>You are responsible for understanding and complying with the laws in your jurisdiction before accessing, purchasing, or using any product referenced here.</li>
+      </ul>
+
+      <h4>We Are a Price Tracker, Not a Store</h4>
+      <p>We display data. We don't take payments, manage orders, handle shipping, process refunds, or resolve disputes. If you have an issue with a product, order, or vendor — that conversation happens directly with the vendor, not us. All vendor information displayed on this site is provided by the vendors themselves or pulled from their public APIs and product feeds.</p>
+
+      <h4>Affiliate Links & Compensation</h4>
+      <p>Some links on this site are affiliate links. If you click a vendor link and make a purchase, we may earn a commission from the vendor. This commission is paid by the vendor and has no effect on the price you pay. Our affiliate relationships do not determine which vendors are listed, how they are ranked, or how pricing is displayed. We disclose all affiliate relationships in compliance with FTC guidelines.</p>
+
+      <h4>Pricing Accuracy</h4>
+      <p>We update pricing regularly — either through direct vendor API feeds or manual weekly reviews. Despite our best efforts, prices can change between updates, products can go out of stock, and discounts can expire. Always confirm current pricing directly on the vendor's site before purchasing. We are not responsible for discrepancies between prices shown here and prices at checkout.</p>
+
+      <h4>No Rankings, No Endorsements</h4>
+      <p>Displaying a vendor on this site is not an endorsement, certification, or recommendation. We apply a 7/7 third-party testing standard as a minimum listing requirement, but we do not independently verify vendor claims, test products ourselves, or guarantee product quality, purity, or legality. Vendor inclusion is based on meeting our published listing criteria — nothing more.</p>
+
+      <h4>Your Responsibility</h4>
+      <p>By using this site you agree that you are solely responsible for verifying the legal status of any compound in your jurisdiction, using any information on this site lawfully and appropriately, and directing any product or order concerns to the relevant vendor directly.</p>
+
+      <h4>Limitation of Liability</h4>
+      <p>To the fullest extent permitted by applicable law, MyPeptidePrice.com and its operators are not liable for any damages arising from your use of this site, reliance on information displayed here, or purchases made through vendor links. This site is provided as-is without warranties of any kind. Your use of this site is entirely at your own risk.</p>
+
+      <h4>Age Requirement</h4>
+      <p>This site is intended for users who are 21 years of age or older. By continuing, you confirm that you meet this requirement.</p>
+
+      <div class="full-disclaimer-reminder">
+        <strong>Note:</strong> Reviewing these disclosures does not grant access to the site. Return to the entry screen, check all four boxes, and click "Accept All &amp; Enter" to proceed.
+      </div>
+    </div>
+    <div class="full-disclaimer-footer">
+      <button class="full-disclaimer-return" onclick="closeFullDisclaimer()">← Return to acceptance screen</button>
+    </div>
+  </div>
+</div>
+<!-- Research Use Disclaimer Modal -->
+<div class="disclaimer-overlay" id="disclaimerOverlay">
+  <div class="disclaimer-modal" role="dialog" aria-modal="true" aria-labelledby="disclaimerTitle">
+    <div class="disclaimer-header">
+      <span class="disclaimer-icon">⚗️</span>
+      <div>
+        <h2 id="disclaimerTitle">Before You Continue</h2>
+        <p>MyPeptidePrice.com is a research tool. A quick acknowledgment is required.</p>
+      </div>
+    </div>
+    <div class="disclaimer-body">
+      <p>MyPeptidePrice.com is an independent price comparison tool. We display current pricing from third-party vendors selling research compounds. We don't sell, ship, or manufacture anything — we just show you the data.</p>
+      <p>A few things to confirm before you proceed:</p>
+      <div class="disclaimer-checks">
+        <label class="disclaimer-check" id="check1-label">
+          <input type="checkbox" id="check1" onchange="updateDisclaimer()"/>
+<span>I understand that all products listed on this site are sold by third-party vendors for <strong>laboratory research purposes only</strong> — not for human or animal consumption.</span>
+        </label>
+        <label class="disclaimer-check" id="check2-label">
+          <input type="checkbox" id="check2" onchange="updateDisclaimer()"/>
+<span>I am 21 years of age or older.</span>
+        </label>
+        <label class="disclaimer-check" id="check3-label">
+          <input type="checkbox" id="check3" onchange="updateDisclaimer()"/>
+<span>I am accessing this site in a research or informational capacity.</span>
+        </label>
+        <label class="disclaimer-check" id="check4-label">
+          <input type="checkbox" id="check4" onchange="updateDisclaimer()"/>
+<span>I agree to the <a href="terms.html" target="_blank" style="color:var(--forest);text-decoration:underline">Terms of Service</a> and understand that MyPeptidePrice.com is not responsible for third-party vendor products, claims, or transactions.</span>
+        </label>
+      </div>
+      <p class="disclaimer-note">If you're not here for research purposes, please exit. This site is not intended for general consumer use.</p>
+    </div>
+    <div class="disclaimer-footer">
+      <button class="disclaimer-decline" onclick="declineDisclaimer()">Decline &amp; Exit</button>
+      <button class="disclaimer-accept" id="disclaimerAccept" onclick="acceptDisclaimer()" disabled>✓ Accept All &amp; Enter</button>
+    </div>
+    <div style="padding:0 24px 16px;text-align:center"><button class="disclaimer-link" onclick="openFullDisclaimer()">📋 View full disclaimers</button></div>
+  </div>
+</div>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDQM5TBB"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
