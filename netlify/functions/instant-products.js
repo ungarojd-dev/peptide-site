@@ -6,13 +6,13 @@ const FEED_URL = "https://instantpeptides.com/api/feeds/peptide-price";
 
 function mapCategory(name) {
   const n = name.toLowerCase();
-  if (n.includes("glp") || n.includes("semaglutide") || n.includes("tirzepatide") || n.includes("retatrutide") || n.includes("cagrilintide") || n.includes("glp-1") || n.includes("glp-2") || n.includes("weight")) return "GLP / Weight Loss";
-  if (n.includes("bpc") || n.includes("tb-500") || n.includes("tb500") || n.includes("recover") || n.includes("heal") || n.includes("repair")) return "Recovery & Healing";
-  if (n.includes("nad") || n.includes("epitalon") || n.includes("longev") || n.includes("anti-ag") || n.includes("snap-8") || n.includes("tesamorelin")) return "Longevity & Anti-Aging";
+  if (n.includes("glp") || n.includes("semaglutide") || n.includes("tirzepatide") || n.includes("retatrutide") || n.includes("cagrilintide") || n.includes("glp-1") || n.includes("glp-2") || n.includes("weight")) return "GLP-1 & Incretin";
+  if (n.includes("bpc") || n.includes("tb-500") || n.includes("tb500") || n.includes("recover") || n.includes("heal") || n.includes("repair")) return "Repair & Recovery";
+  if (n.includes("nad") || n.includes("epitalon") || n.includes("longev") || n.includes("anti-ag") || n.includes("snap-8") || n.includes("tesamorelin")) return "Longevity & Cellular Health";
   if (n.includes("semax") || n.includes("selank") || n.includes("nootropic") || n.includes("cogni") || n.includes("dihexa")) return "Cognitive & Nootropic";
-  if (n.includes("ipamorelin") || n.includes("cjc") || n.includes("ghrp") || n.includes("growth") || n.includes("ghrh") || n.includes("igf") || n.includes("sermorelin")) return "Growth Hormone";
-  if (n.includes("melanotan") || n.includes("mt-") || n.includes("pt-141") || n.includes("bremelanotide") || n.includes("sexual") || n.includes("tann") || n.includes("kisspeptin")) return "Sexual Health & Tanning";
-  if (n.includes("aod") || n.includes("mots") || n.includes("metabol") || n.includes("energy") || n.includes("lipo")) return "Metabolic & Energy";
+  if (n.includes("ipamorelin") || n.includes("cjc") || n.includes("ghrp") || n.includes("growth") || n.includes("ghrh") || n.includes("igf") || n.includes("sermorelin")) return "Growth Hormone Research";
+  if (n.includes("melanotan") || n.includes("mt-") || n.includes("pt-141") || n.includes("bremelanotide") || n.includes("sexual") || n.includes("tann") || n.includes("kisspeptin")) return "Skin, Tanning & Sexual Health";
+  if (n.includes("aod") || n.includes("mots") || n.includes("metabol") || n.includes("energy") || n.includes("lipo")) return "Metabolic & Mitochondrial";
   if (n.includes("capsule") || n.includes("oral") || n.includes("tablet")) return "Capsules";
   if (n.includes("water") || n.includes("bac") || n.includes("acetic") || n.includes("sterile") || n.includes("vial") || n.includes("kit") || n.includes("suppl")) return "Supplies";
   return "Other";

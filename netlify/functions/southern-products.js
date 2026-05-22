@@ -47,25 +47,25 @@ function mapCategory(wcCategories) {
   const joined = names.join(" ");
 
   if (joined.includes("glp") || joined.includes("weight") || joined.includes("semaglutide") || joined.includes("tirzepatide") || joined.includes("retatrutide") || joined.includes("cagri")) {
-    return "GLP / Weight Loss";
+    return "GLP-1 & Incretin";
   }
   if (joined.includes("recover") || joined.includes("heal") || joined.includes("bpc") || joined.includes("tb-500") || joined.includes("repair")) {
-    return "Recovery & Healing";
+    return "Repair & Recovery";
   }
   if (joined.includes("longev") || joined.includes("anti-ag") || joined.includes("nad") || joined.includes("epitalon")) {
-    return "Longevity & Anti-Aging";
+    return "Longevity & Cellular Health";
   }
   if (joined.includes("cogni") || joined.includes("nootropic") || joined.includes("semax") || joined.includes("selank")) {
     return "Cognitive & Nootropic";
   }
   if (joined.includes("growth") || joined.includes("ghrp") || joined.includes("ghrh") || joined.includes("ipamorelin") || joined.includes("cjc")) {
-    return "Growth Hormone";
+    return "Growth Hormone Research";
   }
   if (joined.includes("sexual") || joined.includes("tann") || joined.includes("melanotan") || joined.includes("pt-141") || joined.includes("bremelanotide")) {
-    return "Sexual Health & Tanning";
+    return "Skin, Tanning & Sexual Health";
   }
   if (joined.includes("metabol") || joined.includes("energy") || joined.includes("aod") || joined.includes("mots")) {
-    return "Metabolic & Energy";
+    return "Metabolic & Mitochondrial";
   }
   if (joined.includes("capsule") || joined.includes("oral")) {
     return "Capsules";

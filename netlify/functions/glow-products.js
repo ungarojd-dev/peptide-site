@@ -35,13 +35,13 @@ async function fetchVariations(productId) {
 
 function mapCategory(wcCategories) {
   const joined = wcCategories.map(c => c.name.toLowerCase()).join(" ");
-  if (joined.includes("glp") || joined.includes("weight") || joined.includes("semaglutide") || joined.includes("tirzepatide") || joined.includes("retatrutide") || joined.includes("cagri")) return "GLP / Weight Loss";
-  if (joined.includes("recover") || joined.includes("heal") || joined.includes("bpc") || joined.includes("tb-500") || joined.includes("repair")) return "Recovery & Healing";
-  if (joined.includes("longev") || joined.includes("anti-ag") || joined.includes("nad") || joined.includes("epitalon")) return "Longevity & Anti-Aging";
+  if (joined.includes("glp") || joined.includes("weight") || joined.includes("semaglutide") || joined.includes("tirzepatide") || joined.includes("retatrutide") || joined.includes("cagri")) return "GLP-1 & Incretin";
+  if (joined.includes("recover") || joined.includes("heal") || joined.includes("bpc") || joined.includes("tb-500") || joined.includes("repair")) return "Repair & Recovery";
+  if (joined.includes("longev") || joined.includes("anti-ag") || joined.includes("nad") || joined.includes("epitalon")) return "Longevity & Cellular Health";
   if (joined.includes("cogni") || joined.includes("nootropic") || joined.includes("semax") || joined.includes("selank")) return "Cognitive & Nootropic";
-  if (joined.includes("growth") || joined.includes("ghrp") || joined.includes("ghrh") || joined.includes("ipamorelin") || joined.includes("cjc")) return "Growth Hormone";
-  if (joined.includes("sexual") || joined.includes("tann") || joined.includes("melanotan") || joined.includes("pt-141") || joined.includes("bremelanotide")) return "Sexual Health & Tanning";
-  if (joined.includes("metabol") || joined.includes("energy") || joined.includes("aod") || joined.includes("mots")) return "Metabolic & Energy";
+  if (joined.includes("growth") || joined.includes("ghrp") || joined.includes("ghrh") || joined.includes("ipamorelin") || joined.includes("cjc")) return "Growth Hormone Research";
+  if (joined.includes("sexual") || joined.includes("tann") || joined.includes("melanotan") || joined.includes("pt-141") || joined.includes("bremelanotide")) return "Skin, Tanning & Sexual Health";
+  if (joined.includes("metabol") || joined.includes("energy") || joined.includes("aod") || joined.includes("mots")) return "Metabolic & Mitochondrial";
   if (joined.includes("capsule") || joined.includes("oral")) return "Capsules";
   if (joined.includes("suppl") || joined.includes("kit") || joined.includes("water") || joined.includes("bac")) return "Supplies";
   return "Other";
