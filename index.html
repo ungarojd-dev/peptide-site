@@ -434,9 +434,10 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       </div>
       <p class="disclaimer-note">If you're not here for research purposes, please exit. This site is not intended for general consumer use.</p>
     </div>
+    <div id="disclaimerHint" style="padding:8px 24px 0;font-size:11px;color:var(--ink-3);text-align:center">Please check all boxes above to continue</div>
     <div class="disclaimer-footer">
       <button class="disclaimer-decline" onclick="declineDisclaimer()">Decline &amp; Exit</button>
-      <button class="disclaimer-accept" id="disclaimerAccept" onclick="acceptDisclaimer()" disabled>✓ Accept All &amp; Enter</button>
+      <button class="disclaimer-accept" id="disclaimerAccept" onclick="acceptDisclaimer()" disabled>✓ Agree &amp; Enter Site</button>
     </div>
     <div style="padding:0 24px 16px;text-align:center"><button class="disclaimer-link" onclick="openFullDisclaimer()">📋 View full disclaimers</button></div>
   </div>
@@ -878,6 +879,8 @@ function updateDisclaimer(){
   const all=['check1','check2','check3','check4'].every(id=>document.getElementById(id).checked);
   const btn=document.getElementById('disclaimerAccept');
   if(btn) btn.disabled=!all;
+  const hint=document.getElementById('disclaimerHint');
+  if(hint) hint.style.display=all?'none':'block';
   ['check1','check2','check3','check4'].forEach(id=>{
     const lbl=document.getElementById(id+'-label');
     if(lbl) lbl.classList.toggle('checked',document.getElementById(id).checked);
