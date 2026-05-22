@@ -534,6 +534,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <div class="sale-vendors">
+      <a href="https://partner.solyn.com/?ref=SammyC" target="_blank" rel="noopener sponsored" class="sale-item sale-item-hot"><span class="sale-item-star">★ STACKABLE</span><span class="sale-vendor">Solyn Labs</span><span class="sale-pct"><strong>25% off service25</strong></span><span class="sale-pct" style="font-size:9px;color:rgba(255,255,255,.75)">plus 15% with SAMMYC</span></a>
       <a href="https://southernaminos.com/?coupon=sammyc" target="_blank" rel="noopener sponsored" class="sale-item"><span class="sale-vendor">Southern Aminos</span><span class="sale-pct">30% off + <strong>15% with SAMMYC</strong></span></a>
       <a href="https://flawlesscompounds.com/shop/?coupon=SammyC" target="_blank" rel="noopener sponsored" class="sale-item"><span class="sale-vendor">Flawless Compounds</span><span class="sale-pct">30% off + <strong>15% with SAMMYC</strong></span></a>
       <a href="https://glowaminos.com/shop/?coupon=SammyC" target="_blank" rel="noopener sponsored" class="sale-item"><span class="sale-vendor">Glow Aminos</span><span class="sale-pct">30% off + <strong>15% with SAMMYC</strong></span></a>
@@ -561,7 +562,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <div class="hero-stats">
-      <div class="hs-row"><span class="hs-label">Vendors Tracked</span><span class="hs-val">9</span></div>
+      <div class="hs-row"><span class="hs-label">Vendors Tracked</span><span class="hs-val">10</span></div>
       <div class="hs-row"><span class="hs-label">Products Tracked</span><span class="hs-val" id="heroProductsCount">316</span></div>
       <div class="hs-row"><span class="hs-label">Categories</span><span class="hs-val">10+</span></div>
       <div class="hs-row"><span class="hs-label">Last Updated</span><span class="hs-val">May 2026</span></div>
@@ -632,6 +633,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <option value="Flawless Compounds">Flawless Compounds</option>
           <option value="Glow Aminos">Glow Aminos</option>
           <option value="Instant Peptides">Instant Peptides</option>
+          <option value="Solyn Labs">Solyn Labs</option>
         </select>
       </label>
       <label class="filter-select-group sort-select-group" for="sortSelect">
@@ -830,9 +832,10 @@ const VENDOR_CONFIG={
   "Southern Aminos":    {url:"https://southernaminos.com/?coupon=sammyc",  logo:"southern",  url_display:"southernaminos.com"},
   "Flawless Compounds": {url:"https://flawlesscompounds.com/shop/?coupon=SammyC",  logo:"flawless",  url_display:"flawlesscompounds.com"},
   "Glow Aminos":        {url:"https://glowaminos.com/shop/?coupon=SammyC",         logo:"glow",      url_display:"glowaminos.com"},
-  "Instant Peptides":   {url:"https://instantpeptides.com?ref=SAMMYC",    logo:"instant",   url_display:"instantpeptides.com"}
+  "Instant Peptides":   {url:"https://instantpeptides.com?ref=SAMMYC",    logo:"instant",   url_display:"instantpeptides.com"},
+  "Solyn Labs":         {url:"https://partner.solyn.com/?ref=SammyC",      url_display:"solyn.com"}
 };
-const VENDOR_DISCOUNT={"Glacier Aminos":5,"Ion Peptide":15,"LabSourced Peptides":15,"Mile High Peptides":10,"Renova Peptides":5,"Southern Aminos":15,"Flawless Compounds":15,"Glow Aminos":15,"Instant Peptides":10};
+const VENDOR_DISCOUNT={"Glacier Aminos":5,"Ion Peptide":15,"LabSourced Peptides":15,"Mile High Peptides":10,"Renova Peptides":5,"Southern Aminos":15,"Flawless Compounds":15,"Glow Aminos":15,"Instant Peptides":10,"Solyn Labs":15};
 const CAT_CLASS={"GLP-1 & Incretin":"cat-glp","Repair & Recovery":"cat-recovery","Growth Hormone Research":"cat-growth","Bioregulators":"cat-bioreg","Metabolic & Mitochondrial":"cat-metabolic","Longevity & Cellular Health":"cat-longevity","Cognitive & Nootropic":"cat-cognitive","Skin, Tanning & Sexual Health":"cat-skin","Supplies":"cat-supplies","Uncategorized":"cat-uncategorized","Other":"cat-other"};
 
 function parsePrice(s){const m=(s||"").replace(/,/g,'').match(/\$(\d+(?:\.\d+)?)/);return m?parseFloat(m[1]):0;}
@@ -948,7 +951,7 @@ function renderDesktop(rows){
     if(p.in_stock===false) stockEl='<span class="stock-out">Out of Stock</span>';
     const afterText = afterCodeText(p.price, pct);
     const afterEl = afterText ? `<div class="td-price-after">${afterText}</div><div style="font-size:9px;color:var(--ink-3);margin-top:1px">SammyC · ${pct}% off</div>` : '<span class="stock-na">,</span>';
-    const href = p.company==="Instant Peptides"&&p.url ? p.url : (vc.url||"#");
+    const href = p.url || vc.url || "#";
     const tr = document.createElement("tr");
     tr.innerHTML=`
       <td><div class="td-product">${p.product}</div>${p.listing&&p.listing!==p.product?`<div class="td-listing">${p.listing}</div>`:""}</td>
@@ -974,7 +977,7 @@ function renderMobile(rows){
     const logoSrc = vc.logo ? FULL_LOGOS[vc.logo] : "";
     const logoEl = logoSrc ? `<img class="m-vendor-logo" src="${logoSrc}" alt="${p.company}"/>` : '';
     const after = afterCodeText(p.price, pct);
-    const href = p.company==="Instant Peptides"&&p.url ? p.url : (vc.url||"#");
+    const href = p.url || vc.url || "#";
     let stockEl = '';
     if(p.in_stock===true) stockEl='<span class="m-stock-in">In Stock</span>';
     else if(p.in_stock===false) stockEl='<span class="m-stock-out">Out of Stock</span>';
@@ -1152,7 +1155,8 @@ const LIVE_FEEDS = {
   "Glow Aminos": "/.netlify/functions/glow-products",
   "Mile High Peptides": "/.netlify/functions/milehigh-products",
   "Instant Peptides": "/.netlify/functions/instant-products",
-  "LabSourced Peptides": "/.netlify/functions/labsourced-products"
+  "LabSourced Peptides": "/.netlify/functions/labsourced-products",
+  "Solyn Labs": "/.netlify/functions/solyn-products"
 };
 window._apisLoading = false;
 window._liveVendorLoading = new Set(Object.keys(LIVE_FEEDS));
