@@ -65,14 +65,29 @@
     .nav-link{font-size:13px;font-weight:800;text-decoration:none;color:var(--ink-2);border:1.5px solid var(--border);border-radius:999px;padding:8px 14px;background:#fff}
     .nav-link:hover{border-color:var(--forest);color:var(--forest)}
 
-    .sale-strip{position:sticky;top:62px;z-index:190;background:linear-gradient(135deg,#8b1f1f 0%,#1F3A2D 100%);border-bottom:1px solid rgba(255,255,255,.16);box-shadow:0 4px 18px rgba(0,0,0,.18)}
-    .sale-strip-in{max-width:1180px;margin:0 auto;padding:10px 22px;display:flex;align-items:center;justify-content:space-between;gap:14px;color:#fff}
-    .sale-main{display:flex;align-items:center;gap:10px;min-width:0}
-    .sale-flag{font-size:23px}
-    .sale-title{font-weight:900;letter-spacing:.2px;white-space:nowrap}
-    .sale-note{font-size:13px;color:rgba(255,255,255,.82);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .sale-code{display:inline-flex;align-items:center;gap:6px;white-space:nowrap;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);border-radius:999px;padding:5px 10px;font-size:12px;font-weight:900;color:#fff;text-decoration:none}
-    .sale-code strong{color:#ffe28b}
+    .sale-banner{background:linear-gradient(135deg,#b22234 0%,#8b1a1a 50%,#1a1a5e 100%);padding:11px 16px;position:sticky;top:0;z-index:300;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+    .sale-banner::before{content:'★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★';position:absolute;top:0;left:0;right:0;font-size:8px;color:rgba(255,255,255,.08);letter-spacing:6px;white-space:nowrap;overflow:hidden;padding:2px 8px;pointer-events:none}
+    .sale-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;position:relative;z-index:1}
+    .sale-left{display:flex;align-items:center;gap:10px;flex-shrink:0;min-width:230px}
+    .sale-flag{font-size:28px;animation:waveflag 2s ease-in-out infinite}
+    @keyframes waveflag{0%,100%{transform:rotate(-5deg)}50%{transform:rotate(5deg)}}
+    .sale-title{font-family:var(--fd);font-size:18px;font-weight:800;color:#fff;letter-spacing:-.3px;line-height:1.1}
+    .sale-meta{display:flex;align-items:center;gap:6px;margin-top:4px;flex-wrap:wrap}
+    .sale-code{font-size:11px;color:rgba(255,255,255,.78);font-weight:700}
+    .sale-code strong{color:#fff;background:rgba(255,255,255,.18);padding:1px 6px;border-radius:4px}
+    .sale-ends{font-size:9px;background:rgba(255,215,0,.25);color:#ffd700;border:1px solid rgba(255,215,0,.4);border-radius:999px;padding:1px 6px;font-weight:800;vertical-align:middle;text-transform:uppercase;letter-spacing:.3px}
+    .sale-rolodex{display:flex;align-items:center;gap:8px;flex:1;min-width:0}
+    .sale-deal-card{background:rgba(255,255,255,.13);border:1px solid rgba(255,255,255,.22);border-radius:var(--r);padding:10px 14px;display:grid;grid-template-columns:auto 1fr;align-items:center;gap:8px 12px;text-decoration:none;transition:all .18s;cursor:pointer;flex:1;min-width:0;color:#fff;box-shadow:inset 0 1px 0 rgba(255,255,255,.12)}
+    .sale-deal-card:hover{background:rgba(255,255,255,.22);border-color:rgba(255,255,255,.4);transform:translateY(-1px)}
+    .sale-item-star{font-size:9px;font-weight:900;color:#ffd700;background:rgba(255,215,0,.16);border:1px solid rgba(255,215,0,.35);border-radius:999px;padding:3px 7px;white-space:nowrap;text-transform:uppercase;letter-spacing:.4px;grid-row:1 / span 2}
+    .sale-vendor{font-size:14px;font-weight:900;color:#fff;line-height:1.1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sale-pct{font-size:12px;color:rgba(255,255,255,.82);font-weight:700;line-height:1.25;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .sale-pct strong{color:#ffd700;font-weight:900}
+    .sale-nav-btn{width:31px;height:31px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:20px;font-weight:800;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
+    .sale-nav-btn:hover{background:rgba(255,255,255,.24);border-color:rgba(255,255,255,.5)}
+    .sale-count{font-size:10px;color:rgba(255,255,255,.65);font-weight:800;min-width:32px;text-align:center;flex-shrink:0}
+    .sale-flip-in{animation:saleFlipIn .32s ease both}
+    @keyframes saleFlipIn{0%{opacity:.2;transform:rotateX(70deg) translateY(6px)}100%{opacity:1;transform:rotateX(0deg) translateY(0)}}
 
     .hero{background:radial-gradient(circle at 20% 15%,rgba(216,199,167,.18),transparent 34%),linear-gradient(135deg,var(--forest) 0%,#14251c 100%);color:#fff;padding:58px 0 46px}
     .hero-grid{display:grid;grid-template-columns:1.1fr .9fr;gap:32px;align-items:center}
@@ -194,12 +209,20 @@
 
     @media(max-width:1000px){.hero-grid{grid-template-columns:1fr}.deal-grid,.vendor-grid{grid-template-columns:repeat(2,1fr)}.trust-grid{grid-template-columns:1fr}}
     @media(max-width:760px){
-      .wrap,.nav-inner,.sale-strip-in{padding-left:16px;padding-right:16px}
-      .nav-inner{height:58px}.sale-strip{top:58px}
+      .wrap,.nav-inner{padding-left:16px;padding-right:16px}
+      .nav-inner{height:58px}
       .nav-links .nav-link:first-child{display:none}
-      .sale-strip-in{align-items:flex-start;flex-direction:column;gap:6px}
-      .sale-main{width:100%}.sale-title{font-size:13px}.sale-note{font-size:12px;white-space:normal}
-      .sale-code{font-size:11px;padding:4px 9px}
+      .sale-banner{padding:10px 12px}
+      .sale-inner{flex-direction:column;align-items:stretch;gap:8px}
+      .sale-left{min-width:0;width:100%}
+      .sale-title{font-size:15px}
+      .sale-flag{font-size:24px}
+      .sale-deal-card{padding:9px 10px;gap:5px 8px}
+      .sale-vendor{font-size:12px}
+      .sale-pct{font-size:10px;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+      .sale-item-star{font-size:8px;padding:2px 5px}
+      .sale-nav-btn{width:28px;height:28px;font-size:18px}
+      .sale-count{display:none}
       .hero{padding:40px 0 34px}.hero-grid{gap:20px}
       h1{font-size:38px;letter-spacing:-.8px}.hero-sub{font-size:15px}
       .hero-actions{display:grid;grid-template-columns:1fr;gap:9px}.btn{width:100%}
@@ -233,14 +256,28 @@
   </div>
 </nav>
 
-<div class="sale-strip">
-  <div class="sale-strip-in">
-    <div class="sale-main">
+<div class="sale-banner">
+  <div class="sale-inner">
+    <div class="sale-left">
       <span class="sale-flag">🇺🇸</span>
-      <span class="sale-title">Memorial Day Flash Sale</span>
-      <span class="sale-note">Ends May 25 at midnight. Several vendor promos stack with SAMMYC.</span>
+      <div>
+        <div class="sale-title">Memorial Day Flash Sale</div>
+        <div class="sale-meta">
+          <span class="sale-ends">Ends May 25 at midnight</span>
+          <span class="sale-code">Use code <strong>SAMMYC</strong></span>
+        </div>
+      </div>
     </div>
-    <a class="sale-code" href="#memorial-day-sale">Use code <strong>SAMMYC</strong> where available</a>
+    <div class="sale-rolodex" aria-label="Rotating Memorial Day vendor sale deals">
+      <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(-1,true)" aria-label="Previous Memorial Day deal">‹</button>
+      <a id="saleDealCard" href="https://partner.solyn.com/?ref=SammyC&utm_source=glp_page&utm_medium=affiliate&utm_campaign=memorial_day_2026" target="_blank" rel="noopener sponsored" class="sale-deal-card" aria-label="Solyn Labs Memorial Day deal, 25% off with SERVICE25, plus SAMMYC where stackable" data-track-vendor="Solyn Labs" data-track-product="Memorial Day Rolodex">
+        <span class="sale-item-star">★ STACKABLE</span>
+        <span class="sale-vendor">Solyn Labs</span>
+        <span class="sale-pct"><strong>25% off with SERVICE25</strong> plus SAMMYC where stackable</span>
+      </a>
+      <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(1,true)" aria-label="Next Memorial Day deal">›</button>
+      <span class="sale-count" id="saleDealCount">1 / 8</span>
+    </div>
   </div>
 </div>
 
@@ -628,6 +665,52 @@ async function loadLiveProducts(){
   }
 }
 
+
+const SALE_DEALS = [
+  {badge:"STACKABLE", vendor:"Solyn Labs", line:"25% off with SERVICE25", detail:"plus SAMMYC where stackable", href:"https://partner.solyn.com/?ref=SammyC&utm_source=glp_page&utm_medium=affiliate&utm_campaign=memorial_day_2026"},
+  {badge:"STACKABLE", vendor:"Southern Aminos", line:"30% off", detail:"plus additional SAMMYC where stackable", href:"https://southernaminos.com/?coupon=sammyc&utm_source=glp_page&utm_medium=affiliate&utm_campaign=memorial_day_2026"},
+  {badge:"STACKABLE", vendor:"Flawless Compounds", line:"30% off", detail:"plus 15% stackable with SAMMYC", href:"https://flawlesscompounds.com/shop/?coupon=SammyC&utm_source=glp_page&utm_medium=affiliate&utm_campaign=memorial_day_2026"},
+  {badge:"STACKABLE", vendor:"Glow Aminos", line:"30% off", detail:"same stackable deal as Flawless", href:"https://glowaminos.com/shop/?coupon=SammyC&utm_source=glp_page&utm_medium=affiliate&utm_campaign=memorial_day_2026"},
+  {badge:"STACKABLE", vendor:"Instant Peptides", line:"20% off", detail:"plus an additional 15% with SAMMYC", href:"https://instantpeptides.com?ref=SAMMYC&utm_source=glp_page&utm_medium=affiliate&utm_campaign=memorial_day_2026"},
+  {badge:"ENDS 25TH", vendor:"Mile High Peptides", line:"20% off with SAMMYC", detail:"Memorial Day offer ends at midnight", href:"https://milehighcompounds.is/?ref=sammyc&utm_source=glp_page&utm_medium=affiliate&utm_campaign=memorial_day_2026"},
+  {badge:"ENDS 25TH", vendor:"LabSourced Peptides", line:"15% off + SAMMYC", detail:"20+ items, Zelle, and rewards can add more", href:"https://labsourced.com/?ref=SammyC&utm_source=glp_page&utm_medium=affiliate&utm_campaign=memorial_day_2026"},
+  {badge:"ENDS 25TH", vendor:"Glacier Aminos", line:"15% off", detail:"SAMMYC stacks, plus 10% store credit", href:"https://glacieraminos.shop/?ref=SammyC&utm_source=glp_page&utm_medium=affiliate&utm_campaign=memorial_day_2026"}
+];
+let saleDealIndex = 0;
+let saleDealTimer = null;
+
+function renderSaleDeal(){
+  const card = document.getElementById("saleDealCard");
+  if(!card || !SALE_DEALS.length) return;
+  const deal = SALE_DEALS[saleDealIndex];
+  card.href = deal.href;
+  card.dataset.trackVendor = deal.vendor;
+  card.dataset.trackProduct = "Memorial Day Rolodex";
+  card.setAttribute("aria-label", `${deal.vendor} Memorial Day deal, ${deal.line}, ${deal.detail}`);
+  card.innerHTML = `<span class="sale-item-star">★ ${deal.badge}</span><span class="sale-vendor">${deal.vendor}</span><span class="sale-pct"><strong>${deal.line}</strong> ${deal.detail}</span>`;
+  card.classList.remove("sale-flip-in");
+  void card.offsetWidth;
+  card.classList.add("sale-flip-in");
+  const count = document.getElementById("saleDealCount");
+  if(count) count.textContent = `${saleDealIndex + 1} / ${SALE_DEALS.length}`;
+}
+
+function rotateSaleDeal(direction=1, manual=false){
+  if(!SALE_DEALS.length) return;
+  saleDealIndex = (saleDealIndex + direction + SALE_DEALS.length) % SALE_DEALS.length;
+  renderSaleDeal();
+  if(manual) restartSaleRolodex();
+}
+
+function startSaleRolodex(){
+  if(saleDealTimer) clearInterval(saleDealTimer);
+  saleDealTimer = setInterval(()=>rotateSaleDeal(1,false), 3600);
+}
+
+function restartSaleRolodex(){
+  startSaleRolodex();
+}
+
 function trackAffiliateClick(vendor, product){
   try{
     window.dataLayer = window.dataLayer || [];
@@ -637,6 +720,8 @@ function trackAffiliateClick(vendor, product){
 }
 
 window.addEventListener("DOMContentLoaded", () => {
+  renderSaleDeal();
+  startSaleRolodex();
   document.getElementById("searchInput").addEventListener("input", e => { searchTerm = e.target.value; render(); });
   document.getElementById("sortSelect").addEventListener("change", e => { sortValue = e.target.value; render(); });
   render();
