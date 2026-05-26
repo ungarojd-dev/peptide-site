@@ -66,6 +66,24 @@ function textIncludesAny(text, terms) {
   return terms.some(term => text.includes(term));
 }
 
+
+function shouldExcludeProduct(product) {
+  const categoryText = (product.categories || []).map(c => c.name || "").join(" ").toLowerCase();
+  const nameText = `${product.name || ""} ${product.sku || ""} ${product.slug || ""} ${product.permalink || ""}`.toLowerCase();
+  const text = `${categoryText} ${nameText}`;
+
+  return textIncludesAny(text, [
+    "ship safely",
+    "shipping protection",
+    "shipping insurance",
+    "package protection",
+    "route protection",
+    "gift card",
+    "giftcard",
+    "gift certificate"
+  ]);
+}
+
 function mapCategory(product) {
   const categoryText = (product.categories || []).map(c => c.name || "").join(" ").toLowerCase();
   const nameText = `${product.name || ""} ${product.sku || ""}`.toLowerCase();
@@ -180,6 +198,7 @@ export const handler = async (event) => {
     const transformed = [];
 
     for (const product of rawProducts) {
+      if (shouldExcludeProduct(product)) continue;
       const items = await transformProduct(product);
       transformed.push(...items);
     }
