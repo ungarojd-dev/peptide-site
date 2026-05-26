@@ -32,3 +32,8 @@ Deploy checklist:
 5. Test `/.netlify/functions/all-products` and confirm Oneday appears in the `vendors` array.
 6. On the homepage, filter Vendor to Oneday Compounds and confirm products render.
 7. On the GLP page, filter Vendor to Oneday Compounds and confirm GLP products render if their API returns matching products.
+
+
+## Feed filtering
+
+Shipping protection, package insurance, and gift card style add-on products are intentionally filtered out of the Oneday feed so they do not appear as comparison products.
