@@ -10,7 +10,8 @@ const FEEDS = [
   { vendor: "Mile High Peptides", path: "/.netlify/functions/milehigh-products" },
   { vendor: "Instant Peptides", path: "/.netlify/functions/instant-products" },
   { vendor: "LabSourced Peptides", path: "/.netlify/functions/labsourced-products" },
-  { vendor: "Solyn Labs", path: "/.netlify/functions/solyn-products" }
+  { vendor: "Solyn Labs", path: "/.netlify/functions/solyn-products" },
+  { vendor: "Oneday Compounds", path: "/.netlify/functions/oneday-products" }
 ];
 
 function getOrigin(event) {
