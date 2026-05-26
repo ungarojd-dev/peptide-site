@@ -4,10 +4,10 @@
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
   <title>GLP Research Peptide Price Cards, MyPeptidePrice.com</title>
-  <meta name="description" content="Compare GLP-1 and incretin research peptide prices across tracked vendors meeting the 7/7 testing standard. Search, filter, sort, and check Memorial Day offers before visiting a vendor."/>
+  <meta name="description" content="Compare GLP-1 and incretin research peptide prices across tracked vendors meeting the 7/7 testing standard. Search, filter, sort, and check active vendor deals before visiting a vendor."/>
   <link rel="canonical" href="https://mypeptideprice.com/glp-weight-loss.html"/>
   <meta property="og:title" content="GLP Research Peptide Price Cards, MyPeptidePrice.com"/>
-  <meta property="og:description" content="Compare GLP-1 and incretin research peptide prices across tracked vendors. Cards-only layout, live feeds where available, Memorial Day offers, and code SAMMYC where supported."/>
+  <meta property="og:description" content="Compare GLP-1 and incretin research peptide prices across tracked vendors. Cards-only layout, live feeds where available, active vendor deals, and code SAMMYC where supported."/>
   <meta property="og:url" content="https://mypeptideprice.com/glp-weight-loss.html"/>
   <meta property="og:type" content="website"/>
   <meta property="og:image" content="https://mypeptideprice.com/og-image.png"/>
@@ -340,7 +340,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     @media(max-width:640px){body.glp-page .m-cards{grid-template-columns:1fr;gap:12px}body.glp-page .table-section{padding:14px 12px 28px}body.glp-page .search-section{top:60px}body.glp-page .m-card-name{font-size:16px}body.glp-page .m-price{font-size:18px}}
 
     /* ── MEMORIAL DAY SALE BANNER ─────────────────────────── */
-    .sale-banner{background:linear-gradient(135deg,#b22234 0%,#8b1a1a 50%,#1a1a5e 100%);padding:11px 16px;position:sticky;top:0;z-index:300;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.3)}
+    .sale-banner{background:linear-gradient(135deg,#1F3A2D 0%,#2d5240 50%,#1a3325 100%);padding:11px 16px;position:sticky;top:0;z-index:300;overflow:hidden;box-shadow:0 2px 12px rgba(0,0,0,.3)}
     .sale-banner::before{content:'★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★ ★';position:absolute;top:0;left:0;right:0;font-size:8px;color:rgba(255,255,255,.08);letter-spacing:6px;white-space:nowrap;overflow:hidden;padding:2px 8px;pointer-events:none}
     .sale-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;position:relative;z-index:1}
     .sale-left{display:flex;align-items:center;gap:10px;flex-shrink:0;min-width:230px}
@@ -465,24 +465,23 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="sale-banner">
   <div class="sale-inner">
     <div class="sale-left">
-      <span class="sale-flag">🇺🇸</span>
+      <span class="sale-flag">🏷️</span>
       <div>
-        <div class="sale-title">Memorial Day Flash Sale</div>
+        <div class="sale-title">Active Vendor Deals</div>
         <div class="sale-meta">
-          <span class="sale-ends">Ends May 25 at midnight</span>
           <span class="sale-code">Use code <strong>SAMMYC</strong></span>
         </div>
       </div>
     </div>
-    <div class="sale-rolodex" aria-label="Rotating Memorial Day vendor sale deals">
-      <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(-1,true)" aria-label="Previous Memorial Day deal">‹</button>
-      <a id="saleDealCard" href="https://glacieraminos.shop/?ref=SammyC" target="_blank" rel="noopener sponsored" class="sale-deal-card" aria-label="Glacier Aminos Memorial Day deal, 15% off, code SAMMYC stacks, plus 10% store credit">
-        <span class="sale-item-star">★ NEW DEAL</span>
-        <span class="sale-vendor">Glacier Aminos</span>
-        <span class="sale-pct"><strong>15% off</strong> + code SAMMYC stacks, plus 10% store credit</span>
+    <div class="sale-rolodex" aria-label="Rotating active vendor deals">
+      <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(-1,true)" aria-label="Previous deal">‹</button>
+      <a id="saleDealCard" href="https://milehighcompounds.is/?ref=sammyc" target="_blank" rel="noopener sponsored" class="sale-deal-card" aria-label="Mile High Peptides deal, 10% off with SAMMYC">
+        <span class="sale-item-star">★ DEAL</span>
+        <span class="sale-vendor">Mile High Peptides</span>
+        <span class="sale-pct"><strong>10% off</strong> with code SAMMYC</span>
       </a>
-      <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(1,true)" aria-label="Next Memorial Day deal">›</button>
-      <span class="sale-count" id="saleDealCount">1 / 8</span>
+      <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(1,true)" aria-label="Next deal">›</button>
+      <span class="sale-count" id="saleDealCount">1 / 4</span>
     </div>
   </div>
 </div>
@@ -802,14 +801,10 @@ const VENDOR_CONFIG={
 const VENDOR_DISCOUNT={"Glacier Aminos":5,"Ion Peptide":15,"LabSourced Peptides":15,"Mile High Peptides":10,"Renova Peptides":5,"Southern Aminos":15,"Flawless Compounds":15,"Glow Aminos":15,"Instant Peptides":10,"Solyn Labs":15};
 
 const SALE_DEALS = [
-  {badge:"ENDS 25TH", vendor:"LabSourced Peptides", line:"15% off + 15% SAMMYC", detail:"20+ items, Zelle, and rewards can add more", href:"https://labsourced.com/?ref=SammyC"},
-  {badge:"ENDS 25TH", vendor:"Glacier Aminos", line:"15% off", detail:"code SAMMYC stacks, plus 10% store credit", href:"https://glacieraminos.shop/?ref=SammyC"},
-  {badge:"ENDS 25TH", vendor:"Mile High Peptides", line:"20% off with SAMMYC", detail:"Memorial Day offer ends at midnight", href:"https://milehighcompounds.is/?ref=sammyc"},
-  {badge:"STACKABLE", vendor:"Instant Peptides", line:"20% off", detail:"plus an additional 15% with SAMMYC", href:"https://instantpeptides.com?ref=SAMMYC"},
+  {badge:"DEAL", vendor:"Mile High Peptides", line:"10% off with SAMMYC", detail:"Use code SAMMYC at checkout", href:"https://milehighcompounds.is/?ref=sammyc"},
   {badge:"STACKABLE", vendor:"Southern Aminos", line:"30% off", detail:"plus an additional 15% with SAMMYC", href:"https://southernaminos.com/?coupon=sammyc"},
   {badge:"STACKABLE", vendor:"Flawless Compounds", line:"30% off", detail:"plus 15% stackable with SAMMYC", href:"https://flawlesscompounds.com/shop/?coupon=SammyC"},
-  {badge:"STACKABLE", vendor:"Glow Aminos", line:"30% off", detail:"same stackable deal as Flawless", href:"https://glowaminos.com/shop/?coupon=SammyC"},
-  {badge:"STACKABLE", vendor:"Solyn Labs", line:"25% off with SERVICE25", detail:"plus 15% with SAMMYC", href:"https://partner.solyn.com/?ref=SammyC"}
+  {badge:"STACKABLE", vendor:"Glow Aminos", line:"30% off", detail:"plus 15% stackable with SAMMYC", href:"https://glowaminos.com/shop/?coupon=SammyC"}
 ];
 let saleDealIndex = 0;
 let saleDealTimer = null;
