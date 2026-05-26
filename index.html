@@ -576,7 +576,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
     </div>
     <div class="hero-stats">
-      <div class="hs-row"><span class="hs-label">Vendors Tracked</span><span class="hs-val">9</span></div>
+      <div class="hs-row"><span class="hs-label">Vendors Tracked</span><span class="hs-val">10</span></div>
       <div class="hs-row"><span class="hs-label">Products Tracked</span><span class="hs-val" id="heroProductsCount">308</span></div>
       <div class="hs-row"><span class="hs-label">Categories</span><span class="hs-val">10+</span></div>
       <div class="hs-row"><span class="hs-label">Last Updated</span><span class="hs-val">May 2026</span></div>
@@ -647,6 +647,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <option value="Glow Aminos">Glow Aminos</option>
           <option value="Instant Peptides">Instant Peptides</option>
           <option value="Solyn Labs">Solyn Labs</option>
+          <option value="Oneday Compounds">Oneday Compounds</option>
         </select>
       </label>
       <label class="filter-select-group sort-select-group" for="sortSelect">
@@ -844,9 +845,10 @@ const VENDOR_CONFIG={
   "Flawless Compounds": {url:"https://flawlesscompounds.com/shop/?coupon=SammyC",  logo:"flawless",  url_display:"flawlesscompounds.com"},
   "Glow Aminos":        {url:"https://glowaminos.com/shop/?coupon=SammyC",         logo:"glow",      url_display:"glowaminos.com"},
   "Instant Peptides":   {url:"https://instantpeptides.com?ref=SAMMYC",    logo:"instant",   url_display:"instantpeptides.com"},
-  "Solyn Labs":         {url:"https://partner.solyn.com/?ref=SammyC",      url_display:"solyn.com"}
+  "Solyn Labs":         {url:"https://partner.solyn.com/?ref=SammyC",      url_display:"solyn.com"},
+  "Oneday Compounds":   {url:"https://onedaycompounds.net/?ref=subileue",  url_display:"onedaycompounds.net"}
 };
-const VENDOR_DISCOUNT={"Glacier Aminos":5,"Ion Peptide":15,"LabSourced Peptides":15,"Mile High Peptides":10,"Southern Aminos":15,"Flawless Compounds":15,"Glow Aminos":15,"Instant Peptides":10,"Solyn Labs":15};
+const VENDOR_DISCOUNT={"Glacier Aminos":5,"Ion Peptide":15,"LabSourced Peptides":15,"Mile High Peptides":10,"Southern Aminos":15,"Flawless Compounds":15,"Glow Aminos":15,"Instant Peptides":10,"Solyn Labs":15,"Oneday Compounds":10};
 
 const SALE_DEALS = [
   {badge:"DEAL", vendor:"Mile High Peptides", line:"10% off with SAMMYC", detail:"Use code SAMMYC at checkout", href:"https://milehighcompounds.is/?ref=sammyc"},
@@ -1209,7 +1211,8 @@ const LIVE_FEEDS = {
   "Mile High Peptides": "/.netlify/functions/milehigh-products",
   "Instant Peptides": "/.netlify/functions/instant-products",
   "LabSourced Peptides": "/.netlify/functions/labsourced-products",
-  "Solyn Labs": "/.netlify/functions/solyn-products"
+  "Solyn Labs": "/.netlify/functions/solyn-products",
+  "Oneday Compounds": "/.netlify/functions/oneday-products"
 };
 window._apisLoading = false;
 window._liveVendorLoading = new Set(Object.keys(LIVE_FEEDS));

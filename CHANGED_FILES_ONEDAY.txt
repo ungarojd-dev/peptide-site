@@ -1,0 +1,16 @@
+Oneday Compounds vendor add, changed files
+
+netlify/functions/oneday-products.js
+netlify/functions/all-products.js
+index.html
+glp-weight-loss.html
+vendors.html
+faq.html
+llms.txt
+ONEDAY_SETUP_NOTES.md
+
+Netlify env vars needed:
+ONEDAY_CK
+ONEDAY_CS
+ONEDAY_BASE_URL
+ONEDAY_AFFILIATE_URL
