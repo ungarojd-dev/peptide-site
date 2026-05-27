@@ -13,28 +13,47 @@
   <meta property="og:image" content="https://mypeptideprice.com/og-image.png"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+  <!-- Non-render-blocking font load: print trick swaps to all after download -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;500;600;700;800&display=swap"/></noscript>
   <link rel="icon" type="image/png" sizes="64x64" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAIAAAAlC+aJAAABkElEQVR4nO2ZvRHCMAyFHY4VOLowAQuwAEvQMQAFXQZIl4IB6FiCdeg4lqDIHeezncT6MVIueiUk8vssXRLJ1e6wd3PWStoAVQYgLQOQlgFIywCkZQDSMgBpzR5gXSLos2uG/jpeW961Kt5+YMS6L0YMNoBM675YMBgAENZ9ETGoAEPuT7d7/OPjck5eTGEgAcTuk75jxSRoBvxjFO0+eSW6DpEZCNY7XttNvYUG+bzecRxoEIYXGc69c25Tb+kPIgxAsG0498l7EYVEzUB+3ReKAAbwN4nuPo4DTcLsP+ZgAMSXbolV8Bngqh9itIWVkEIZgLQMQFp4gKHu5M/RYADsMwX6KssrIX97uKrIjwNNMjUDdAZiBAxAsEmf1xu9fHCvTEv57BocQ9wTI8QzG+19gL4ouSYrDD3xT/nVzDgXAo9VMpOudDKXHOPMZjY6PoTSPp3OHKEpPR+ADgB1ndDQx5dFNfEYVe7ejQPod+/GAXzHOt27yRLqfat179iPWf+v5XVk2mQA0jIAaRmAtL5+Y51LoigQ3QAAAABJRU5ErkJggg=="/>
   <link rel="apple-touch-icon" sizes="180x180" href="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAALQAAAC0CAIAAACyr5FlAAAFVklEQVR4nO3dzY0USxBF4RyEC4gdWIADOIBB7DCAHQaNO+wQTrBIqVWiuU1WVVbGjejzrd8T9XMqKskeel4+fv7UgH95E30A8EUckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCARByTigEQckIgDEnFAIg5IxAGJOCC9jT6AMK8/vo3/x1++fr/uSGy9PM+X1O6q4bEnaaV+HBObuFe7krJxXNrEvZKVFIxjcRZbxRIpFUdgFltlEikSh0kWWwUSSR+HYRZbqRPJvQlmXkbLcIQPZJ0c6S56xhGScnKkK6PlPOZ8k2P9RufTbq1mimPKTdrenncf3o/8L79//rruGJyliePkXbndj8EglFsos47HWY44Dt+JWU3cO1+Jfx8J4jh29a/LYutkIuZ9uMdx4KKvyWLrTCLOfVjHcfhaL8tiqydSqY86PwkWmEXX/+h+GBl3Ne75boId+DG+wDJutokMsi3JNI6kZXRl+nBcc4xfKbcs/rJ3FeK2+DCdHCPMy2iHRogVuzgGnzP/Mrpdfbi9XLzi2HV1/Mvodh2nVR9ecQz68vV7ljK6dx/eZ3y5GMWx64WSUbqXi1EcI7IsNe5lXJy6xDH+uGQsoxs/cpPh4RLHiHRLjXu5Fh8WcYw8KImu6X+NnIvD8LCIY1D2sdElOov4OJ5tbHQphkd8HIMSPXD/leVcEsRRb2x0/ucVHMfg5MzyqI0bPKPYN0uCyYEo7nEU2NtQ/Pc8IuMIX42nEHiV3CcHAlnHUfid0pm/WazjQCzigBQWB6vRcVHXyndylF9wdM7LDt84EI44IBEHJOKARByQiAMScUAiDkjEAYk4IBEHJOKA5BvH649v22+kr+r3z1+2H1CHxWH7UaShqGvlOzkQjjggWcdRftnhvOBo5nEgVmQcrElHBF4l98lR+M1i/k5p/nEgUHAcgzOz3vAYPKPYN2+CyWE+ew/zP68EcXSVhkeWc4mPI8VXp02X4mvy4uMYl+WBeyzRWVjE8WzDI8XYaCZxDCqw5+G/t7HlEsf4g5K3j/EjdxgbzSeOQf2xy9jH4V9JHMgojnS/q2avdL9tyCiOcekWH7mWGjdecex6aLL0ses4fcZGc4uj7Xy5+Pexa6lhVUYzjGOcfx8ZF6Fbb6MP4JR+3Q1/K+CBLNzGRjOcHAeeM7cRUqOM5hbH4Qns00eZMprVa+Xkuzn8FZN9hXHv5ePnT9HH0NrUa3p7EJclcptYB87Cdmw0kziueNrWJHImi+ZdRnOI49I5fF0iJ7No9mW08DiWvaFnVXK+ib+Ox1lkHCFrt+1dGQxl+5egKcecoowWGIfDqn7958BZsuhi4nAoY71cZbSQTbDzb+t0V7klLKOtnxxz13EpJlDGLLqlk2P6Ct//uvsf4QPrJself/czHCGps+gWxbFmV8AkkQJZdCviWLxfFJhImSy6y+OI2klcnEixLLpr43DYY17z2U1JF8bhUMbW0250HnZVHG5l3Kvxw1qXuiQO/zIwYv4mGGWUMTkOyqhkZhyUUcy0OCijnjlxUEZJE+KgjKrOxkEZhZ2KgzJqOx4HZZR3PI4zd5cyUjj1Wjl2jykji7ML0r13mjISmfBX2fH7TRm5zNkEG7nrlJHOtO3zx/eeMjKa+cGbKoAykpr8kX3Gf3cEZf4P+2xroIzULvnnkL0Jysgu/mufYMvre0hhhTggEQck4oBEHJCIAxJxQCIOSMQBiTggEQck4oBEHJCIAxJxQCIOSMQBiTgg/QGnfCqN6DMrkAAAAABJRU5ErkJggg=="/>
-  <!-- Google Tag Manager (GA4 is configured inside GTM, no direct tag needed) -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-})(window,document,'script','dataLayer','GTM-PDQM5TBB');</script>
-<!-- End Google Tag Manager -->
-  <!-- Meta Pixel Code -->
+  <!-- Google Tag Manager — deferred to avoid blocking FCP -->
 <script>
-!function(f,b,e,v,n,t,s)
-{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
-n.callMethod.apply(n,arguments):n.queue.push(arguments)};
-if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
-n.queue=[];t=b.createElement(e);t.async=!0;
-t.src=v;s=b.getElementsByTagName(e)[0];
-s.parentNode.insertBefore(t,s)}(window, document,'script',
-'https://connect.facebook.net/en_US/fbevents.js');
-fbq('init', '2737586326608423');
-fbq('track', 'PageView');
+(function(){
+  function loadGTM(){
+    (function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-PDQM5TBB');
+  }
+  // Load after page is interactive — preserves all GTM events, just deferred past FCP
+  if(document.readyState==='complete'){loadGTM();}
+  else{window.addEventListener('load', loadGTM);}
+})();
+</script>
+<!-- End Google Tag Manager -->
+  <!-- Meta Pixel Code — deferred to avoid blocking FCP -->
+<script>
+(function(){
+  function loadPixel(){
+    !function(f,b,e,v,n,t,s)
+    {if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+    n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+    if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+    n.queue=[];t=b.createElement(e);t.async=!0;
+    t.src=v;s=b.getElementsByTagName(e)[0];
+    s.parentNode.insertBefore(t,s)}(window, document,'script',
+    'https://connect.facebook.net/en_US/fbevents.js');
+    fbq('init', '2737586326608423');
+    fbq('track', 'PageView');
+  }
+  // Queue fbq calls before pixel loads so no events are lost
+  window.fbq=window.fbq||function(){(window._fbqQueue=window._fbqQueue||[]).push(arguments)};
+  if(document.readyState==='complete'){loadPixel();}
+  else{window.addEventListener('load', loadPixel);}
+})();
 </script>
 <noscript><img height="1" width="1" style="display:none"
 src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
@@ -817,8 +836,8 @@ function renderSaleDeal(){
   card.setAttribute("aria-label", `${deal.vendor} Memorial Day deal, ${deal.line}, ${deal.detail}`);
   card.innerHTML = `<span class="sale-item-star">★ ${deal.badge}</span><span class="sale-vendor">${deal.vendor}</span><span class="sale-pct"><strong>${deal.line}</strong> ${deal.detail}</span>`;
   card.classList.remove("sale-flip-in");
-  void card.offsetWidth;
-  card.classList.add("sale-flip-in");
+  // Use rAF pair to restart animation without forcing a synchronous reflow
+  requestAnimationFrame(()=>requestAnimationFrame(()=>card.classList.add("sale-flip-in")));
   const count = document.getElementById("saleDealCount");
   if(count) count.textContent = `${saleDealIndex + 1} / ${SALE_DEALS.length}`;
 }
@@ -927,7 +946,7 @@ function applyFilters(){
 
   const noRes = document.getElementById("noResults");
   const mLoading = document.getElementById("mLoading");
-  const isMobile = window.innerWidth <= 768;
+  const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
   const waitingForSelectedVendor = activeVendor !== "all" && window._liveVendorLoading && window._liveVendorLoading.has(activeVendor);
   noRes.classList.toggle("show", count===0 && !waitingForSelectedVendor);
@@ -1248,10 +1267,11 @@ async function refreshVendor(vendorName, endpoint){
   }
 }
 
-// Delay live calls slightly so the static table paints first on mobile.
+// Delay live calls until after first paint completes on mobile.
+// 1500ms gives the browser time to fully render static content before API calls start.
 setTimeout(()=>{
   Object.entries(LIVE_FEEDS).forEach(([vendorName, endpoint])=>refreshVendor(vendorName, endpoint));
-}, 600);
+}, 1500);
 
 </script>
 </body>
