@@ -249,6 +249,8 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     /* ── MOBILE CARDS ─────────────────────────────────────── */
     @media(max-width:768px){
       nav .nav-links{display:none}
+      nav .nav-links.open{display:flex;flex-direction:column;align-items:stretch;position:absolute;top:60px;left:12px;right:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px;gap:6px;box-shadow:var(--shadow);z-index:500}
+      nav .nav-links.open a{display:block;text-align:center;padding:10px 12px;border-radius:10px}
       .hamburger{display:block}
       .hero-inner{grid-template-columns:1fr}
       .hero-stats{display:none}
@@ -556,7 +558,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="vendors.html">Vendors</a>
       <a href="faq.html">FAQ</a>
     </div>
-    <button class="hamburger" onclick="this.closest('nav').querySelector('.nav-links').classList.toggle('open')" aria-label="Menu">☰</button>
+    <button class="hamburger" onclick="const links=this.closest('nav').querySelector('.nav-links');const isOpen=links.classList.toggle('open');this.setAttribute('aria-expanded',isOpen);" aria-label="Menu" aria-expanded="false">☰</button>
   </div>
 </nav>
 
