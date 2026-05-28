@@ -381,6 +381,12 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .sale-nav-btn{width:31px;height:31px;border-radius:999px;border:1px solid rgba(255,255,255,.3);background:rgba(255,255,255,.12);color:#fff;font-size:20px;font-weight:800;line-height:1;display:flex;align-items:center;justify-content:center;cursor:pointer;transition:all .15s;flex-shrink:0}
     .sale-nav-btn:hover{background:rgba(255,255,255,.24);border-color:rgba(255,255,255,.5)}
     .sale-count{font-size:10px;color:rgba(255,255,255,.65);font-weight:800;min-width:32px;text-align:center;flex-shrink:0}
+
+    .sale-social{display:inline-flex;align-items:center;justify-content:center;gap:8px;flex-shrink:0;border:1px solid rgba(255,255,255,.16);background:linear-gradient(135deg,#050505 0%,#171717 100%);color:#fff;text-decoration:none;border-radius:999px;padding:9px 14px;font-size:11px;font-weight:900;letter-spacing:.35px;white-space:nowrap;position:relative;overflow:hidden;box-shadow:-3px 0 0 #25F4EE,3px 0 0 #FE2C55,0 10px 20px rgba(0,0,0,.18);transition:transform .15s,box-shadow .15s,filter .15s}
+    .sale-social::before{content:'';position:absolute;inset:0;background:linear-gradient(90deg,rgba(37,244,238,.16),rgba(254,44,85,.16));pointer-events:none}
+    .sale-social:hover{transform:translateY(-1px) scale(1.01);box-shadow:-4px 0 0 #25F4EE,4px 0 0 #FE2C55,0 12px 24px rgba(0,0,0,.24);filter:brightness(1.04)}
+    .sale-social > *{position:relative;z-index:1}
+    .sale-social-icon{font-size:15px;line-height:1;color:#25F4EE;text-shadow:2px 0 0 #FE2C55}
     .sale-flip-in{animation:saleFlipIn .32s ease both}
     @keyframes saleFlipIn{0%{opacity:.2;transform:rotateX(70deg) translateY(6px)}100%{opacity:1;transform:rotateX(0deg) translateY(0)}}
     @media(max-width:768px){
@@ -395,6 +401,8 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       .sale-item-star{font-size:8px;padding:2px 5px}
       .sale-nav-btn{width:28px;height:28px;font-size:18px}
       .sale-count{display:none}
+
+      .sale-social{width:100%;padding:8px 10px;font-size:10px}
     }
 
     /* ── DISCLAIMER MODAL ─────────────────────────────────── */
@@ -487,22 +495,26 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="sale-left">
       <span class="sale-flag">🏷️</span>
       <div>
-        <div class="sale-title">Active Vendor Deals</div>
+        <div class="sale-title">SAMMYC Vendor Discounts</div>
         <div class="sale-meta">
-          <span class="sale-code">Use code <strong>SAMMYC</strong></span>
+          <span class="sale-code">Use <strong>SAMMYC</strong> at checkout where supported</span>
         </div>
       </div>
     </div>
-    <div class="sale-rolodex" aria-label="Rotating active vendor deals">
+    <div class="sale-rolodex" aria-label="Rotating SAMMYC vendor discounts">
       <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(-1,true)" aria-label="Previous deal">‹</button>
-      <a id="saleDealCard" href="https://milehighcompounds.is/?ref=sammyc" target="_blank" rel="noopener sponsored" class="sale-deal-card" aria-label="Mile High Peptides deal, 10% off with SAMMYC">
-        <span class="sale-item-star">★ DEAL</span>
-        <span class="sale-vendor">Mile High Peptides</span>
-        <span class="sale-pct"><strong>10% off</strong> with code SAMMYC</span>
+      <a id="saleDealCard" href="https://glacieraminos.shop/?ref=SammyC" target="_blank" rel="noopener sponsored" class="sale-deal-card" aria-label="Glacier Aminos discount, 5% off with SAMMYC">
+        <span class="sale-item-star">★ CODE</span>
+        <span class="sale-vendor">Glacier Aminos</span>
+        <span class="sale-pct"><strong>5% off</strong> with code SAMMYC</span>
       </a>
       <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(1,true)" aria-label="Next deal">›</button>
-      <span class="sale-count" id="saleDealCount">1 / 4</span>
+      <span class="sale-count" id="saleDealCount">1 / 10</span>
     </div>
+    <a class="sale-social" href="https://www.tiktok.com/@sammyc2296" target="_blank" rel="noopener noreferrer" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'social_click',platform:'tiktok',handle:'sammyc2296',button_location:'sammyc_rolodex'});">
+      <span class="sale-social-icon">♪</span>
+      <span>Follow @sammyc2296 on TikTok</span>
+    </a>
   </div>
 </div>
 <div class="astrip">
@@ -671,6 +683,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <ul>
           <li style="font-size:20px;font-weight:800;color:#fff;letter-spacing:1px">SAMMYC</li>
           <li style="font-size:11px;color:rgba(255,255,255,.5);margin-top:4px">Available discounts vary by vendor</li>
+          <li style="margin-top:10px"><a href="https://www.tiktok.com/@sammyc2296" target="_blank" rel="noopener noreferrer" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'social_click',platform:'tiktok',handle:'sammyc2296',button_location:'footer'});" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;font-size:12px;font-weight:800">♪ TikTok: @sammyc2296</a></li>
         </ul>
       </div>
     </div>
@@ -820,10 +833,16 @@ const VENDOR_CONFIG={
 const VENDOR_DISCOUNT={"Glacier Aminos":5,"Ion Peptide":15,"LabSourced Peptides":15,"Mile High Peptides":10,"Southern Aminos":15,"Flawless Compounds":15,"Glow Aminos":15,"Instant Peptides":10,"Solyn Labs":15,"Oneday Compounds":10};
 
 const SALE_DEALS = [
-  {badge:"DEAL", vendor:"Mile High Peptides", line:"10% off with SAMMYC", detail:"Use code SAMMYC at checkout", href:"https://milehighcompounds.is/?ref=sammyc"},
-  {badge:"STACKABLE", vendor:"Southern Aminos", line:"30% off", detail:"plus an additional 15% with SAMMYC", href:"https://southernaminos.com/?coupon=sammyc"},
-  {badge:"STACKABLE", vendor:"Flawless Compounds", line:"30% off", detail:"plus 15% stackable with SAMMYC", href:"https://flawlesscompounds.com/shop/?coupon=SammyC"},
-  {badge:"STACKABLE", vendor:"Glow Aminos", line:"30% off", detail:"plus 15% stackable with SAMMYC", href:"https://glowaminos.com/shop/?coupon=SammyC"}
+  {badge:"CODE", vendor:"Glacier Aminos", line:"5% off", detail:"with code SAMMYC at checkout", href:"https://glacieraminos.shop/?ref=SammyC"},
+  {badge:"CODE", vendor:"Ion Peptide", line:"15% off", detail:"with code SAMMYC at checkout", href:"https://ionpeptide.com?ref=SammyC"},
+  {badge:"CODE", vendor:"LabSourced Peptides", line:"15% off", detail:"with code SAMMYC at checkout", href:"https://labsourced.com/?ref=SammyC"},
+  {badge:"CODE", vendor:"Mile High Peptides", line:"10% off", detail:"with code SAMMYC at checkout", href:"https://milehighcompounds.is/?ref=sammyc"},
+  {badge:"CODE", vendor:"Southern Aminos", line:"15% off", detail:"with code SAMMYC at checkout", href:"https://southernaminos.com/?coupon=sammyc"},
+  {badge:"CODE", vendor:"Flawless Compounds", line:"15% off", detail:"with code SAMMYC at checkout", href:"https://flawlesscompounds.com/shop/?coupon=SammyC"},
+  {badge:"CODE", vendor:"Glow Aminos", line:"15% off", detail:"with code SAMMYC at checkout", href:"https://glowaminos.com/shop/?coupon=SammyC"},
+  {badge:"CODE", vendor:"Instant Peptides", line:"10% off", detail:"with code SAMMYC at checkout", href:"https://instantpeptides.com?ref=SAMMYC"},
+  {badge:"CODE", vendor:"Solyn Labs", line:"15% off", detail:"with code SAMMYC at checkout", href:"https://partner.solyn.com/?ref=SammyC"},
+  {badge:"CODE", vendor:"Oneday Compounds", line:"10% off", detail:"with code SAMMYC at checkout", href:"https://onedaycompounds.net/?ref=subileue"}
 ];
 let saleDealIndex = 0;
 let saleDealTimer = null;
@@ -834,7 +853,7 @@ function renderSaleDeal(){
   const deal = SALE_DEALS[saleDealIndex];
   card.href = stripTrackingParamsFromUrl(deal.href);
   card.setAttribute("referrerpolicy", "origin");
-  card.setAttribute("aria-label", `${deal.vendor} Memorial Day deal, ${deal.line}, ${deal.detail}`);
+  card.setAttribute("aria-label", `${deal.vendor} SAMMYC discount, ${deal.line}, ${deal.detail}`);
   card.innerHTML = `<span class="sale-item-star">★ ${deal.badge}</span><span class="sale-vendor">${deal.vendor}</span><span class="sale-pct"><strong>${deal.line}</strong> ${deal.detail}</span>`;
   card.classList.remove("sale-flip-in");
   // Use rAF pair to restart animation without forcing a synchronous reflow
