@@ -335,6 +335,24 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     }
 
     /* ── MEMORIAL DAY SALE BANNER ─────────────────────────── */
+    /* TikTok Live Event Bar */
+    .tiktok-live-bar{background:linear-gradient(90deg,#050505 0%,#0e0e0e 100%);padding:9px 16px;display:flex;align-items:center;justify-content:center;gap:12px;position:relative;z-index:301;box-shadow:-2px 0 0 #25F4EE,2px 0 0 #FE2C55,0 2px 12px rgba(0,0,0,.35)}
+    .tiktok-live-bar-inner{display:flex;align-items:center;gap:10px;flex-wrap:wrap;justify-content:center}
+    .ttlb-pulse{display:inline-flex;align-items:center;gap:5px;background:#FE2C55;color:#fff;font-size:10px;font-weight:900;letter-spacing:.6px;text-transform:uppercase;padding:3px 8px;border-radius:999px;line-height:1;flex-shrink:0}
+    .ttlb-pulse::before{content:'';width:6px;height:6px;background:#fff;border-radius:50%;animation:ttlbPulse 1s ease-in-out infinite}
+    @keyframes ttlbPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.4;transform:scale(.7)}}
+    .ttlb-text{font-size:12px;font-weight:700;color:#fff;line-height:1.3}
+    .ttlb-text strong{color:#25F4EE}
+    .ttlb-text em{color:#ffe082;font-style:normal;font-weight:800}
+    .ttlb-cta{display:inline-flex;align-items:center;gap:5px;background:linear-gradient(135deg,#FE2C55,#c4003e);color:#fff;font-size:11px;font-weight:900;letter-spacing:.3px;padding:6px 13px;border-radius:999px;text-decoration:none;white-space:nowrap;transition:transform .15s,filter .15s;flex-shrink:0}
+    .ttlb-cta:hover{transform:scale(1.03);filter:brightness(1.1)}
+    .ttlb-dismiss{position:absolute;right:12px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.45);font-size:16px;cursor:pointer;line-height:1;padding:4px;transition:color .15s}
+    .ttlb-dismiss:hover{color:#fff}
+    @media(max-width:600px){
+      .tiktok-live-bar{padding:8px 36px 8px 12px}
+      .ttlb-text{font-size:11px}
+      .ttlb-cta{font-size:10px;padding:5px 10px}
+    }
     .sale-banner{background:linear-gradient(135deg,#b83200 0%,#e84d00 40%,#ff7a1a 75%,#e84d00 100%);padding:11px 16px;position:relative;z-index:300;overflow:hidden;box-shadow:0 2px 16px rgba(184,50,0,.5)}
     .sale-banner::before{content:'☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀ ☀';position:absolute;top:0;left:0;right:0;font-size:8px;color:rgba(255,255,255,.1);letter-spacing:6px;white-space:nowrap;overflow:hidden;padding:2px 8px;pointer-events:none}
     .sale-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;position:relative;z-index:1}
@@ -597,6 +615,19 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <button class="hamburger" id="hamburgerBtn" onclick="openDrawer()" aria-label="Open menu">☰</button>
   </div>
 </nav>
+
+<div class="tiktok-live-bar" id="tiktokLiveBar">
+  <div class="tiktok-live-bar-inner">
+    <span class="ttlb-pulse">LIVE</span>
+    <span class="ttlb-text">
+      <strong>TikTok Live</strong> — <em>This Sunday 5/31 @ 8PM ET</em> · Sponsored by Instant Peptides · 🎁 Giveaways!
+    </span>
+    <a class="ttlb-cta" href="https://www.tiktok.com/@sammyc2296" target="_blank" rel="noopener noreferrer" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'tiktok_live_click',location:'live_bar'});">
+      ♪ Set Reminder
+    </a>
+  </div>
+  <button class="ttlb-dismiss" onclick="dismissLiveBar()" aria-label="Dismiss">✕</button>
+</div>
 
 <div class="sale-banner">
   <div class="sale-inner">
@@ -939,6 +970,21 @@ function renderSaleDeal(){
   requestAnimationFrame(()=>requestAnimationFrame(()=>card.classList.add("sale-flip-in")));
   const count = document.getElementById("saleDealCount");
   if(count) count.textContent = `${saleDealIndex + 1} / ${SALE_DEALS.length}`;
+}
+
+// TikTok Live Bar — auto-expire after May 31 2025 11:59 PM ET, dismissable
+(function(){
+  const bar = document.getElementById('tiktokLiveBar');
+  if(!bar) return;
+  const expiry = new Date('2026-06-01T04:00:00Z'); // Jun 1 00:00 ET = 04:00 UTC
+  if(Date.now() > expiry.getTime() || sessionStorage.getItem('ttlb_dismissed')){
+    bar.style.display = 'none';
+  }
+})();
+function dismissLiveBar(){
+  const bar = document.getElementById('tiktokLiveBar');
+  if(bar){ bar.style.display='none'; }
+  sessionStorage.setItem('ttlb_dismissed','1');
 }
 
 function rotateSaleDeal(direction=1, manual=false){
