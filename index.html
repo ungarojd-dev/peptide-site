@@ -443,8 +443,8 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .full-disclaimer-return:hover{background:var(--forest-2)}
   
     /* MOBILE DRAWER */
-    .drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:800;opacity:0;transition:opacity .25s}
-    .drawer-overlay.open{display:block;opacity:1}
+    .drawer-overlay{display:block;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:800;opacity:0;pointer-events:none;transition:opacity .25s}
+    .drawer-overlay.open{opacity:1;pointer-events:auto}
     .drawer{position:fixed;top:0;right:-280px;width:280px;height:100vh;background:var(--surface);z-index:900;box-shadow:-4px 0 24px rgba(0,0,0,.18);transition:right .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;padding:0}
     .drawer.open{right:0}
     .drawer-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);background:var(--forest)}
@@ -564,6 +564,21 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDQM5TBB"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <!-- End Google Tag Manager (noscript) -->
+<!-- MOBILE DRAWER -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<div class="drawer" id="mainDrawer">
+  <div class="drawer-header">
+    <span class="drawer-logo">My<em>Peptide</em>Price</span>
+    <button class="drawer-close" onclick="closeDrawer()" aria-label="Close menu">✕</button>
+  </div>
+  <nav class="drawer-nav">
+    <a href="index.html">🏠 Prices</a>
+    <a href="vendors.html">🏪 Vendors</a>
+    <a href="blog/">📝 Blog</a>
+    <a href="faq.html">❓ FAQ</a>
+  </nav>
+  <div class="drawer-footer">mypeptideprice.com · Use code SAMMYC</div>
+</div>
 <div class="sticky-header">
 <nav>
   <div class="nav-inner">
@@ -1388,6 +1403,18 @@ function acceptDisclaimer(){
 function declineDisclaimer(){ window.location.href='https://www.google.com'; }
 function openFullDisclaimer(){ document.getElementById('fullDisclaimerOverlay').classList.remove('hidden'); }
 function closeFullDisclaimer(){ document.getElementById('fullDisclaimerOverlay').classList.add('hidden'); }
+
+function openDrawer(){
+  document.getElementById('mainDrawer').classList.add('open');
+  document.getElementById('drawerOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+function closeDrawer(){
+  document.getElementById('mainDrawer').classList.remove('open');
+  document.getElementById('drawerOverlay').classList.remove('open');
+  document.body.style.overflow='';
+}
+document.getElementById('drawerOverlay').addEventListener('click', closeDrawer);
 </script>
 </body>
 </html>
