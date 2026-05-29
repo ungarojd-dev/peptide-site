@@ -1,9 +1,11 @@
 ---
-title: "What Is the 7/7 Testing Standard and Why It Matters for Research Peptides"
-date: 2025-01-20T12:00:00.000Z
-description: "Not all research peptides are created equal. Here's what the 7/7 third-party testing standard means and why it should be your minimum bar when comparing vendors."
-author: "MyPeptidePrice Team"
-category: "Testing Standards"
+title: What Is the 7/7 Testing Standard and Why It Matters for Research Peptides
+date: 2025-01-24T07:00:00.000-05:00
+description: Not all research peptides are created equal. Here's what the 7/7
+  third-party testing standard means and why it should be your minimum bar when
+  comparing vendors.
+author: MyPeptidePrice Team
+category: Testing Standards
 ---
 
 When you're comparing peptide vendors, price isn't the only number that matters. A cheap vial means nothing if what's inside doesn't match what's on the label.
