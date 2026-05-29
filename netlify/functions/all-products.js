@@ -4,6 +4,7 @@
 
 const FEEDS = [
   { vendor: "Glacier Aminos", path: "/.netlify/functions/glacier-products" },
+  { vendor: "Ion Peptide", path: "/.netlify/functions/ion-products" },
   { vendor: "Southern Aminos", path: "/.netlify/functions/southern-products" },
   { vendor: "Flawless Compounds", path: "/.netlify/functions/flawless-products" },
   { vendor: "Glow Aminos", path: "/.netlify/functions/glow-products" },
