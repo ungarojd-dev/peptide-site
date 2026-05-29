@@ -250,7 +250,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     /* ── MOBILE CARDS ─────────────────────────────────────── */
     @media(max-width:768px){
       nav .nav-links{display:none}
-      nav .nav-links.open{display:flex;flex-direction:column;align-items:stretch;position:absolute;top:60px;left:12px;right:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px;gap:6px;box-shadow:var(--shadow);z-index:500}
+      nav .nav-links.open{display:flex;flex-direction:column;align-items:stretch;position:fixed;top:120px;left:12px;right:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px;gap:6px;box-shadow:var(--shadow);z-index:500}
       nav .nav-links.open a{display:block;text-align:center;padding:10px 12px;border-radius:10px}
       .hamburger{display:block}
       .hero-inner{grid-template-columns:1fr}
@@ -579,10 +579,10 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="sale-rolodex" aria-label="Rotating SAMMYC vendor discounts">
       <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(-1,true)" aria-label="Previous deal">‹</button>
-      <a id="saleDealCard" href="https://glacieraminos.shop/?ref=SammyC" target="_blank" rel="noopener sponsored" class="sale-deal-card" aria-label="Glacier Aminos discount, 5% off with SAMMYC">
-        <span class="sale-item-star">★ CODE</span>
-        <span class="sale-vendor">Glacier Aminos</span>
-        <span class="sale-pct"><strong>5% off</strong> with code SAMMYC</span>
+      <a id="saleDealCard" href="https://southernaminos.com/?coupon=sammyc" target="_blank" rel="noopener sponsored" class="sale-deal-card" aria-label="Southern Aminos summer sale">
+        <span class="sale-item-star">🔥 SUMMER SALE</span>
+        <span class="sale-vendor">Southern Aminos</span>
+        <span class="sale-pct"><strong>25% off sitewide</strong> + extra 15% off with code SAMMYC</span>
       </a>
       <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(1,true)" aria-label="Next deal">›</button>
       <span class="sale-count" id="saleDealCount">1 / 10</span>
