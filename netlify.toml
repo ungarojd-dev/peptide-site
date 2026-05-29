@@ -3,3 +3,10 @@
 
 [functions]
   node_bundler = "esbuild"
+
+# Decap CMS — Netlify Identity for login
+[[headers]]
+  for = "/admin/*"
+  [headers.values]
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"

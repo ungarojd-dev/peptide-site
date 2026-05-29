@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+  <title>Research Peptide Blog — MyPeptidePrice.com</title>
+  <meta name="description" content="Research peptide guides, vendor comparisons, testing standards, and pricing breakdowns from the MyPeptidePrice team."/>
+  <link rel="canonical" href="https://mypeptideprice.com/blog/"/>
+  <meta property="og:title" content="Research Peptide Blog — MyPeptidePrice.com"/>
+  <meta property="og:description" content="Research peptide guides, vendor comparisons, testing standards, and pricing breakdowns."/>
+  <meta property="og:url" content="https://mypeptideprice.com/blog/"/>
+  <meta property="og:type" content="website"/>
+  <meta property="og:image" content="https://mypeptideprice.com/og-image.png"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;500;600;700;800&display=swap" as="style" onload="this.onload=null;this.rel='stylesheet'"/>
+  <noscript><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=Nunito:wght@400;500;600;700;800&display=swap"/></noscript>
+
+  <!-- Google Tag Manager -->
+  <script>(function(){function loadGTM(){(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PDQM5TBB');}if(document.readyState==='complete'){loadGTM();}else{window.addEventListener('load',loadGTM);}})();</script>
+  <!-- Meta Pixel -->
+  <script>(function(){function loadPixel(){!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2737586326608423');fbq('track','PageView');}window.fbq=window.fbq||function(){(window._fbqQueue=window._fbqQueue||[]).push(arguments)};if(document.readyState==='complete'){loadPixel();}else{window.addEventListener('load',loadPixel);}})();</script>
+
+  <style>
+    :root{
+      --bg:#F7F3EA;--surface:#fff;--surface-2:#faf7f2;
+      --forest:#1F3A2D;--forest-2:#162a20;--forest-lt:#2a4f3c;
+      --olive:#4E5D3C;--olive-lt:#f0f2ec;
+      --sand:#D8C7A7;--sand-lt:#EDE5D0;
+      --ink:#1E1E1B;--ink-2:#3D3528;--ink-3:#6b5d4f;
+      --border:#DDD5C4;--border-2:#C8BEA8;
+      --green:#2d7a4f;--green-bg:#e4f5ec;--green-border:#a8dfc0;
+      --shadow-sm:0 1px 4px rgba(30,30,27,.06);
+      --shadow:0 2px 12px rgba(30,30,27,.09);
+      --r-sm:8px;--r-md:12px;--r-lg:16px;--r-xl:22px;
+      --fd:'Playfair Display',Georgia,serif;
+      --fb:'Nunito',system-ui,sans-serif;
+    }
+    *{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{font-family:var(--fb);background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;min-height:100vh;display:flex;flex-direction:column}
+    main{flex:1}
+    a{text-decoration:none;color:inherit}
+
+    nav{position:sticky;top:0;z-index:200;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm)}
+    .nav-inner{max-width:1200px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+    .logo{display:flex;align-items:center;gap:9px;color:var(--ink)}
+    .logo-mark{width:32px;height:32px;background:var(--forest);border-radius:8px;display:flex;align-items:center;justify-content:center;color:#fff;font-size:16px;flex-shrink:0}
+    .logo-text{font-family:var(--fd);font-size:18px;font-weight:800;letter-spacing:-.3px;white-space:nowrap}
+    .logo-text em{font-style:normal;color:var(--forest)}
+    .nav-links{display:flex;align-items:center;gap:4px}
+    .nav-links a{font-size:13px;font-weight:700;color:var(--ink-2);padding:6px 12px;border-radius:999px;transition:all .15s}
+    .nav-links a:hover,.nav-links a.active{background:var(--forest);color:#fff}
+    .hamburger{display:none;background:none;border:1px solid var(--border);border-radius:7px;padding:5px 8px;cursor:pointer;font-size:16px}
+
+    /* HERO */
+    .blog-hero{background:var(--forest);padding:40px 20px 36px}
+    .blog-hero-inner{max-width:800px;margin:0 auto;text-align:center}
+    .blog-hero h1{font-family:var(--fd);font-size:clamp(28px,4vw,44px);color:#fff;line-height:1.15;margin-bottom:12px}
+    .blog-hero p{color:rgba(255,255,255,.7);font-size:16px;max-width:540px;margin:0 auto}
+
+    /* FILTER TABS */
+    .filter-wrap{max-width:900px;margin:32px auto 0;padding:0 20px}
+    .filter-tabs{display:flex;gap:8px;flex-wrap:wrap}
+    .filter-tab{font-size:12px;font-weight:700;padding:6px 14px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:all .15s;letter-spacing:.3px}
+    .filter-tab:hover,.filter-tab.active{background:var(--forest);color:#fff;border-color:var(--forest)}
+
+    /* GRID */
+    .blog-grid{max-width:900px;margin:28px auto 56px;padding:0 20px;display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:22px}
+
+    /* CARD */
+    .blog-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-lg);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column;transition:box-shadow .18s,transform .18s}
+    .blog-card:hover{box-shadow:var(--shadow);transform:translateY(-2px)}
+    .card-category{font-size:10px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--olive);background:var(--olive-lt);padding:3px 9px;border-radius:4px;display:inline-block}
+    .card-body{padding:18px 20px 14px}
+    .card-body h2{font-family:var(--fd);font-size:17px;line-height:1.3;color:var(--ink);margin:10px 0 8px}
+    .card-body p{font-size:13px;color:var(--ink-3);line-height:1.55}
+    .card-meta{padding:12px 20px 16px;border-top:1px solid var(--border);margin-top:auto;display:flex;align-items:center;justify-content:space-between}
+    .card-date{font-size:11px;color:var(--ink-3);font-weight:600}
+    .card-link{font-size:12px;font-weight:800;color:var(--forest);display:flex;align-items:center;gap:4px}
+    .card-link:after{content:'→';transition:transform .15s}
+    .blog-card:hover .card-link:after{transform:translateX(3px)}
+
+    /* FEATURED CARD */
+    .blog-card.featured{grid-column:1/-1;display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch}
+    .blog-card.featured .card-body{padding:28px 28px 20px;display:flex;flex-direction:column;justify-content:center}
+    .blog-card.featured .card-body h2{font-size:22px;margin:12px 0 10px}
+    .blog-card.featured .card-body p{font-size:14px}
+    .blog-card.featured .card-meta{padding:16px 28px 20px}
+    .featured-badge{background:var(--sand-lt);border-right:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:48px;color:var(--sand)}
+
+    /* EMPTY STATE */
+    .empty-state{grid-column:1/-1;text-align:center;padding:60px 20px;color:var(--ink-3)}
+
+    footer{background:var(--forest);color:rgba(255,255,255,.55);padding:36px 20px 24px;margin-top:auto}
+    .footer-inner{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2fr 1fr 1fr;gap:40px}
+    .footer-brand p{font-size:12px;line-height:1.6;margin-top:8px}
+    .footer-col h4{font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.4);margin-bottom:10px}
+    .footer-col a{display:block;font-size:12px;color:rgba(255,255,255,.55);padding:3px 0;transition:color .15s}
+    .footer-col a:hover{color:#fff}
+    .footer-bottom{max-width:1200px;margin:24px auto 0;padding-top:16px;border-top:1px solid rgba(255,255,255,.1);font-size:11px;color:rgba(255,255,255,.3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:8px}
+
+    @media(max-width:700px){
+      nav .nav-links{display:none}
+      nav .nav-links.open{display:flex;flex-direction:column;align-items:stretch;position:absolute;top:60px;left:12px;right:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px;gap:6px;box-shadow:var(--shadow);z-index:500}
+      nav .nav-links.open a{display:block;text-align:center;padding:10px 12px;border-radius:10px}
+      .hamburger{display:block}
+      .blog-card.featured{grid-template-columns:1fr}
+      .featured-badge{display:none}
+      .footer-inner{grid-template-columns:1fr;gap:24px}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="/" class="logo">
+      <div class="logo-mark">⚗</div>
+      <div>
+        <div class="logo-text">My<em>Peptide</em>Price</div>
+        <div style="font-size:10px;color:var(--ink-3);font-weight:600">mypeptideprice.com</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="/">Prices</a>
+      <a href="/vendors.html">Vendors</a>
+      <a href="/blog/" class="active">Blog</a>
+      <a href="/faq.html">FAQ</a>
+    </div>
+    <button class="hamburger" onclick="const links=this.closest('nav').querySelector('.nav-links');const isOpen=links.classList.toggle('open');this.setAttribute('aria-expanded',isOpen);" aria-label="Menu" aria-expanded="false">☰</button>
+  </div>
+</nav>
+
+<div class="blog-hero">
+  <div class="blog-hero-inner">
+    <h1>Research Peptide Guides &amp; Insights</h1>
+    <p>Vendor comparisons, testing standards, pricing breakdowns, and research guides — updated weekly.</p>
+  </div>
+</div>
+
+<div class="filter-wrap">
+  <div class="filter-tabs">
+    <button class="filter-tab active" onclick="filterPosts('all', this)">All Posts</button>
+    <button class="filter-tab" onclick="filterPosts('Vendor Reviews', this)">Vendor Reviews</button>
+    <button class="filter-tab" onclick="filterPosts('Price Comparisons', this)">Price Comparisons</button>
+    <button class="filter-tab" onclick="filterPosts('Research Guides', this)">Research Guides</button>
+    <button class="filter-tab" onclick="filterPosts('Testing Standards', this)">Testing Standards</button>
+    <button class="filter-tab" onclick="filterPosts('Industry News', this)">Industry News</button>
+  </div>
+</div>
+
+<div class="blog-grid" id="blog-grid">
+
+  <!-- FEATURED POST -->
+  <a class="blog-card featured" href="/blog/what-is-7-7-testing-standard.html" data-category="Testing Standards">
+    <div class="featured-badge">🧪</div>
+    <div style="display:flex;flex-direction:column">
+      <div class="card-body">
+        <span class="card-category">Testing Standards</span>
+        <h2>What Is the 7/7 Testing Standard and Why It Matters for Research Peptides</h2>
+        <p>Not all research peptides are created equal. Here's what the 7/7 third-party testing standard means and why it should be your minimum bar when comparing vendors.</p>
+      </div>
+      <div class="card-meta">
+        <span class="card-date">January 20, 2025</span>
+        <span class="card-link">Read More</span>
+      </div>
+    </div>
+  </a>
+
+  <!-- POST 2 -->
+  <a class="blog-card" href="/blog/bpc-157-price-comparison.html" data-category="Price Comparisons">
+    <div class="card-body">
+      <span class="card-category">Price Comparisons</span>
+      <h2>BPC-157 Price Comparison: Which Vendor Offers the Best Value Per mg?</h2>
+      <p>We break down BPC-157 pricing across our tracked vendors and show you exactly which offers the best cost per mg.</p>
+    </div>
+    <div class="card-meta">
+      <span class="card-date">January 22, 2025</span>
+      <span class="card-link">Read More</span>
+    </div>
+  </a>
+
+  <!-- POST 3 -->
+  <a class="blog-card" href="/blog/how-to-evaluate-peptide-vendor.html" data-category="Research Guides">
+    <div class="card-body">
+      <span class="card-category">Research Guides</span>
+      <h2>How to Evaluate a Research Peptide Vendor: 5 Things to Check Before You Buy</h2>
+      <p>Before you place an order, here are the five things every serious researcher checks when evaluating a new peptide vendor.</p>
+    </div>
+    <div class="card-meta">
+      <span class="card-date">January 24, 2025</span>
+      <span class="card-link">Read More</span>
+    </div>
+  </a>
+
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-brand">
+      <div style="font-family:var(--fd);font-size:16px;font-weight:800;color:#fff">MyPeptidePrice.com</div>
+      <p>Independent research peptide price tracker. We compare prices across vendors meeting full 7/7 third-party testing standards. Use code <strong style="color:#fff">SAMMYC</strong> where supported.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigate</h4>
+      <a href="/">Price Tracker</a>
+      <a href="/vendors.html">Vendors</a>
+      <a href="/blog/">Blog</a>
+      <a href="/faq.html">FAQ</a>
+    </div>
+    <div class="footer-col">
+      <h4>Legal</h4>
+      <a href="/terms.html">Terms</a>
+      <a href="/privacy.html">Privacy</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 MyPeptidePrice.com — For research use only. Not medical advice.</span>
+    <span>We may earn commissions from affiliate links.</span>
+  </div>
+</footer>
+
+<script>
+  function filterPosts(category, btn) {
+    document.querySelectorAll('.filter-tab').forEach(t => t.classList.remove('active'));
+    btn.classList.add('active');
+    const cards = document.querySelectorAll('.blog-card');
+    let visible = 0;
+    cards.forEach(card => {
+      const cat = card.dataset.category;
+      if (category === 'all' || cat === category) {
+        card.style.display = '';
+        visible++;
+      } else {
+        card.style.display = 'none';
+      }
+    });
+    const empty = document.getElementById('empty-state');
+    if (visible === 0) {
+      if (!empty) {
+        const div = document.createElement('div');
+        div.id = 'empty-state';
+        div.className = 'empty-state';
+        div.innerHTML = '<p>No posts in this category yet. Check back soon.</p>';
+        document.getElementById('blog-grid').appendChild(div);
+      }
+    } else if (empty) {
+      empty.remove();
+    }
+  }
+</script>
+
+</body>
+</html>
