@@ -1,6 +1,5 @@
 backend:
-  name: github
-  repo: ungarojd-dev/peptide-site
+  name: git-gateway
   branch: main
 
 media_folder: "blog/images"
