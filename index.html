@@ -337,9 +337,9 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     /* ── MEMORIAL DAY SALE BANNER ─────────────────────────── */
     /* TikTok Live Event Bar */
     .tiktok-live-bar{background:#0e0e0e;padding:7px 36px 7px 16px;display:flex;align-items:center;justify-content:center;position:relative;z-index:301;border-bottom:1px solid #222}
-    .tiktok-live-bar-inner{display:flex;align-items:center;gap:8px;overflow:hidden}
+    .tiktok-live-bar-inner{display:flex;align-items:center;gap:8px;overflow:hidden;flex-wrap:nowrap}.ttlb-break{display:inline}
     .ttlb-badge{display:inline-flex;align-items:center;background:#1a1a1a;border:1px solid #333;color:rgba(255,255,255,.6);font-size:9px;font-weight:900;letter-spacing:.7px;text-transform:uppercase;padding:2px 7px;border-radius:999px;line-height:1;flex-shrink:0;white-space:nowrap}
-    .ttlb-text{font-size:11px;font-weight:600;color:rgba(255,255,255,.75);line-height:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .ttlb-text{font-size:11px;font-weight:600;color:rgba(255,255,255,.75);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .ttlb-text strong{color:#25F4EE;font-weight:800}
     .ttlb-text em{color:#ffe082;font-style:normal;font-weight:700}
     .tiktok-live-bar a.ttlb-link{position:absolute;inset:0;z-index:1}
@@ -347,7 +347,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .ttlb-dismiss:hover{color:#fff}
     @media(max-width:600px){
       .tiktok-live-bar{padding:6px 32px 6px 12px}
-      .ttlb-text{font-size:10px}
+      .ttlb-text{font-size:10px;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.5}.ttlb-break{display:none}
     }
     .sale-banner{background:linear-gradient(135deg,#0077a8 0%,#0096c7 35%,#48cae4 70%,#0096c7 100%);padding:11px 16px;position:relative;z-index:300;overflow:hidden;box-shadow:0 2px 16px rgba(0,119,168,.45)}
     .sale-banner::before{content:'〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰';position:absolute;top:0;left:0;right:0;font-size:8px;color:rgba(255,255,255,.1);letter-spacing:6px;white-space:nowrap;overflow:hidden;padding:2px 8px;pointer-events:none}
@@ -616,7 +616,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a class="ttlb-link" href="https://www.tiktok.com/@sammyc2296" target="_blank" rel="noopener noreferrer" aria-label="TikTok Live event" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'tiktok_live_click',location:'live_bar'});"></a>
   <div class="tiktok-live-bar-inner">
     <span class="ttlb-badge">♪ EVENT</span>
-    <span class="ttlb-text"><strong>TikTok Live</strong> · <em>Sun 5/31 @ 8PM ET</em> · Sponsored by Instant Peptides · 🎁 Giveaways</span>
+    <span class="ttlb-text"><strong>TikTok Live</strong> · <em>Sun 5/31 @ 8PM ET</em><span class="ttlb-break"> · </span>Sponsored by Instant Peptides · 🎁 Giveaways</span>
   </div>
   <button class="ttlb-dismiss" onclick="dismissLiveBar()" aria-label="Dismiss">✕</button>
 </div>
