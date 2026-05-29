@@ -251,10 +251,11 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
 
     /* ── MOBILE CARDS ─────────────────────────────────────── */
     @media(max-width:768px){
-      nav .nav-links{display:none}
-      nav .nav-links.open{display:flex;flex-direction:column;align-items:stretch;position:fixed;top:120px;left:12px;right:12px;background:var(--surface);border:1px solid var(--border);border-radius:14px;padding:10px;gap:6px;box-shadow:var(--shadow);z-index:500}
-      nav .nav-links.open a{display:block;text-align:center;padding:10px 12px;border-radius:10px}
+      nav .nav-links{display:flex}
+
+
       .hamburger{display:block}
+      nav .nav-links{display:none}
       .hero-inner{grid-template-columns:1fr}
       .hero-stats{display:none}
       .hero{padding:22px 0 18px}
@@ -469,6 +470,23 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .full-disclaimer-footer{padding:14px 20px;border-top:1px solid var(--border);flex-shrink:0}
     .full-disclaimer-return{width:100%;padding:11px;border-radius:999px;background:var(--forest);border:none;color:#fff;font-family:var(--fb);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
     .full-disclaimer-return:hover{background:var(--forest-2)}
+  
+    /* MOBILE DRAWER */
+    .drawer-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:800;opacity:0;transition:opacity .25s}
+    .drawer-overlay.open{display:block;opacity:1}
+    .drawer{position:fixed;top:0;right:-280px;width:280px;height:100vh;background:var(--surface);z-index:900;box-shadow:-4px 0 24px rgba(0,0,0,.18);transition:right .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column;padding:0}
+    .drawer.open{right:0}
+    .drawer-header{display:flex;align-items:center;justify-content:space-between;padding:16px 20px;border-bottom:1px solid var(--border);background:var(--forest)}
+    .drawer-logo{font-family:var(--fd);font-size:16px;font-weight:800;color:#fff}
+    .drawer-logo em{font-style:normal;color:var(--sand)}
+    .drawer-close{background:none;border:none;color:#fff;font-size:22px;cursor:pointer;line-height:1;padding:4px 8px;border-radius:6px;transition:background .15s}
+    .drawer-close:hover{background:rgba(255,255,255,.15)}
+    .drawer-nav{padding:16px 12px;display:flex;flex-direction:column;gap:4px}
+    .drawer-nav a{font-size:15px;font-weight:700;color:var(--ink-2);padding:13px 16px;border-radius:10px;display:block;transition:all .15s;border:1px solid transparent}
+    .drawer-nav a:hover,.drawer-nav a.active{background:var(--forest);color:#fff;border-color:var(--forest)}
+    .drawer-nav a.active{background:var(--forest);color:#fff}
+    .drawer-footer{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--ink-3)}
+
   </style>
 </head>
 <body class="glp-page no-entry-gate">
@@ -491,7 +509,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <a href="blog/">Blog</a>
       <a href="faq.html">FAQ</a>
     </div>
-    <button class="hamburger" id="hamburgerBtn" aria-label="Menu" aria-expanded="false">☰</button>
+    <button class="hamburger" id="hamburgerBtn" onclick="openDrawer()" aria-label="Open menu">☰</button>
   </div>
 </nav>
 
@@ -876,24 +894,6 @@ function restartSaleRolodex(){
   startSaleRolodex();
 }
 
-// Hamburger menu
-const hamburgerBtn = document.getElementById('hamburgerBtn');
-const mainNav = document.getElementById('mainNav');
-if(hamburgerBtn && mainNav){
-  hamburgerBtn.addEventListener('click', function(e){
-    e.stopPropagation();
-    const isOpen = mainNav.classList.toggle('open');
-    hamburgerBtn.setAttribute('aria-expanded', isOpen);
-    hamburgerBtn.textContent = isOpen ? '✕' : '☰';
-  });
-  document.addEventListener('click', function(e){
-    if(!mainNav.contains(e.target) && e.target !== hamburgerBtn){
-      mainNav.classList.remove('open');
-      hamburgerBtn.setAttribute('aria-expanded', false);
-      hamburgerBtn.textContent = '☰';
-    }
-  });
-}
 
 const CAT_CLASS={"GLP-1 & Incretin":"cat-glp","Repair & Recovery":"cat-recovery","Growth Hormone Research":"cat-growth","Bioregulators":"cat-bioreg","Metabolic & Mitochondrial":"cat-metabolic","Longevity & Cellular Health":"cat-longevity","Cognitive & Nootropic":"cat-cognitive","Skin, Tanning & Sexual Health":"cat-skin","Supplies":"cat-supplies","Uncategorized":"cat-uncategorized","Other":"cat-other"};
 
