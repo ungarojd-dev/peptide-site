@@ -1,9 +1,11 @@
 ---
 title: "BPC-157 Price Comparison: Which Vendor Offers the Best Value Per mg?"
-date: 2025-01-22T12:00:00.000Z
-description: "We break down BPC-157 pricing across our tracked vendors and show you exactly which offers the best cost per mg — not just the lowest sticker price."
-author: "MyPeptidePrice Team"
-category: "Price Comparisons"
+date: 2026-05-25T10:32:00.000-04:00
+description: We break down BPC-157 pricing across our tracked vendors and show
+  you exactly which offers the best cost per mg — not just the lowest sticker
+  price.
+author: MyPeptidePrice Team
+category: Price Comparisons
 ---
 
 BPC-157 is one of the most researched peptides in the space, and it's also one of the most widely available — which means pricing varies significantly depending on where you look.
