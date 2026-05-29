@@ -1,9 +1,10 @@
 ---
 title: "How to Evaluate a Research Peptide Vendor: 5 Things to Check Before You Buy"
-date: 2025-01-24T12:00:00.000Z
-description: "Before you place an order, here are the five things every serious researcher checks when evaluating a new peptide vendor."
-author: "MyPeptidePrice Team"
-category: "Research Guides"
+date: 2025-01-22T07:00:00.000-05:00
+description: Before you place an order, here are the five things every serious
+  researcher checks when evaluating a new peptide vendor.
+author: MyPeptidePrice Team
+category: Research Guides
 ---
 
 The research peptide market has grown significantly over the past few years. More vendors means more options — but it also means more variance in quality. Knowing how to evaluate a vendor before placing an order is one of the most useful skills you can develop.
