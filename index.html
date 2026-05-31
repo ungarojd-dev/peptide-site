@@ -635,6 +635,10 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .var-pill:hover{border-color:var(--forest);color:var(--forest)}
     .var-pill.active{background:var(--forest);color:#fff;border-color:var(--forest)}
     .pcard-var-note{font-size:9px;color:var(--ink-3);padding:0 14px 6px;font-style:italic}
+
+    /* ── VENDOR ROW LOGO / INITIALS ──────────────────────── */
+    .vrow-logo{width:20px;height:20px;border-radius:4px;object-fit:contain;flex-shrink:0;background:var(--surface-2)}
+    .vrow-initials{width:20px;height:20px;border-radius:4px;background:var(--forest);color:#fff;font-size:8px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.3px}
 </style>
 </head>
 <body>
@@ -915,9 +919,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <div class="ufb-chips-row">
           <span class="ufb-label">CATEGORY</span>
           <div class="cf-chips" id="catChips" role="group" aria-label="Category filter">
-            <button class="cf-chip active" data-cat="all"                        onclick="setCatFilter('all',this)">All</button>
+            <button class="cf-chip" data-cat="all"                        onclick="setCatFilter('all',this)">All</button>
             <button class="cf-chip" data-cat="Repair &amp; Recovery"             onclick="setCatFilter('Repair & Recovery',this)">Repair &amp; Recovery</button>
-            <button class="cf-chip" data-cat="GLP-1 &amp; Incretin"              onclick="setCatFilter('GLP-1 & Incretin',this)">GLP-1</button>
+            <button class="cf-chip active" data-cat="GLP-1 &amp; Incretin"              onclick="setCatFilter('GLP-1 & Incretin',this)">GLP-1</button>
             <button class="cf-chip" data-cat="Longevity &amp; Cellular Health"   onclick="setCatFilter('Longevity & Cellular Health',this)">Longevity</button>
             <button class="cf-chip" data-cat="Growth Hormone Research"           onclick="setCatFilter('Growth Hormone Research',this)">Growth Hormone</button>
             <button class="cf-chip" data-cat="Metabolic &amp; Mitochondrial"     onclick="setCatFilter('Metabolic & Mitochondrial',this)">Metabolic</button>
@@ -1338,7 +1342,7 @@ function fp(p){
 }
 
 // ── STATE ─────────────────────────────────────────────────
-let activeCat="all", activeFmt="all", activeVendorFilter="all", searchTerm="";
+let activeCat="GLP-1 & Incretin", activeFmt="all", activeVendorFilter="all", searchTerm="";
 let sortMode="name-asc", displayMode="compare";
 let allGroups=[];
 window._apisLoading = true;
@@ -1398,6 +1402,7 @@ function renderVendorRow(p){
     aria-label="Visit ${p.company} for ${p.product}">
     <div class="vrow-left">
       <div class="vrow-name-line">
+        ${vc.logo ? `<img class="vrow-logo" src="${vc.logo}" alt="${p.company} logo" width="20" height="20" loading="lazy"/>` : `<span class="vrow-initials">${p.company.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}</span>`}
         <span class="vrow-name">${p.company}</span>
         ${discStr ? `<span class="vrow-disc">${discStr}</span>` : ""}
       </div>
@@ -1466,6 +1471,10 @@ function renderCard(g, gIdx){
   const uniqueVendors = [...new Set(g.listings.map(p=>p.company))].length;
 
   // Build variation pills HTML
+  // Check if any listings are price ranges (static fallback)
+  const hasRanges = g.listings.some(p => (p.price||"").includes(" to "));
+  const allStatic = g.listings.every(p => !p.source || p.source !== "api");
+
   const varPillsHTML = hasVariations && variations.length > 1 ? `
     <div class="pcard-variations" role="group" aria-label="Size variations">
       <span class="pcard-var-label">SIZE</span>
@@ -1486,6 +1495,7 @@ function renderCard(g, gIdx){
       </div>
     </div>
     ${varPillsHTML}
+    ${!hasVariations && hasRanges && allStatic ? '<div class="pcard-var-note">↻ Live prices load with exact sizes — static data shows ranges</div>' : ''}
     <div class="pcard-vendors" id="vendors-${gIdx}">
       <div class="pcard-vendors-head">
         <span>Prices shown after <strong>SAMMYC</strong></span>
