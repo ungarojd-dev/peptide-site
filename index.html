@@ -116,6 +116,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .nav-links a{font-size:13px;font-weight:700;color:var(--ink-2);padding:6px 12px;border-radius:999px;transition:all .15s}
     .nav-links a:hover,.nav-links a.active{background:var(--forest);color:#fff}
     .hamburger{display:none;background:none;border:1px solid var(--border);border-radius:7px;padding:5px 8px;cursor:pointer;font-size:16px}
+    .nav-brand{display:flex;align-items:center;min-width:0}
 
     /* ── AFFILIATE STRIP ──────────────────────────────────── */
     .astrip{background:var(--sand-lt);border-bottom:1px solid var(--border);padding:8px 20px;text-align:center;font-size:12px;color:var(--ink-2)}
@@ -134,6 +135,13 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .hero-cta:hover{background:#efe1c2}
     .hero-cta-secondary{background:rgba(255,255,255,.1);color:#fff;border:1px solid rgba(255,255,255,.2)}
     .hero-cta-secondary:hover{background:rgba(255,255,255,.18)}
+    .hero-tiktok{display:inline-flex;align-items:center;gap:9px;max-width:100%;margin:0 0 14px;padding:7px 12px 7px 10px;border-radius:999px;background:#0e0e0e;border:1px solid rgba(255,255,255,.16);color:#fff;text-decoration:none;box-shadow:-3px 0 0 #25F4EE,3px 0 0 #FE2C55;transition:transform .15s,box-shadow .15s,filter .15s}
+    .hero-tiktok:hover{transform:translateY(-1px);box-shadow:-4px 0 0 #25F4EE,4px 0 0 #FE2C55;filter:brightness(1.08)}
+    .hero-tiktok-icon{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:#161616;color:#25F4EE;font-size:18px;font-weight:900;line-height:1;text-shadow:2px 0 0 #FE2C55;flex-shrink:0}
+    .hero-tiktok-copy{display:flex;flex-direction:column;gap:1px;min-width:0}
+    .hero-tiktok-label{font-size:8px;font-weight:900;letter-spacing:.8px;text-transform:uppercase;color:rgba(255,255,255,.62);line-height:1.1}
+    .hero-tiktok-handle{font-size:12px;font-weight:900;letter-spacing:.2px;color:#fff;line-height:1.1}
+    .hero-tiktok-arrow{font-size:13px;font-weight:900;color:#fff;opacity:.72;flex-shrink:0}
     .hero-pills{display:flex;flex-wrap:wrap;gap:6px}
     .hero-pill{font-size:10px;font-weight:700;color:rgba(255,255,255,.8);background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.15);border-radius:999px;padding:3px 10px}
     .hero-stats{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:var(--r-lg);padding:18px 20px;min-width:180px}
@@ -254,6 +262,11 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
 
       .hamburger{display:block}
       nav .nav-links{display:none}
+      .nav-inner{padding:0 12px;height:60px;gap:8px}
+      .hero-tiktok{margin-bottom:10px;padding:7px 11px 7px 9px;gap:8px}
+      .hero-tiktok-icon{width:20px;height:20px;font-size:16px}
+      .hero-tiktok-label{font-size:7px}
+      .hero-tiktok-handle{font-size:11px}
       .hero-inner{grid-template-columns:1fr}
       .hero-stats{display:none}
       .hero{padding:22px 0 18px}
@@ -335,7 +348,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     /* ── MEMORIAL DAY SALE BANNER ─────────────────────────── */
     /* TikTok Live Event Bar */
     .tiktok-live-bar{background:#0e0e0e;padding:7px 36px 7px 16px;display:flex;align-items:center;justify-content:center;position:relative;z-index:301;border-bottom:1px solid #222}
-    .tiktok-live-bar-inner{display:flex;align-items:center;gap:8px;overflow:hidden;flex-wrap:nowrap}.ttlb-br{display:none}
+    .tiktok-live-bar-inner{display:flex;align-items:center;gap:8px;overflow:hidden;flex-wrap:nowrap}.ttlb-sponsored::before{content:' · ';color:rgba(255,255,255,.38)}
     .ttlb-badge{display:inline-flex;align-items:center;background:#1a1a1a;border:1px solid #333;color:rgba(255,255,255,.6);font-size:9px;font-weight:900;letter-spacing:.7px;text-transform:uppercase;padding:2px 7px;border-radius:999px;line-height:1;flex-shrink:0;white-space:nowrap}
     .ttlb-text{font-size:11px;font-weight:600;color:rgba(255,255,255,.75);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
     .ttlb-text strong{color:#25F4EE;font-weight:800}
@@ -345,7 +358,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .ttlb-dismiss:hover{color:#fff}
     @media(max-width:600px){
       .tiktok-live-bar{padding:6px 32px 6px 12px}
-      .ttlb-text{font-size:10px;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.5}.ttlb-br{display:block}
+      .ttlb-text{font-size:10px;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.35}.ttlb-sponsored{display:block;margin-top:3px;line-height:1.3}.ttlb-sponsored::before{content:''}
     }
     .sale-banner{background:linear-gradient(135deg,#0077a8 0%,#0096c7 35%,#48cae4 70%,#0096c7 100%);padding:11px 16px;position:relative;z-index:300;overflow:hidden;box-shadow:0 2px 16px rgba(0,119,168,.45)}
     .sale-banner::before{content:'〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰 〰';position:absolute;top:0;left:0;right:0;font-size:8px;color:rgba(255,255,255,.1);letter-spacing:6px;white-space:nowrap;overflow:hidden;padding:2px 8px;pointer-events:none}
@@ -376,20 +389,17 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .sale-social-icon{font-size:15px;line-height:1;color:#25F4EE;text-shadow:2px 0 0 #FE2C55}
     .sale-flip-in{animation:saleFlipIn .32s ease both}
     @keyframes saleFlipIn{0%{opacity:.2;transform:rotateX(70deg) translateY(6px)}100%{opacity:1;transform:rotateX(0deg) translateY(0)}}
+    /* Mobile: slim sticky rolodex. Keep the active vendor and discount visible without stacking extra rows. */
     @media(max-width:768px){
-      .sale-banner{padding:10px 12px}
-      .sale-inner{flex-direction:column;align-items:stretch;gap:8px}
-      .sale-left{min-width:0;width:100%}
-      .sale-title{font-size:15px}
-      .sale-flag{font-size:24px}
-      .sale-deal-card{padding:9px 10px;gap:5px 8px}
-      .sale-vendor{font-size:12px}
-      .sale-pct{font-size:10px;white-space:normal;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
-      .sale-item-star{font-size:8px;padding:2px 5px}
-      .sale-nav-btn{width:28px;height:28px;font-size:18px}
-      .sale-count{display:none}
-
-      .sale-social{width:100%;padding:8px 10px;font-size:10px}
+      .sale-banner{padding:5px 7px;box-shadow:0 2px 10px rgba(0,0,0,.18)}
+      .sale-inner{display:block}
+      .sale-left,.sale-social,.sale-count,.sale-flag,.sale-item-star{display:none!important}
+      .sale-rolodex{width:100%;gap:5px}
+      .sale-deal-card{min-height:38px;padding:5px 8px;display:grid;grid-template-columns:92px minmax(0,1fr);align-items:center;column-gap:7px;border-radius:9px}
+      .sale-item-star{display:none}
+      .sale-vendor{font-size:11px;line-height:1.05;white-space:normal;overflow:visible;text-overflow:clip;padding-right:7px;border-right:1px solid rgba(255,255,255,.25)}
+      .sale-pct{font-size:10px;line-height:1.15;white-space:normal;overflow:hidden;text-overflow:clip;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical}
+      .sale-nav-btn{width:24px;height:24px;font-size:17px;border-width:1px}
     }
 
     /* ── DISCLAIMER MODAL ─────────────────────────────────── */
@@ -763,12 +773,14 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="sticky-header">
 <nav>
   <div class="nav-inner">
-    <a class="logo" href="index.html">
-      <div class="logo-mark">🔬</div>
-      <div>
-        <div class="logo-text">My<em>PeptidePrice</em><span class="logo-domain">.com</span></div>
-      </div>
-    </a>
+    <div class="nav-brand">
+      <a class="logo" href="index.html">
+        <div class="logo-mark">🔬</div>
+        <div>
+          <div class="logo-text">My<em>PeptidePrice</em><span class="logo-domain">.com</span></div>
+        </div>
+      </a>
+    </div>
     <div class="nav-links" id="mainNav">
       <a href="index.html" class="active">Prices</a>
       <a href="vendors.html">Vendors</a>
@@ -783,7 +795,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   <a class="ttlb-link" href="https://www.tiktok.com/@sammyc2296" target="_blank" rel="noopener noreferrer" aria-label="TikTok Live event" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'tiktok_live_click',location:'live_bar'});"></a>
   <div class="tiktok-live-bar-inner">
     <span class="ttlb-badge">♪ EVENT</span>
-    <span class="ttlb-text"><strong>TikTok Live</strong> · <em>Sun 5/31 @ 8PM ET</em><br class="ttlb-br">Sponsored by Instant Peptides · 🎁 Giveaways</span>
+    <span class="ttlb-text"><strong>TikTok Live</strong> · <em>Sun 5/31 @ 8PM ET</em><span class="ttlb-sponsored">Sponsored by Instant Peptides · 🎁 Giveaways</span></span>
   </div>
   <button class="ttlb-dismiss" onclick="dismissLiveBar()" aria-label="Dismiss">✕</button>
 </div>
@@ -803,17 +815,13 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="sale-rolodex" aria-label="Rotating SAMMYC vendor discounts">
       <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(-1,true)" aria-label="Previous deal">‹</button>
       <a id="saleDealCard" href="https://southernaminos.com/?coupon=sammyc" target="_blank" rel="noopener sponsored" class="sale-deal-card" aria-label="Southern Aminos summer sale">
-        <span class="sale-item-star">🌊 SUMMER SALE</span>
+        <span class="sale-item-star">SUMMER SALE</span>
         <span class="sale-vendor">Southern Aminos</span>
         <span class="sale-pct"><strong>25% off sitewide</strong> + extra 15% off with code SAMMYC</span>
       </a>
       <button class="sale-nav-btn" type="button" onclick="rotateSaleDeal(1,true)" aria-label="Next deal">›</button>
       <span class="sale-count" id="saleDealCount">1 / 10</span>
     </div>
-    <a class="sale-social" href="https://www.tiktok.com/@sammyc2296" target="_blank" rel="noopener noreferrer" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'social_click',platform:'tiktok',handle:'sammyc2296',button_location:'sammyc_rolodex'});">
-      <span class="sale-social-icon">♪</span>
-      <span>Follow @sammyc2296 on TikTok</span>
-    </a>
   </div>
 </div>
 </div><!-- /sticky-header -->
@@ -826,6 +834,11 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div>
       <div class="hero-eyebrow">· Independent Price Tracker</div>
       <h1>Research Peptide Prices,<br/><em>Clearly Displayed.</em></h1>
+      <a class="hero-tiktok" href="https://www.tiktok.com/@sammyc2296" target="_blank" rel="noopener noreferrer" aria-label="Follow @sammyc2296 on TikTok" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'social_click',platform:'tiktok',handle:'sammyc2296',button_location:'hero'});">
+        <span class="hero-tiktok-icon">♪</span>
+        <span class="hero-tiktok-copy"><span class="hero-tiktok-handle">@sammyc2296</span></span>
+        <span class="hero-tiktok-arrow">↗</span>
+      </a>
       <p class="hero-sub">Compare research peptide prices across tracked vendors that meet our full <strong style="color:#fff">7/7 third-party testing standard</strong>. Search by compound, filter by vendor, then check the current vendor price before you leave the site.</p>
       <div class="hero-actions"><a href="#priceTable" class="hero-cta">Start Comparing Prices</a><a href="vendors.html" class="hero-cta-secondary">View Vendors</a></div>
       <div class="hero-pills">
@@ -1055,8 +1068,8 @@ const VENDOR_CONFIG={
 const VENDOR_DISCOUNT={"Glacier Aminos":5,"Ion Peptide":15,"LabSourced Peptides":15,"Mile High Peptides":10,"Southern Aminos":15,"Flawless Compounds":15,"Glow Aminos":15,"Instant Peptides":10,"Solyn Labs":15,"Oneday Compounds":10};
 
 const SALE_DEALS = [
-  {badge:"🌊 SUMMER SALE", vendor:"Southern Aminos", line:"25% off sitewide", detail:"+ extra 15% off with code SAMMYC", href:"https://southernaminos.com/?coupon=sammyc"},
-  {badge:"🌊 SUMMER SALE", vendor:"Instant Peptides", line:"15% off sitewide", detail:"+ extra 10% off with code SAMMYC", href:"https://instantpeptides.com?ref=SAMMYC"}
+  {badge:"SUMMER SALE", vendor:"Southern Aminos", line:"25% off sitewide", detail:"+ extra 15% off with code SAMMYC", href:"https://southernaminos.com/?coupon=sammyc"},
+  {badge:"SUMMER SALE", vendor:"Instant Peptides", line:"15% off sitewide", detail:"+ extra 10% off with code SAMMYC", href:"https://instantpeptides.com?ref=SAMMYC"}
 ];
 let saleDealIndex = 0;
 let saleDealTimer = null;

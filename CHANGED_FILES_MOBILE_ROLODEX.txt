@@ -1,0 +1,12 @@
+Mobile sticky rolodex banner update
+
+Updated files:
+- index.html
+- glp-weight-loss.html
+
+Mobile-only behavior at widths up to 768px:
+- Compresses the sale rolodex into one slim rotating strip.
+- Keeps the active vendor name and discount text visible.
+- Keeps the previous and next deal arrows usable.
+- Hides the larger sale heading row, TikTok follow pill, sale badge, and deal count on mobile.
+- Leaves the desktop banner layout unchanged.

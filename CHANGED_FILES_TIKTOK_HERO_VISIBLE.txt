@@ -1,0 +1,9 @@
+Changed files:
+- index.html
+- glp-weight-loss.html
+
+Updates:
+- Moved the TikTok-styled @sammyc2296 hero pill directly beneath the hero headline so it appears above the fold on mobile.
+- Removed decorative emoji from the rotating sale card labels.
+- Added a mobile-only safeguard that prevents sale promo icons from appearing beside the slim rolodex.
+- Preserved social_click tracking with button_location: hero.
