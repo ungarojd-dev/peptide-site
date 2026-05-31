@@ -152,10 +152,10 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .search-input:focus{border-color:var(--forest)}
     .search-input::placeholder{color:var(--ink-3)}
     .results-meta{font-size:11px;color:var(--ink-3);white-space:nowrap}
-    .filters-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .filters-row{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
     .popular-row{margin-bottom:8px}
     .filter-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--ink-2);margin-right:2px;white-space:nowrap}
-    .search-chip{font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:all .15s;white-space:nowrap}
+    .search-chip{flex-shrink:0;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:all .15s;white-space:nowrap}
     .search-chip:hover{border-color:var(--forest);color:var(--forest)}
     .search-chip.active{background:var(--forest);color:#fff;border-color:var(--forest)}
     .filter-select-row{display:flex;align-items:flex-end;gap:10px;flex-wrap:wrap;padding-top:2px}
@@ -264,7 +264,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       .search-input{font-size:13px}
       .filters-row{gap:5px}
       .popular-row{margin-bottom:7px;max-height:30px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;-webkit-overflow-scrolling:touch}
-      .search-chip{font-size:10px;padding:3px 9px}
+      .search-chip{flex-shrink:0;font-size:10px;padding:3px 9px}
       .filter-select-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}
       .filter-select-group{min-width:0}
       .filter-select{width:100%;height:31px;font-size:11px;padding-left:10px}
@@ -326,12 +326,10 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .fbot{border-top:1px solid rgba(255,255,255,.1);padding-top:18px;font-size:11px;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px}
     .fbot a{color:rgba(255,255,255,.5);transition:color .15s}
     .fbot a:hover{color:var(--sand)}
-    .mcta{display:none;position:fixed;bottom:0;left:0;right:0;background:var(--forest);padding:12px 16px;text-align:center;z-index:150;border-top:1px solid var(--forest-lt)}
-    .mcta a{color:#fff;font-weight:800;font-size:13px}
     @media(max-width:768px){
       .fgrid{grid-template-columns:1fr;gap:20px}
       .fbot{flex-direction:column;text-align:center}
-      footer{margin-top:24px}
+      footer{margin-top:24px;padding-bottom:40px}
     }
 
     /* ── MEMORIAL DAY SALE BANNER ─────────────────────────── */
@@ -472,7 +470,172 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .drawer-nav a.active{background:var(--forest);color:#fff}
     .drawer-footer{margin-top:auto;padding:16px 20px;border-top:1px solid var(--border);font-size:11px;color:var(--ink-3)}
 
-  </style>
+  
+    /* ── VIEW MODE BAR ──────────────────────────────────────── */
+    .view-mode-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 20px}
+    .view-mode-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .vm-toggle{display:flex;background:var(--surface-2);border:1.5px solid var(--border);border-radius:999px;padding:3px;gap:2px}
+    .vm-btn{padding:7px 18px;border-radius:999px;font-family:var(--fb);font-size:13px;font-weight:800;color:var(--ink-3);border:none;cursor:pointer;transition:all .18s;background:transparent;white-space:nowrap}
+    .vm-btn.active{background:var(--forest);color:#fff}
+    .vm-btn:hover:not(.active){color:var(--forest);background:var(--olive-lt)}
+    .vm-meta{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--ink-3);flex-shrink:0}
+    .vm-meta strong{color:var(--ink-2)}
+    .vm-sort{height:28px;border:1.5px solid var(--border);border-radius:999px;background:var(--surface);color:var(--ink-2);font-family:var(--fb);font-size:11px;font-weight:700;padding:0 26px 0 10px;cursor:pointer;outline:none;appearance:none;background-image:linear-gradient(45deg,transparent 50%,var(--ink-3) 50%),linear-gradient(135deg,var(--ink-3) 50%,transparent 50%);background-position:calc(100% - 12px) 11px,calc(100% - 8px) 11px;background-size:4px 4px,4px 4px;background-repeat:no-repeat;transition:border-color .15s}
+    .vm-sort:hover{border-color:var(--forest)}
+
+    /* ── CHIP FILTER BAR ──────────────────────────────────── */
+    .chip-filter-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:8px 20px}
+    .chip-filter-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:7px}
+    .cfrow{display:flex;align-items:center;gap:8px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;padding-bottom:2px;scrollbar-width:none}
+    .cfrow::-webkit-scrollbar{display:none}
+    .cfrow-right{justify-content:flex-end;overflow:visible}
+    .cf-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--ink-3);white-space:nowrap;flex-shrink:0}
+    .cf-chips{display:flex;gap:5px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+    .cf-chip{font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
+    .cf-chip:hover{border-color:var(--forest);color:var(--forest)}
+    .cf-chip.active{background:var(--forest);color:#fff;border-color:var(--forest)}
+    .cf-more-btn{font-size:11px;font-weight:800;color:var(--ink-2);background:var(--surface);border:1.5px solid var(--border);border-radius:999px;padding:5px 12px;cursor:pointer;transition:all .15s;white-space:nowrap;flex-shrink:0}
+    .cf-more-btn:hover{border-color:var(--forest);color:var(--forest)}
+    .cf-more-btn.has-filters{background:var(--forest);color:#fff;border-color:var(--forest)}
+
+    /* ── GROUPED CARDS WRAP ───────────────────────────────── */
+    .grouped-cards-wrap{max-width:1200px;margin:0 auto;padding:16px 20px 120px}
+    .grouped-cards{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;align-items:start}
+
+    /* ── PRODUCT CARD ─────────────────────────────────────── */
+    .prod-card{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-sm)}
+    .pcard-top{padding:12px 14px 8px}
+    .pcard-eyerow{display:flex;align-items:center;justify-content:space-between;margin-bottom:6px}
+    .pcard-cat{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.9px}
+    .pcard-updated{font-size:9px;color:var(--ink-3)}
+    .pcard-name-row{display:flex;align-items:flex-start;justify-content:space-between;gap:8px;margin-bottom:0}
+    .pcard-name{font-family:var(--fb);font-size:17px;font-weight:800;color:var(--ink);line-height:1.25;letter-spacing:-.2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+    .pcard-vcnt{font-size:10px;font-weight:700;color:var(--ink-3);background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:3px 9px;white-space:nowrap;align-self:flex-start;margin-top:4px;flex-shrink:0;min-width:0}
+
+    /* Vendor rows */
+    .pcard-vendors{border-top:1px solid var(--border);margin-top:10px}
+    .pcard-vendors-head{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;background:var(--surface-2);font-size:9px;color:var(--ink-3)}
+    .pcard-vendors-head strong{color:var(--ink-2);font-weight:800}
+    .vendor-row{display:flex;align-items:center;justify-content:space-between;padding:12px 14px;border-bottom:1px solid var(--surface-2);cursor:pointer;transition:background .12s;text-decoration:none;color:inherit;-webkit-tap-highlight-color:transparent}
+    .vendor-row:last-of-type{border-bottom:none}
+    .vendor-row:hover,.vendor-row:focus{background:#faf8f4;outline:none}
+    .vrow-left{min-width:0;flex:1}
+    .vrow-name-line{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+    .vrow-name{font-size:13px;font-weight:800;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:130px}
+    .vrow-disc{font-size:9px;font-weight:800;color:#fff;background:var(--olive);border-radius:999px;padding:1px 6px;white-space:nowrap;flex-shrink:0}
+    .vrow-listing{font-size:10px;color:var(--ink-3);line-height:1.3;margin-top:1px}
+    .vrow-right{display:flex;align-items:center;gap:8px;flex-shrink:0}
+    .vrow-prices{display:flex;flex-direction:column;align-items:flex-end;gap:1px}
+    .vrow-final{font-size:15px;font-weight:900;color:var(--ink);font-variant-numeric:tabular-nums;letter-spacing:-.2px;line-height:1.2}
+    .vrow-orig{font-size:10px;color:var(--ink-3);text-decoration:line-through;font-variant-numeric:tabular-nums}
+    .vrow-chevron{font-size:15px;color:var(--border-2);flex-shrink:0}
+
+    /* Show more / product details expandables */
+    .pcard-expanders{border-top:1px solid var(--border);display:flex}
+    .pcard-exp-btn{flex:1;display:flex;align-items:center;justify-content:space-between;padding:9px 14px;font-family:var(--fb);font-size:12px;font-weight:800;color:var(--ink-2);background:none;border:none;cursor:pointer;transition:background .12s;text-align:left;gap:8px}
+    .pcard-exp-btn:hover{background:var(--surface-2)}
+    .pcard-exp-btn + .pcard-exp-btn{border-left:1px solid var(--border)}
+    .pcard-exp-caret{transition:transform .2s;font-size:10px;color:var(--ink-3);flex-shrink:0}
+    .pcard-exp-btn[aria-expanded="true"] .pcard-exp-caret{transform:rotate(180deg)}
+    .pcard-extra-rows{display:none;border-top:1px solid var(--border)}
+    .pcard-extra-rows.open{display:block}
+
+    /* Category color accents */
+    .cat-col-glp1{color:#6b1a55}
+    .cat-col-recovery{color:#1F3A2D}
+    .cat-col-growth{color:#5a4000}
+    .cat-col-longevity{color:#1a3a6e}
+    .cat-col-cognitive{color:#3d1a80}
+    .cat-col-metabolic{color:#0a4060}
+    .cat-col-skin{color:#6e1a1a}
+    .cat-col-bioregulators{color:#3f4b16}
+    .cat-col-supplies{color:#4a4035}
+
+    /* ── VENDOR BROWSE CARDS ──────────────────────────────── */
+    .vendor-cards-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:16px}
+    .vbcard{background:var(--surface);border:1px solid var(--border);border-radius:var(--r-xl);overflow:hidden;box-shadow:var(--shadow-sm);display:flex;flex-direction:column}
+    .vbcard-head{background:var(--forest);padding:20px;display:flex;align-items:center;gap:12px}
+    .vbcard-init{width:42px;height:42px;border-radius:10px;background:rgba(255,255,255,.15);display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:900;color:#fff;flex-shrink:0}
+    .vbcard-nm{font-family:var(--fd);font-size:16px;font-weight:800;color:#fff;line-height:1.2}
+    .vbcard-url{font-size:10px;color:rgba(255,255,255,.55)}
+    .vbcard-body{padding:16px;flex:1}
+    .vbcard-row{display:flex;justify-content:space-between;align-items:center;padding:5px 0;border-bottom:1px solid var(--surface-2);font-size:12px}
+    .vbcard-row:last-child{border-bottom:none}
+    .vbcard-rl{color:var(--ink-3);font-weight:600}
+    .vbcard-rv{color:var(--ink-2);font-weight:800}
+    .code-badge{font-size:10px;font-weight:800;background:var(--sand-lt);border:1px dashed var(--sand);color:var(--ink-2);border-radius:4px;padding:2px 7px;letter-spacing:.3px}
+    .vbcard-foot{padding:12px 16px;border-top:1px solid var(--border)}
+    .vbcard-btn{display:block;text-align:center;padding:10px;border-radius:999px;font-size:13px;font-weight:800;background:var(--forest);color:#fff;transition:background .15s}
+    .vbcard-btn:hover{background:var(--forest-2)}
+
+    /* ── FILTER DRAWER ────────────────────────────────────── */
+    .filter-drawer{position:fixed;bottom:0;left:0;right:0;max-height:85vh;background:var(--surface);z-index:900;border-radius:var(--r-xl) var(--r-xl) 0 0;box-shadow:0 -4px 24px rgba(0,0,0,.18);transform:translateY(100%);transition:transform .28s cubic-bezier(.4,0,.2,1);display:flex;flex-direction:column}
+    .filter-drawer.open{transform:translateY(0)}
+    .fd-handle{width:36px;height:4px;background:var(--border);border-radius:2px;margin:10px auto 0}
+    .fd-header{display:flex;align-items:center;justify-content:space-between;padding:12px 20px;border-bottom:1px solid var(--border)}
+    .fd-header h3{font-family:var(--fd);font-size:16px;font-weight:800;color:var(--ink)}
+    .fd-close{background:none;border:none;font-size:20px;color:var(--ink-3);cursor:pointer;line-height:1;padding:4px 6px;border-radius:6px}
+    .fd-close:hover{background:var(--surface-2)}
+    .fd-body{overflow-y:auto;padding:20px;flex:1;display:flex;flex-direction:column;gap:20px}
+    .fd-section h4{font-size:10px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--ink-3);margin-bottom:10px}
+    .fd-chips{display:flex;flex-wrap:wrap;gap:6px}
+    .fd-chip{font-size:12px;font-weight:700;padding:6px 14px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:all .15s}
+    .fd-chip:hover{border-color:var(--forest);color:var(--forest)}
+    .fd-chip.active{background:var(--forest);color:#fff;border-color:var(--forest)}
+    .fd-footer{padding:14px 20px;border-top:1px solid var(--border);display:flex;gap:10px;flex-shrink:0}
+    .fd-clear{flex:1;padding:11px;border-radius:999px;font-family:var(--fb);font-size:13px;font-weight:800;background:var(--surface);border:1.5px solid var(--border);color:var(--ink-3);cursor:pointer}
+    .fd-apply{flex:2;padding:11px;border-radius:999px;font-family:var(--fb);font-size:13px;font-weight:800;background:var(--forest);border:none;color:#fff;cursor:pointer}
+
+    /* ── MOBILE ADJUSTMENTS ───────────────────────────────── */
+    @media(max-width:768px){
+      .grouped-cards-wrap{padding:10px 12px 100px}
+      .grouped-cards{grid-template-columns:1fr}
+      .vm-meta{display:none}
+      .view-mode-inner{justify-content:center}
+      .vm-toggle{width:100%}
+      .vm-btn{flex:1;text-align:center;font-size:12px;padding:7px 10px}
+      .chip-filter-bar{padding:8px 12px}
+      .pcard-name{font-size:16px}
+      .vrow-name{max-width:110px;font-size:12px}
+      .vrow-final{font-size:14px}
+    }
+    @media(max-width:390px){
+      .pcard-name{font-size:15px}
+      .vrow-name{max-width:100px;font-size:12px}
+    }
+
+    /* ── UNIFIED FILTER BAR ───────────────────────────────── */
+    .unified-filter-bar{background:var(--surface);border-bottom:1px solid var(--border);padding:10px 0 0}
+    .unified-filter-inner{max-width:1200px;margin:0 auto;padding:0 20px;display:flex;flex-direction:column;gap:8px;padding-bottom:10px}
+    .ufb-top-row{display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
+    .ufb-meta{display:flex;align-items:center;gap:10px;flex-shrink:0}
+    .ufb-count{font-size:12px;color:var(--ink-3);white-space:nowrap}
+    .ufb-count strong{color:var(--ink-2)}
+    .ufb-chips-row{display:flex;align-items:center;gap:7px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none;padding-bottom:1px}
+    .ufb-chips-row::-webkit-scrollbar{display:none}
+    .ufb-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--ink-3);white-space:nowrap;flex-shrink:0;min-width:54px}
+    /* hide old chip-filter-bar and view-mode-bar since we replaced them */
+    .chip-filter-bar,.view-mode-bar{display:none}
+    @media(max-width:768px){
+      .ufb-top-row{gap:10px}
+      .vm-toggle{width:100%}
+      .vm-btn{flex:1;font-size:12px;padding:7px 10px}
+      .ufb-meta{display:none}
+      .unified-filter-inner{padding:0 12px 10px}
+    }
+
+    @media(min-width:769px) and (max-width:1024px){
+      .grouped-cards{grid-template-columns:repeat(2,1fr)}
+    }
+
+    /* ── VARIATION TOGGLES ────────────────────────────────── */
+    .pcard-variations{padding:8px 14px 4px;display:flex;flex-wrap:wrap;gap:6px;align-items:center}
+    .pcard-var-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:.9px;color:var(--ink-3);margin-right:2px;flex-shrink:0}
+    .var-pill{font-size:11px;font-weight:700;padding:3px 10px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:all .15s;white-space:nowrap}
+    .var-pill:hover{border-color:var(--forest);color:var(--forest)}
+    .var-pill.active{background:var(--forest);color:#fff;border-color:var(--forest)}
+    .pcard-var-note{font-size:9px;color:var(--ink-3);padding:0 14px 6px;font-style:italic}
+</style>
 </head>
 <body>
 
@@ -684,7 +847,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="search-icon">🔍</span>
         <input class="search-input" id="searchInput" type="search" placeholder="Search products, vendors, or compounds, e.g. BPC-157, Semaglutide, NAD+..." autocomplete="off" spellcheck="false"/>
       </div>
-      <span class="results-meta">Showing <strong id="visibleCount">0</strong> of <strong id="totalProdCount">0</strong> products</span>
+      <span class="results-meta">Showing <strong id="visibleCountLegacy">0</strong> of <strong id="totalProdCount">0</strong> products</span>
     </div>
     <div class="filters-row popular-row" id="popularRow" aria-label="Popular product shortcuts">
       <span class="filter-label">Popular</span>
@@ -697,161 +860,104 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       <button class="search-chip" data-search="GHK-Cu">GHK-Cu</button>
       <button class="search-chip" data-search="CJC">CJC/Ipa</button>
     </div>
-    <div class="filter-select-row" id="filterRow" aria-label="Product filters">
-      <label class="filter-select-group" for="categorySelect">
-        <span class="filter-select-label">Category</span>
-        <select class="filter-select" id="categorySelect">
-          <option value="all">All Categories</option>
-          <option value="GLP-1 &amp; Incretin">GLP-1 &amp; Incretin</option>
-          <option value="Repair &amp; Recovery">Repair &amp; Recovery</option>
-          <option value="Growth Hormone Research">Growth Hormone Research</option>
-          <option value="Bioregulators">Bioregulators</option>
-          <option value="Metabolic &amp; Mitochondrial">Metabolic &amp; Mitochondrial</option>
-          <option value="Longevity &amp; Cellular Health">Longevity &amp; Cellular Health</option>
-          <option value="Cognitive &amp; Nootropic">Cognitive &amp; Nootropic</option>
-          <option value="Skin, Tanning &amp; Sexual Health">Skin, Tanning &amp; Sexual Health</option>
-          <option value="Supplies">Supplies</option>
-          <option value="Uncategorized">Uncategorized</option>
-        </select>
-      </label>
-      <label class="filter-select-group" for="formatSelect">
-        <span class="filter-select-label">Format</span>
-        <select class="filter-select" id="formatSelect">
-          <option value="all">All Types</option>
-          <option value="Vials">Vials</option>
-          <option value="Blends">Blends</option>
-          <option value="Capsules &amp; Oral">Capsules &amp; Oral</option>
-          <option value="Nasal Sprays">Nasal Sprays</option>
-          <option value="Liquids">Liquids</option>
-          <option value="Topicals">Topicals</option>
-          <option value="Supplies">Supplies</option>
-        </select>
-      </label>
-      <label class="filter-select-group" for="vendorSelect">
-        <span class="filter-select-label">Vendor</span>
-        <select class="filter-select" id="vendorSelect">
-          <option value="all">All Vendors</option>
-          <option value="Glacier Aminos">Glacier Aminos</option>
-          <option value="Ion Peptide">Ion Peptide</option>
-          <option value="LabSourced Peptides">LabSourced Peptides</option>
-          <option value="Mile High Peptides">Mile High Peptides</option>
-          <option value="Southern Aminos">Southern Aminos</option>
-          <option value="Flawless Compounds">Flawless Compounds</option>
-          <option value="Glow Aminos">Glow Aminos</option>
-          <option value="Instant Peptides">Instant Peptides</option>
-          <option value="Solyn Labs">Solyn Labs</option>
-          <option value="Oneday Compounds">Oneday Compounds</option>
-        </select>
-      </label>
-      <label class="filter-select-group sort-select-group" for="sortSelect">
-        <span class="filter-select-label">Sort</span>
-        <select class="filter-select" id="sortSelect">
-          <option value="product-asc">Name A-Z</option>
-          <option value="price-asc">Price Low-High</option>
-          <option value="price-desc">Price High-Low</option>
-          <option value="after-asc">After Code Low-High</option>
-          <option value="after-desc">After Code High-Low</option>
-          <option value="company-asc">Vendor A-Z</option>
-          <option value="stock-desc">In Stock First</option>
-          <option value="discount-desc">Discount High-Low</option>
-        </select>
-      </label>
-      <button class="clear-btn" type="button" onclick="clearFilters()">Clear all filters</button>
-      <div class="view-toggle" role="group" aria-label="Results view">
-        <span class="view-toggle-label">View</span>
-        <button class="view-toggle-btn" id="viewTableBtn" type="button" onclick="setViewMode('table')" aria-pressed="true">Table</button>
-        <button class="view-toggle-btn" id="viewCardsBtn" type="button" onclick="setViewMode('cards')" aria-pressed="false">Cards</button>
-      </div>
+    <!-- Hidden legacy selects keep JS wiring intact -->
+    <div style="display:none" aria-hidden="true">
+      <select id="categorySelect"><option value="all">All Categories</option></select>
+      <select id="formatSelect"><option value="all">All Types</option></select>
+      <select id="vendorSelect"><option value="all">All Vendors</option></select>
+      <select id="sortSelect"><option value="product-asc">Name A-Z</option></select>
     </div>
     <div class="active-filter-row" id="activeFilterRow" aria-live="polite"></div>
   </div>
 </div>
 
-<main>
-  <section class="table-section" id="priceTable">
-    <div class="table-wrap">
-      <div class="table-scroll">
-        <table id="desktopTable">
-          <thead><tr>
-            <th onclick="sortTable('product')" id="th-product">Product</th>
-            <th onclick="sortTable('company')" id="th-company">Vendor</th>
-            <th onclick="sortTable('category')" id="th-category">Category</th>
-            <th onclick="sortTable('price')" id="th-price">Price</th>
-            <th onclick="sortTable('after')" id="th-after">After Code</th>
-            <th onclick="sortTable('stock')" id="th-stock">In Stock</th>
-            <th>Visit</th>
-          </tr></thead>
-          <tbody id="tableBody"></tbody>
-        </table>
+<main id="priceTable">
+
+  <!-- ── COMPARE BY PRODUCT VIEW ─────────────────────────── -->
+  <div id="compareView">
+
+    <!-- Unified filter bar: view toggle + category + format + more filters -->
+    <div class="unified-filter-bar">
+      <div class="unified-filter-inner">
+
+        <!-- Row 1: count + sort -->
+        <div class="ufb-top-row">
+          <div class="ufb-meta">
+            <span class="ufb-count">Showing <strong id="visibleCount">0</strong> groups</span>
+            <select class="vm-sort" id="cardSortSelect" onchange="onSortChange()" aria-label="Sort results">
+              <option value="name-asc">A to Z</option>
+              <option value="name-desc">Z to A</option>
+              <option value="vendors-desc">Most vendors</option>
+            </select>
+          </div>
+          <button class="cf-more-btn" onclick="clearFilters()" id="clearAllBtn" style="display:none">✕ Clear filters</button>
+        </div>
+
+        <!-- Row 1b: vendor chips -->
+        <div class="ufb-chips-row">
+          <span class="ufb-label">VENDOR</span>
+          <div class="cf-chips" id="vendorChips" role="group" aria-label="Vendor filter">
+            <button class="cf-chip active" data-vendor="all" onclick="setVendorChip('all',this)">All vendors</button>
+            <button class="cf-chip" data-vendor="Glacier Aminos"      onclick="setVendorChip('Glacier Aminos',this)">Glacier Aminos</button>
+            <button class="cf-chip" data-vendor="Ion Peptide"         onclick="setVendorChip('Ion Peptide',this)">Ion Peptide</button>
+            <button class="cf-chip" data-vendor="LabSourced Peptides" onclick="setVendorChip('LabSourced Peptides',this)">LabSourced</button>
+            <button class="cf-chip" data-vendor="Mile High Peptides"  onclick="setVendorChip('Mile High Peptides',this)">Mile High</button>
+            <button class="cf-chip" data-vendor="Southern Aminos"     onclick="setVendorChip('Southern Aminos',this)">Southern Aminos</button>
+            <button class="cf-chip" data-vendor="Flawless Compounds"  onclick="setVendorChip('Flawless Compounds',this)">Flawless</button>
+            <button class="cf-chip" data-vendor="Glow Aminos"         onclick="setVendorChip('Glow Aminos',this)">Glow Aminos</button>
+            <button class="cf-chip" data-vendor="Instant Peptides"    onclick="setVendorChip('Instant Peptides',this)">Instant Peptides</button>
+            <button class="cf-chip" data-vendor="Solyn Labs"          onclick="setVendorChip('Solyn Labs',this)">Solyn Labs</button>
+            <button class="cf-chip" data-vendor="Oneday Compounds"    onclick="setVendorChip('Oneday Compounds',this)">Oneday</button>
+          </div>
+        </div>
+
+        <!-- Row 2: category chips -->
+        <div class="ufb-chips-row">
+          <span class="ufb-label">CATEGORY</span>
+          <div class="cf-chips" id="catChips" role="group" aria-label="Category filter">
+            <button class="cf-chip active" data-cat="all"                        onclick="setCatFilter('all',this)">All</button>
+            <button class="cf-chip" data-cat="Repair &amp; Recovery"             onclick="setCatFilter('Repair & Recovery',this)">Repair &amp; Recovery</button>
+            <button class="cf-chip" data-cat="GLP-1 &amp; Incretin"              onclick="setCatFilter('GLP-1 & Incretin',this)">GLP-1</button>
+            <button class="cf-chip" data-cat="Longevity &amp; Cellular Health"   onclick="setCatFilter('Longevity & Cellular Health',this)">Longevity</button>
+            <button class="cf-chip" data-cat="Growth Hormone Research"           onclick="setCatFilter('Growth Hormone Research',this)">Growth Hormone</button>
+            <button class="cf-chip" data-cat="Metabolic &amp; Mitochondrial"     onclick="setCatFilter('Metabolic & Mitochondrial',this)">Metabolic</button>
+            <button class="cf-chip" data-cat="Cognitive &amp; Nootropic"         onclick="setCatFilter('Cognitive & Nootropic',this)">Cognitive</button>
+            <button class="cf-chip" data-cat="Skin, Tanning &amp; Sexual Health" onclick="setCatFilter('Skin, Tanning & Sexual Health',this)">Skin &amp; Tanning</button>
+          </div>
+        </div>
+
+        <!-- Row 3: format chips + more filters -->
+        <div class="ufb-chips-row">
+          <span class="ufb-label">FORMAT</span>
+          <div class="cf-chips" id="fmtChips" role="group" aria-label="Format filter">
+            <button class="cf-chip active" data-fmt="all"          onclick="setFmtFilter('all',this)">All forms</button>
+            <button class="cf-chip" data-fmt="Vials"               onclick="setFmtFilter('Vials',this)">Vials</button>
+            <button class="cf-chip" data-fmt="Capsules &amp; Oral" onclick="setFmtFilter('Capsules & Oral',this)">Capsules</button>
+            <button class="cf-chip" data-fmt="Nasal Sprays"        onclick="setFmtFilter('Nasal Sprays',this)">Sprays</button>
+            <button class="cf-chip" data-fmt="Blends"              onclick="setFmtFilter('Blends',this)">Blends</button>
+            <button class="cf-chip" data-fmt="Liquids"             onclick="setFmtFilter('Liquids',this)">Liquids</button>
+            <button class="cf-chip" data-fmt="Topicals"            onclick="setFmtFilter('Topicals',this)">Topicals</button>
+          </div>
+
+        </div>
+
       </div>
-      <!-- Mobile cards, product-first grouped layout -->
-      <div class="m-cards" id="mobileCards"></div>
-      <div class="m-loading" id="mLoading"><div class="m-spinner"></div>Loading live prices…</div>
+    </div>
+
+    <!-- Product cards -->
+    <div class="grouped-cards-wrap">
+      <div class="grouped-cards" id="cardsGrid"></div>
       <div class="no-results" id="noResults">
         <div class="no-results-icon">🔍</div>
         <div class="no-results-text">No products found</div>
-        <div class="no-results-sub">Try a different search or clear your filters</div>
+        <div class="no-results-sub">Try adjusting your search or clearing filters</div>
       </div>
-    </div>
-  </section>
-
-  <div class="intro-wrap below-table-intro">
-    <div class="intro-para">
-      <h2>About this price tracker</h2>
-      <p>MyPeptidePrice.com is a free, independent price tracking tool for researchers sourcing peptides from tracked vendors. We maintain a 300+ product baseline and refresh API-connected vendor feeds when available, covering compounds and product families like BPC-157, TB-500, NAD+, GLP-1 research peptides, growth hormone research peptides, capsules, sprays, blends, and supplies. Every vendor on this site must publish third-party Certificates of Analysis meeting our <strong>7/7 testing standard</strong>, independently verified for net purity, net content, heavy metals, endotoxins, identification, sterility, and conformity. We display the data. We do not rank, recommend, or endorse any product or vendor. Use code <strong>SAMMYC</strong> at checkout for available discounts at participating vendors.</p>
+      <div class="m-loading" id="mLoading"><div class="m-spinner"></div>Loading live prices…</div>
     </div>
   </div>
 
-  <div class="intro-wrap">
-    <div class="disclaimer-bar">
-      ⚠️ <strong>Research Disclaimer.</strong> MyPeptidePrice.com is an independent price information aggregator. All products listed are sold by third-party vendors for laboratory research purposes only. Some links are affiliate links, but we do not sell products or control vendor transactions. Prices are subject to change. Always verify current pricing directly with the vendor before purchasing. This site does not constitute medical advice. Use code <strong>SAMMYC</strong> at checkout for available discounts.
-    </div>
-  </div>
+
 </main>
-
-<footer>
-  <div class="finner">
-    <div class="fgrid">
-      <div>
-        <div class="fbrand">🔬 My<em>PeptidePrice</em>.com</div>
-        <p class="fdesc">Independent research peptide price tracking across tracked vendors. Product counts update as live feeds refresh. No recommendations, no rankings, just the data.</p>
-      </div>
-      <div class="fcol">
-        <h4>Browse</h4>
-        <ul>
-          <li><a href="index.html">All Prices</a></li>
-          <li><a href="index.html?cat=GLP-1+%26+Incretin">GLP-1 &amp; Incretin</a></li>
-          <li><a href="index.html?cat=Repair+%26+Recovery">Repair &amp; Recovery</a></li>
-          <li><a href="index.html?cat=Growth+Hormone+Research">Growth Hormone Research</a></li>
-          <li><a href="vendors.html">All Vendors</a></li>
-        </ul>
-      </div>
-      <div class="fcol">
-        <h4>About</h4>
-        <ul>
-          <li><a href="faq.html">FAQ</a></li>
-          <li><a href="faq.html#testing">Testing Standards</a></li>
-          <li><a href="faq.html#affiliate">Affiliate Disclosure</a></li>
-          <li><a href="privacy.html">Privacy Policy</a></li>
-          <li><a href="terms.html">Terms of Service</a></li>
-          <li><a href="vendors.html">Contact</a></li>
-        </ul>
-      </div>
-      <div class="fcol">
-        <h4>Discount Code</h4>
-        <ul>
-          <li style="font-size:20px;font-weight:800;color:#fff;letter-spacing:1px">SAMMYC</li>
-          <li style="font-size:11px;color:rgba(255,255,255,.5);margin-top:4px">Available discounts vary by vendor</li>
-          <li style="margin-top:10px"><a href="https://www.tiktok.com/@sammyc2296" target="_blank" rel="noopener noreferrer" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'social_click',platform:'tiktok',handle:'sammyc2296',button_location:'footer'});" style="display:inline-flex;align-items:center;gap:6px;color:#fff;text-decoration:none;font-size:12px;font-weight:800">♪ TikTok: @sammyc2296</a></li>
-        </ul>
-      </div>
-    </div>
-    <div class="fbot">
-      <p>© 2026 MyPeptidePrice.com · <strong>Affiliate Disclosure:</strong> We may earn commissions from links on this site. All products listed are for research purposes only. Not medical advice.</p>
-      <p><a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Service</a> · Last updated: May 2026</p>
-    </div>
-  </div>
-</footer>
 
 <script>
 const FULL_LOGOS = {
@@ -1009,301 +1115,638 @@ function afterCodeText(price, pct){
   return `${formatMoney(adjusted[0])} to ${formatMoney(adjusted[adjusted.length-1])}`;
 }
 
-let activeCat="all", activeFormat="all", activeVendor="all", searchTerm="", sortCol="product", sortDir="asc", filtered=[...PRODUCTS];
-let viewMode = localStorage.getItem("mpp_view_mode") || "auto";
+
+// ── PRODUCT FAMILY NORMALIZATION ──────────────────────────
+const PRODUCT_ALIASES = {}; // populated below
+
+function normalizeFamily(raw){
+  const s = raw.trim();
+  const t = s.toLowerCase();
+
+  // Step 1: strip trailing size noise: "- 10mg", "(10mg)", "10MG 5mg" etc.
+  let clean = s
+    .replace(/\s*[-–]\s*\d[\d.,]*\s*m[cgl]?g?\b/gi,'')
+    .replace(/\s*\(\d[\d.,]*\s*m[cgl]?g?\)/gi,'')
+    .replace(/\s+\d[\d.,]*\s*m[cgl]?g?\s*$/gi,'')
+    .replace(/\s+\d[\d.,]*\s*ml?\s*$/gi,'')
+    .replace(/\s+\d+\s*iu\b/gi,'')
+    // strip "(Raw) - Xg" raw material noise
+    .replace(/\s*\(raw\)\s*[-–]?\s*\d+g?\s*$/gi,'')
+    .trim();
+
+  // Step 2: strip vendor name prefixes
+  clean = clean.replace(/^(glacier\s+aminos?\s*|ion\s*peptide\s*|southern\s*aminos?\s*|labsourced\s*peptides?\s*|mile\s*high\s*(?:compounds?|peptides?)?\s*|solyn\s*labs?\s*)/i,'').trim();
+
+  // Step 3: strip trailing format words
+  clean = clean.replace(/\s*(research\s*)?(peptide\s+)?(vial|capsules?|spray|liquid|topical)\s*$/i,'').trim();
+
+  const cl = clean.toLowerCase();
+
+  // Step 4: alias lookup (longest match wins)
+  const ALIASES = {
+    // BPC-157
+    "bpc-157":"BPC-157","bpc157":"BPC-157","bpc 157":"BPC-157",
+    "bpc-kpv":"BPC-KPV",
+    "bpc/tb 500 wolverine":"Wolverine (BPC+TB500)","bpc157+tb500":"BPC-157 + TB-500",
+    "bpc157+tb500+kpv":"BPC-157 + TB-500 + KPV",
+    // TB-500
+    "tb-500":"TB-500","tb500":"TB-500","tb 500":"TB-500",
+    "tb-4 full chain":"TB-4 Full Chain",
+    // Sermorelin
+    "sermorelin":"Sermorelin","sermo":"Sermorelin",
+    // Tesamorelin
+    "tesamorelin":"Tesamorelin","tesa":"Tesamorelin",
+    // Ipamorelin
+    "ipamorelin":"Ipamorelin","ipamo":"Ipamorelin",
+    // Tesa+Ipa blends
+    "tesa/ipa":"Tesamorelin + Ipamorelin","tesa/ipamo":"Tesamorelin + Ipamorelin",
+    "tesa/ipa peptide blend":"Tesamorelin + Ipamorelin",
+    "2x blend ipamorelin 5mg + tesamorelin 5mg | blend (10mg total)":"Tesamorelin + Ipamorelin",
+    "2x blend ipamorelin":"Tesamorelin + Ipamorelin",
+    // CJC-1295
+    "cjc-1295":"CJC-1295","cjc 1295":"CJC-1295",
+    "cjc/ipa":"CJC-1295 + Ipamorelin",
+    "cjc 1295 no dac/ipa blend":"CJC-1295 + Ipamorelin",
+    "cjc-1295 (no dac), ipamorelin (blend)":"CJC-1295 + Ipamorelin",
+    "cjc-1295 no dac/ipamorelin":"CJC-1295 + Ipamorelin",
+    "cjc-1295+ipamo":"CJC-1295 + Ipamorelin",
+    // NAD+
+    "nad+":"NAD+","nad plus":"NAD+",
+    "nad+ buffered":"NAD+ Buffered",
+    "nad+ buccal strip":"NAD+ Buccal Strip",
+    // GHK-Cu
+    "ghk-cu":"GHK-Cu","ghkcu":"GHK-Cu",
+    "ghkpv":"GHK-Cu + KPV",
+    // AHK-Cu
+    "ahk-cu":"AHK-Cu","ahkcu":"AHK-Cu","ahk-cu (raw)":"AHK-Cu (Raw)",
+    // MOTS-C
+    "mots-c":"MOTS-C","motsc":"MOTS-C","mots-c":"MOTS-C",
+    // 5-Amino-1MQ
+    "5-amino-1mq":"5-Amino-1MQ","5-amino 1mq":"5-Amino-1MQ","5 amino 1mq":"5-Amino-1MQ",
+    // AOD-9604
+    "aod-9604":"AOD-9604","aod9604":"AOD-9604","aod 9604":"AOD-9604",
+    // PT-141
+    "pt-141":"PT-141","pt141":"PT-141",
+    // FOXO4-DRI
+    "foxo4-dri":"FOXO4-DRI","fox04-dri":"FOXO4-DRI","fox04":"FOXO4-DRI","foxo4":"FOXO4-DRI",
+    // LL-37
+    "ll-37":"LL-37","ll37":"LL-37","ll 37":"LL-37",
+    // KPV
+    "kpv":"KPV",
+    // SLU-PP-332
+    "slu-pp-332":"SLU-PP-332","slu pp 332":"SLU-PP-332",
+    // Snap-8
+    "snap-8":"Snap-8","snap8":"Snap-8","snap 8":"Snap-8",
+    // PEG-MGF
+    "peg-mgf":"PEG-MGF",
+    // IGF-LR3
+    "igf-lr3":"IGF-LR3","igf1-lr3":"IGF-LR3","igf-1 lr3":"IGF-LR3","igf-lr3 - 1mg":"IGF-LR3",
+    "igf-1 lr3 1mg":"IGF-LR3","igf-1 lr3 0.1mg":"IGF-LR3",
+    // Semax / Selank
+    "semax":"Semax","selank":"Selank",
+    "semax/selank":"Semax + Selank",
+    "semax (n-acetyl)":"Semax (N-Acetyl)","selank (n-acetyl)":"Selank (N-Acetyl)",
+    "semax 10mg + selank 10mg | blend (20mg total)":"Semax + Selank",
+    // VIP
+    "vip":"VIP",
+    // DSIP
+    "dsip":"DSIP",
+    // Epitalon / Epithalon
+    "epitalon":"Epitalon","epithalon":"Epitalon",
+    // SS-31
+    "ss-31":"SS-31","ss31":"SS-31","s-31-s":"SS-31",
+    // GHRP
+    "ghrp-2":"GHRP-2","ghrp-6":"GHRP-6",
+    // Hexarelin
+    "hexarelin":"Hexarelin","hexarelin acetate":"Hexarelin",
+    // Thymalin / Thymulin
+    "thymalin":"Thymalin","thymulin":"Thymulin","thymalin (thymulin)":"Thymalin",
+    // Thymosin Alpha-1
+    "thymosin alpha-1":"Thymosin Alpha-1","thymosin alpha 1":"Thymosin Alpha-1",
+    // Pinealon
+    "pinealon":"Pinealon",
+    // Cartalax / Cortagen / Bronchogen (bioregulators)
+    "cartalax":"Cartalax","cortagen":"Cortagen","bronchogen":"Bronchogen",
+    "cartalax / tb4 / bpc-157":"Cartalax + TB4 + BPC-157",
+    // ARA-290
+    "ara-290":"ARA-290",
+    // Kisspeptin
+    "kisspeptin":"Kisspeptin","kisspeptin-10":"Kisspeptin",
+    // KLOW / GLOW
+    "klow":"KLOW","glow blend":"GLOW","glow":"GLOW",
+    "klow blend":"KLOW",
+    // Melanotan
+    "melanotan i":"Melanotan I","melanotan 1":"Melanotan I",
+    "melanotan ii":"Melanotan II","melanotan 2":"Melanotan II",
+    "mlt i":"Melanotan I","mlt ii":"Melanotan II","mt1":"Melanotan I","mt2":"Melanotan II",
+    // LIPO-C
+    "lipo-c":"LIPO-C",
+    // Cerebrolysin
+    "cerebrolysin":"Cerebrolysin",
+    // Glutathione
+    "glutathione":"Glutathione",
+    // Adamax
+    "adamax":"Adamax",
+    // Oxytocin
+    "oxytocin":"Oxytocin","oxt-10":"Oxytocin",
+    // Testagen / GHKPV
+    "testagen":"Testagen","ghkpv":"GHK-Cu + KPV",
+    // Wolverine
+    "wolverine":"Wolverine","wolverine blend":"Wolverine",
+    // PNC-27
+    "pnc-27":"PNC-27",
+    // PE-22-28
+    "pe-22-28":"PE-22-28",
+    // Methylene Blue (Metholine Blue is a vendor typo for the same thing)
+    "methylene blue":"Methylene Blue","metholine blue":"Methylene Blue",
+    // Cagrilintide (many vendor spellings)
+    "cagrilintide":"Cagrilintide","cagrilinitide":"Cagrilintide","cagri":"Cagrilintide","cag":"Cagrilintide",
+    // Mazdutide / Metaboflex / Neuroluxe (vendor blends)
+    "mazdutide":"Mazdutide","metaboflex":"Metaboflex","neuroluxe":"Neuroluxe",
+    // Tesofensine
+    "tesofensine":"Tesofensine",
+    // MTP-31 / MTT-31 same compound
+    "mtp-31":"MTP-31","mtt-31":"MTP-31",
+    // HGH Frag
+    "hgh frag 176-191":"HGH Frag 176-191","hgh frag":"HGH Frag 176-191",
+    // Vendor-proprietary GLP names
+    "gla-1 sm":"GLA-1 (Semaglutide)",
+    "gla-2 trz":"GLA-2 (Tirzepatide)","gla-2.5 trz/rt":"GLA-2.5 (TRZ+RT)",
+    "gla-3 rt":"GLA-3 (Retatrutide)","gla-3 rt/cagri":"GLA-3 + Cagrilintide",
+    "ion-1s":"ION-1S (Semaglutide)","ion-2t":"ION-2T (Tirzepatide)","ion-3r":"ION-3R (Retatrutide)",
+    "sa-2t":"SA-2T (Tirzepatide)","sa-3r":"SA-3R (Retatrutide)","sa-4c":"SA-4C (Cagrilintide)",
+    "sa-3r / sa-2t blend":"SA-3R + SA-2T Blend","sa-3r/sa-4c blend":"SA-3R + SA-4C Blend",
+    "glp-r3 (retatrutide)":"GLP-R3 (Retatrutide)","glp-t2 (tirzepatide)":"GLP-T2 (Tirzepatide)",
+    "retatrutide 20mg + tirzepatide 40mg | blend (60mg total)":"Retatrutide + Tirzepatide Blend",
+    "retatrutide 5mg + cagrilintide 5mg | blend (10mg total)":"Retatrutide + Cagrilintide Blend",
+    // Misc
+    "b12":"B12","humanin":"Humanin","l-carnitine":"L-Carnitine",
+    "orforglipron":"Orforglipron","hcg":"HCG",
+    "peptide-r":"Peptide-R (TB-500 analog)","peptide-t":"Peptide-T (Tirzepatide analog)",
+    "peg-mgf (2mg)":"PEG-MGF","peg-mgf - 2mg":"PEG-MGF",
+    "pnc-27 (5mg)":"PNC-27","pnc-27 - 10mg":"PNC-27",
+    "pe-22-28 (10mg)":"PE-22-28",
+    "sermo":"Sermorelin","ipamo":"Ipamorelin","tesa":"Tesamorelin",
+    "§-31":"§-31","ksptn":"KSPTN",
+    "snap 8 (raw) - 1g":"Snap-8 (Raw)","syn-ake (raw) - 1g":"Syn-Ake (Raw)",
+    "ghk-cu (raw) - 1g":"GHK-Cu (Raw)",
+  };
+
+  // Try cleaned lowercase, longest match first
+  const sortedAliases = Object.entries(ALIASES).sort((a,b)=>b[0].length-a[0].length);
+  for(const [alias, canonical] of sortedAliases){
+    if(cl === alias || cl.startsWith(alias+" ") || cl.startsWith(alias+"/") || cl.startsWith(alias+"+") || cl.startsWith(alias+"("))
+      return canonical;
+  }
+  // Try original lowercase
+  for(const [alias, canonical] of sortedAliases){
+    if(t === alias || t.startsWith(alias+" ") || t.startsWith(alias+"/") || t.startsWith(alias+"+"))
+      return canonical;
+  }
+  return clean || s;
+}
+
+function getProductFamily(p){ return normalizeFamily(p.product||""); }
+
+
+function buildGroups(products){
+  const map = new Map();
+  for(const p of products){
+    if(p.category === "Supplies") continue;
+    const family = getProductFamily(p);
+    const key = `${p.category}||${family.toLowerCase()}`;
+    if(!map.has(key)) map.set(key, {family, category:p.category, listings:[]});
+    map.get(key).listings.push(p);
+  }
+  const groups = [];
+  for(const [,g] of map){
+    g.listings.sort((a,b)=>{
+      const fa = fp(a)||999999, fb = fp(b)||999999;
+      return fa-fb || (a.company < b.company ? -1 : 1);
+    });
+    groups.push(g);
+  }
+  return groups;
+}
+
+function fp(p){
+  const base = parsePrice(p.price);
+  if(!base) return null;
+  const sale = p.sale_price ? parsePrice(p.sale_price) : null;
+  const disc = VENDOR_DISCOUNT[p.company]||0;
+  return (sale||base)*(1-disc/100);
+}
+
+// ── STATE ─────────────────────────────────────────────────
+let activeCat="all", activeFmt="all", activeVendorFilter="all", searchTerm="";
+let sortMode="name-asc", displayMode="compare";
+let allGroups=[];
 window._apisLoading = true;
+window._liveVendorLoading = new Set(); // populated after LIVE_FEEDS is declared below
 
-function getDefaultViewMode(){
-  return window.matchMedia("(max-width: 768px)").matches ? "cards" : "table";
+// ── CATEGORY COLOR MAP ─────────────────────────────────────
+const CAT_COL = {
+  "GLP-1 & Incretin":"cat-col-glp1","Repair & Recovery":"cat-col-recovery",
+  "Growth Hormone Research":"cat-col-growth","Longevity & Cellular Health":"cat-col-longevity",
+  "Metabolic & Mitochondrial":"cat-col-metabolic","Cognitive & Nootropic":"cat-col-cognitive",
+  "Skin, Tanning & Sexual Health":"cat-col-skin","Bioregulators":"cat-col-bioregulators",
+  "Supplies":"cat-col-supplies","Uncategorized":"cat-col-supplies"
+};
+
+// ── VARIATION EXTRACTION ─────────────────────────────────────
+function extractVariation(productName, listing){
+  if(!listing || listing === productName) return null;
+  // Strip product name prefix + separator
+  const escaped = productName.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  const stripped = listing.replace(new RegExp('^'+escaped+'\\s*[-\u2013\u2014/]\\s*','i'),'').trim();
+  // Valid variation: something changed, not too long, not the same
+  if(stripped && stripped !== listing && stripped.length < 60 && stripped.length > 0){
+    return stripped;
+  }
+  return null;
 }
 
-function getActiveViewMode(){
-  return viewMode === "auto" ? getDefaultViewMode() : viewMode;
+function sortVariations(vars){
+  // Sort: numeric mg first (ascending), then alpha
+  return vars.slice().sort((a,b)=>{
+    const na = parseFloat(a), nb = parseFloat(b);
+    if(!isNaN(na) && !isNaN(nb)) return na - nb;
+    if(!isNaN(na)) return -1;
+    if(!isNaN(nb)) return 1;
+    return a.localeCompare(b);
+  });
 }
 
-function updateViewMode(){
-  const mode = getActiveViewMode();
-  const section = document.getElementById("priceTable");
-  const tableBtn = document.getElementById("viewTableBtn");
-  const cardsBtn = document.getElementById("viewCardsBtn");
-  if(section){
-    section.classList.toggle("view-table", mode === "table");
-    section.classList.toggle("view-cards", mode === "cards");
-  }
-  if(tableBtn){
-    tableBtn.classList.toggle("active", mode === "table");
-    tableBtn.setAttribute("aria-pressed", mode === "table" ? "true" : "false");
-  }
-  if(cardsBtn){
-    cardsBtn.classList.toggle("active", mode === "cards");
-    cardsBtn.setAttribute("aria-pressed", mode === "cards" ? "true" : "false");
-  }
+// ── RENDER VENDOR ROW ──────────────────────────────────────
+function renderVendorRow(p){
+  const base = parsePrice(p.price);
+  const disc = VENDOR_DISCOUNT[p.company]||0;
+  const finalVal = fp(p);
+  const vc = VENDOR_CONFIG[p.company]||{url:"#"};
+  const finalStr = finalVal !== null ? formatMoney(finalVal) : (p.price||"");
+  const origStr  = (base&&finalVal!==null&&disc>0) ? formatMoney(base) : "";
+  const discStr  = disc>0 ? disc+"% off" : "";
+  // Show variation label under vendor name if it exists and differs from product name
+  const variation = extractVariation(p.product||"", p.listing||"");
+  const sub = variation ? `<div class="vrow-listing">${variation}</div>` : "";
+  const co = (p.company||"").replace(/'/g,"\\'");
+  const pr = (p.product||"").replace(/'/g,"\\'");
+  const ca = (p.category||"").replace(/'/g,"\\'");
+  const fo = (p.format||"").replace(/'/g,"\\'");
+  return `<a class="vendor-row" href="${vc.url}" target="_blank" rel="noopener sponsored"
+    onclick="trackOutbound(event,'${co}','${pr}','${ca}','${fo}','${base||0}','${finalVal||0}','${disc}','${vc.url}')"
+    aria-label="Visit ${p.company} for ${p.product}">
+    <div class="vrow-left">
+      <div class="vrow-name-line">
+        <span class="vrow-name">${p.company}</span>
+        ${discStr ? `<span class="vrow-disc">${discStr}</span>` : ""}
+      </div>
+      ${sub}
+    </div>
+    <div class="vrow-right">
+      <div class="vrow-prices">
+        ${finalStr ? `<span class="vrow-final">${finalStr}</span>` : ""}
+        ${origStr  ? `<span class="vrow-orig">${origStr}</span>`  : ""}
+      </div>
+      <span class="vrow-chevron">›</span>
+    </div>
+  </a>`;
 }
 
-function setViewMode(mode){
-  viewMode = mode;
-  localStorage.setItem("mpp_view_mode", mode);
-  updateViewMode();
-  applyFilters();
+// ── RENDER PRODUCT CARD ────────────────────────────────────────────────────
+function renderCard(g, gIdx){
+  const colClass = CAT_COL[g.category]||"cat-col-supplies";
+
+  // ── Detect variations ───────────────────────────────────────────────────
+  // Check if ANY listing has a clean variation label
+  const listingsWithVar = g.listings.filter(p => extractVariation(p.product||"", p.listing||"") !== null);
+  const hasVariations = listingsWithVar.length > 0;
+
+  let variations = [];
+  let variationMap = {}; // variation label → listings array
+  let activeVariation = null;
+
+  if(hasVariations){
+    // Group by variation
+    for(const p of g.listings){
+      const v = extractVariation(p.product||"", p.listing||"") || "__no_var__";
+      if(!variationMap[v]) variationMap[v] = [];
+      variationMap[v][p.company] = p; // one per company per variation
+      variationMap[v].push(p);
+    }
+    // Collect and sort variation labels (exclude __no_var__ if real vars exist)
+    const rawVars = Object.keys(variationMap).filter(v => v !== "__no_var__");
+    variations = sortVariations(rawVars);
+    // Default to first variation
+    activeVariation = variations[0] || null;
+  }
+
+  // Listings to show: if we have variations, show first variation's listings
+  // otherwise show all
+  let displayListings = g.listings;
+  if(activeVariation && variationMap[activeVariation]){
+    displayListings = variationMap[activeVariation];
+  }
+  // Also include __no_var__ listings (static fallback rows) alongside
+  // but only if we don't have enough variation data
+  if(activeVariation && variationMap["__no_var__"] && displayListings.length === 0){
+    displayListings = variationMap["__no_var__"];
+  }
+
+  // Sort display listings by final price
+  displayListings = displayListings.slice().sort((a,b)=>{
+    const fa=fp(a)||999999, fb=fp(b)||999999;
+    return fa-fb||(a.company<b.company?-1:1);
+  });
+
+  const visible  = displayListings.slice(0,3);
+  const extra    = displayListings.slice(3);
+  const hasMore  = extra.length > 0;
+  const vendorCount = g.listings.length;
+  const uniqueVendors = [...new Set(g.listings.map(p=>p.company))].length;
+
+  // Build variation pills HTML
+  const varPillsHTML = hasVariations && variations.length > 1 ? `
+    <div class="pcard-variations" role="group" aria-label="Size variations">
+      <span class="pcard-var-label">SIZE</span>
+      ${variations.map((v,i)=>`<button class="var-pill${i===0?' active':''}" data-var="${v.replace(/"/g,'&quot;')}" onclick="selectVariation(this,${gIdx})" aria-pressed="${i===0}">${v}</button>`).join("")}
+    </div>` : "";
+
+  const moreLabel = `Show ${extra.length} more vendor${extra.length!==1?"s":""}`;
+
+  return `<article class="prod-card" data-gidx="${gIdx}">
+    <div class="pcard-top">
+      <div class="pcard-eyerow">
+        <span class="pcard-cat ${colClass}">${g.category||""}</span>
+        <span class="pcard-updated">Updated weekly</span>
+      </div>
+      <div class="pcard-name-row">
+        <h2 class="pcard-name">${g.family}</h2>
+        <span class="pcard-vcnt">${uniqueVendors} vendor${uniqueVendors!==1?"s":""}</span>
+      </div>
+    </div>
+    ${varPillsHTML}
+    <div class="pcard-vendors" id="vendors-${gIdx}">
+      <div class="pcard-vendors-head">
+        <span>Prices shown after <strong>SAMMYC</strong></span>
+        <span>Low to high</span>
+      </div>
+      ${visible.map(p=>renderVendorRow(p)).join("")}
+    </div>
+    ${hasMore ? `
+    <div class="pcard-expanders">
+      <button class="pcard-exp-btn" aria-expanded="false"
+        onclick="toggleMore(this,${gIdx})" aria-controls="extra-${gIdx}">
+        <span>${moreLabel}</span>
+        <span class="pcard-exp-caret">▾</span>
+      </button>
+    </div>
+    <div class="pcard-extra-rows" id="extra-${gIdx}">
+      ${extra.map(p=>renderVendorRow(p)).join("")}
+    </div>` : ""}
+  </article>`;
+}
+
+// ── VARIATION SELECTION ────────────────────────────────────────────────────
+function selectVariation(btn, gIdx){
+  const card = document.querySelector(`[data-gidx="${gIdx}"]`);
+  if(!card) return;
+
+  // Update active pill
+  card.querySelectorAll('.var-pill').forEach(b=>{
+    b.classList.remove('active');
+    b.setAttribute('aria-pressed','false');
+  });
+  btn.classList.add('active');
+  btn.setAttribute('aria-pressed','true');
+
+  const selectedVar = btn.dataset.var;
+  const g = getFilteredGroups()[gIdx];
+  if(!g) return;
+
+  // Get listings for this variation + sort
+  let varListings = g.listings.filter(p => extractVariation(p.product||"", p.listing||"") === selectedVar);
+  // fallback to all if none found
+  if(!varListings.length) varListings = g.listings;
+
+  varListings = varListings.slice().sort((a,b)=>{
+    const fa=fp(a)||999999, fb=fp(b)||999999;
+    return fa-fb||(a.company<b.company?-1:1);
+  });
+
+  const visible = varListings.slice(0,3);
+  const extra = varListings.slice(3);
+
+  // Re-render vendor section
+  const vendorSection = card.querySelector(`#vendors-${gIdx}`);
+  if(vendorSection){
+    vendorSection.innerHTML = `
+      <div class="pcard-vendors-head">
+        <span>Prices shown after <strong>SAMMYC</strong></span>
+        <span>Low to high</span>
+      </div>
+      ${visible.map(p=>renderVendorRow(p)).join("")}`;
+  }
+
+  // Re-render extra rows
+  const extraSection = card.querySelector(`#extra-${gIdx}`);
+  const expandRow = card.querySelector('.pcard-expanders');
+  if(extra.length > 0){
+    if(extraSection) extraSection.innerHTML = extra.map(p=>renderVendorRow(p)).join("");
+    if(expandRow) expandRow.style.display = "";
+  } else {
+    if(extraSection){ extraSection.innerHTML=""; extraSection.classList.remove('open'); }
+    if(expandRow) expandRow.style.display = "none";
+  }
+
+  // Update vendor count badge
+  const vcnt = card.querySelector('.pcard-vcnt');
+  const uniqueVendors = [...new Set(varListings.map(p=>p.company))].length;
+  if(vcnt) vcnt.textContent = `${uniqueVendors} vendor${uniqueVendors!==1?"s":""}`;
+
+  // Collapse show-more
+  const expBtn = card.querySelector('.pcard-exp-btn');
+  if(expBtn){ expBtn.setAttribute('aria-expanded','false'); }
+}
+
+// ── FILTER + RENDER PIPELINE ───────────────────────────────
+function getFilteredGroups(){
+  let groups = allGroups.filter(g=>{
+    if(activeCat!=="all" && g.category!==activeCat) return false;
+    if(activeFmt!=="all" && !g.listings.some(p=>p.format===activeFmt)) return false;
+    if(activeVendorFilter!=="all" && !g.listings.some(p=>p.company===activeVendorFilter)) return false;
+    if(searchTerm){
+      const q = searchTerm.toLowerCase();
+      const hay = (g.family+" "+g.category+" "+g.listings.map(p=>p.company+" "+p.product+" "+(p.listing||"")).join(" ")).toLowerCase();
+      if(!hay.includes(q)) return false;
+    }
+    return true;
+  });
+  if(sortMode==="name-asc")      groups.sort((a,b)=>a.family.localeCompare(b.family));
+  else if(sortMode==="name-desc") groups.sort((a,b)=>b.family.localeCompare(a.family));
+  else if(sortMode==="vendors-desc") groups.sort((a,b)=>b.listings.length-a.listings.length);
+  return groups;
 }
 
 function applyFilters(){
-  updateFilterControls();
-  filtered = PRODUCTS.filter(p=>{
-    const mC = activeCat==="all" || p.category===activeCat;
-    const mF = activeFormat==="all" || p.format===activeFormat;
-    const mV = activeVendor==="all" || p.company===activeVendor;
-    const q = searchTerm;
-    const mS = !q || (p.product||"").toLowerCase().includes(q) || (p.listing||"").toLowerCase().includes(q) || (p.company||"").toLowerCase().includes(q) || (p.category||"").toLowerCase().includes(q) || (p.format||"").toLowerCase().includes(q) || (p.raw_category||"").toLowerCase().includes(q);
-    return mC && mF && mV && mS;
-  });
-
-  // Sort
-  filtered.sort((a,b)=>{
-    let va, vb;
-    if(sortCol==="price"){va=parsePrice(a.price);vb=parsePrice(b.price);}
-    else if(sortCol==="after"){
-      const da=VENDOR_DISCOUNT[a.company]||0, db=VENDOR_DISCOUNT[b.company]||0;
-      va=parsePrice(a.price)*(1-da/100); vb=parsePrice(b.price)*(1-db/100);
-    }
-    else if(sortCol==="stock"){va=a.in_stock===true?1:a.in_stock===false?0:-1;vb=b.in_stock===true?1:b.in_stock===false?0:-1;}
-    else if(sortCol==="discount"){va=VENDOR_DISCOUNT[a.company]||0;vb=VENDOR_DISCOUNT[b.company]||0;}
-    else{va=(a[sortCol]||"").toLowerCase();vb=(b[sortCol]||"").toLowerCase();}
-    return sortDir==="asc"?(va>vb?1:va<vb?-1:0):(va<vb?1:va>vb?-1:0);
-  });
-
-  const count = filtered.length;
-  document.getElementById("visibleCount").textContent = count;
-  document.getElementById("totalProdCount").textContent = PRODUCTS.length;
-  const totalCountEl = document.getElementById("totalCount");
-  if(totalCountEl) totalCountEl.textContent = PRODUCTS.length;
-  const heroProductsCount = document.getElementById("heroProductsCount");
-  if(heroProductsCount) heroProductsCount.textContent = PRODUCTS.length;
-
-  const noRes = document.getElementById("noResults");
-  const mLoading = document.getElementById("mLoading");
-  const isMobile = window.matchMedia("(max-width: 768px)").matches;
-
-  const waitingForSelectedVendor = activeVendor !== "all" && window._liveVendorLoading && window._liveVendorLoading.has(activeVendor);
-  noRes.classList.toggle("show", count===0 && !waitingForSelectedVendor);
-  if(mLoading) mLoading.classList.toggle("show", count===0 && waitingForSelectedVendor);
-
-  const activeView = getActiveViewMode();
-  renderDesktop(filtered);
-  if(isMobile || activeView === "cards") renderMobile(filtered);
+  rebuildAndRender();
 }
 
-function renderDesktop(rows){
-  const tbody = document.getElementById("tableBody");
-  tbody.innerHTML = "";
-  const frag = document.createDocumentFragment();
-  rows.forEach(p=>{
-    const vc = VENDOR_CONFIG[p.company]||{};
-    const cc = CAT_CLASS[p.category]||"cat-other";
-    const pct = VENDOR_DISCOUNT[p.company]||0;
-    const logoSrc = vc.logo ? FULL_LOGOS[vc.logo] : "";
-    const vendorEl = logoSrc
-      ? `<div class="td-vendor"><img src="${logoSrc}" alt="${p.company}"/><span class="td-vendor-name">${p.company}</span></div>`
-      : `<div class="td-vendor"><span class="td-vendor-name">${p.company}</span></div>`;
-    const skuEl = p.sku ? `<div class="td-sku">${p.sku}</div>` : '';
-    let stockEl = '<span class="stock-na">,</span>';
-    if(p.in_stock===true) stockEl='<span class="stock-in">In Stock</span>';
-    if(p.in_stock===false) stockEl='<span class="stock-out">Out of Stock</span>';
-    const afterText = afterCodeText(p.price, pct);
-    const afterEl = afterText ? `<div class="td-price-after">${afterText}</div><div style="font-size:9px;color:var(--ink-3);margin-top:1px">SammyC · ${pct}% off</div>` : '<span class="stock-na">,</span>';
-    const href = p.url || vc.url || "#";
-    const tr = document.createElement("tr");
-    tr.innerHTML=`
-      <td><div class="td-product">${p.product}</div>${p.listing&&p.listing!==p.product?`<div class="td-listing">${p.listing}</div>`:""}</td>
-      <td>${vendorEl}</td>
-      <td><span class="cat-tag ${cc}">${p.category}</span>${p.format&&p.format!=="Vials"?`<br><span class="format-tag">${p.format}</span>`:""}</td>
-      <td><span class="td-price">${p.price}</span></td>
-      <td>${afterEl}</td>
-      <td>${stockEl}</td>
-      <td><a href="${href}" target="_blank" rel="noopener sponsored" class="btn-visit">View Price →</a></td>`;
-    frag.appendChild(tr);
-  });
-  tbody.appendChild(frag);
+function rebuildAndRender(){
+  allGroups = buildGroups(PRODUCTS);
+  const count = PRODUCTS.length;
+  document.getElementById("totalCount").textContent = count;
+  const heroEl = document.getElementById("heroProductsCount");
+  if(heroEl) heroEl.textContent = count;
+  const totalEl = document.getElementById("totalProdCount");
+  if(totalEl) totalEl.textContent = count;
+  if(displayMode==="compare") renderCompareView();
+  else renderVendorView();
 }
 
-function renderMobile(rows){
-  const container = document.getElementById("mobileCards");
-  container.innerHTML = "";
-  if(rows.length===0) return;
-  const frag = document.createDocumentFragment();
-  rows.forEach(p=>{
-    const vc = VENDOR_CONFIG[p.company]||{};
-    const pct = VENDOR_DISCOUNT[p.company]||0;
-    const logoSrc = vc.logo ? FULL_LOGOS[vc.logo] : "";
-    const logoEl = logoSrc ? `<img class="m-vendor-logo" src="${logoSrc}" alt="${p.company}"/>` : '';
-    const after = afterCodeText(p.price, pct);
-    const href = p.url || vc.url || "#";
-    let stockEl = '';
-    if(p.in_stock===true) stockEl='<span class="m-stock-in">In Stock</span>';
-    else if(p.in_stock===false) stockEl='<span class="m-stock-out">Out of Stock</span>';
-    const card = document.createElement("div");
-    card.className = "m-card";
-    card.innerHTML = `
-      <div class="m-card-body">
-        <div class="m-card-name">${p.product}</div>
-        ${p.listing&&p.listing!==p.product?`<div class="m-card-listing">${p.listing.length>45?p.listing.substring(0,45)+'…':p.listing}</div>`:''}
-        <div class="m-card-vendor">${logoEl}<span class="m-vendor-name">${p.company}</span></div>
-        <div class="m-price">${p.price}</div>
-        ${after?`<div class="m-price-after">→ ${after} after code</div>`:''}
-        <div class="m-badges">
-          <span class="m-discount">${pct}% off</span>
-          ${stockEl}
-          ${p.format&&p.format!=="Vials"?`<span class="m-discount">${p.format}</span>`:""}
-        </div>
-      </div>
-      <div class="m-card-footer">
-        <a href="${href}" target="_blank" rel="noopener sponsored" class="m-visit-btn">View Price →</a>
-      </div>`;
-    frag.appendChild(card);
-  });
-  container.appendChild(frag);
-}
-
-function syncSortSelect(){
-  const sel = document.getElementById("sortSelect");
-  if(!sel) return;
-  const value = `${sortCol}-${sortDir}`;
-  const values = Array.from(sel.options).map(o=>o.value);
-  if(values.includes(value)) sel.value = value;
-}
-
-function updateTableSortHeaders(){
-  document.querySelectorAll("th").forEach(t=>t.classList.remove("sort-asc","sort-desc"));
-  const el=document.getElementById("th-"+sortCol);
-  if(el) el.classList.add(sortDir==="asc"?"sort-asc":"sort-desc");
-}
-
-function setSortOption(value){
-  const parts = String(value || "product-asc").split("-");
-  sortDir = parts.pop() === "desc" ? "desc" : "asc";
-  sortCol = parts.join("-") || "product";
-  syncSortSelect();
-  updateTableSortHeaders();
-  applyFilters();
-}
-
-function sortTable(col){
-  if(sortCol===col){sortDir=sortDir==="asc"?"desc":"asc";}else{sortCol=col;sortDir="asc";}
-  syncSortSelect();
-  updateTableSortHeaders();
-  applyFilters();
-}
-
-function setSelectValue(id, value){
-  const el = document.getElementById(id);
-  if(!el) return;
-  const values = Array.from(el.options).map(o=>o.value);
-  el.value = values.includes(value) ? value : "all";
-}
-
-function renderActiveFilters(){
-  const row = document.getElementById("activeFilterRow");
-  if(!row) return;
-  const chips = [];
-  const searchLabel = searchTerm ? (document.getElementById("searchInput").value || searchTerm) : "";
-  if(searchTerm) chips.push({type:"search", label:`Search: ${searchLabel}`});
-  if(activeCat !== "all") chips.push({type:"category", label:activeCat});
-  if(activeFormat !== "all") chips.push({type:"format", label:activeFormat});
-  if(activeVendor !== "all") chips.push({type:"vendor", label:activeVendor});
-
-  if(!chips.length){
-    row.classList.remove("show");
-    row.innerHTML = "";
+function renderCompareView(){
+  const groups = getFilteredGroups();
+  const grid   = document.getElementById("cardsGrid");
+  const noRes  = document.getElementById("noResults");
+  document.getElementById("visibleCount").textContent = groups.length;
+  const legEl=document.getElementById("visibleCountLegacy"); if(legEl) legEl.textContent=groups.length;
+  const legTot=document.getElementById("totalProdCount"); if(legTot) legTot.textContent=PRODUCTS.length;
+  if(!groups.length){
+    grid.innerHTML = "";
+    noRes.classList.add("show");
+    const mload2=document.getElementById("mLoading"); if(mload2) mload2.classList.remove("show");
     return;
   }
-
-  row.classList.add("show");
-  row.innerHTML = `<span class="active-filter-label">Active</span>` + chips.map(chip=>`<button class="active-filter-chip" type="button" data-clear="${chip.type}">${chip.label} ×</button>`).join("");
-  row.querySelectorAll(".active-filter-chip").forEach(btn=>btn.addEventListener("click",()=>{
-    const type = btn.dataset.clear;
-    if(type === "search"){
-      searchTerm = "";
-      document.getElementById("searchInput").value = "";
-      document.querySelectorAll(".search-chip").forEach(b=>b.classList.remove("active"));
-    }
-    if(type === "category") activeCat = "all";
-    if(type === "format") activeFormat = "all";
-    if(type === "vendor") activeVendor = "all";
-    updateFilterControls();
-    applyFilters();
-  }));
+  noRes.classList.remove("show");
+  const mload=document.getElementById("mLoading"); if(mload) mload.classList.remove("show");
+  grid.innerHTML = groups.map((g,i)=>renderCard(g,i)).join("");
 }
 
-function updateFilterControls(){
-  setSelectValue("categorySelect", activeCat);
-  setSelectValue("formatSelect", activeFormat);
-  setSelectValue("vendorSelect", activeVendor);
-  document.querySelectorAll(".search-chip").forEach(btn=>{
-    const q = (btn.dataset.search || "").toLowerCase().trim();
-    btn.classList.toggle("active", !!searchTerm && q === searchTerm);
-  });
-  renderActiveFilters();
+// ── VENDOR BROWSE VIEW ─────────────────────────────────────
+function renderVendorView(){}
+
+// ── DISPLAY MODE TOGGLE ────────────────────────────────────
+function setDisplayMode(){}
+
+// ── FILTER HANDLERS ────────────────────────────────────────
+function setVendorChip(vendor, btn){
+  activeVendorFilter = vendor;
+  document.querySelectorAll("#vendorChips .cf-chip").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  // sync hidden vendor select
+  const vs = document.getElementById("vendorSelect");
+  if(vs) vs.value = vendor;
+  // show/hide clear button
+  const cb = document.getElementById("clearAllBtn");
+  if(cb) cb.style.display = (activeCat!=="all"||activeFmt!=="all"||activeVendorFilter!=="all"||searchTerm) ? "" : "none";
+  renderCompareView();
 }
 
-function filterCat(cat){
+function setCatFilter(cat, btn){
   activeCat = cat;
-  updateFilterControls();
-  applyFilters();
+  document.querySelectorAll("#catChips .cf-chip").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  renderCompareView();
+}
+function setFmtFilter(fmt, btn){
+  activeFmt = fmt;
+  document.querySelectorAll("#fmtChips .cf-chip").forEach(b=>b.classList.remove("active"));
+  btn.classList.add("active");
+  renderCompareView();
+}
+function onSortChange(){
+  const sel = document.getElementById("cardSortSelect") || document.getElementById("sortSelect");
+  if(sel) sortMode = sel.value;
+  renderCompareView();
 }
 
-function clearFilters(){
-  activeCat="all"; activeFormat="all"; activeVendor="all"; searchTerm="";
-  document.getElementById("searchInput").value="";
-  updateFilterControls();
-  applyFilters();
-}
-
-const categorySelect = document.getElementById("categorySelect");
-const formatSelect = document.getElementById("formatSelect");
-const vendorSelect = document.getElementById("vendorSelect");
-const sortSelect = document.getElementById("sortSelect");
-if(categorySelect) categorySelect.addEventListener("change",e=>{activeCat=e.target.value;updateFilterControls();applyFilters();});
-if(formatSelect) formatSelect.addEventListener("change",e=>{activeFormat=e.target.value;updateFilterControls();applyFilters();});
-if(vendorSelect) vendorSelect.addEventListener("change",e=>{activeVendor=e.target.value;updateFilterControls();applyFilters();});
-if(sortSelect) sortSelect.addEventListener("change",e=>setSortOption(e.target.value));
-
-document.querySelectorAll(".search-chip").forEach(btn=>btn.addEventListener("click",()=>{
-  const q=btn.dataset.search||"";
-  searchTerm=q.toLowerCase().trim();
-  document.getElementById("searchInput").value=q;
-  updateFilterControls();
-  applyFilters();
-}));
-document.getElementById("searchInput").addEventListener("input",e=>{searchTerm=e.target.value.toLowerCase().trim();updateFilterControls();applyFilters();});
-const params=new URLSearchParams(window.location.search);
-const urlCat=params.get("cat");
-const urlFormat=params.get("format");
-const urlVendor=params.get("vendor");
-const urlSearch=params.get("q")||params.get("search");
-const hasUrlFilters=params.has("cat")||params.has("format")||params.has("vendor")||params.has("q")||params.has("search");
-if(urlCat) activeCat = CATEGORY_ALIASES[urlCat] || urlCat;
-if(urlFormat) activeFormat = urlFormat;
-if(urlVendor) activeVendor = urlVendor;
-if(urlSearch){
-  searchTerm=urlSearch.toLowerCase().trim();
-  document.getElementById("searchInput").value=urlSearch;
-}
-if(!hasUrlFilters){
-  searchTerm="bpc-157";
-  document.getElementById("searchInput").value="BPC-157";
-}
-updateFilterControls();
-updateViewMode();
-document.getElementById("totalCount").textContent=PRODUCTS.length;
-syncSortSelect();
-updateTableSortHeaders();
-applyFilters();
-window.addEventListener("resize",()=>{
-  if(viewMode === "auto"){
-    updateViewMode();
-    applyFilters();
-  }
+// Keep old search chips working (Popular row in search bar)
+document.querySelectorAll(".search-chip").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const q = btn.dataset.search||"";
+    const inp = document.getElementById("searchInput");
+    if(inp){inp.value=q;}
+    searchTerm = q.trim().toLowerCase();
+    document.querySelectorAll(".search-chip").forEach(b=>b.classList.remove("active"));
+    btn.classList.add("active");
+    renderCompareView();
+  });
 });
+// Search input
+const _sinput = document.getElementById("searchInput");
+if(_sinput){
+  _sinput.addEventListener("input", e=>{
+    searchTerm = e.target.value.trim().toLowerCase();
+    document.querySelectorAll(".search-chip").forEach(b=>b.classList.remove("active"));
+    renderCompareView();
+  });
+}
+
+// Old filter selects (category / format / vendor dropdowns) — keep working
+function clearFilters(){
+  activeCat="all"; activeFmt="all"; activeVendorFilter="all"; searchTerm="";
+  const inp=document.getElementById("searchInput"); if(inp) inp.value="";
+  const cs=document.getElementById("categorySelect"); if(cs) cs.value="all";
+  const fs=document.getElementById("formatSelect");   if(fs) fs.value="all";
+  const vs=document.getElementById("vendorSelect");   if(vs) vs.value="all";
+  document.querySelectorAll(".cf-chip").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll("#catChips .cf-chip[data-cat=\"all\"]").forEach(b=>b.classList.add("active"));
+  document.querySelectorAll("#fmtChips .cf-chip[data-fmt=\"all\"]").forEach(b=>b.classList.add("active"));
+  document.querySelectorAll("#vendorChips .cf-chip[data-vendor=\"all\"]").forEach(b=>b.classList.add("active"));
+  document.querySelectorAll(".search-chip").forEach(b=>b.classList.remove("active"));
+  const cb=document.getElementById("clearAllBtn"); if(cb) cb.style.display="none";
+  renderCompareView();
+}
+(function(){
+  const cs=document.getElementById("categorySelect");
+  const fs=document.getElementById("formatSelect");
+  const vs=document.getElementById("vendorSelect");
+  const ss=document.getElementById("sortSelect");
+  // map old dropdowns → new state
+  if(cs) cs.addEventListener("change",e=>{ activeCat=e.target.value; renderCompareView(); });
+  if(fs) fs.addEventListener("change",e=>{ activeFmt=e.target.value; renderCompareView(); });
+  if(vs) vs.addEventListener("change",e=>{ activeVendorFilter=e.target.value; renderCompareView(); });
+  // The new sort select already has onchange; ignore duplicate
+})();
+
+// ── FILTER DRAWER ──────────────────────────────────────────
+function buildVendorDrawerChips(){}
+function selectDrawerVendor(){}
+function openFilterDrawer(){}
+function closeFilterDrawer(){}
+function clearDrawerFilters(){}
+function applyDrawerFilters(){}
+(function(){const fdo=document.getElementById("filterDrawerOverlay");if(fdo)fdo.addEventListener("click",closeFilterDrawer);})();
+
+// ── OUTBOUND TRACKING ──────────────────────────────────────
+function trackOutbound(event, vendor, product, category, format, listedPrice, finalP, discPct, url){
+  window.dataLayer = window.dataLayer||[];
+  window.dataLayer.push({
+    event:"outbound_click",
+    vendor, product_name:product, product_category:category,
+    product_format:format, listed_price:listedPrice,
+    final_price:finalP, discount_percent:discPct,
+    coupon_code:"SAMMYC", button_location:"product_card", affiliate_url:url
+  });
+}
+
+// Keep old sortTable stub (referenced by desktop table headers that no longer exist, harmless)
+function sortTable(){}
+function updateFilterControls(){}
+function setViewMode(m){ if(m==="cards"||m==="table") return; setDisplayMode(m); }
+
+// ── INIT ──────────────────────────────────────────────────
+allGroups = buildGroups(PRODUCTS);
+document.getElementById("totalCount").textContent = PRODUCTS.length;
+const heroEl=document.getElementById("heroProductsCount");
+if(heroEl) heroEl.textContent=PRODUCTS.length;
+const totalEl=document.getElementById("totalProdCount");
+if(totalEl) totalEl.textContent=PRODUCTS.length;
+const vcEl=document.getElementById("visibleCount");
+if(vcEl) vcEl.textContent="0";
+renderCompareView();
+window.addEventListener("resize", ()=>{ renderCompareView(); });
+
 
 // ── Live API Feeds, non-blocking per vendor ──
 // The static catalog renders first. Each API vendor refreshes in the background.
@@ -1320,6 +1763,7 @@ const LIVE_FEEDS = {
   "Solyn Labs": "/.netlify/functions/solyn-products",
   "Oneday Compounds": "/.netlify/functions/oneday-products"
 };
+window._liveVendorLoading = new Set(Object.keys(LIVE_FEEDS));
 window._apisLoading = false;
 window._liveVendorLoading = new Set(Object.keys(LIVE_FEEDS));
 
@@ -1453,7 +1897,7 @@ function closeDrawer(){
   document.getElementById('drawerOverlay').classList.remove('open');
   document.body.style.overflow='';
 }
-document.getElementById('drawerOverlay').addEventListener('click', closeDrawer);
+(function(){const dov=document.getElementById('drawerOverlay');if(dov)dov.addEventListener('click',closeDrawer);})();
 </script>
 </body>
 </html>
