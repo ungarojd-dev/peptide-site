@@ -1,0 +1,13 @@
+ACTIVE SALES ROLODEX UPDATE
+
+Updated files:
+- index.html
+- glp-weight-loss.html
+
+Changes:
+- Added an ACTIVE SALES label with a pulsing indicator above the mobile rolodex.
+- Increased the mobile banner height slightly for better visibility without taking over the page.
+- Increased the deal card height, arrow size, vendor text size, and contrast on mobile.
+- Added a subtle animated shimmer across the banner.
+- Added a mobile deal counter that stays in sync as the rolodex rotates.
+- Updated the GLP page hero copy to remove the outdated Memorial Day reference.
