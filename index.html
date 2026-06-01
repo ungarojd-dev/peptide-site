@@ -525,6 +525,11 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .pcard-name{font-family:var(--fb);font-size:17px;font-weight:800;color:var(--ink);line-height:1.25;letter-spacing:-.2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
     .pcard-vcnt{font-size:10px;font-weight:700;color:var(--ink-3);background:var(--surface-2);border:1px solid var(--border);border-radius:999px;padding:3px 9px;white-space:nowrap;align-self:flex-start;margin-top:4px;flex-shrink:0;min-width:0}
 
+    .sammyc-chip{display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.5px;line-height:1;text-transform:uppercase;color:var(--forest);background:#f7f3ea;border:1px solid #d8c7a7;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 1px rgba(31,58,45,.08);white-space:nowrap;vertical-align:middle}
+    .sammyc-chip--xs{padding:2px 7px;font-size:8px;letter-spacing:.45px}
+    .sammyc-chip--sm{padding:2px 8px;font-size:9px}
+    .pcard-vendors-head span:first-child{display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap}
+
     /* Vendor rows */
     .pcard-vendors{border-top:1px solid var(--border);margin-top:10px}
     .pcard-vendors-head{display:flex;align-items:center;justify-content:space-between;padding:6px 14px;background:var(--surface-2);font-size:9px;color:var(--ink-3)}
@@ -1580,7 +1585,7 @@ function renderCard(g, gIdx){
     ${!hasVariations && hasRanges && allStatic ? '<div class="pcard-var-note">↻ Live prices load with exact sizes — static data shows ranges</div>' : ''}
     <div class="pcard-vendors" id="vendors-${gIdx}">
       <div class="pcard-vendors-head">
-        <span>Prices shown after <strong>SAMMYC</strong></span>
+        <span>Use code <span class="sammyc-chip sammyc-chip--sm">SAMMYC</span> for prices below</span>
         <span>Low to high</span>
       </div>
       ${visible.map(p=>renderVendorRow(p)).join("")}
@@ -1655,7 +1660,7 @@ function selectVariation(btn, gIdx){
   if(vendorSection){
     vendorSection.innerHTML = `
       <div class="pcard-vendors-head">
-        <span>Prices shown after <strong>SAMMYC</strong></span>
+        <span>Use code <span class="sammyc-chip sammyc-chip--sm">SAMMYC</span> for prices below</span>
         <span>Low to high</span>
       </div>
       ${visible.map(p=>renderVendorRow(p)).join("")}`;

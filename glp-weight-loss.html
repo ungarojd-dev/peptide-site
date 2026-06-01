@@ -215,6 +215,10 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .m-vendor-name{font-size:11px;font-weight:800;color:var(--ink);line-height:1.18}
     .m-price{font-family:var(--fb);font-weight:900;font-size:17px;color:var(--ink);margin-top:6px;letter-spacing:-.2px;font-variant-numeric:tabular-nums}
     .m-price-after{font-size:11px;font-weight:700;color:var(--forest)}
+
+    .sammyc-chip{display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.5px;line-height:1;text-transform:uppercase;color:var(--forest);background:#f7f3ea;border:1px solid #d8c7a7;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 1px rgba(31,58,45,.08);white-space:nowrap;vertical-align:middle}
+    .sammyc-chip--xs{padding:2px 7px;font-size:8px;letter-spacing:.45px}
+    .sammyc-chip--sm{padding:2px 8px;font-size:9px}
     .m-badges{display:flex;align-items:center;gap:4px;flex-wrap:wrap;margin-top:5px}
     .m-discount{font-size:9px;font-weight:700;color:var(--olive);background:var(--olive-lt);border-radius:999px;padding:1px 6px}
     .m-stock-in{font-size:9px;font-weight:700;color:var(--green);background:var(--green-bg);border-radius:999px;padding:1px 6px}
@@ -381,7 +385,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     body.glp-page .m-card-vendor{margin-top:4px;padding:7px 9px;border-radius:999px;background:var(--surface-2);border:1px solid var(--border);width:max-content;max-width:100%}
     body.glp-page .m-vendor-name{font-size:11px;font-weight:900;color:var(--forest)}
     body.glp-page .m-price{font-size:19px;font-weight:900;color:var(--forest);margin-top:5px}
-    body.glp-page .m-price-after{font-size:12px;font-weight:800;color:var(--green);background:var(--green-bg);border:1px solid var(--green-border);border-radius:999px;padding:5px 9px;width:max-content;max-width:100%}
+    body.glp-page .m-price-after{font-size:12px;font-weight:800;color:var(--green);background:var(--green-bg);border:1px solid var(--green-border);border-radius:999px;padding:5px 9px;width:max-content;max-width:100%;display:inline-flex;align-items:center;gap:6px;flex-wrap:wrap}
     body.glp-page .m-badges{gap:6px;margin-top:2px;flex-wrap:wrap}
     body.glp-page .m-discount,body.glp-page .m-stock-in,body.glp-page .m-stock-out{font-size:9px;letter-spacing:.4px;text-transform:uppercase;font-weight:900;border-radius:999px;padding:4px 7px}
     body.glp-page .m-card-footer{padding:11px 15px;background:var(--surface-2);border-top:1px solid var(--border)}
@@ -1056,7 +1060,7 @@ function renderDesktop(rows){
     if(p.in_stock===true) stockEl='<span class="stock-in">In Stock</span>';
     if(p.in_stock===false) stockEl='<span class="stock-out">Out of Stock</span>';
     const afterText = afterCodeText(p.price, pct);
-    const afterEl = afterText ? `<div class="td-price-after">${afterText}</div><div style="font-size:9px;color:var(--ink-3);margin-top:1px">SammyC · ${pct}% off</div>` : '<span class="stock-na">,</span>';
+    const afterEl = afterText ? `<div class="td-price-after">${afterText}</div><div style="font-size:9px;color:var(--ink-3);margin-top:3px;display:flex;align-items:center;gap:5px;flex-wrap:wrap"><span class="sammyc-chip sammyc-chip--xs">SAMMYC</span><span>${pct}% off at checkout</span></div>` : '<span class="stock-na">,</span>';
     const href = stripTrackingParamsFromUrl(p.url || vc.url || "#");
     const tr = document.createElement("tr");
     tr.innerHTML=`
@@ -1095,7 +1099,7 @@ function renderMobile(rows){
         ${p.listing && p.listing!==p.product?`<div class="m-card-listing">${p.listing.length>45?p.listing.substring(0,45)+'…':p.listing}</div>`:''}
         <div class="m-card-vendor">${logoEl}<span class="m-vendor-name">${p.company}</span></div>
         <div class="m-price">${p.price}</div>
-        ${after?`<div class="m-price-after">→ ${after} after code</div>`:''}
+        ${after?`<div class="m-price-after">${after} with <span class="sammyc-chip sammyc-chip--sm">SAMMYC</span></div>`:''}
         <div class="m-badges">
           <span class="m-discount">${pct}% off</span>
           ${stockEl}
