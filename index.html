@@ -359,20 +359,6 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     }
 
     /* ── ACTIVE SALES ROLODEX BANNER ──────────────────────── */
-    /* TikTok Live Event Bar */
-    .tiktok-live-bar{background:#0e0e0e;padding:7px 36px 7px 16px;display:flex;align-items:center;justify-content:center;position:relative;z-index:301;border-bottom:1px solid #222}
-    .tiktok-live-bar-inner{display:flex;align-items:center;gap:8px;overflow:hidden;flex-wrap:nowrap}.ttlb-sponsored::before{content:' · ';color:rgba(255,255,255,.38)}
-    .ttlb-badge{display:inline-flex;align-items:center;background:#1a1a1a;border:1px solid #333;color:rgba(255,255,255,.6);font-size:9px;font-weight:900;letter-spacing:.7px;text-transform:uppercase;padding:2px 7px;border-radius:999px;line-height:1;flex-shrink:0;white-space:nowrap}
-    .ttlb-text{font-size:11px;font-weight:600;color:rgba(255,255,255,.75);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-    .ttlb-text strong{color:#25F4EE;font-weight:800}
-    .ttlb-text em{color:#ffe082;font-style:normal;font-weight:700}
-    .tiktok-live-bar a.ttlb-link{position:absolute;inset:0;z-index:1}
-    .ttlb-dismiss{position:absolute;right:10px;top:50%;transform:translateY(-50%);background:none;border:none;color:rgba(255,255,255,.35);font-size:14px;cursor:pointer;line-height:1;padding:4px;transition:color .15s;z-index:2}
-    .ttlb-dismiss:hover{color:#fff}
-    @media(max-width:600px){
-      .tiktok-live-bar{padding:6px 32px 6px 12px}
-      .ttlb-text{font-size:10px;white-space:normal;overflow:visible;text-overflow:clip;line-height:1.35}.ttlb-sponsored{display:block;margin-top:3px;line-height:1.3}.ttlb-sponsored::before{content:''}
-    }
     .sale-banner{background:linear-gradient(135deg,#0077a8 0%,#0096c7 35%,#48cae4 70%,#0096c7 100%);padding:7px 8px 8px;position:relative;z-index:300;overflow:hidden;box-shadow:0 3px 14px rgba(0,0,0,.26)}
     .sale-banner::before{content:none}
     .sale-inner{max-width:1200px;margin:0 auto;display:block;position:relative;z-index:1}
@@ -805,15 +791,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </nav>
 
-<div class="tiktok-live-bar" id="tiktokLiveBar">
-  <a class="ttlb-link" href="https://www.tiktok.com/@sammyc2296" target="_blank" rel="noopener noreferrer" aria-label="TikTok Live event" onclick="window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:'tiktok_live_click',location:'live_bar'});"></a>
-  <div class="tiktok-live-bar-inner">
-    <span class="ttlb-badge">♪ EVENT</span>
-    <span class="ttlb-text"><strong>TikTok Live</strong> · <em>Sun 5/31 @ 8PM ET</em><span class="ttlb-sponsored">Sponsored by Instant Peptides · 🎁 Giveaways</span></span>
-  </div>
-  <button class="ttlb-dismiss" onclick="dismissLiveBar()" aria-label="Dismiss">✕</button>
-</div>
-
 <div class="sale-banner">
   <div class="sale-inner">
     <div class="sale-left">
@@ -1158,20 +1135,6 @@ function renderSaleDeal(){
   if(mobileCount) mobileCount.textContent = `${saleDealIndex + 1} / ${SALE_DEALS.length}`;
 }
 
-// TikTok Live Bar — auto-expire after May 31 2025 11:59 PM ET, dismissable
-(function(){
-  const bar = document.getElementById('tiktokLiveBar');
-  if(!bar) return;
-  const expiry = new Date('2026-06-01T04:00:00Z'); // Jun 1 00:00 ET = 04:00 UTC
-  if(Date.now() > expiry.getTime() || sessionStorage.getItem('ttlb_dismissed')){
-    bar.style.display = 'none';
-  }
-})();
-function dismissLiveBar(){
-  const bar = document.getElementById('tiktokLiveBar');
-  if(bar){ bar.style.display='none'; }
-  sessionStorage.setItem('ttlb_dismissed','1');
-}
 
 function rotateSaleDeal(direction=1, manual=false){
   if(!SALE_DEALS.length) return;
