@@ -8,7 +8,7 @@ const SITE = "https://ionpeptide.com";
 const BASE = `${SITE}/wp-json/wc/v3`;
 const AFFILIATE_URL = `${SITE}?ref=SammyC`;
 
-async function fetchJsonWithTimeout(url, ms = 7000) {
+async function fetchJsonWithTimeout(url, ms = 9000) {
   const ctrl = new AbortController();
   const tid = setTimeout(() => ctrl.abort(), ms);
   try {
@@ -53,7 +53,7 @@ async function fetchVariations(productId) {
   });
 
   try {
-    const { data } = await fetchJsonWithTimeout(`${BASE}/products/${productId}/variations?${params.toString()}`, 7000);
+    const { data } = await fetchJsonWithTimeout(`${BASE}/products/${productId}/variations?${params.toString()}`, 9000);
     return Array.isArray(data) ? data : [];
   } catch (err) {
     console.log(`Ion Peptide variation fetch skipped for ${productId}: ${err.message}`);

@@ -6,7 +6,7 @@ const CK = process.env.SOLYN_CK;
 const CS = process.env.SOLYN_CS;
 const BASE = "https://solyn.com/wp-json/wc/v3";
 
-async function fetchJsonWithTimeout(url, ms = 7000) {
+async function fetchJsonWithTimeout(url, ms = 9000) {
   const ctrl = new AbortController();
   const tid = setTimeout(() => ctrl.abort(), ms);
   try {
@@ -51,7 +51,7 @@ async function fetchVariations(productId) {
   });
 
   try {
-    const { data } = await fetchJsonWithTimeout(`${BASE}/products/${productId}/variations?${params.toString()}`, 7000);
+    const { data } = await fetchJsonWithTimeout(`${BASE}/products/${productId}/variations?${params.toString()}`, 9000);
     return Array.isArray(data) ? data : [];
   } catch (err) {
     console.log(`Solyn variation fetch skipped for ${productId}: ${err.message}`);

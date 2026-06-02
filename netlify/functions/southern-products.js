@@ -13,7 +13,7 @@ async function fetchAllProducts() {
   while (true) {
     const url = `${BASE}/products?per_page=100&page=${page}&consumer_key=${CK}&consumer_secret=${CS}&status=publish`;
     const ctrl = new AbortController();
-    const tid = setTimeout(() => ctrl.abort(), 5000);
+    const tid = setTimeout(() => ctrl.abort(), 9000);
     const resp = await fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(tid));
 
     if (!resp.ok) {
@@ -36,7 +36,7 @@ async function fetchAllProducts() {
 async function fetchVariations(productId) {
   const url = `${BASE}/products/${productId}/variations?per_page=100&consumer_key=${CK}&consumer_secret=${CS}`;
   const ctrl = new AbortController();
-    const tid = setTimeout(() => ctrl.abort(), 5000);
+    const tid = setTimeout(() => ctrl.abort(), 9000);
     const resp = await fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(tid));
   if (!resp.ok) return [];
   return await resp.json();
