@@ -8,7 +8,7 @@ const SITE = "https://ionpeptide.com";
 const BASE = `${SITE}/wp-json/wc/v3`;
 const AFFILIATE_URL = `${SITE}?ref=SammyC`;
 
-async function fetchJsonWithTimeout(url, ms = 9000) {
+async function fetchJsonWithTimeout(url, ms = 7000) {
   const ctrl = new AbortController();
   const tid = setTimeout(() => ctrl.abort(), ms);
   try {
@@ -21,23 +21,27 @@ async function fetchJsonWithTimeout(url, ms = 9000) {
 }
 
 async function fetchAllProducts() {
-  const params = new URLSearchParams({
-    per_page: "100", page: "1", status: "publish",
-    consumer_key: CK, consumer_secret: CS
-  });
-  const { resp, data: page1 } = await fetchJsonWithTimeout(`${BASE}/products?${params.toString()}`);
-  if (!Array.isArray(page1) || page1.length === 0) return [];
-  const totalPages = parseInt(resp.headers.get("X-WP-TotalPages") || "1", 10);
-  if (totalPages <= 1) return page1;
-  const pageNums = Array.from({length: totalPages - 1}, (_, i) => i + 2);
-  const restResults = await Promise.allSettled(pageNums.map(n => {
-    const p = new URLSearchParams({ per_page: "100", page: String(n), status: "publish", consumer_key: CK, consumer_secret: CS });
-    return fetchJsonWithTimeout(`${BASE}/products?${p.toString()}`);
-  }));
-  const allProducts = [...page1];
-  for (const r of restResults) {
-    if (r.status === "fulfilled" && Array.isArray(r.value.data)) allProducts.push(...r.value.data);
+  let page = 1;
+  let allProducts = [];
+
+  while (true) {
+    const params = new URLSearchParams({
+      per_page: "100",
+      page: String(page),
+      status: "publish",
+      consumer_key: CK,
+      consumer_secret: CS
+    });
+
+    const { resp, data } = await fetchJsonWithTimeout(`${BASE}/products?${params.toString()}`);
+    if (!Array.isArray(data) || data.length === 0) break;
+
+    allProducts = allProducts.concat(data);
+    const totalPages = parseInt(resp.headers.get("X-WP-TotalPages") || "1", 10);
+    if (page >= totalPages) break;
+    page += 1;
   }
+
   return allProducts;
 }
 
@@ -49,7 +53,7 @@ async function fetchVariations(productId) {
   });
 
   try {
-    const { data } = await fetchJsonWithTimeout(`${BASE}/products/${productId}/variations?${params.toString()}`, 9000);
+    const { data } = await fetchJsonWithTimeout(`${BASE}/products/${productId}/variations?${params.toString()}`, 7000);
     return Array.isArray(data) ? data : [];
   } catch (err) {
     console.log(`Ion Peptide variation fetch skipped for ${productId}: ${err.message}`);
@@ -189,11 +193,12 @@ export const handler = async (event) => {
     if (!CK || !CS) throw new Error("API credentials not configured");
 
     const rawProducts = await fetchAllProducts();
-    const filtered = rawProducts.filter(p => !shouldExcludeProduct(p));
-    const results = await Promise.allSettled(filtered.map(p => transformProduct(p)));
     const transformed = [];
-    for (const r of results) {
-      if (r.status === 'fulfilled') transformed.push(...r.value);
+
+    for (const product of rawProducts) {
+      if (shouldExcludeProduct(product)) continue;
+      const items = await transformProduct(product);
+      transformed.push(...items);
     }
 
     return {

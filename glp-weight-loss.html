@@ -159,7 +159,6 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .hs-label{color:rgba(255,255,255,.55);font-size:11px}
     .hs-val{color:#fff;font-weight:800;font-size:13px}
 
-    #mLoading{display:none!important}
     /* ── SEARCH & FILTERS ─────────────────────────────────── */
     .search-section{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm)}
     .search-inner{max-width:1200px;margin:0 auto;padding:10px 20px}
@@ -723,7 +722,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <table id="desktopTable"><tbody id="tableBody"></tbody></table>
       </div>
       <div class="m-cards" id="mobileCards"></div>
-      <div id="mLoading" style="display:none!important"></div>
+      <div class="m-loading" id="mLoading"><div class="m-spinner"></div>Loading live prices...</div>
       <div class="no-results" id="noResults">
         <div class="no-results-icon">🔍</div>
         <div class="no-results-text">No products found</div>
@@ -882,48 +881,6 @@ function normalizeProducts(){
   }
 }
 normalizeProducts();
-
-// ── Display name helper: maps vendor codes to Peptide SM / TZ / RT ──────────
-function displayProductName(p) {
-  const raw = (p.product || "").trim();
-  const s = raw
-    .replace(/\s*[-–]\s*\d[\d.,]*\s*m[cgl]?g?/gi, "")
-    .replace(/\s*\(\d[\d.,]*\s*m[cgl]?g?\)/gi, "")
-    .replace(/\s+\d[\d.,]*\s*m[cgl]?g?(\s+or\s+\d[\d.,]*\s*m[cgl]?g?)*/gi, "")
-    .replace(/\s+\d[\d.,]*\s*ml?\s*$/gi, "")
-    .replace(/\s*(research\s*)?(peptide\s+)?(vial|capsules?|spray|liquid|topical)\s*$/i, "")
-    .replace(/^(glacier\s+aminos?\s*|ion\s*peptide\s*|southern\s*aminos?\s*|labsourced\s*peptides?\s*|mile\s*high\s*(?:compounds?|peptides?)?\s*|solyn\s*labs?\s*)/i, "")
-    .trim();
-  const cl = s.toLowerCase();
-
-  // Exact / prefix alias table
-  const DISPLAY_ALIASES = {
-    "gla-1 sm": "Peptide SM", "glp-1 sm": "Peptide SM", "ion-1s": "Peptide SM", "pep-sm": "Peptide SM", "semaglutide": "Peptide SM",
-    "gla-2 trz": "Peptide TZ", "glp-2 trz": "Peptide TZ", "glp2-t": "Peptide TZ", "glp-t2 (tirzepatide)": "Peptide TZ", "glp-t2": "Peptide TZ",
-    "ion-2t": "Peptide TZ", "mhc-2 trz": "Peptide TZ", "pep-trz": "Peptide TZ", "sa-2t": "Peptide TZ", "tirzepatide": "Peptide TZ",
-    "gla-3 rt": "Peptide RT", "glp-3 rt": "Peptide RT", "glp-3r": "Peptide RT", "glp3-r": "Peptide RT", "glp-r3 (retatrutide)": "Peptide RT",
-    "glp-r3": "Peptide RT", "ion-3r": "Peptide RT", "oc-3rt": "Peptide RT", "pep-rt": "Peptide RT", "sa-3r": "Peptide RT", "retatrutide": "Peptide RT",
-  };
-  const sorted = Object.entries(DISPLAY_ALIASES).sort((a, b) => b[0].length - a[0].length);
-  for (const [alias, canonical] of sorted) {
-    if (cl === alias || cl.startsWith(alias + " ") || cl.startsWith(alias + "/") || cl.startsWith(alias + "+") || cl.startsWith(alias + "("))
-      return canonical;
-  }
-
-  // Keyword fallback for any vendor naming convention
-  const hasSM = cl.includes("semaglutide") || /\bion-1s\b/.test(cl) || /\bgla-1\b/.test(cl) || /\bglp-1\b/.test(cl) || /\bpep-sm\b/.test(cl);
-  const hasTZ = cl.includes("tirzepatide") || /\btrz\b/.test(cl) || /\bglp-t2\b/.test(cl) || /\bgla-2\b/.test(cl) || /\bglp-2\b/.test(cl) || /\bglp2-t\b/.test(cl) || /\bmhc-2\b/.test(cl) || /\bpep-trz\b/.test(cl) || /\bion-2t\b/.test(cl) || /\bsa-2t\b/.test(cl);
-  const hasRT = cl.includes("retatrutide") || /\bglp-r3\b/.test(cl) || /\bgla-3\b/.test(cl) || /\bglp-3\b/.test(cl) || /\bglp3-r\b/.test(cl) || /\boc-3rt\b/.test(cl) || /\bpep-rt\b/.test(cl) || /\bion-3r\b/.test(cl) || /\bsa-3r\b/.test(cl);
-  const hits = (hasSM ? 1 : 0) + (hasTZ ? 1 : 0) + (hasRT ? 1 : 0);
-  if (hits === 1) {
-    if (hasSM) return "Peptide SM";
-    if (hasTZ) return "Peptide TZ";
-    if (hasRT) return "Peptide RT";
-  }
-
-  // Non-GLP or blends: strip size noise and return cleaned name
-  return s || raw;
-}
 
 
 const TRACKING_PARAMS_TO_STRIP = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", "utm_name", "utm_creative_format", "utm_marketing_tactic", "fbclid", "gclid", "gbraid", "wbraid", "msclkid"];
@@ -1135,7 +1092,7 @@ function renderDesktop(rows){
     const href = stripTrackingParamsFromUrl(p.url || vc.url || "#");
     const tr = document.createElement("tr");
     tr.innerHTML=`
-      <td><div class="td-product">${displayProductName(p)}</div><div class="td-listing">${p.company}</div></td>
+      <td><div class="td-product">${p.product}</div>${p.listing && p.listing!==p.product?`<div class="td-listing">${p.listing}</div>`:""}</td>
       <td>${vendorEl}</td>
       <td><span class="cat-tag ${cc}">${p.category}</span>${p.format && p.format!=="Vials"?`<br><span class="format-tag">${p.format}</span>`:""}</td>
       <td><span class="td-price">${p.price}</span></td>
@@ -1166,7 +1123,8 @@ function renderMobile(rows){
     card.className = "m-card";
     card.innerHTML = `
       <div class="m-card-body">
-        <div class="m-card-name">${displayProductName(p)}</div>
+        <div class="m-card-name">${p.product}</div>
+        ${p.listing && p.listing!==p.product?`<div class="m-card-listing">${p.listing.length>45?p.listing.substring(0,45)+'…':p.listing}</div>`:''}
         <div class="m-card-vendor">${logoEl}<span class="m-vendor-name">${p.company}</span></div>
         <div class="m-price">${p.price}</div>
         ${after?`<div class="m-price-after">${after} with <span class="sammyc-chip sammyc-chip--sm">SAMMYC</span></div>`:''}
@@ -1343,7 +1301,7 @@ const LIVE_FEEDS = {
 window._apisLoading = false;
 window._liveVendorLoading = new Set(Object.keys(LIVE_FEEDS));
 
-function fetchWithTimeout(url, ms=20000){
+function fetchWithTimeout(url, ms=5000){
   const ctrl = new AbortController();
   const timer = setTimeout(()=>ctrl.abort(), ms);
   return fetch(url, {signal:ctrl.signal}).finally(()=>clearTimeout(timer));
@@ -1407,7 +1365,7 @@ async function refreshVendor(vendorName, endpoint){
   applyFilters();
 
   try{
-    const resp = await fetchWithTimeout(endpoint, 20000);
+    const resp = await fetchWithTimeout(endpoint, 5000);
     if(!resp.ok) throw new Error(`${resp.status}`);
     const data = await resp.json();
     if(applyLiveVendorPayload(vendorName, data)){

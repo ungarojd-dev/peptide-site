@@ -6,26 +6,31 @@ const CK = process.env.GLACIER_CK;
 const CS = process.env.GLACIER_CS;
 const BASE = "https://glacieraminos.shop/wp-json/wc/v3";
 
-async function fetchPage(url) {
-  const ctrl = new AbortController();
-  const tid = setTimeout(() => ctrl.abort(), 9000);
-  const resp = await fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(tid));
-  if (!resp.ok) throw new Error(`WooCommerce API error: ${resp.status}`);
-  const products = await resp.json();
-  const totalPages = parseInt(resp.headers.get("X-WP-TotalPages") || "1");
-  return { products, totalPages };
-}
-
+// Fetch all pages of products from WooCommerce
 async function fetchAllProducts() {
-  const baseUrl = `${BASE}/products?per_page=100&consumer_key=${CK}&consumer_secret=${CS}&status=publish`;
-  const { products: page1, totalPages } = await fetchPage(`${baseUrl}&page=1`);
-  if (totalPages <= 1) return page1;
-  const pageNums = Array.from({length: totalPages - 1}, (_, i) => i + 2);
-  const restResults = await Promise.allSettled(pageNums.map(n => fetchPage(`${baseUrl}&page=${n}`)));
-  const allProducts = [...page1];
-  for (const r of restResults) {
-    if (r.status === "fulfilled") allProducts.push(...r.value.products);
+  let page = 1;
+  let allProducts = [];
+
+  while (true) {
+    const url = `${BASE}/products?per_page=100&page=${page}&consumer_key=${CK}&consumer_secret=${CS}&status=publish`;
+    const ctrl = new AbortController();
+    const tid = setTimeout(() => ctrl.abort(), 5000);
+    const resp = await fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(tid));
+
+    if (!resp.ok) {
+      throw new Error(`WooCommerce API error: ${resp.status}`);
+    }
+
+    const products = await resp.json();
+    if (products.length === 0) break;
+
+    allProducts = allProducts.concat(products);
+
+    const totalPages = parseInt(resp.headers.get("X-WP-TotalPages") || "1");
+    if (page >= totalPages) break;
+    page++;
   }
+
   return allProducts;
 }
 
@@ -33,7 +38,7 @@ async function fetchAllProducts() {
 async function fetchVariations(productId) {
   const url = `${BASE}/products/${productId}/variations?per_page=100&consumer_key=${CK}&consumer_secret=${CS}`;
   const ctrl = new AbortController();
-    const tid = setTimeout(() => ctrl.abort(), 9000);
+    const tid = setTimeout(() => ctrl.abort(), 5000);
     const resp = await fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(tid));
   if (!resp.ok) return [];
   return await resp.json();
@@ -160,10 +165,11 @@ export const handler = async (event) => {
     }
 
     const rawProducts = await fetchAllProducts();
-    const results = await Promise.allSettled(rawProducts.map(p => transformProduct(p)));
     const transformed = [];
-    for (const r of results) {
-      if (r.status === 'fulfilled') transformed.push(...r.value);
+
+    for (const p of rawProducts) {
+      const items = await transformProduct(p);
+      transformed.push(...items);
     }
 
     return {
