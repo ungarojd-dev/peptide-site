@@ -541,6 +541,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .vrow-left{min-width:0;flex:1}
     .vrow-name-line{display:grid;grid-template-columns:60px minmax(0,1fr) auto;align-items:center;column-gap:8px;row-gap:4px}
     .vrow-name{font-size:13px;font-weight:800;color:var(--ink);white-space:normal;overflow:visible;text-overflow:clip;max-width:none;line-height:1.18;min-width:0}
+    .vrow-company{font-size:10px;font-weight:600;color:var(--ink-3);line-height:1.3;margin-top:2px;padding-left:68px}
     .vrow-disc{font-size:9px;font-weight:800;color:#fff;background:var(--olive);border-radius:999px;padding:2px 7px;white-space:nowrap;flex-shrink:0;justify-self:start}
     .vrow-listing{font-size:10px;color:var(--ink-3);line-height:1.3;margin-top:3px;padding-left:68px}
     .vrow-right{display:flex;align-items:center;gap:8px;flex-shrink:0;align-self:center}
@@ -619,12 +620,14 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       .vrow-name-line{grid-template-columns:68px minmax(0,1fr);align-items:start}
       .vrow-disc{grid-column:2;grid-row:2}
       .vrow-listing{padding-left:76px}
+      .vrow-company{padding-left:76px}
       .vrow-final{font-size:14px}
     }
     @media(max-width:390px){
       .pcard-name{font-size:15px}
       .vrow-name-line{grid-template-columns:64px minmax(0,1fr)}
       .vrow-listing{padding-left:72px}
+      .vrow-company{padding-left:72px}
     }
 
     /* ── UNIFIED FILTER BAR ───────────────────────────────── */
@@ -1347,16 +1350,39 @@ function normalizeFamily(raw){
     "mtp-31":"MTP-31","mtt-31":"MTP-31",
     // HGH Frag
     "hgh frag 176-191":"HGH Frag 176-191","hgh frag":"HGH Frag 176-191",
-    // Vendor-proprietary GLP names
-    "gla-1 sm":"GLA-1 (Semaglutide)",
-    "gla-2 trz":"GLA-2 (Tirzepatide)","gla-2.5 trz/rt":"GLA-2.5 (TRZ+RT)",
-    "gla-3 rt":"GLA-3 (Retatrutide)","gla-3 rt/cagri":"GLA-3 + Cagrilintide",
-    "ion-1s":"ION-1S (Semaglutide)","ion-2t":"ION-2T (Tirzepatide)","ion-3r":"ION-3R (Retatrutide)",
-    "sa-2t":"SA-2T (Tirzepatide)","sa-3r":"SA-3R (Retatrutide)","sa-4c":"SA-4C (Cagrilintide)",
-    "sa-3r / sa-2t blend":"SA-3R + SA-2T Blend","sa-3r/sa-4c blend":"SA-3R + SA-4C Blend",
-    "glp-r3 (retatrutide)":"GLP-R3 (Retatrutide)","glp-t2 (tirzepatide)":"GLP-T2 (Tirzepatide)",
+    // Vendor-proprietary GLP names — all -1 variants → Semaglutide, -2 → Tirzepatide, -3 → Retatrutide
+    // so every vendor's product lands on the same consolidated card
+    // ── Semaglutide (-1) ──
+    "gla-1 sm":"Peptide SM",
+    "ion-1s":"Peptide SM",
+    "semaglutide":"Peptide SM",
+    // ── -2 = Peptide TZ ──
+    "gla-2 trz":"Peptide TZ",
+    "ion-2t":"Peptide TZ",
+    "sa-2t":"Peptide TZ",
+    "glp-t2 (tirzepatide)":"Peptide TZ",
+    "glp-t2":"Peptide TZ",
+    "tirzepatide":"Peptide TZ",
+    // ── -3 = Peptide RT ──
+    "gla-3 rt":"Peptide RT",
+    "ion-3r":"Peptide RT",
+    "sa-3r":"Peptide RT",
+    "glp-r3 (retatrutide)":"Peptide RT",
+    "glp-r3":"Peptide RT",
+    "retatrutide":"Peptide RT",
+    // ── Cagrilintide (-4 / combo) ──
+    "sa-4c":"SA-4C (Cagrilintide)",
+    // ── Combos stay separate ──
+    "gla-2.5 trz/rt":"TRZ + Retatrutide Blend",
+    "gla-3 rt/cagri":"Retatrutide + Cagrilintide",
+    "sa-3r / sa-2t blend":"Retatrutide + Tirzepatide Blend",
+    "sa-3r/sa-4c blend":"Retatrutide + Cagrilintide",
     "retatrutide 20mg + tirzepatide 40mg | blend (60mg total)":"Retatrutide + Tirzepatide Blend",
-    "retatrutide 5mg + cagrilintide 5mg | blend (10mg total)":"Retatrutide + Cagrilintide Blend",
+    "retatrutide 5mg + cagrilintide 5mg | blend (10mg total)":"Retatrutide + Cagrilintide",
+    "tirzepatide / retatrutide blend":"TRZ + Retatrutide Blend",
+    "retatrutide / tirzepatide blend":"TRZ + Retatrutide Blend",
+    "tirzepatide + retatrutide":"TRZ + Retatrutide Blend",
+    "retatrutide + tirzepatide":"TRZ + Retatrutide Blend",
     // Misc
     "b12":"B12","humanin":"Humanin","l-carnitine":"L-Carnitine",
     "orforglipron":"Orforglipron","hcg":"HCG",
@@ -1381,6 +1407,26 @@ function normalizeFamily(raw){
     if(t === alias || t.startsWith(alias+" ") || t.startsWith(alias+"/") || t.startsWith(alias+"+"))
       return canonical;
   }
+
+  // ── Keyword fallback for API vendors using any naming convention ──
+  // Catches any product name containing compound keywords regardless of vendor code style.
+  // Blend products (containing two keywords) stay as blends, not collapsed to a single compound.
+  const hasSM = cl.includes("semaglutide") || /ion-1s/.test(cl) || /gla-1/.test(cl) || /sa-1/.test(cl);
+  const hasTZ = cl.includes("tirzepatide") || /trz/.test(cl) || /ion-2t/.test(cl) || /gla-2/.test(cl) || /sa-2t/.test(cl) || /glp-t2/.test(cl);
+  const hasRT = cl.includes("retatrutide") || /ion-3r/.test(cl) || /gla-3/.test(cl) || /sa-3r/.test(cl) || /glp-r3/.test(cl);
+  const hits = (hasSM?1:0) + (hasTZ?1:0) + (hasRT?1:0);
+  if(hits === 1){
+    if(hasSM) return "Peptide SM";
+    if(hasTZ) return "Peptide TZ";
+    if(hasRT) return "Peptide RT";
+  }
+  // Two compounds = a blend — return a descriptive name rather than collapsing
+  if(hits === 2){
+    if(hasTZ && hasRT) return "TRZ + Retatrutide Blend";
+    if(hasSM && hasTZ) return "Semaglutide + Tirzepatide Blend";
+    if(hasSM && hasRT) return "Semaglutide + Retatrutide Blend";
+  }
+
   return clean || s;
 }
 
@@ -1467,9 +1513,11 @@ function renderVendorRow(p){
   const finalStr = finalVal !== null ? formatMoney(finalVal) : (p.price||"");
   const origStr  = (base&&finalVal!==null&&disc>0) ? formatMoney(base) : "";
   const discStr  = disc>0 ? disc+"% off" : "";
-  // Show variation label under vendor name if it exists and differs from product name
+  // Show the vendor's own product name/code as sub-label so merged compound cards (e.g. Tirzepatide)
+  // reveal each vendor's proprietary code (MHC-2 TRZ, GLA-2, SA-2T, etc.)
+  const _productLabel = (p.product||"").replace(/\s*\(?\d+[\d.,]*\s*m[cgl]?g?\)?(\s+or\s+\d+[\d.,]*\s*m[cgl]?g?)*\s*$/i,"").trim();
   const variation = extractVariation(p.product||"", p.listing||"");
-  const sub = variation ? `<div class="vrow-listing">${variation}</div>` : "";
+  const sub = _productLabel ? `<div class="vrow-listing">${_productLabel}</div>` : (variation ? `<div class="vrow-listing">${variation}</div>` : "");
   const co = (p.company||"").replace(/'/g,"\\'");
   const pr = (p.product||"").replace(/'/g,"\\'");
   const ca = (p.category||"").replace(/'/g,"\\'");
@@ -1480,10 +1528,10 @@ function renderVendorRow(p){
     <div class="vrow-left">
       <div class="vrow-name-line">
         ${logoSrc ? `<img class="vrow-logo" src="${logoSrc}" alt="${p.company} logo" width="44" height="24" loading="lazy"/>` : `<span class="vrow-initials">${p.company.split(' ').map(w=>w[0]).join('').slice(0,2).toUpperCase()}</span>`}
-        <span class="vrow-name">${p.company}</span>
+        <span class="vrow-name">${_productLabel || p.product}</span>
         ${discStr ? `<span class="vrow-disc">${discStr}</span>` : ""}
       </div>
-      ${sub}
+      <div class="vrow-company">${p.company}</div>
     </div>
     <div class="vrow-right">
       <div class="vrow-prices">
