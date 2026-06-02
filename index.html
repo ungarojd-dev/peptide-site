@@ -1350,25 +1350,35 @@ function normalizeFamily(raw){
     "mtp-31":"MTP-31","mtt-31":"MTP-31",
     // HGH Frag
     "hgh frag 176-191":"HGH Frag 176-191","hgh frag":"HGH Frag 176-191",
-    // Vendor-proprietary GLP names — all -1 variants → Semaglutide, -2 → Tirzepatide, -3 → Retatrutide
-    // so every vendor's product lands on the same consolidated card
-    // ── Semaglutide (-1) ──
+    // Vendor-proprietary GLP names — all -1 variants → Peptide SM, -2 → Peptide TZ, -3 → Peptide RT
+    // ── Semaglutide / Peptide SM (-1) ──
     "gla-1 sm":"Peptide SM",
+    "glp-1 sm":"Peptide SM",
     "ion-1s":"Peptide SM",
+    "pep-sm":"Peptide SM",
     "semaglutide":"Peptide SM",
-    // ── -2 = Peptide TZ ──
+    // ── Tirzepatide / Peptide TZ (-2) ──
     "gla-2 trz":"Peptide TZ",
-    "ion-2t":"Peptide TZ",
-    "sa-2t":"Peptide TZ",
+    "glp-2 trz":"Peptide TZ",
+    "glp2-t":"Peptide TZ",
     "glp-t2 (tirzepatide)":"Peptide TZ",
     "glp-t2":"Peptide TZ",
+    "ion-2t":"Peptide TZ",
+    "mhc-2 trz":"Peptide TZ",
+    "pep-trz":"Peptide TZ",
+    "sa-2t":"Peptide TZ",
     "tirzepatide":"Peptide TZ",
-    // ── -3 = Peptide RT ──
+    // ── Retatrutide / Peptide RT (-3) ──
     "gla-3 rt":"Peptide RT",
-    "ion-3r":"Peptide RT",
-    "sa-3r":"Peptide RT",
+    "glp-3 rt":"Peptide RT",
+    "glp-3r":"Peptide RT",
+    "glp3-r":"Peptide RT",
     "glp-r3 (retatrutide)":"Peptide RT",
     "glp-r3":"Peptide RT",
+    "ion-3r":"Peptide RT",
+    "oc-3rt":"Peptide RT",
+    "pep-rt":"Peptide RT",
+    "sa-3r":"Peptide RT",
     "retatrutide":"Peptide RT",
     // ── Cagrilintide (-4 / combo) ──
     "sa-4c":"SA-4C (Cagrilintide)",
@@ -1411,9 +1421,9 @@ function normalizeFamily(raw){
   // ── Keyword fallback for API vendors using any naming convention ──
   // Catches any product name containing compound keywords regardless of vendor code style.
   // Blend products (containing two keywords) stay as blends, not collapsed to a single compound.
-  const hasSM = cl.includes("semaglutide") || /ion-1s/.test(cl) || /gla-1/.test(cl) || /sa-1/.test(cl);
-  const hasTZ = cl.includes("tirzepatide") || /trz/.test(cl) || /ion-2t/.test(cl) || /gla-2/.test(cl) || /sa-2t/.test(cl) || /glp-t2/.test(cl);
-  const hasRT = cl.includes("retatrutide") || /ion-3r/.test(cl) || /gla-3/.test(cl) || /sa-3r/.test(cl) || /glp-r3/.test(cl);
+  const hasSM = cl.includes("semaglutide") || /\bion-1s\b/.test(cl) || /\bgla-1\b/.test(cl) || /\bglp-1\b/.test(cl) || /\bpep-sm\b/.test(cl) || /\bsa-1\b/.test(cl);
+  const hasTZ = cl.includes("tirzepatide") || /\btrz\b/.test(cl) || /\bion-2t\b/.test(cl) || /\bgla-2\b/.test(cl) || /\bglp-2\b/.test(cl) || /\bglp2-t\b/.test(cl) || /\bmhc-2\b/.test(cl) || /\bpep-trz\b/.test(cl) || /\bsa-2t\b/.test(cl) || /\bglp-t2\b/.test(cl);
+  const hasRT = cl.includes("retatrutide") || /\bion-3r\b/.test(cl) || /\bgla-3\b/.test(cl) || /\bglp-3\b/.test(cl) || /\bglp3-r\b/.test(cl) || /\boc-3rt\b/.test(cl) || /\bpep-rt\b/.test(cl) || /\bsa-3r\b/.test(cl) || /\bglp-r3\b/.test(cl);
   const hits = (hasSM?1:0) + (hasTZ?1:0) + (hasRT?1:0);
   if(hits === 1){
     if(hasSM) return "Peptide SM";

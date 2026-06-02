@@ -897,11 +897,11 @@ function displayProductName(p) {
 
   // Exact / prefix alias table
   const DISPLAY_ALIASES = {
-    "gla-1 sm": "Peptide SM", "ion-1s": "Peptide SM", "semaglutide": "Peptide SM",
-    "gla-2 trz": "Peptide TZ", "ion-2t": "Peptide TZ", "sa-2t": "Peptide TZ",
-    "glp-t2 (tirzepatide)": "Peptide TZ", "glp-t2": "Peptide TZ", "tirzepatide": "Peptide TZ",
-    "gla-3 rt": "Peptide RT", "ion-3r": "Peptide RT", "sa-3r": "Peptide RT",
-    "glp-r3 (retatrutide)": "Peptide RT", "glp-r3": "Peptide RT", "retatrutide": "Peptide RT",
+    "gla-1 sm": "Peptide SM", "glp-1 sm": "Peptide SM", "ion-1s": "Peptide SM", "pep-sm": "Peptide SM", "semaglutide": "Peptide SM",
+    "gla-2 trz": "Peptide TZ", "glp-2 trz": "Peptide TZ", "glp2-t": "Peptide TZ", "glp-t2 (tirzepatide)": "Peptide TZ", "glp-t2": "Peptide TZ",
+    "ion-2t": "Peptide TZ", "mhc-2 trz": "Peptide TZ", "pep-trz": "Peptide TZ", "sa-2t": "Peptide TZ", "tirzepatide": "Peptide TZ",
+    "gla-3 rt": "Peptide RT", "glp-3 rt": "Peptide RT", "glp-3r": "Peptide RT", "glp3-r": "Peptide RT", "glp-r3 (retatrutide)": "Peptide RT",
+    "glp-r3": "Peptide RT", "ion-3r": "Peptide RT", "oc-3rt": "Peptide RT", "pep-rt": "Peptide RT", "sa-3r": "Peptide RT", "retatrutide": "Peptide RT",
   };
   const sorted = Object.entries(DISPLAY_ALIASES).sort((a, b) => b[0].length - a[0].length);
   for (const [alias, canonical] of sorted) {
@@ -910,9 +910,9 @@ function displayProductName(p) {
   }
 
   // Keyword fallback for any vendor naming convention
-  const hasSM = cl.includes("semaglutide") || /gla-1/.test(cl) || /ion-1s/.test(cl) || /sa-1/.test(cl);
-  const hasTZ = cl.includes("tirzepatide") || /trz/.test(cl) || /glp-t2/.test(cl) || /gla-2/.test(cl) || /ion-2t/.test(cl) || /sa-2t/.test(cl);
-  const hasRT = cl.includes("retatrutide") || /glp-r3/.test(cl) || /gla-3/.test(cl) || /ion-3r/.test(cl) || /sa-3r/.test(cl);
+  const hasSM = cl.includes("semaglutide") || /\bion-1s\b/.test(cl) || /\bgla-1\b/.test(cl) || /\bglp-1\b/.test(cl) || /\bpep-sm\b/.test(cl);
+  const hasTZ = cl.includes("tirzepatide") || /\btrz\b/.test(cl) || /\bglp-t2\b/.test(cl) || /\bgla-2\b/.test(cl) || /\bglp-2\b/.test(cl) || /\bglp2-t\b/.test(cl) || /\bmhc-2\b/.test(cl) || /\bpep-trz\b/.test(cl) || /\bion-2t\b/.test(cl) || /\bsa-2t\b/.test(cl);
+  const hasRT = cl.includes("retatrutide") || /\bglp-r3\b/.test(cl) || /\bgla-3\b/.test(cl) || /\bglp-3\b/.test(cl) || /\bglp3-r\b/.test(cl) || /\boc-3rt\b/.test(cl) || /\bpep-rt\b/.test(cl) || /\bion-3r\b/.test(cl) || /\bsa-3r\b/.test(cl);
   const hits = (hasSM ? 1 : 0) + (hasTZ ? 1 : 0) + (hasRT ? 1 : 0);
   if (hits === 1) {
     if (hasSM) return "Peptide SM";
