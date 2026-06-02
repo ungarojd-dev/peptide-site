@@ -80,10 +80,10 @@ export const handler = async (event) => {
   try {
     if (!CK || !CS) throw new Error("API credentials not configured");
     const rawProducts = await fetchAllProducts();
+    const results = await Promise.allSettled(rawProducts.map(p => transformProduct(p)));
     const transformed = [];
-    for (const p of rawProducts) {
-      const items = await transformProduct(p);
-      transformed.push(...items);
+    for (const r of results) {
+      if (r.status === 'fulfilled') transformed.push(...r.value);
     }
     return { statusCode: 200, headers, body: JSON.stringify({ vendor: "Glow Aminos", fetched_at: new Date().toISOString(), count: transformed.length, products: transformed }) };
   } catch (err) {

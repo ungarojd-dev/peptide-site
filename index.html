@@ -103,6 +103,10 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     main{flex:1}
     a{text-decoration:none;color:inherit}
 
+    /* ── LOADING STATE ───────────────────────────────────── */
+    #mLoading{display:none!important}
+    #mLoading.show{display:block!important}
+
     /* ── NAV ──────────────────────────────────────────────── */
     .sticky-header{position:sticky;top:0;z-index:300;}
     nav{position:relative;z-index:2;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm)}
@@ -2025,6 +2029,13 @@ async function refreshVendor(vendorName, endpoint){
 setTimeout(()=>{
   Object.entries(LIVE_FEEDS).forEach(([vendorName, endpoint])=>refreshVendor(vendorName, endpoint));
 }, 600);
+
+// Hard timeout: remove loading spinner after 30s regardless of API state
+setTimeout(()=>{
+  const ml = document.getElementById("mLoading");
+  if(ml) ml.classList.remove("show");
+  window._liveVendorLoading.clear();
+}, 30000);
 
 // ── Disclaimer Modal ──────────────────────────────────────
 (function(){

@@ -195,12 +195,11 @@ export const handler = async (event) => {
     if (!CK || !CS) throw new Error("API credentials not configured");
 
     const rawProducts = await fetchAllProducts();
+    const filtered = rawProducts.filter(p => !shouldExcludeProduct(p));
+    const results = await Promise.allSettled(filtered.map(p => transformProduct(p)));
     const transformed = [];
-
-    for (const product of rawProducts) {
-      if (shouldExcludeProduct(product)) continue;
-      const items = await transformProduct(product);
-      transformed.push(...items);
+    for (const r of results) {
+      if (r.status === 'fulfilled') transformed.push(...r.value);
     }
 
     return {

@@ -165,11 +165,10 @@ export const handler = async (event) => {
     }
 
     const rawProducts = await fetchAllProducts();
+    const results = await Promise.allSettled(rawProducts.map(p => transformProduct(p)));
     const transformed = [];
-
-    for (const p of rawProducts) {
-      const items = await transformProduct(p);
-      transformed.push(...items);
+    for (const r of results) {
+      if (r.status === 'fulfilled') transformed.push(...r.value);
     }
 
     return {
