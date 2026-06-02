@@ -5,21 +5,25 @@ const CK = process.env.FLAWLESS_CK;
 const CS = process.env.FLAWLESS_CS;
 const BASE = "https://flawlesscompounds.com/wp-json/wc/v3";
 
+async function fetchPage(url) {
+  const ctrl = new AbortController();
+  const tid = setTimeout(() => ctrl.abort(), 9000);
+  const resp = await fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(tid));
+  if (!resp.ok) throw new Error(`WooCommerce API error: ${resp.status}`);
+  const products = await resp.json();
+  const totalPages = parseInt(resp.headers.get("X-WP-TotalPages") || "1");
+  return { products, totalPages };
+}
+
 async function fetchAllProducts() {
-  let page = 1;
-  let allProducts = [];
-  while (true) {
-    const url = `${BASE}/products?per_page=100&page=${page}&consumer_key=${CK}&consumer_secret=${CS}&status=publish`;
-    const ctrl = new AbortController();
-    const tid = setTimeout(() => ctrl.abort(), 9000);
-    const resp = await fetch(url, {signal: ctrl.signal}).finally(() => clearTimeout(tid));
-    if (!resp.ok) throw new Error(`WooCommerce API error: ${resp.status}`);
-    const products = await resp.json();
-    if (products.length === 0) break;
-    allProducts = allProducts.concat(products);
-    const totalPages = parseInt(resp.headers.get("X-WP-TotalPages") || "1");
-    if (page >= totalPages) break;
-    page++;
+  const baseUrl = `${BASE}/products?per_page=100&consumer_key=${CK}&consumer_secret=${CS}&status=publish`;
+  const { products: page1, totalPages } = await fetchPage(`${baseUrl}&page=1`);
+  if (totalPages <= 1) return page1;
+  const pageNums = Array.from({length: totalPages - 1}, (_, i) => i + 2);
+  const restResults = await Promise.allSettled(pageNums.map(n => fetchPage(`${baseUrl}&page=${n}`)));
+  const allProducts = [...page1];
+  for (const r of restResults) {
+    if (r.status === "fulfilled") allProducts.push(...r.value.products);
   }
   return allProducts;
 }
