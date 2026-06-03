@@ -676,6 +676,49 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .vrow-initials{width:28px;height:28px;border-radius:7px;background:var(--forest);color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.3px}
     .vrow-logo[src*="flawless-compounds"],.vrow-logo[src*="glow-aminos"]{background:#fff9fb;border-color:#e4d8d8}
     .vrow-logo[src*="oneday-compounds"]{background:#f2f8fb;border-color:#d8e4ee}
+
+    /* ── COMPACT MOBILE FILTER DOCK ───────────────────────── */
+    .mobile-filter-dock,.mobile-filter-sheet-overlay,.mobile-filter-sheet{display:none}
+    @media(max-width:768px){
+      .search-section{position:static;top:auto;z-index:auto}
+      html{scroll-padding-top:calc(var(--mobile-filter-dock-top, 0px) + 92px)}
+      .mobile-filter-dock{display:block;position:fixed;left:0;right:0;top:var(--mobile-filter-dock-top,0px);z-index:295;background:rgba(255,255,255,.97);border-bottom:1px solid var(--border);box-shadow:0 6px 18px rgba(30,30,27,.14);transform:translateY(-112%);opacity:0;pointer-events:none;transition:transform .2s ease,opacity .2s ease;backdrop-filter:blur(10px)}
+      .mobile-filter-dock.visible{transform:translateY(0);opacity:1;pointer-events:auto}
+      .mfd-inner{padding:7px 10px 6px;display:flex;flex-direction:column;gap:6px}
+      .mfd-search-row{display:flex;align-items:center;gap:6px}
+      .mfd-search-wrap{position:relative;min-width:0;flex:1}
+      .mfd-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink-3);pointer-events:none}
+      .mfd-search-input{width:100%;height:34px;border:1.5px solid var(--border);border-radius:999px;background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:12px;padding:0 10px 0 29px;outline:none}
+      .mfd-search-input:focus{border-color:var(--forest)}
+      .mfd-filter-btn,.mfd-reset-btn{height:34px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-2);font-family:var(--fb);font-size:11px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;padding:0 10px}
+      .mfd-filter-btn.has-filters{border-color:var(--forest);color:var(--forest);background:var(--olive-lt)}
+      .mfd-filter-count{min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--forest);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:9px;line-height:1}
+      .mfd-filter-count[hidden],.mfd-reset-btn[hidden]{display:none}
+      .mfd-reset-btn{width:34px;padding:0;color:var(--olive)}
+      .mfd-popular-row{display:flex;align-items:center;gap:5px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:1px}
+      .mfd-popular-row::-webkit-scrollbar{display:none}
+      .mfd-chip{flex-shrink:0;border:1.5px solid var(--border);border-radius:999px;background:var(--surface);color:var(--ink-2);font-family:var(--fb);font-size:10px;font-weight:800;line-height:1;padding:5px 9px;cursor:pointer;white-space:nowrap}
+      .mfd-chip.active{background:var(--forest);border-color:var(--forest);color:#fff}
+      .mobile-filter-sheet-overlay{display:block;position:fixed;inset:0;z-index:840;background:rgba(0,0,0,.42);opacity:0;pointer-events:none;transition:opacity .2s ease}
+      .mobile-filter-sheet-overlay.open{opacity:1;pointer-events:auto}
+      .mobile-filter-sheet{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:850;max-height:78vh;background:var(--surface);border-radius:20px 20px 0 0;box-shadow:0 -6px 28px rgba(0,0,0,.2);transform:translateY(105%);transition:transform .24s cubic-bezier(.4,0,.2,1);flex-direction:column}
+      .mobile-filter-sheet.open{transform:translateY(0)}
+      .mfs-handle{width:38px;height:4px;background:var(--border);border-radius:99px;margin:9px auto 0}
+      .mfs-head{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border)}
+      .mfs-head h3{font-family:var(--fd);font-size:17px;color:var(--ink)}
+      .mfs-close{width:32px;height:32px;border:0;border-radius:50%;background:var(--surface-2);color:var(--ink-3);font-size:16px;cursor:pointer}
+      .mfs-body{overflow-y:auto;padding:15px 16px 12px}
+      .mfs-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--ink-3);margin-bottom:9px}
+      .mfs-category-grid{display:flex;flex-wrap:wrap;gap:7px}
+      .mfs-category-chip{border:1.5px solid var(--border);border-radius:999px;background:var(--surface);color:var(--ink-2);font-family:var(--fb);font-size:12px;font-weight:800;padding:7px 12px;cursor:pointer}
+      .mfs-category-chip.active{background:var(--forest);border-color:var(--forest);color:#fff}
+      .mfs-footer{display:flex;gap:9px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--border)}
+      .mfs-clear,.mfs-apply{border-radius:999px;font-family:var(--fb);font-size:13px;font-weight:900;padding:11px 12px;cursor:pointer}
+      .mfs-clear{flex:1;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-3)}
+      .mfs-apply{flex:1.7;border:1.5px solid var(--forest);background:var(--forest);color:#fff}
+      body.mobile-filter-sheet-open{overflow:hidden}
+      #mobileFilterDockSentinel{height:1px}
+    }
 </style>
 </head>
 <body>
@@ -922,6 +965,61 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </div>
 
+
+<!-- Compact mobile filter dock, shown only after the original controls scroll away -->
+<div class="mobile-filter-dock" id="mobileFilterDock" aria-hidden="true">
+  <div class="mfd-inner">
+    <div class="mfd-search-row">
+      <div class="mfd-search-wrap">
+        <span class="mfd-search-icon">🔍</span>
+        <input class="mfd-search-input" id="mobileDockSearchInput" type="search" placeholder="Search products..." autocomplete="off" spellcheck="false" aria-label="Search products"/>
+      </div>
+      <button class="mfd-filter-btn" id="mobileDockFiltersBtn" type="button" onclick="openMobileFilterSheet()" aria-controls="mobileFilterSheet" aria-expanded="false">
+        Filters <span class="mfd-filter-count" id="mobileDockFilterCount" hidden>0</span>
+      </button>
+      <button class="mfd-reset-btn" id="mobileDockResetBtn" type="button" onclick="clearMobileDockFilters()" aria-label="Clear all filters" hidden>✕</button>
+    </div>
+    <div class="mfd-popular-row" id="mobileDockPopularRow" aria-label="Popular product shortcuts">
+      <button class="mfd-chip active" type="button" data-family="all">All</button>
+      <button class="mfd-chip" type="button" data-family="BPC-157">BPC-157</button>
+      <button class="mfd-chip" type="button" data-family="TB-500">TB-500</button>
+      <button class="mfd-chip" type="button" data-family="Peptide SM">Sema</button>
+      <button class="mfd-chip" type="button" data-family="Peptide TZ">Tirz</button>
+      <button class="mfd-chip" type="button" data-family="Peptide RT">Reta</button>
+      <button class="mfd-chip" type="button" data-family="NAD+">NAD+</button>
+      <button class="mfd-chip" type="button" data-family="GHK-Cu">GHK-Cu</button>
+      <button class="mfd-chip" type="button" data-family="CJC-1295">CJC/Ipa</button>
+    </div>
+  </div>
+</div>
+<div class="mobile-filter-sheet-overlay" id="mobileFilterSheetOverlay" onclick="closeMobileFilterSheet()" aria-hidden="true"></div>
+<section class="mobile-filter-sheet" id="mobileFilterSheet" role="dialog" aria-modal="true" aria-labelledby="mobileFilterSheetTitle" aria-hidden="true">
+  <div class="mfs-handle"></div>
+  <div class="mfs-head">
+    <h3 id="mobileFilterSheetTitle">Filter Products</h3>
+    <button class="mfs-close" type="button" onclick="closeMobileFilterSheet()" aria-label="Close filters">✕</button>
+  </div>
+  <div class="mfs-body">
+    <div class="mfs-label">Categories</div>
+    <div class="mfs-category-grid" id="mobileFilterCategoryGrid">
+      <button class="mfs-category-chip active" type="button" data-mobile-cat="all">All</button>
+      <button class="mfs-category-chip" type="button" data-mobile-cat="Peptides">Peptides</button>
+      <button class="mfs-category-chip" type="button" data-mobile-cat="Bioregulators">Bioregulators</button>
+      <button class="mfs-category-chip" type="button" data-mobile-cat="Capsules">Capsules</button>
+      <button class="mfs-category-chip" type="button" data-mobile-cat="Liquids">Liquids</button>
+      <button class="mfs-category-chip" type="button" data-mobile-cat="Aminos">Aminos</button>
+      <button class="mfs-category-chip" type="button" data-mobile-cat="Nasal Sprays">Nasal Sprays</button>
+      <button class="mfs-category-chip" type="button" data-mobile-cat="Topicals">Topicals</button>
+      <button class="mfs-category-chip" type="button" data-mobile-cat="Supplies">Supplies</button>
+      <button class="mfs-category-chip" type="button" data-mobile-cat="Dissolvable Strips">Dissolvable Strips</button>
+    </div>
+  </div>
+  <div class="mfs-footer">
+    <button class="mfs-clear" type="button" onclick="clearMobileDockFilters(true)">Clear Filters</button>
+    <button class="mfs-apply" type="button" onclick="applyMobileFilterSheet()">Show Results</button>
+  </div>
+</section>
+
 <main id="priceTable">
 
   <!-- ── COMPARE BY PRODUCT VIEW ─────────────────────────── -->
@@ -965,6 +1063,8 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
       </div>
     </div>
+
+    <div id="mobileFilterDockSentinel" aria-hidden="true"></div>
 
     <!-- Product cards -->
     <div class="grouped-cards-wrap">
@@ -1786,9 +1886,110 @@ function matchesPopularFamily(family, selected){
   return family === selected;
 }
 
+
+function isMobileFilterDockMode(){
+  return window.matchMedia && window.matchMedia("(max-width: 768px)").matches;
+}
+function syncPopularFilterButtons(){
+  document.querySelectorAll(".search-chip").forEach(b=>b.classList.toggle("active", (b.dataset.family||"all") === activePopularFamily));
+  document.querySelectorAll(".mfd-chip").forEach(b=>b.classList.toggle("active", (b.dataset.family||"all") === activePopularFamily));
+}
+function syncCategoryFilterButtons(){
+  document.querySelectorAll("#catChips .cf-chip").forEach(b=>b.classList.toggle("active", (b.dataset.cat||"all") === activeCat));
+  document.querySelectorAll(".mfs-category-chip").forEach(b=>b.classList.toggle("active", (b.dataset.mobileCat||"all") === activeCat));
+}
+function getMobileFilterActiveCount(){
+  return (activeCat!=="all"?1:0) + (activePopularFamily!=="all"?1:0) + (searchTerm?1:0);
+}
+function syncMobileFilterDock(){
+  const originalInput=document.getElementById("searchInput");
+  const dockInput=document.getElementById("mobileDockSearchInput");
+  if(dockInput && document.activeElement!==dockInput) dockInput.value=originalInput ? originalInput.value : searchTerm;
+  syncPopularFilterButtons();
+  syncCategoryFilterButtons();
+  const count=getMobileFilterActiveCount();
+  const badge=document.getElementById("mobileDockFilterCount");
+  const reset=document.getElementById("mobileDockResetBtn");
+  const btn=document.getElementById("mobileDockFiltersBtn");
+  if(badge){ badge.textContent=String(count); badge.hidden=count===0; }
+  if(reset) reset.hidden=count===0;
+  if(btn) btn.classList.toggle("has-filters",count>0);
+}
+function updateMobileFilterDockPosition(){
+  const header=document.querySelector(".sticky-header");
+  const top=header ? Math.max(0,Math.ceil(header.getBoundingClientRect().height)) : 0;
+  document.documentElement.style.setProperty("--mobile-filter-dock-top",`${top}px`);
+  return top;
+}
+function updateMobileFilterDockVisibility(){
+  const dock=document.getElementById("mobileFilterDock");
+  const sentinel=document.getElementById("mobileFilterDockSentinel");
+  if(!dock || !sentinel) return;
+  const headerHeight=updateMobileFilterDockPosition();
+  const visible=isMobileFilterDockMode() && sentinel.getBoundingClientRect().top<=headerHeight;
+  dock.classList.toggle("visible",visible);
+  dock.setAttribute("aria-hidden",visible?"false":"true");
+}
+function scrollMobileResultsToTop(){
+  if(!isMobileFilterDockMode()) return;
+  const grid=document.getElementById("cardsGrid");
+  if(!grid) return;
+  const dock=document.getElementById("mobileFilterDock");
+  const offset=updateMobileFilterDockPosition() + (dock && dock.classList.contains("visible") ? dock.getBoundingClientRect().height : 0) + 8;
+  const top=window.scrollY + grid.getBoundingClientRect().top - offset;
+  window.scrollTo({top:Math.max(0,top),behavior:"smooth"});
+}
+function setPopularFamily(selected,{scroll=false}={}){
+  activePopularFamily=(selected===activePopularFamily && selected!=="all")?"all":selected;
+  searchTerm="";
+  const original=document.getElementById("searchInput"); if(original) original.value="";
+  const dock=document.getElementById("mobileDockSearchInput"); if(dock) dock.value="";
+  syncPopularFilterButtons();
+  updateClearButton();
+  renderCompareView();
+  if(scroll) setTimeout(scrollMobileResultsToTop,0);
+}
+function openMobileFilterSheet(){
+  if(!isMobileFilterDockMode()) return;
+  syncMobileFilterDock();
+  const sheet=document.getElementById("mobileFilterSheet");
+  const overlay=document.getElementById("mobileFilterSheetOverlay");
+  const btn=document.getElementById("mobileDockFiltersBtn");
+  if(sheet){sheet.classList.add("open");sheet.setAttribute("aria-hidden","false");}
+  if(overlay){overlay.classList.add("open");overlay.setAttribute("aria-hidden","false");}
+  if(btn) btn.setAttribute("aria-expanded","true");
+  document.body.classList.add("mobile-filter-sheet-open");
+}
+function closeMobileFilterSheet(){
+  const sheet=document.getElementById("mobileFilterSheet");
+  const overlay=document.getElementById("mobileFilterSheetOverlay");
+  const btn=document.getElementById("mobileDockFiltersBtn");
+  if(sheet){sheet.classList.remove("open");sheet.setAttribute("aria-hidden","true");}
+  if(overlay){overlay.classList.remove("open");overlay.setAttribute("aria-hidden","true");}
+  if(btn) btn.setAttribute("aria-expanded","false");
+  document.body.classList.remove("mobile-filter-sheet-open");
+}
+function selectMobileFilterCategory(cat){
+  activeCat=cat;
+  syncCategoryFilterButtons();
+  updateClearButton();
+  renderCompareView();
+}
+function applyMobileFilterSheet(){
+  closeMobileFilterSheet();
+  setTimeout(scrollMobileResultsToTop,0);
+}
+function clearMobileDockFilters(closeSheet=false){
+  clearFilters();
+  syncMobileFilterDock();
+  if(closeSheet) closeMobileFilterSheet();
+  setTimeout(scrollMobileResultsToTop,0);
+}
+
 function updateClearButton(){
   const cb = document.getElementById("clearAllBtn");
   if(cb) cb.style.display = (activeCat!=="all" || activeFmt!=="all" || activePopularFamily!=="all" || searchTerm) ? "" : "none";
+  syncMobileFilterDock();
 }
 
 function getFilteredGroups(){
@@ -1853,8 +2054,7 @@ function setDisplayMode(){}
 // ── FILTER HANDLERS ────────────────────────────────────────
 function setCatFilter(cat, btn){
   activeCat = cat;
-  document.querySelectorAll("#catChips .cf-chip").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
+  syncCategoryFilterButtons();
   updateClearButton();
   renderCompareView();
 }
@@ -1873,41 +2073,42 @@ function onSortChange(){
 
 // Popular chips use canonical product families, not loose text searches.
 document.querySelectorAll(".search-chip").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    const selected = btn.dataset.family || "all";
-    activePopularFamily = (selected === activePopularFamily && selected !== "all") ? "all" : selected;
-    searchTerm = "";
-    const inp = document.getElementById("searchInput");
-    if(inp) inp.value = "";
-    document.querySelectorAll(".search-chip").forEach(b=>b.classList.toggle("active", (b.dataset.family||"all") === activePopularFamily));
-    updateClearButton();
-    renderCompareView();
-  });
+  btn.addEventListener("click",()=>setPopularFamily(btn.dataset.family||"all"));
 });
-// Search input
+document.querySelectorAll(".mfd-chip").forEach(btn=>{
+  btn.addEventListener("click",()=>setPopularFamily(btn.dataset.family||"all",{scroll:true}));
+});
+// Search inputs share the same state so the original controls and mobile dock never disagree.
 const _sinput = document.getElementById("searchInput");
+const _mobileDockInput = document.getElementById("mobileDockSearchInput");
 let _searchRenderTimer;
-if(_sinput){
-  _sinput.addEventListener("input", e=>{
-    searchTerm = e.target.value.trim().toLowerCase();
-    activePopularFamily = "all";
-    document.querySelectorAll(".search-chip").forEach(b=>b.classList.toggle("active", (b.dataset.family||"all") === "all"));
-    updateClearButton();
-    clearTimeout(_searchRenderTimer);
-    _searchRenderTimer=setTimeout(renderCompareView,150);
-  });
+function updateSearchTermFromInput(value,source){
+  searchTerm=String(value||"").trim().toLowerCase();
+  activePopularFamily="all";
+  const original=document.getElementById("searchInput");
+  const dock=document.getElementById("mobileDockSearchInput");
+  if(source!=="original" && original) original.value=value;
+  if(source!=="dock" && dock) dock.value=value;
+  syncPopularFilterButtons();
+  updateClearButton();
+  clearTimeout(_searchRenderTimer);
+  _searchRenderTimer=setTimeout(renderCompareView,150);
 }
+if(_sinput) _sinput.addEventListener("input",e=>updateSearchTermFromInput(e.target.value,"original"));
+if(_mobileDockInput) _mobileDockInput.addEventListener("input",e=>updateSearchTermFromInput(e.target.value,"dock"));
 
 // Old category and format selects remain wired for compatibility
 function clearFilters(){
   activeCat="all"; activeFmt="all"; activePopularFamily="all"; searchTerm="";
   const inp=document.getElementById("searchInput"); if(inp) inp.value="";
+  const dockInp=document.getElementById("mobileDockSearchInput"); if(dockInp) dockInp.value="";
   const cs=document.getElementById("categorySelect"); if(cs) cs.value="all";
   const fs=document.getElementById("formatSelect");   if(fs) fs.value="all";
   document.querySelectorAll(".cf-chip").forEach(b=>b.classList.remove("active"));
-  document.querySelectorAll("#catChips .cf-chip[data-cat=\"all\"]").forEach(b=>b.classList.add("active"));
-  document.querySelectorAll(".search-chip").forEach(b=>b.classList.toggle("active", (b.dataset.family||"all") === "all"));
+  syncCategoryFilterButtons();
+  syncPopularFilterButtons();
   const cb=document.getElementById("clearAllBtn"); if(cb) cb.style.display="none";
+  syncMobileFilterDock();
   renderCompareView();
 }
 (function(){
@@ -1928,6 +2129,23 @@ function closeFilterDrawer(){}
 function clearDrawerFilters(){}
 function applyDrawerFilters(){}
 (function(){const fdo=document.getElementById("filterDrawerOverlay");if(fdo)fdo.addEventListener("click",closeFilterDrawer);})();
+
+document.querySelectorAll(".mfs-category-chip").forEach(btn=>{
+  btn.addEventListener("click",()=>selectMobileFilterCategory(btn.dataset.mobileCat||"all"));
+});
+(function(){
+  let mobileDockFrame=0;
+  const queueMobileDockUpdate=()=>{
+    if(mobileDockFrame) return;
+    mobileDockFrame=requestAnimationFrame(()=>{mobileDockFrame=0;updateMobileFilterDockVisibility();});
+  };
+  window.addEventListener("scroll",queueMobileDockUpdate,{passive:true});
+  window.addEventListener("resize",queueMobileDockUpdate,{passive:true});
+  window.addEventListener("orientationchange",queueMobileDockUpdate,{passive:true});
+  document.addEventListener("keydown",e=>{if(e.key==="Escape") closeMobileFilterSheet();});
+  syncMobileFilterDock();
+  queueMobileDockUpdate();
+})();
 
 // ── OUTBOUND TRACKING ──────────────────────────────────────
 function trackOutbound(event, vendor, product, category, format, listedPrice, finalP, discPct, url){
