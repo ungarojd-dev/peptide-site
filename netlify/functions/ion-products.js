@@ -8,7 +8,7 @@ const BASE = `${SITE}/wp-json/wc/v3`;
 const COMPANY       = "Ion Peptide";
 const AFFILIATE_URL = `${SITE}/?ref=SammyC`;
 const PER_PAGE      = 100;
-const FETCH_TIMEOUT = 15000;
+const FETCH_TIMEOUT = 25000;
 const VARIATION_CONCURRENCY = 5;
 
 const EXCLUDE_TERMS = [
