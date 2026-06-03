@@ -159,6 +159,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .hs-label{color:rgba(255,255,255,.55);font-size:11px}
     .hs-val{color:#fff;font-weight:800;font-size:13px}
 
+    #mLoading{display:none!important}
     /* ── SEARCH & FILTERS ─────────────────────────────────── */
     .search-section{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;box-shadow:var(--shadow-sm)}
     .search-inner{max-width:1200px;margin:0 auto;padding:10px 20px}
@@ -830,7 +831,11 @@ function hasAny(text, terms){
 
 const GLP_WEIGHT_LOSS_TERMS = [
   "semaglutide", "tirzepatide", "retatrutide", "cagrilintide", "mazdutide", "survodutide", "liraglutide", "orforglipron", "amycretin",
-  "glp-", "glp ", "glp/r", "glp-r", "glp/t", "glp-t", "gla-", "sa-2t", "sa-3r", "sa-4c", "trz", "reta", "cagri",
+  "glp-", "glp ", "glp/r", "glp-r", "glp/t", "glp-t", "glp2-t", "glp3-r",
+  "gla-", "sa-2t", "sa-3r", "sa-4c", "trz", "reta", "cagri",
+  "ion-1s", "ion-2t", "ion-3r",
+  "mhc-2", "oc-3rt", "pep-sm", "pep-trz", "pep-rt", "pep-tz",
+  "peptide sm", "peptide tz", "peptide rt",
   "tesofensine", "aod-9604", "aod9604", "adipotide", "lipo-c", "lipoc", "5-amino", "5 amino", "5amino"
 ];
 function isGlpWeightLossProduct(p){
@@ -843,7 +848,7 @@ function detectCategory(p){
   const oldCat = CATEGORY_ALIASES[p.category] || p.category;
 
   if(hasAny(text,["bacteriostatic", "bac water", "bac-water", "sterile water", "syringe", "needle", "pen needle", "peptide pen", "cartridge", "vial cover", "vial caps", "caps/cover", "vial cap", "travel case", "starter kit", "reconstitution", "alcohol swab"])) return "Supplies";
-  if(hasAny(text, GLP_WEIGHT_LOSS_TERMS) || hasAny(text,["gla-1", "gla-2", "gla-3", "gla-4", "cag"])) return "GLP-1 & Incretin";
+  if(hasAny(text, GLP_WEIGHT_LOSS_TERMS) || hasAny(text,["gla-1", "gla-2", "gla-3", "gla-4", "cag", "ion-1", "ion-2", "ion-3", "mhc-2", "oc-3", "glp2", "glp3", "peptide sm", "peptide tz", "peptide rt"])) return "GLP-1 & Incretin";
   if(hasAny(text,["cjc", "ipamorelin", "sermorelin", "tesamorelin", "ghrp", "hexarelin", "mod grf", "igf-1", "igf1", "hgh", "growth hormone"])) return "Growth Hormone Research";
   if(hasAny(text,["semax", "selank", "dihexa", "cerebrolysin", "nootropic", "vip", "dsip", "cortexin"])) return "Cognitive & Nootropic";
   if(hasAny(text,["pt-141", "pt141", "melanotan", "mt-1", "mt-2", "kisspeptin", "hcg", "tanning", "libido"])) return "Skin, Tanning & Sexual Health";
@@ -881,6 +886,36 @@ function normalizeProducts(){
   }
 }
 normalizeProducts();
+
+// ── Display name: maps vendor codes to Peptide SM / TZ / RT ─────────────────
+function displayProductName(p) {
+  const raw = (p.product || "").trim();
+  const s = raw
+    .replace(/\s*[-–]\s*\d[\d.,]*\s*m[cgl]?g?\b/gi, "")
+    .replace(/\s*\(\d[\d.,]*\s*m[cgl]?g?\)/gi, "")
+    .replace(/\s+\d[\d.,]*\s*m[cgl]?g?(\s+or\s+\d[\d.,]*\s*m[cgl]?g?)*/gi, "")
+    .replace(/\s*(research\s*)?(peptide\s+)?(vial|capsules?|spray|liquid|topical)\s*$/i, "")
+    .replace(/^(glacier\s+aminos?\s*|ion\s*peptide\s*|southern\s*aminos?\s*|labsourced\s*peptides?\s*|mile\s*high\s*(?:compounds?|peptides?)?\s*|solyn\s*labs?\s*)/i, "")
+    .trim();
+  const cl = s.toLowerCase();
+  const DISPLAY_ALIASES = {
+    "gla-1 sm":"Peptide SM","glp-1 sm":"Peptide SM","ion-1s":"Peptide SM","pep-sm":"Peptide SM","semaglutide":"Peptide SM",
+    "gla-2 trz":"Peptide TZ","glp-2 trz":"Peptide TZ","glp2-t":"Peptide TZ","glp-t2 (tirzepatide)":"Peptide TZ","glp-t2":"Peptide TZ",
+    "ion-2t":"Peptide TZ","mhc-2 trz":"Peptide TZ","pep-trz":"Peptide TZ","sa-2t":"Peptide TZ","tirzepatide":"Peptide TZ",
+    "gla-3 rt":"Peptide RT","glp-3 rt":"Peptide RT","glp-3r":"Peptide RT","glp3-r":"Peptide RT",
+    "glp-r3 (retatrutide)":"Peptide RT","glp-r3":"Peptide RT","ion-3r":"Peptide RT","oc-3rt":"Peptide RT","pep-rt":"Peptide RT","sa-3r":"Peptide RT","retatrutide":"Peptide RT",
+  };
+  const sorted = Object.entries(DISPLAY_ALIASES).sort((a,b)=>b[0].length-a[0].length);
+  for(const [alias,canonical] of sorted){
+    if(cl===alias||cl.startsWith(alias+" ")||cl.startsWith(alias+"/")||cl.startsWith(alias+"+")||cl.startsWith(alias+"(")) return canonical;
+  }
+  const hasSM = cl.includes("semaglutide")||/\bgla-1\b/.test(cl)||/\bglp-1\b/.test(cl)||/\bion-1s\b/.test(cl);
+  const hasTZ = cl.includes("tirzepatide")||/\btrz\b/.test(cl)||/\bglp-t2\b/.test(cl)||/\bgla-2\b/.test(cl)||/\bglp2-t\b/.test(cl)||/\bmhc-2\b/.test(cl)||/\bion-2t\b/.test(cl)||/\bsa-2t\b/.test(cl);
+  const hasRT = cl.includes("retatrutide")||/\bglp-r3\b/.test(cl)||/\bgla-3\b/.test(cl)||/\bglp3-r\b/.test(cl)||/\boc-3rt\b/.test(cl)||/\bion-3r\b/.test(cl)||/\bsa-3r\b/.test(cl);
+  const hits = (hasSM?1:0)+(hasTZ?1:0)+(hasRT?1:0);
+  if(hits===1){if(hasSM)return "Peptide SM";if(hasTZ)return "Peptide TZ";if(hasRT)return "Peptide RT";}
+  return s || raw;
+}
 
 
 const TRACKING_PARAMS_TO_STRIP = ["utm_source", "utm_medium", "utm_campaign", "utm_content", "utm_term", "utm_id", "utm_name", "utm_creative_format", "utm_marketing_tactic", "fbclid", "gclid", "gbraid", "wbraid", "msclkid"];
@@ -1065,7 +1100,7 @@ function applyFilters(){
 
   const waitingForSelectedVendor = activeVendor !== "all" && window._liveVendorLoading && window._liveVendorLoading.has(activeVendor);
   noRes.classList.toggle("show", count===0 && !waitingForSelectedVendor);
-  if(mLoading) mLoading.classList.toggle("show", count===0 & waitingForSelectedVendor);
+  if(mLoading) mLoading.classList.toggle("show", count===0 && waitingForSelectedVendor);
 
   renderDesktop(filtered);
   renderMobile(filtered);
@@ -1092,7 +1127,7 @@ function renderDesktop(rows){
     const href = stripTrackingParamsFromUrl(p.url || vc.url || "#");
     const tr = document.createElement("tr");
     tr.innerHTML=`
-      <td><div class="td-product">${p.product}</div>${p.listing && p.listing!==p.product?`<div class="td-listing">${p.listing}</div>`:""}</td>
+      <td><div class="td-product">${displayProductName(p)}</div><div class="td-listing">${p.company}</div></td>
       <td>${vendorEl}</td>
       <td><span class="cat-tag ${cc}">${p.category}</span>${p.format && p.format!=="Vials"?`<br><span class="format-tag">${p.format}</span>`:""}</td>
       <td><span class="td-price">${p.price}</span></td>
@@ -1123,8 +1158,7 @@ function renderMobile(rows){
     card.className = "m-card";
     card.innerHTML = `
       <div class="m-card-body">
-        <div class="m-card-name">${p.product}</div>
-        ${p.listing && p.listing!==p.product?`<div class="m-card-listing">${p.listing.length>45?p.listing.substring(0,45)+'…':p.listing}</div>`:''}
+        <div class="m-card-name">${displayProductName(p)}</div>
         <div class="m-card-vendor">${logoEl}<span class="m-vendor-name">${p.company}</span></div>
         <div class="m-price">${p.price}</div>
         ${after?`<div class="m-price-after">${after} with <span class="sammyc-chip sammyc-chip--sm">SAMMYC</span></div>`:''}
@@ -1218,7 +1252,7 @@ function updateFilterControls(){
   setSelectValue("vendorSelect", activeVendor);
   document.querySelectorAll(".search-chip").forEach(btn=>{
     const q = (btn.dataset.search || "").toLowerCase().trim();
-    btn.classList.toggle("active", !!searchTerm & q === searchTerm);
+    btn.classList.toggle("active", !!searchTerm && q === searchTerm);
   });
   renderActiveFilters();
 }
@@ -1252,7 +1286,12 @@ document.querySelectorAll(".search-chip").forEach(btn=>btn.addEventListener("cli
   updateFilterControls();
   applyFilters();
 }));
-document.getElementById("searchInput").addEventListener("input",e=>{searchTerm=e.target.value.toLowerCase().trim();updateFilterControls();applyFilters();});
+let _glpSearchTimer;
+document.getElementById("searchInput").addEventListener("input",e=>{
+  searchTerm=e.target.value.toLowerCase().trim();
+  clearTimeout(_glpSearchTimer);
+  _glpSearchTimer=setTimeout(()=>{updateFilterControls();applyFilters();},150);
+});
 const params=new URLSearchParams(window.location.search);
 const urlFormat=params.get("format");
 const urlVendor=params.get("vendor");
@@ -1276,49 +1315,34 @@ document.getElementById("totalCount").textContent=PRODUCTS.length;
 syncSortSelect();
 updateTableSortHeaders();
 applyFilters();
+let _glpResizeTimer;
+let _lastGlpMobile = window.matchMedia("(max-width: 768px)").matches;
 window.addEventListener("resize",()=>{
-  if(viewMode === "auto"){
-    updateViewMode();
-    applyFilters();
-  }
+  clearTimeout(_glpResizeTimer);
+  _glpResizeTimer=setTimeout(()=>{
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if(isMobile !== _lastGlpMobile){
+      _lastGlpMobile = isMobile;
+      if(viewMode === "auto") updateViewMode();
+      applyFilters();
+    }
+  },150);
 });
 
-// ── Live API Feeds, non-blocking per vendor ──
-// The static catalog renders first. Each API vendor refreshes in the background.
-// This prevents one slow vendor from making the whole product table look empty.
-const LIVE_FEEDS = {
-  "Glacier Aminos": "/.netlify/functions/glacier-products",
-  "Ion Peptide": "/.netlify/functions/ion-products",
-  "Southern Aminos": "/.netlify/functions/southern-products",
-  "Flawless Compounds": "/.netlify/functions/flawless-products",
-  "Glow Aminos": "/.netlify/functions/glow-products",
-  "Mile High Peptides": "/.netlify/functions/milehigh-products",
-  "Instant Peptides": "/.netlify/functions/instant-products",
-  "LabSourced Peptides": "/.netlify/functions/labsourced-products",
-  "Solyn Labs": "/.netlify/functions/solyn-products",
-  "Oneday Compounds": "/.netlify/functions/oneday-products"
-};
+// ── Cached product snapshot, one browser request ───────────────────────────
+// Static GLP products render first. One cached snapshot refresh replaces the
+// previous ten browser-side vendor requests and repeated full-page rerenders.
+const SNAPSHOT_ENDPOINT = "/.netlify/functions/products-snapshot";
+const SNAPSHOT_CACHE_KEY = "mpp_products_snapshot_v1";
+const SNAPSHOT_CACHE_MAX_AGE = 6 * 60 * 60 * 1000;
 window._apisLoading = false;
-window._liveVendorLoading = new Set(Object.keys(LIVE_FEEDS));
+window._liveVendorLoading = new Set();
+let _snapshotLoadStarted = false;
 
-function fetchWithTimeout(url, ms=5000){
+function fetchWithTimeout(url, ms=10000){
   const ctrl = new AbortController();
   const timer = setTimeout(()=>ctrl.abort(), ms);
   return fetch(url, {signal:ctrl.signal}).finally(()=>clearTimeout(timer));
-}
-
-function mergeLiveVendorProducts(vendorName, liveProducts){
-  if(!Array.isArray(liveProducts) || liveProducts.length===0) return false;
-  const normalized = liveProducts
-    .filter(p=>p && (p.product || p.name || p.title))
-    .map(p=>normalizeProduct({ ...p, product: p.product || p.name || p.title, company: p.company || vendorName }))
-    .filter(isGlpWeightLossProduct);
-  if(normalized.length===0) return false;
-
-  const fallback = PRODUCTS.filter(p=>p.company !== vendorName);
-  PRODUCTS.length = 0;
-  [...fallback, ...normalized].forEach(p=>PRODUCTS.push(p));
-  return true;
 }
 
 function addLiveDot(vendorName){
@@ -1327,68 +1351,73 @@ function addLiveDot(vendorName){
     const dot=document.createElement("span");
     dot.className="live-dot";
     dot.style.cssText="width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
-    dot.title="Live pricing loaded";
+    dot.title="Snapshot pricing loaded";
     btn.appendChild(dot);
   }
 }
 
-function applyLiveVendorPayload(vendorName, data){
+function mergeSnapshotProducts(liveProducts){
+  if(!Array.isArray(liveProducts) || liveProducts.length===0) return false;
+  const normalized = liveProducts
+    .filter(p=>p && (p.product || p.name || p.title))
+    .map(p=>normalizeProduct({ ...p, product:p.product || p.name || p.title }))
+    .filter(isGlpWeightLossProduct);
+  if(normalized.length===0) return false;
+
+  // Preserve static GLP rows for vendors missing from a partial snapshot.
+  const refreshedVendors = new Set(normalized.map(p=>p.company).filter(Boolean));
+  const fallback = PRODUCTS.filter(p=>!refreshedVendors.has(p.company));
+  PRODUCTS.length = 0;
+  [...fallback, ...normalized].forEach(p=>PRODUCTS.push(p));
+  refreshedVendors.forEach(addLiveDot);
+  return true;
+}
+
+function applySnapshotPayload(data){
   if(!data || !Array.isArray(data.products) || data.products.length===0) return false;
-  const changed = mergeLiveVendorProducts(vendorName, data.products);
-  if(changed){
-    addLiveDot(vendorName);
-    document.getElementById("totalCount").textContent=PRODUCTS.length;
-    applyFilters();
-  }
-  return changed;
-}
-
-function loadCachedVendor(vendorName){
-  try{
-    const key = `mpp_live_vendor_${vendorName}`;
-    const cached = localStorage.getItem(key);
-    if(!cached) return false;
-    const parsed = JSON.parse(cached);
-    const age = Date.now() - (parsed.saved_at || 0);
-    if(age < 6 * 60 * 60 * 1000){
-      return applyLiveVendorPayload(vendorName, parsed.data);
-    }
-  }catch(e){
-    console.log(`Live cache skipped for ${vendorName}: ${e.message}`);
-  }
-  return false;
-}
-
-async function refreshVendor(vendorName, endpoint){
-  const key = `mpp_live_vendor_${vendorName}`;
-  loadCachedVendor(vendorName);
+  if(!mergeSnapshotProducts(data.products)) return false;
   applyFilters();
+  return true;
+}
 
+function loadCachedSnapshot(){
   try{
-    const resp = await fetchWithTimeout(endpoint, 5000);
+    const cached=localStorage.getItem(SNAPSHOT_CACHE_KEY);
+    if(!cached) return false;
+    const parsed=JSON.parse(cached);
+    if(Date.now()-(parsed.saved_at||0) > SNAPSHOT_CACHE_MAX_AGE) return false;
+    return applySnapshotPayload(parsed.data);
+  }catch(e){
+    console.log(`Snapshot cache skipped: ${e.message}`);
+    return false;
+  }
+}
+
+async function refreshProductSnapshot(){
+  loadCachedSnapshot();
+  try{
+    const resp=await fetchWithTimeout(SNAPSHOT_ENDPOINT,10000);
     if(!resp.ok) throw new Error(`${resp.status}`);
-    const data = await resp.json();
-    if(applyLiveVendorPayload(vendorName, data)){
-      localStorage.setItem(key, JSON.stringify({saved_at:Date.now(), data}));
-      console.log(`✓ Refreshed ${vendorName}: ${data.products.length} products`);
+    const data=await resp.json();
+    if(applySnapshotPayload(data)){
+      try{ localStorage.setItem(SNAPSHOT_CACHE_KEY,JSON.stringify({saved_at:Date.now(),data})); }
+      catch(e){ console.log(`Snapshot cache write skipped: ${e.message}`); }
+      console.log(`✓ Loaded cached product snapshot: ${data.products.length} products`);
     }
   }catch(e){
-    console.log(`✗ ${vendorName} live refresh skipped: ${e.message}`);
+    console.log(`✗ Product snapshot refresh skipped: ${e.message}`);
   }finally{
-    window._liveVendorLoading.delete(vendorName);
     const ml=document.getElementById("mLoading");
     if(ml) ml.classList.remove("show");
-    document.getElementById("totalCount").textContent=PRODUCTS.length;
-    applyFilters();
   }
 }
 
-// Delay live calls until after first paint completes on mobile.
-// 1500ms gives the browser time to fully render static content before API calls start.
-setTimeout(()=>{
-  Object.entries(LIVE_FEEDS).forEach(([vendorName, endpoint])=>refreshVendor(vendorName, endpoint));
-}, 1500);
-
+function startSnapshotRefresh(){
+  if(_snapshotLoadStarted) return;
+  _snapshotLoadStarted=true;
+  setTimeout(refreshProductSnapshot,900);
+}
+startSnapshotRefresh();
 
 function openDrawer(){
   document.getElementById('mainDrawer').classList.add('open');

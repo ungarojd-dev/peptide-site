@@ -87,7 +87,7 @@ function mapCategory(product) {
   const nameText = `${product.name || ""} ${product.sku || ""}`.toLowerCase();
   const text = `${categoryText} ${nameText}`;
 
-  if (textIncludesAny(text, ["glp", "semaglutide", "tirzepatide", "retatrutide", "cagrilintide", "cagri", "mazdutide", "orforglipron", "weight"])) return "GLP-1 & Incretin";
+  if (textIncludesAny(text, ["glp", "semaglutide", "tirzepatide", "retatrutide", "cagrilintide", "cagri", "mazdutide", "orforglipron", "survodutide", "liraglutide", "amycretin", "weight", "ion-1s", "ion-2t", "ion-3r", "sa-2t", "sa-3r", "sa-4c", "gla-1", "gla-2", "gla-3", "glp-1", "glp-2", "glp-3", "glp2-t", "glp3-r", "glp-t2", "glp-r3", "mhc-2", "oc-3rt", "pep-sm", "pep-trz", "pep-rt", "peptide-t", "peptide-r", "tesofensine", "metaboflex"])) return "GLP-1 & Incretin";
   if (textIncludesAny(text, ["bpc", "tb-500", "tb500", "repair", "recover", "healing", "kpv", "ll-37", "ll37", "thymosin"])) return "Repair & Recovery";
   if (textIncludesAny(text, ["nad", "epitalon", "epithalon", "snap-8", "humanin", "foxo4", "ss-31", "mtp", "longevity", "anti-aging", "anti aging"])) return "Longevity & Cellular Health";
   if (textIncludesAny(text, ["semax", "selank", "dihexa", "nootropic", "cognitive", "cerebrolysin", "vip"])) return "Cognitive & Nootropic";
@@ -179,12 +179,34 @@ async function transformProduct(product) {
   return results;
 }
 
+
+async function mapWithConcurrency(items, limit, mapper) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
+  async function worker() {
+    while (true) {
+      const index = nextIndex++;
+      if (index >= items.length) return;
+      try {
+        results[index] = await mapper(items[index], index);
+      } catch (error) {
+        console.warn(`Skipped one product during vendor refresh: ${error.message}`);
+        results[index] = [];
+      }
+    }
+  }
+  const workers = Array.from({ length: Math.min(limit, items.length) }, () => worker());
+  await Promise.all(workers);
+  return results;
+}
+
 export const handler = async (event) => {
   const headers = {
     "Access-Control-Allow-Origin": "https://mypeptideprice.com",
     "Access-Control-Allow-Methods": "GET, OPTIONS",
     "Content-Type": "application/json",
-    "Cache-Control": "public, max-age=900, stale-while-revalidate=21600"
+    "Cache-Control": "public, max-age=300, stale-while-revalidate=21600",
+    "Netlify-CDN-Cache-Control": "public, durable, max-age=900, stale-while-revalidate=21600"
   };
 
   if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };
@@ -193,13 +215,8 @@ export const handler = async (event) => {
     if (!CK || !CS) throw new Error("API credentials not configured");
 
     const rawProducts = await fetchAllProducts();
-    const transformed = [];
-
-    for (const product of rawProducts) {
-      if (shouldExcludeProduct(product)) continue;
-      const items = await transformProduct(product);
-      transformed.push(...items);
-    }
+    const eligibleProducts = rawProducts.filter(product => !shouldExcludeProduct(product));
+    const transformed = (await mapWithConcurrency(eligibleProducts, 5, transformProduct)).flat();
 
     return {
       statusCode: 200,

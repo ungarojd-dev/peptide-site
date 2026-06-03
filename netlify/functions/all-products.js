@@ -21,6 +21,24 @@ function getOrigin(event) {
   return `${proto}://${host}`;
 }
 
+function slimProduct(product) {
+  const {
+    product: name,
+    listing,
+    company,
+    category,
+    format,
+    raw_category,
+    price,
+    sale_price,
+    sku,
+    in_stock,
+    url,
+    source
+  } = product || {};
+  return { product: name, listing, company, category, format, raw_category, price, sale_price, sku, in_stock, url, source };
+}
+
 async function fetchJsonWithTimeout(url, ms = 7000) {
   const ctrl = new AbortController();
   const tid = setTimeout(() => ctrl.abort(), ms);
@@ -38,7 +56,8 @@ export const handler = async (event) => {
     "Access-Control-Allow-Origin": "https://mypeptideprice.com",
     "Access-Control-Allow-Methods": "GET, OPTIONS",
     "Content-Type": "application/json",
-    "Cache-Control": "public, max-age=900, stale-while-revalidate=21600"
+    "Cache-Control": "public, max-age=300, stale-while-revalidate=21600",
+    "Netlify-CDN-Cache-Control": "public, durable, max-age=900, stale-while-revalidate=21600"
   };
 
   if (event.httpMethod === "OPTIONS") {
@@ -67,7 +86,7 @@ export const handler = async (event) => {
     const feed = FEEDS[index];
     if (result.status === "fulfilled" && result.value.products.length > 0) {
       vendors.push(feed.vendor);
-      products.push(...result.value.products);
+      products.push(...result.value.products.map(slimProduct));
     } else {
       errors.push({
         vendor: feed.vendor,

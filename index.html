@@ -105,6 +105,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
 
     /* ── NAV ──────────────────────────────────────────────── */
     .sticky-header{position:sticky;top:0;z-index:300;}
+    body.disclaimer-open .sticky-header{pointer-events:none}
     nav{position:relative;z-index:2;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm)}
     .nav-inner{max-width:1200px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
     .logo{display:flex;align-items:center;gap:9px;color:var(--ink)}
@@ -407,48 +408,58 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     }
 
     /* ── DISCLAIMER MODAL ─────────────────────────────────── */
-    .disclaimer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:9999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(4px)}
+    .disclaimer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(5px)}
     .disclaimer-overlay.hidden{display:none}
-    .disclaimer-modal{background:#fff;border-radius:var(--r-xl);max-width:540px;width:100%;max-height:90vh;overflow-y:auto;box-shadow:0 24px 64px rgba(0,0,0,.4)}
-    .disclaimer-header{background:linear-gradient(135deg,var(--forest) 0%,var(--forest-lt) 100%);padding:20px 24px;border-radius:var(--r-xl) var(--r-xl) 0 0;display:flex;align-items:flex-start;gap:12px}
-    .disclaimer-icon{font-size:22px;flex-shrink:0;margin-top:2px}
-    .disclaimer-header h2{font-family:var(--fd);font-size:18px;font-weight:800;color:#fff;margin-bottom:4px}
-    .disclaimer-header p{font-size:12px;color:rgba(255,255,255,.75);line-height:1.5}
-    .disclaimer-body{padding:20px 24px}
-    .disclaimer-body p{font-size:13px;color:var(--ink-2);line-height:1.65;margin-bottom:14px}
-    .disclaimer-list{margin:0 0 16px 0;padding-left:20px;display:flex;flex-direction:column;gap:8px}
-    .disclaimer-list li{font-size:13px;color:var(--ink-2);line-height:1.55}
-    .disclaimer-list li strong{color:var(--ink)}
-    .disclaimer-checks{display:flex;flex-direction:column;gap:8px;margin:16px 0}
-    .disclaimer-check{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--r-md);cursor:pointer;transition:all .15s;user-select:none}
+    .disclaimer-modal{background:var(--surface);border:1px solid rgba(255,255,255,.35);border-radius:var(--r-xl);max-width:540px;width:100%;max-height:min(92vh,780px);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.42)}
+    .disclaimer-header{background:linear-gradient(135deg,var(--forest) 0%,var(--forest-lt) 100%);padding:20px 24px;border-radius:var(--r-xl) var(--r-xl) 0 0;display:flex;align-items:flex-start;gap:12px;flex-shrink:0}
+    .disclaimer-icon{font-size:22px;line-height:1;flex-shrink:0;margin-top:2px}
+    .disclaimer-header h2{font-family:var(--fd);font-size:20px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:4px}
+    .disclaimer-header p{font-size:12px;color:rgba(255,255,255,.78);line-height:1.5;max-width:430px}
+    .disclaimer-body{padding:18px 24px 16px;overflow-y:auto;overscroll-behavior:contain}
+    .disclaimer-body p{font-size:13px;color:var(--ink-2);line-height:1.6;margin-bottom:12px}
+    .disclaimer-body .disclaimer-prompt{margin:0;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.85px;color:var(--ink-3)}
+    .disclaimer-checks{display:flex;flex-direction:column;gap:8px;margin:10px 0 12px}
+    .disclaimer-check{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--r-md);background:var(--surface);cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s;user-select:none}
     .disclaimer-check:hover{border-color:var(--forest);background:var(--olive-lt)}
-    .disclaimer-check.checked{border-color:var(--forest);background:var(--olive-lt)}
-    .disclaimer-check input[type=checkbox]{width:16px;height:16px;flex-shrink:0;margin-top:1px;accent-color:var(--forest);cursor:pointer}
-    .disclaimer-check span{font-size:12px;color:var(--ink-2);line-height:1.5;font-weight:600}
-    .disclaimer-note{font-size:11px;color:var(--ink-3);line-height:1.55;margin-top:12px}
-    .disclaimer-footer{padding:16px 24px 20px;border-top:1px solid var(--border);display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-    .disclaimer-accept{flex:1;padding:12px 20px;border-radius:999px;background:var(--forest);color:#fff;font-family:var(--fb);font-size:13px;font-weight:800;border:none;cursor:pointer;transition:background .15s;display:flex;align-items:center;justify-content:center;gap:6px}
-    .disclaimer-accept:hover{background:var(--forest-2)}
-    .disclaimer-accept:disabled{background:var(--border);cursor:not-allowed;color:var(--ink-3)}
-    .disclaimer-decline,.disclaimer-accept-all{padding:12px 16px;border-radius:999px;font-family:var(--fb);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s;white-space:nowrap}
-    .disclaimer-decline{background:none;border:1.5px solid var(--border);color:var(--ink-3)}
+    .disclaimer-check.checked{border-color:var(--forest);background:var(--olive-lt);box-shadow:inset 3px 0 0 var(--forest)}
+    .disclaimer-check input[type=checkbox]{width:17px;height:17px;flex-shrink:0;margin-top:1px;accent-color:var(--forest);cursor:pointer}
+    .disclaimer-check span{font-size:12px;color:var(--ink-2);line-height:1.45;font-weight:650}
+    .disclaimer-check strong{color:var(--ink);font-weight:900}
+    .disclaimer-check a{color:var(--forest);font-weight:900;text-decoration:underline;text-underline-offset:2px}
+    .disclaimer-more{text-align:center;margin-top:2px}
+    .disclaimer-footer{padding:14px 24px 18px;border-top:1px solid var(--border);display:grid;grid-template-columns:auto auto minmax(190px,1fr);align-items:center;gap:9px;flex-shrink:0;background:var(--surface)}
+    .disclaimer-footer button{min-height:42px;border-radius:999px;font-family:var(--fb);font-weight:800;cursor:pointer;transition:all .15s;white-space:nowrap}
+    .disclaimer-accept{padding:11px 18px;background:var(--forest);color:#fff;font-size:13px;border:none;display:flex;align-items:center;justify-content:center;gap:6px}
+    .disclaimer-accept:hover:not(:disabled){background:var(--forest-2)}
+    .disclaimer-accept:disabled{background:var(--border);cursor:not-allowed;color:var(--ink-3);opacity:.72}
+    .disclaimer-decline,.disclaimer-accept-all{padding:10px 14px;font-size:12px}
+    .disclaimer-decline{background:transparent;border:1.5px solid var(--border);color:var(--ink-3)}
     .disclaimer-decline:hover{border-color:var(--ink-2);color:var(--ink-2)}
-    .disclaimer-accept-all{background:var(--surface-2);border:1.5px solid var(--border);color:var(--ink-2)}
+    .disclaimer-accept-all{background:var(--sand-lt);border:1.5px solid var(--border);color:var(--ink-2)}
     .disclaimer-accept-all:hover{background:var(--olive-lt);border-color:var(--forest);color:var(--forest)}
-    .disclaimer-link{font-size:11px;color:var(--forest);text-decoration:underline;cursor:pointer;background:none;border:none;font-family:var(--fb)}
-    @media(max-width:480px){
-      .disclaimer-header{padding:16px 18px}
-      .disclaimer-body{padding:16px 18px}
-      .disclaimer-footer{padding:14px 18px 18px;display:grid;grid-template-columns:1fr 1fr;gap:10px}
-      .disclaimer-footer button{width:100%;text-align:center;justify-content:center}
-      .disclaimer-accept{grid-column:1/-1;order:3}
-      .disclaimer-decline{order:1}
-      .disclaimer-accept-all{order:2}
-      .disclaimer-header h2{font-size:16px}
+    .disclaimer-link{font-size:11px;color:var(--forest);font-weight:800;text-decoration:underline;text-underline-offset:2px;cursor:pointer;background:none;border:none;font-family:var(--fb);padding:4px 6px}
+    @media(max-width:560px){
+      .disclaimer-overlay{align-items:center;padding:10px}
+      .disclaimer-modal{max-height:94vh;border-radius:18px}
+      .disclaimer-header{padding:16px 17px;border-radius:18px 18px 0 0;gap:10px}
+      .disclaimer-icon{font-size:20px}
+      .disclaimer-header h2{font-size:18px}
+      .disclaimer-header p{font-size:11.5px;line-height:1.45}
+      .disclaimer-body{padding:14px 15px 12px}
+      .disclaimer-body p{font-size:12px;line-height:1.5;margin-bottom:10px}
+      .disclaimer-checks{gap:7px;margin:9px 0 9px}
+      .disclaimer-check{gap:9px;padding:9px 10px;border-radius:10px}
+      .disclaimer-check input[type=checkbox]{width:16px;height:16px}
+      .disclaimer-check span{font-size:11.25px;line-height:1.38}
+      .disclaimer-footer{padding:11px 14px 14px;grid-template-columns:1fr 1fr;gap:8px}
+      .disclaimer-footer button{min-height:40px}
+      .disclaimer-accept{grid-column:1/-1;grid-row:1;padding:10px 14px;font-size:12.5px}
+      .disclaimer-decline{grid-column:1;grid-row:2;padding:9px 8px;font-size:11.5px}
+      .disclaimer-accept-all{grid-column:2;grid-row:2;padding:9px 8px;font-size:11.5px}
     }
 
     /* ── FULL DISCLAIMER OVERLAY ──────────────────────────── */
-    .full-disclaimer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:10000;display:flex;align-items:center;justify-content:center;padding:16px}
+    .full-disclaimer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000001;display:flex;align-items:center;justify-content:center;padding:16px}
     .full-disclaimer-overlay.hidden{display:none}
     .full-disclaimer-modal{background:var(--surface);border-radius:var(--r-xl);max-width:600px;width:100%;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.4);border:1px solid var(--border)}
     .full-disclaimer-header{background:linear-gradient(135deg,var(--forest) 0%,var(--forest-lt) 100%);padding:16px 20px;border-radius:var(--r-xl) var(--r-xl) 0 0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-shrink:0}
@@ -528,6 +539,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
 
     .sammyc-chip{display:inline-flex;align-items:center;justify-content:center;padding:2px 8px;border-radius:999px;font-size:10px;font-weight:900;letter-spacing:.5px;line-height:1;text-transform:uppercase;color:var(--forest);background:#f7f3ea;border:1px solid #d8c7a7;box-shadow:inset 0 1px 0 rgba(255,255,255,.9),0 1px 1px rgba(31,58,45,.08);white-space:nowrap;vertical-align:middle}
     .sammyc-chip--xs{padding:2px 7px;font-size:8px;letter-spacing:.45px}
+    .vrow-disc-code{display:flex;align-items:center;margin-top:2px}
     .sammyc-chip--sm{padding:2px 8px;font-size:9px}
     .pcard-vendors-head span:first-child{display:inline-flex;align-items:center;gap:5px;flex-wrap:wrap}
 
@@ -728,42 +740,42 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
 <div class="disclaimer-overlay" id="disclaimerOverlay">
   <div class="disclaimer-modal" role="dialog" aria-modal="true" aria-labelledby="disclaimerTitle">
     <div class="disclaimer-header">
-      <span class="disclaimer-icon">⚗️</span>
+      <span class="disclaimer-icon" aria-hidden="true">⚗️</span>
       <div>
         <h2 id="disclaimerTitle">Before You Continue</h2>
-        <p>MyPeptidePrice.com is a research tool. A quick acknowledgment is required.</p>
+        <p>MyPeptidePrice.com is a research price comparison tool. Please confirm the following before entering.</p>
       </div>
     </div>
     <div class="disclaimer-body">
-      <p>MyPeptidePrice.com is an independent price comparison tool. We display current pricing from third-party vendors selling research compounds. We don't sell, ship, or manufacture anything, we just show you the data.</p>
-      <p>A few things to confirm before you proceed:</p>
+      <p>We display current pricing from third-party vendors selling research compounds. We do not sell, ship, manufacture, or handle any products.</p>
+      <p class="disclaimer-prompt">Please acknowledge each item:</p>
       <div class="disclaimer-checks">
-        <label class="disclaimer-check" id="check1-label">
-          <input type="checkbox" id="check1" onchange="updateDisclaimer()"/>
-<span>I understand that all products listed on this site are sold by third-party vendors for <strong>laboratory research purposes only</strong>, not for human or animal consumption.</span>
+        <label class="disclaimer-check" for="dc1">
+          <input type="checkbox" id="dc1" />
+          <span>I understand all products are sold for <strong>laboratory research purposes only</strong>, not for human or animal consumption.</span>
         </label>
-        <label class="disclaimer-check" id="check2-label">
-          <input type="checkbox" id="check2" onchange="updateDisclaimer()"/>
-<span>I am 21 years of age or older.</span>
+        <label class="disclaimer-check" for="dc2">
+          <input type="checkbox" id="dc2" />
+          <span>I am 21 years of age or older.</span>
         </label>
-        <label class="disclaimer-check" id="check3-label">
-          <input type="checkbox" id="check3" onchange="updateDisclaimer()"/>
-<span>I am accessing this site in a research or informational capacity.</span>
+        <label class="disclaimer-check" for="dc3">
+          <input type="checkbox" id="dc3" />
+          <span>I am accessing this site in a research or informational capacity.</span>
         </label>
-        <label class="disclaimer-check" id="check4-label">
-          <input type="checkbox" id="check4" onchange="updateDisclaimer()"/>
-<span>I agree to the <a href="terms.html" target="_blank" style="color:var(--forest);text-decoration:underline">Terms of Service</a> and understand that MyPeptidePrice.com is not responsible for third-party vendor products, claims, or transactions.</span>
+        <label class="disclaimer-check" for="dc4">
+          <input type="checkbox" id="dc4" />
+          <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms of Service</a> and understand that MyPeptidePrice.com is not responsible for third-party vendor products.</span>
         </label>
       </div>
-      <p class="disclaimer-note">If you're not here for research purposes, please exit. This site is not intended for general consumer use.</p>
+      <div class="disclaimer-more">
+        <button class="disclaimer-link" type="button" onclick="openFullDisclaimer()">📋 View full legal disclosures</button>
+      </div>
     </div>
-    <div id="disclaimerHint" style="padding:8px 24px 0;font-size:11px;color:var(--ink-3);text-align:center">Please check all boxes above to continue</div>
     <div class="disclaimer-footer">
-      <button class="disclaimer-decline" onclick="declineDisclaimer()">Decline &amp; Exit</button>
-      <button class="disclaimer-accept-all" onclick="acceptAllDisclaimer()">✓ Accept All</button>
-      <button class="disclaimer-accept" id="disclaimerAccept" onclick="acceptDisclaimer()" disabled>✓ Agree &amp; Enter Site</button>
+      <button class="disclaimer-decline" type="button" onclick="declineDisclaimer()">Decline &amp; Exit</button>
+      <button class="disclaimer-accept-all" type="button" onclick="acceptAllAndEnter()">✓ Accept All</button>
+      <button class="disclaimer-accept" id="agreeEnterBtn" type="button" onclick="acceptDisclaimer()" disabled aria-disabled="true">✓ Agree &amp; Enter Site</button>
     </div>
-    <div style="padding:0 24px 16px;text-align:center"><button class="disclaimer-link" onclick="openFullDisclaimer()">📋 View full disclaimers</button></div>
   </div>
 </div>
 <!-- Google Tag Manager (noscript) -->
@@ -953,32 +965,21 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <!-- Row 2: category chips -->
         <div class="ufb-chips-row">
           <span class="ufb-label">CATEGORY</span>
-          <div class="cf-chips" id="catChips" role="group" aria-label="Category filter">
-            <button class="cf-chip active" data-cat="all"                        onclick="setCatFilter('all',this)">All</button>
-            <button class="cf-chip" data-cat="Repair &amp; Recovery"             onclick="setCatFilter('Repair & Recovery',this)">Repair &amp; Recovery</button>
-            <button class="cf-chip" data-cat="GLP-1 &amp; Incretin"              onclick="setCatFilter('GLP-1 & Incretin',this)">GLP-1</button>
-            <button class="cf-chip" data-cat="Longevity &amp; Cellular Health"   onclick="setCatFilter('Longevity & Cellular Health',this)">Longevity</button>
-            <button class="cf-chip" data-cat="Growth Hormone Research"           onclick="setCatFilter('Growth Hormone Research',this)">Growth Hormone</button>
-            <button class="cf-chip" data-cat="Metabolic &amp; Mitochondrial"     onclick="setCatFilter('Metabolic & Mitochondrial',this)">Metabolic</button>
-            <button class="cf-chip" data-cat="Cognitive &amp; Nootropic"         onclick="setCatFilter('Cognitive & Nootropic',this)">Cognitive</button>
-            <button class="cf-chip" data-cat="Skin, Tanning &amp; Sexual Health" onclick="setCatFilter('Skin, Tanning & Sexual Health',this)">Skin &amp; Tanning</button>
+          <div class="cf-chips" id="catChips" role="group" aria-label="Format filter">
+            <button class="cf-chip active" data-cat="all"                   onclick="setCatFilter('all',this)">All</button>
+            <button class="cf-chip" data-cat="Peptides"                     onclick="setCatFilter('Peptides',this)">Peptides</button>
+            <button class="cf-chip" data-cat="Bioregulators"                onclick="setCatFilter('Bioregulators',this)">Bioregulators</button>
+            <button class="cf-chip" data-cat="Capsules"                     onclick="setCatFilter('Capsules',this)">Capsules</button>
+            <button class="cf-chip" data-cat="Liquids"                      onclick="setCatFilter('Liquids',this)">Liquids</button>
+            <button class="cf-chip" data-cat="Aminos"                       onclick="setCatFilter('Aminos',this)">Aminos</button>
+            <button class="cf-chip" data-cat="Nasal Sprays"                 onclick="setCatFilter('Nasal Sprays',this)">Nasal Sprays</button>
+            <button class="cf-chip" data-cat="Topicals"                     onclick="setCatFilter('Topicals',this)">Topicals</button>
+            <button class="cf-chip" data-cat="Supplies"                     onclick="setCatFilter('Supplies',this)">Supplies</button>
+            <button class="cf-chip" data-cat="Dissolvable Strips"           onclick="setCatFilter('Dissolvable Strips',this)">Dissolvable Strips</button>
           </div>
         </div>
 
-        <!-- Row 3: format chips + more filters -->
-        <div class="ufb-chips-row">
-          <span class="ufb-label">FORMAT</span>
-          <div class="cf-chips" id="fmtChips" role="group" aria-label="Format filter">
-            <button class="cf-chip active" data-fmt="all"          onclick="setFmtFilter('all',this)">All forms</button>
-            <button class="cf-chip" data-fmt="Vials"               onclick="setFmtFilter('Vials',this)">Vials</button>
-            <button class="cf-chip" data-fmt="Capsules &amp; Oral" onclick="setFmtFilter('Capsules & Oral',this)">Capsules</button>
-            <button class="cf-chip" data-fmt="Nasal Sprays"        onclick="setFmtFilter('Nasal Sprays',this)">Sprays</button>
-            <button class="cf-chip" data-fmt="Blends"              onclick="setFmtFilter('Blends',this)">Blends</button>
-            <button class="cf-chip" data-fmt="Liquids"             onclick="setFmtFilter('Liquids',this)">Liquids</button>
-            <button class="cf-chip" data-fmt="Topicals"            onclick="setFmtFilter('Topicals',this)">Topicals</button>
-          </div>
 
-        </div>
 
       </div>
     </div>
@@ -1100,13 +1101,24 @@ function detectCategory(p){
 
 function detectFormat(p){
   const text = productText(p).replace(/[\u2013\u2014]/g, "-");
-  if(hasAny(text,["bacteriostatic", "bac water", "bac-water", "sterile water", "syringe", "needle", "peptide pen", "cartridge", "vial cover", "vial caps", "caps/cover", "vial cap", "travel case", "starter kit", "reconstitution", "alcohol swab"])) return "Supplies";
-  if(hasAny(text,["capsule", "capsules", " caps", "tablet", "tablets", "troche", "oral"])) return "Capsules & Oral";
+  // Supplies first — catches bac water, syringes, cases, etc.
+  if(hasAny(text,["bacteriostatic", "bac water", "bac-water", "sterile water", "syringe", "needle", "peptide pen", "cartridge", "vial cover", "vial caps", "caps/cover", "vial cap", "travel case", "starter kit", "reconstitution", "alcohol swab", "acetic acid", "phosphate buffered", "storage case", "benzyl alcohol"])) return "Supplies";
+  // Dissolvable strips / buccal
+  if(hasAny(text,["buccal strip", "dissolvable strip", "strip", "lozenge"])) return "Dissolvable Strips";
+  // Capsules / oral tablets
+  if(hasAny(text,["capsule", "capsules", " caps", "tablet", "tablets", "troche", "oral"])) return "Capsules";
+  // Nasal sprays
   if(hasAny(text,["nasal", "intranasal", "spray"])) return "Nasal Sprays";
-  if(hasAny(text,["topical", "cream", "serum", "lotion"])) return "Topicals";
-  if(hasAny(text,["liquid", "drops", "solution"])) return "Liquids";
-  if(hasAny(text,["blend", "wolverine", "klow", "glow blend"]) || text.includes(" + ") || (text.includes("/") && !text.includes("https://"))) return "Blends";
-  return "Vials";
+  // Topicals
+  if(hasAny(text,["topical", "cream", "serum", "lotion", "balm", "shampoo", "conditioner"])) return "Topicals";
+  // Liquids / drops / solutions
+  if(hasAny(text,["liquid", "drops", "solution", "lemon bottle", "lipo-c", "methylene blue", "l-carnitine"])) return "Liquids";
+  // Aminos (amino acid blends/metabolic compounds sold as aminos)
+  if(hasAny(text,["amino", "glutathione", "nad+", "nad +"])) return "Aminos";
+  // Bioregulators (short peptide chains: epitalon, thymalin, pinealon, etc.)
+  if(hasAny(text,["epitalon", "epithalon", "thymalin", "thymulin", "pinealon", "vilon", "vesugen", "cortagen", "cartalax", "bronchogen", "testagen", "bioregulator"])) return "Bioregulators";
+  // Everything else = Peptides (vials)
+  return "Peptides";
 }
 
 function normalizeProduct(p){
@@ -1347,20 +1359,35 @@ function normalizeFamily(raw){
     "mtp-31":"MTP-31","mtt-31":"MTP-31",
     // HGH Frag
     "hgh frag 176-191":"HGH Frag 176-191","hgh frag":"HGH Frag 176-191",
-    // Vendor-proprietary GLP names
-    "gla-1 sm":"GLA-1 (Semaglutide)",
-    "gla-2 trz":"GLA-2 (Tirzepatide)","gla-2.5 trz/rt":"GLA-2.5 (TRZ+RT)",
-    "gla-3 rt":"GLA-3 (Retatrutide)","gla-3 rt/cagri":"GLA-3 + Cagrilintide",
-    "ion-1s":"ION-1S (Semaglutide)","ion-2t":"ION-2T (Tirzepatide)","ion-3r":"ION-3R (Retatrutide)",
-    "sa-2t":"SA-2T (Tirzepatide)","sa-3r":"SA-3R (Retatrutide)","sa-4c":"SA-4C (Cagrilintide)",
-    "sa-3r / sa-2t blend":"SA-3R + SA-2T Blend","sa-3r/sa-4c blend":"SA-3R + SA-4C Blend",
-    "glp-r3 (retatrutide)":"GLP-R3 (Retatrutide)","glp-t2 (tirzepatide)":"GLP-T2 (Tirzepatide)",
+    // ── Peptide SM — all vendor semaglutide codes ──
+    "gla-1 sm":"Peptide SM","glp-1 sm":"Peptide SM",
+    "ion-1s":"Peptide SM","pep-sm":"Peptide SM","semaglutide":"Peptide SM",
+    // ── Peptide TZ — all vendor tirzepatide codes ──
+    "gla-2 trz":"Peptide TZ","glp-2 trz":"Peptide TZ","glp2-t":"Peptide TZ",
+    "glp-t2 (tirzepatide)":"Peptide TZ","glp-t2":"Peptide TZ",
+    "ion-2t":"Peptide TZ","mhc-2 trz":"Peptide TZ","pep-trz":"Peptide TZ",
+    "sa-2t":"Peptide TZ","tirzepatide":"Peptide TZ",
+    // ── Peptide RT — all vendor retatrutide codes ──
+    "gla-3 rt":"Peptide RT","glp-3 rt":"Peptide RT","glp-3r":"Peptide RT","glp3-r":"Peptide RT",
+    "glp-r3 (retatrutide)":"Peptide RT","glp-r3":"Peptide RT",
+    "ion-3r":"Peptide RT","oc-3rt":"Peptide RT","pep-rt":"Peptide RT",
+    "sa-3r":"Peptide RT","retatrutide":"Peptide RT",
+    // ── Cagrilintide stays separate ──
+    "sa-4c":"SA-4C (Cagrilintide)",
+    // ── Blends ──
+    "gla-2.5 trz/rt":"TRZ + Retatrutide Blend",
+    "gla-3 rt/cagri":"Retatrutide + Cagrilintide",
+    "sa-3r / sa-2t blend":"Retatrutide + Tirzepatide Blend",
+    "sa-3r/sa-4c blend":"Retatrutide + Cagrilintide",
+    "tirzepatide / retatrutide blend":"TRZ + Retatrutide Blend",
+    "retatrutide / tirzepatide blend":"TRZ + Retatrutide Blend",
+    "retatrutide + tirzepatide":"TRZ + Retatrutide Blend",
     "retatrutide 20mg + tirzepatide 40mg | blend (60mg total)":"Retatrutide + Tirzepatide Blend",
-    "retatrutide 5mg + cagrilintide 5mg | blend (10mg total)":"Retatrutide + Cagrilintide Blend",
+    "retatrutide 5mg + cagrilintide 5mg | blend (10mg total)":"Retatrutide + Cagrilintide",
     // Misc
     "b12":"B12","humanin":"Humanin","l-carnitine":"L-Carnitine",
     "orforglipron":"Orforglipron","hcg":"HCG",
-    "peptide-r":"Peptide-R (TB-500 analog)","peptide-t":"Peptide-T (Tirzepatide analog)",
+    "peptide-r":"Peptide RT","peptide-t":"Peptide TZ",
     "peg-mgf (2mg)":"PEG-MGF","peg-mgf - 2mg":"PEG-MGF",
     "pnc-27 (5mg)":"PNC-27","pnc-27 - 10mg":"PNC-27",
     "pe-22-28 (10mg)":"PE-22-28",
@@ -1381,6 +1408,23 @@ function normalizeFamily(raw){
     if(t === alias || t.startsWith(alias+" ") || t.startsWith(alias+"/") || t.startsWith(alias+"+"))
       return canonical;
   }
+
+  // ── Keyword fallback: catches any vendor naming convention ──
+  const hasSM = cl.includes("semaglutide") || /\bion-1s\b/.test(cl) || /\bgla-1\b/.test(cl) || /\bglp-1\b/.test(cl) || /\bpep-sm\b/.test(cl) || /\bpeptide-s\b/.test(cl);
+  const hasTZ = cl.includes("tirzepatide") || /\btrz\b/.test(cl) || /\bion-2t\b/.test(cl) || /\bgla-2\b/.test(cl) || /\bglp-2\b/.test(cl) || /\bglp2-t\b/.test(cl) || /\bmhc-2\b/.test(cl) || /\bpep-trz\b/.test(cl) || /\bsa-2t\b/.test(cl) || /\bglp-t2\b/.test(cl) || /\bpeptide-t\b/.test(cl);
+  const hasRT = cl.includes("retatrutide") || /\bion-3r\b/.test(cl) || /\bgla-3\b/.test(cl) || /\bglp-3\b/.test(cl) || /\bglp3-r\b/.test(cl) || /\boc-3rt\b/.test(cl) || /\bpep-rt\b/.test(cl) || /\bsa-3r\b/.test(cl) || /\bglp-r3\b/.test(cl) || /\bpeptide-r\b/.test(cl);
+  const hits = (hasSM?1:0) + (hasTZ?1:0) + (hasRT?1:0);
+  if(hits === 1){
+    if(hasSM) return "Peptide SM";
+    if(hasTZ) return "Peptide TZ";
+    if(hasRT) return "Peptide RT";
+  }
+  if(hits === 2){
+    if(hasTZ && hasRT) return "TRZ + Retatrutide Blend";
+    if(hasSM && hasTZ) return "Semaglutide + Tirzepatide Blend";
+    if(hasSM && hasRT) return "Semaglutide + Retatrutide Blend";
+  }
+
   return clean || s;
 }
 
@@ -1390,10 +1434,11 @@ function getProductFamily(p){ return normalizeFamily(p.product||""); }
 function buildGroups(products){
   const map = new Map();
   for(const p of products){
-    if(p.category === "Supplies") continue;
+    // Include all formats including Supplies
     const family = getProductFamily(p);
-    const key = `${p.category}||${family.toLowerCase()}`;
-    if(!map.has(key)) map.set(key, {family, category:p.category, listings:[]});
+    const fmt = p.format || "Peptides";
+    const key = `${fmt}||${family.toLowerCase()}`;
+    if(!map.has(key)) map.set(key, {family, category:p.category, format:fmt, listings:[]});
     map.get(key).listings.push(p);
   }
   const groups = [];
@@ -1422,15 +1467,20 @@ if(requestedCat) activeCat = requestedCat;
 let sortMode="name-asc", displayMode="compare";
 let allGroups=[];
 window._apisLoading = true;
-window._liveVendorLoading = new Set(); // populated after LIVE_FEEDS is declared below
+window._liveVendorLoading = new Set(); // populated by the cached snapshot workflow below
 
 // ── CATEGORY COLOR MAP ─────────────────────────────────────
 const CAT_COL = {
-  "GLP-1 & Incretin":"cat-col-glp1","Repair & Recovery":"cat-col-recovery",
-  "Growth Hormone Research":"cat-col-growth","Longevity & Cellular Health":"cat-col-longevity",
-  "Metabolic & Mitochondrial":"cat-col-metabolic","Cognitive & Nootropic":"cat-col-cognitive",
-  "Skin, Tanning & Sexual Health":"cat-col-skin","Bioregulators":"cat-col-bioregulators",
-  "Supplies":"cat-col-supplies","Uncategorized":"cat-col-supplies"
+  "Peptides":"cat-col-recovery",
+  "Bioregulators":"cat-col-bioregulators",
+  "Capsules":"cat-col-cognitive",
+  "Liquids":"cat-col-metabolic",
+  "Aminos":"cat-col-growth",
+  "Nasal Sprays":"cat-col-glp1",
+  "Topicals":"cat-col-skin",
+  "Supplies":"cat-col-supplies",
+  "Dissolvable Strips":"cat-col-longevity",
+  "Uncategorized":"cat-col-supplies"
 };
 
 // ── VARIATION EXTRACTION ─────────────────────────────────────
@@ -1487,9 +1537,10 @@ function renderVendorRow(p){
     </div>
     <div class="vrow-right">
       <div class="vrow-prices">
+        ${origStr ? `<span class="vrow-orig">${origStr}</span>` : ""}
         ${finalStr ? `<span class="vrow-final">${finalStr}</span>` : ""}
-        ${origStr  ? `<span class="vrow-orig">${origStr}</span>`  : ""}
       </div>
+      ${discStr ? `<span class="vrow-disc-code"><span class="sammyc-chip sammyc-chip--xs">SAMMYC</span></span>` : ""}
       <span class="vrow-chevron">›</span>
     </div>
   </a>`;
@@ -1497,7 +1548,7 @@ function renderVendorRow(p){
 
 // ── RENDER PRODUCT CARD ────────────────────────────────────────────────────
 function renderCard(g, gIdx){
-  const colClass = CAT_COL[g.category]||"cat-col-supplies";
+  const colClass = CAT_COL[g.format]||CAT_COL[g.category]||"cat-col-supplies";
 
   // ── Detect variations ───────────────────────────────────────────────────
   // Check if ANY listing has a clean variation label
@@ -1563,7 +1614,7 @@ function renderCard(g, gIdx){
   return `<article class="prod-card" data-gidx="${gIdx}">
     <div class="pcard-top">
       <div class="pcard-eyerow">
-        <span class="pcard-cat ${colClass}">${g.category||""}</span>
+        <span class="pcard-cat ${colClass}">${g.format||g.category||""}</span>
         <span class="pcard-updated">Updated weekly</span>
       </div>
       <div class="pcard-name-row">
@@ -1686,7 +1737,8 @@ function selectVariation(btn, gIdx){
 // ── FILTER + RENDER PIPELINE ───────────────────────────────
 function getFilteredGroups(){
   let groups = allGroups.filter(g=>{
-    if(activeCat!=="all" && g.category!==activeCat) return false;
+    // catChips now drives format filtering (compound categories removed)
+    if(activeCat!=="all" && !g.listings.some(p=>p.format===activeCat)) return false;
     if(activeFmt!=="all" && !g.listings.some(p=>p.format===activeFmt)) return false;
     if(activeVendorFilter!=="all" && !g.listings.some(p=>p.company===activeVendorFilter)) return false;
     if(searchTerm){
@@ -1788,11 +1840,13 @@ document.querySelectorAll(".search-chip").forEach(btn=>{
 });
 // Search input
 const _sinput = document.getElementById("searchInput");
+let _searchRenderTimer;
 if(_sinput){
   _sinput.addEventListener("input", e=>{
     searchTerm = e.target.value.trim().toLowerCase();
     document.querySelectorAll(".search-chip").forEach(b=>b.classList.remove("active"));
-    renderCompareView();
+    clearTimeout(_searchRenderTimer);
+    _searchRenderTimer=setTimeout(renderCompareView,150);
   });
 }
 
@@ -1805,7 +1859,6 @@ function clearFilters(){
   const vs=document.getElementById("vendorSelect");   if(vs) vs.value="all";
   document.querySelectorAll(".cf-chip").forEach(b=>b.classList.remove("active"));
   document.querySelectorAll("#catChips .cf-chip[data-cat=\"all\"]").forEach(b=>b.classList.add("active"));
-  document.querySelectorAll("#fmtChips .cf-chip[data-fmt=\"all\"]").forEach(b=>b.classList.add("active"));
   document.querySelectorAll("#vendorChips .cf-chip[data-vendor=\"all\"]").forEach(b=>b.classList.add("active"));
   document.querySelectorAll(".search-chip").forEach(b=>b.classList.remove("active"));
   const cb=document.getElementById("clearAllBtn"); if(cb) cb.style.display="none";
@@ -1862,43 +1915,34 @@ if(totalEl) totalEl.textContent=PRODUCTS.length;
 const vcEl=document.getElementById("visibleCount");
 if(vcEl) vcEl.textContent="0";
 renderCompareView();
-window.addEventListener("resize", ()=>{ renderCompareView(); });
+let _lastCompareMobile = window.matchMedia("(max-width: 768px)").matches;
+let _compareResizeTimer;
+window.addEventListener("resize", ()=>{
+  clearTimeout(_compareResizeTimer);
+  _compareResizeTimer=setTimeout(()=>{
+    const isMobile = window.matchMedia("(max-width: 768px)").matches;
+    if(isMobile !== _lastCompareMobile){
+      _lastCompareMobile = isMobile;
+      renderCompareView();
+    }
+  },150);
+});
 
 
-// ── Live API Feeds, non-blocking per vendor ──
-// The static catalog renders first. Each API vendor refreshes in the background.
-// This prevents one slow vendor from making the whole product table look empty.
-const LIVE_FEEDS = {
-  "Glacier Aminos": "/.netlify/functions/glacier-products",
-  "Ion Peptide": "/.netlify/functions/ion-products",
-  "Southern Aminos": "/.netlify/functions/southern-products",
-  "Flawless Compounds": "/.netlify/functions/flawless-products",
-  "Glow Aminos": "/.netlify/functions/glow-products",
-  "Mile High Peptides": "/.netlify/functions/milehigh-products",
-  "Instant Peptides": "/.netlify/functions/instant-products",
-  "LabSourced Peptides": "/.netlify/functions/labsourced-products",
-  "Solyn Labs": "/.netlify/functions/solyn-products",
-  "Oneday Compounds": "/.netlify/functions/oneday-products"
-};
-window._liveVendorLoading = new Set(Object.keys(LIVE_FEEDS));
+// ── Cached product snapshot, one browser request ───────────────────────────
+// Static products render first. After disclaimer acceptance, the browser reads
+// one fast cached snapshot instead of triggering ten vendor refresh workflows.
+const SNAPSHOT_ENDPOINT = "/.netlify/functions/products-snapshot";
+const SNAPSHOT_CACHE_KEY = "mpp_products_snapshot_v1";
+const SNAPSHOT_CACHE_MAX_AGE = 6 * 60 * 60 * 1000;
 window._apisLoading = false;
-window._liveVendorLoading = new Set(Object.keys(LIVE_FEEDS));
+window._liveVendorLoading = new Set();
+let _snapshotLoadStarted = false;
 
-function fetchWithTimeout(url, ms=5000){
+function fetchWithTimeout(url, ms=10000){
   const ctrl = new AbortController();
   const timer = setTimeout(()=>ctrl.abort(), ms);
   return fetch(url, {signal:ctrl.signal}).finally(()=>clearTimeout(timer));
-}
-
-function mergeLiveVendorProducts(vendorName, liveProducts){
-  if(!Array.isArray(liveProducts) || liveProducts.length===0) return false;
-  const normalized = liveProducts.filter(p=>p && p.product).map(p=>normalizeProduct({ ...p, company: p.company || vendorName }));
-  if(normalized.length===0) return false;
-
-  const fallback = PRODUCTS.filter(p=>p.company !== vendorName);
-  PRODUCTS.length = 0;
-  [...fallback, ...normalized].forEach(p=>PRODUCTS.push(p));
-  return true;
 }
 
 function addLiveDot(vendorName){
@@ -1907,102 +1951,150 @@ function addLiveDot(vendorName){
     const dot=document.createElement("span");
     dot.className="live-dot";
     dot.style.cssText="width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
-    dot.title="Live pricing loaded";
+    dot.title="Snapshot pricing loaded";
     btn.appendChild(dot);
   }
 }
 
-function applyLiveVendorPayload(vendorName, data){
+function mergeSnapshotProducts(liveProducts){
+  if(!Array.isArray(liveProducts) || liveProducts.length===0) return false;
+  const normalized = liveProducts
+    .filter(p=>p && (p.product || p.name || p.title))
+    .map(p=>normalizeProduct({ ...p, product:p.product || p.name || p.title }));
+  if(normalized.length===0) return false;
+
+  // Keep static fallback rows for vendors missing from a partial snapshot.
+  const refreshedVendors = new Set(normalized.map(p=>p.company).filter(Boolean));
+  const fallback = PRODUCTS.filter(p=>!refreshedVendors.has(p.company));
+  PRODUCTS.length = 0;
+  [...fallback, ...normalized].forEach(p=>PRODUCTS.push(p));
+  refreshedVendors.forEach(addLiveDot);
+  return true;
+}
+
+function applySnapshotPayload(data){
   if(!data || !Array.isArray(data.products) || data.products.length===0) return false;
-  const changed = mergeLiveVendorProducts(vendorName, data.products);
-  if(changed){
-    addLiveDot(vendorName);
-    document.getElementById("totalCount").textContent=PRODUCTS.length;
-    applyFilters();
-  }
-  return changed;
+  if(!mergeSnapshotProducts(data.products)) return false;
+  rebuildAndRender();
+  return true;
 }
 
-function loadCachedVendor(vendorName){
+function loadCachedSnapshot(){
   try{
-    const key = `mpp_live_vendor_${vendorName}`;
-    const cached = localStorage.getItem(key);
+    const cached=localStorage.getItem(SNAPSHOT_CACHE_KEY);
     if(!cached) return false;
-    const parsed = JSON.parse(cached);
-    const age = Date.now() - (parsed.saved_at || 0);
-    if(age < 6 * 60 * 60 * 1000){
-      return applyLiveVendorPayload(vendorName, parsed.data);
-    }
+    const parsed=JSON.parse(cached);
+    if(Date.now()-(parsed.saved_at||0) > SNAPSHOT_CACHE_MAX_AGE) return false;
+    return applySnapshotPayload(parsed.data);
   }catch(e){
-    console.log(`Live cache skipped for ${vendorName}: ${e.message}`);
+    console.log(`Snapshot cache skipped: ${e.message}`);
+    return false;
   }
-  return false;
 }
 
-async function refreshVendor(vendorName, endpoint){
-  const key = `mpp_live_vendor_${vendorName}`;
-  loadCachedVendor(vendorName);
-  applyFilters();
-
+async function refreshProductSnapshot(){
+  loadCachedSnapshot();
   try{
-    const resp = await fetchWithTimeout(endpoint, 5000);
+    const resp=await fetchWithTimeout(SNAPSHOT_ENDPOINT,10000);
     if(!resp.ok) throw new Error(`${resp.status}`);
-    const data = await resp.json();
-    if(applyLiveVendorPayload(vendorName, data)){
-      localStorage.setItem(key, JSON.stringify({saved_at:Date.now(), data}));
-      console.log(`✓ Refreshed ${vendorName}: ${data.products.length} products`);
+    const data=await resp.json();
+    if(applySnapshotPayload(data)){
+      try{ localStorage.setItem(SNAPSHOT_CACHE_KEY,JSON.stringify({saved_at:Date.now(),data})); }
+      catch(e){ console.log(`Snapshot cache write skipped: ${e.message}`); }
+      console.log(`✓ Loaded cached product snapshot: ${data.products.length} products`);
     }
   }catch(e){
-    console.log(`✗ ${vendorName} live refresh skipped: ${e.message}`);
+    console.log(`✗ Product snapshot refresh skipped: ${e.message}`);
   }finally{
-    window._liveVendorLoading.delete(vendorName);
     const ml=document.getElementById("mLoading");
     if(ml) ml.classList.remove("show");
-    document.getElementById("totalCount").textContent=PRODUCTS.length;
-    applyFilters();
   }
 }
 
-// Delay live calls slightly so the static table paints first on mobile.
-setTimeout(()=>{
-  Object.entries(LIVE_FEEDS).forEach(([vendorName, endpoint])=>refreshVendor(vendorName, endpoint));
-}, 600);
+function startSnapshotRefresh(){
+  if(_snapshotLoadStarted) return;
+  _snapshotLoadStarted=true;
+  setTimeout(refreshProductSnapshot,600);
+}
 
-// ── Disclaimer Modal ──────────────────────────────────────
-(function(){
-  if(sessionStorage.getItem('disclaimer_accepted')) return;
-  const overlay = document.getElementById('disclaimerOverlay');
-  if(overlay){ overlay.classList.remove('hidden'); document.body.style.overflow='hidden'; }
-})();
+// Disclaimer Modal
+const disclaimerCheckboxIds = ['dc1','dc2','dc3','dc4'];
 
-function updateDisclaimer(){
-  const all=['check1','check2','check3','check4'].every(id=>document.getElementById(id).checked);
-  const btn=document.getElementById('disclaimerAccept');
-  if(btn) btn.disabled=!all;
-  const hint=document.getElementById('disclaimerHint');
-  if(hint) hint.style.display=all?'none':'block';
-  ['check1','check2','check3','check4'].forEach(id=>{
-    const lbl=document.getElementById(id+'-label');
-    if(lbl) lbl.classList.toggle('checked',document.getElementById(id).checked);
+function hasAcceptedDisclaimer(){
+  try { return sessionStorage.getItem('disc_ok') === '1'; }
+  catch(e) { return false; }
+}
+function saveDisclaimerAcceptance(){
+  try { sessionStorage.setItem('disc_ok','1'); }
+  catch(e) { console.log('Disclaimer session storage unavailable'); }
+}
+function allDisclaimerBoxesChecked(){
+  return disclaimerCheckboxIds.every(id=>{
+    const box=document.getElementById(id);
+    return box && box.checked;
   });
 }
-function acceptAllDisclaimer(){
-  ['check1','check2','check3','check4'].forEach(id=>{
+function updateDisclaimer(){
+  const ready=allDisclaimerBoxesChecked();
+  const btn=document.getElementById('agreeEnterBtn');
+  if(btn){
+    btn.disabled=!ready;
+    btn.setAttribute('aria-disabled', String(!ready));
+  }
+  disclaimerCheckboxIds.forEach(id=>{
+    const box=document.getElementById(id);
+    const label=box ? box.closest('.disclaimer-check') : null;
+    if(label) label.classList.toggle('checked', Boolean(box.checked));
+  });
+  return ready;
+}
+function enterSite(){
+  saveDisclaimerAcceptance();
+  const o=document.getElementById('disclaimerOverlay');
+  if(o) o.style.display='none';
+  document.body.classList.remove('disclaimer-open');
+  document.body.style.overflow='';
+  startSnapshotRefresh();
+}
+function acceptAllAndEnter(){
+  disclaimerCheckboxIds.forEach(id=>{
     const box=document.getElementById(id);
     if(box) box.checked=true;
   });
   updateDisclaimer();
-  const btn=document.getElementById('disclaimerAccept');
-  if(btn) btn.focus();
-}
-function acceptDisclaimer(){
-  sessionStorage.setItem('disclaimer_accepted','1');
-  document.getElementById('disclaimerOverlay').classList.add('hidden');
-  document.body.style.overflow='';
+  enterSite();
 }
 function declineDisclaimer(){ window.location.href='https://www.google.com'; }
-function openFullDisclaimer(){ document.getElementById('fullDisclaimerOverlay').classList.remove('hidden'); }
-function closeFullDisclaimer(){ document.getElementById('fullDisclaimerOverlay').classList.add('hidden'); }
+function acceptDisclaimer(){
+  if(updateDisclaimer()) enterSite();
+}
+function acceptAllDisclaimer(){ acceptAllAndEnter(); }
+function openFullDisclaimer(){
+  const modal=document.getElementById('fullDisclaimerOverlay');
+  if(modal) modal.classList.remove('hidden');
+}
+function closeFullDisclaimer(){
+  const modal=document.getElementById('fullDisclaimerOverlay');
+  if(modal) modal.classList.add('hidden');
+}
+(function initDisclaimer(){
+  const overlay=document.getElementById('disclaimerOverlay');
+  if(!overlay) return;
+  if(hasAcceptedDisclaimer()){
+    overlay.style.display='none';
+    document.body.classList.remove('disclaimer-open');
+    document.body.style.overflow='';
+    startSnapshotRefresh();
+    return;
+  }
+  document.body.classList.add('disclaimer-open');
+  document.body.style.overflow='hidden';
+  disclaimerCheckboxIds.forEach(id=>{
+    const box=document.getElementById(id);
+    if(box) box.addEventListener('change', updateDisclaimer);
+  });
+  updateDisclaimer();
+})();
 
 function openDrawer(){
   document.getElementById('mainDrawer').classList.add('open');

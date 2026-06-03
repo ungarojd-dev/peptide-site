@@ -6,7 +6,7 @@ const FEED_URL = "https://instantpeptides.com/api/feeds/peptide-price";
 
 function mapCategory(name) {
   const n = name.toLowerCase();
-  if (n.includes("glp") || n.includes("semaglutide") || n.includes("tirzepatide") || n.includes("retatrutide") || n.includes("cagrilintide") || n.includes("glp-1") || n.includes("glp-2") || n.includes("weight")) return "GLP-1 & Incretin";
+  if (n.includes("glp") || n.includes("semaglutide") || n.includes("tirzepatide") || n.includes("retatrutide") || n.includes("cagrilintide") || n.includes("cagri") || n.includes("mazdutide") || n.includes("orforglipron") || n.includes("survodutide") || n.includes("liraglutide") || n.includes("amycretin") || n.includes("weight") || n.includes("ion-1s") || n.includes("ion-2t") || n.includes("ion-3r") || n.includes("sa-2t") || n.includes("sa-3r") || n.includes("sa-4c") || n.includes("gla-1") || n.includes("gla-2") || n.includes("gla-3") || n.includes("glp-1") || n.includes("glp-2") || n.includes("glp-3") || n.includes("glp2-t") || n.includes("glp3-r") || n.includes("glp-t2") || n.includes("glp-r3") || n.includes("mhc-2") || n.includes("oc-3rt") || n.includes("pep-sm") || n.includes("pep-trz") || n.includes("pep-rt") || n.includes("peptide-t") || n.includes("peptide-r") || n.includes("tesofensine") || n.includes("metaboflex")) return "GLP-1 & Incretin";
   if (n.includes("bpc") || n.includes("tb-500") || n.includes("tb500") || n.includes("recover") || n.includes("heal") || n.includes("repair")) return "Repair & Recovery";
   if (n.includes("nad") || n.includes("epitalon") || n.includes("longev") || n.includes("anti-ag") || n.includes("snap-8") || n.includes("tesamorelin")) return "Longevity & Cellular Health";
   if (n.includes("semax") || n.includes("selank") || n.includes("nootropic") || n.includes("cogni") || n.includes("dihexa")) return "Cognitive & Nootropic";
@@ -28,7 +28,8 @@ export const handler = async (event) => {
     "Access-Control-Allow-Origin": "https://mypeptideprice.com",
     "Access-Control-Allow-Methods": "GET",
     "Content-Type": "application/json",
-    "Cache-Control": "public, max-age=900, stale-while-revalidate=21600"
+    "Cache-Control": "public, max-age=300, stale-while-revalidate=21600",
+    "Netlify-CDN-Cache-Control": "public, durable, max-age=900, stale-while-revalidate=21600"
   };
 
   if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };

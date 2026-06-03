@@ -49,7 +49,7 @@ function mapCategory(wcCategories) {
   const names = wcCategories.map(c => c.name.toLowerCase());
   const joined = names.join(" ");
 
-  if (joined.includes("glp") || joined.includes("weight") || joined.includes("semaglutide") || joined.includes("tirzepatide") || joined.includes("retatrutide") || joined.includes("cagri")) {
+  if (joined.includes("glp") || joined.includes("semaglutide") || joined.includes("tirzepatide") || joined.includes("retatrutide") || joined.includes("cagrilintide") || joined.includes("cagri") || joined.includes("mazdutide") || joined.includes("orforglipron") || joined.includes("survodutide") || joined.includes("liraglutide") || joined.includes("amycretin") || joined.includes("weight") || joined.includes("ion-1s") || joined.includes("ion-2t") || joined.includes("ion-3r") || joined.includes("sa-2t") || joined.includes("sa-3r") || joined.includes("sa-4c") || joined.includes("gla-1") || joined.includes("gla-2") || joined.includes("gla-3") || joined.includes("glp-1") || joined.includes("glp-2") || joined.includes("glp-3") || joined.includes("glp2-t") || joined.includes("glp3-r") || joined.includes("glp-t2") || joined.includes("glp-r3") || joined.includes("mhc-2") || joined.includes("oc-3rt") || joined.includes("pep-sm") || joined.includes("pep-trz") || joined.includes("pep-rt") || joined.includes("peptide-t") || joined.includes("peptide-r") || joined.includes("tesofensine") || joined.includes("metaboflex")) {
     return "GLP-1 & Incretin";
   }
   if (joined.includes("recover") || joined.includes("heal") || joined.includes("bpc") || joined.includes("tb-500") || joined.includes("repair")) {
@@ -145,13 +145,35 @@ async function transformProduct(p) {
   return results;
 }
 
+
+async function mapWithConcurrency(items, limit, mapper) {
+  const results = new Array(items.length);
+  let nextIndex = 0;
+  async function worker() {
+    while (true) {
+      const index = nextIndex++;
+      if (index >= items.length) return;
+      try {
+        results[index] = await mapper(items[index], index);
+      } catch (error) {
+        console.warn(`Skipped one product during vendor refresh: ${error.message}`);
+        results[index] = [];
+      }
+    }
+  }
+  const workers = Array.from({ length: Math.min(limit, items.length) }, () => worker());
+  await Promise.all(workers);
+  return results;
+}
+
 export const handler = async (event) => {
   // CORS headers — allow your site to call this function
   const headers = {
     "Access-Control-Allow-Origin": "https://mypeptideprice.com",
     "Access-Control-Allow-Methods": "GET",
     "Content-Type": "application/json",
-    "Cache-Control": "public, max-age=900, stale-while-revalidate=21600" // Cache for 1 hour
+    "Cache-Control": "public, max-age=300, stale-while-revalidate=21600",
+    "Netlify-CDN-Cache-Control": "public, durable, max-age=900, stale-while-revalidate=21600" // Cache for 1 hour
   };
 
   // Handle preflight
@@ -165,12 +187,7 @@ export const handler = async (event) => {
     }
 
     const rawProducts = await fetchAllProducts();
-    const transformed = [];
-
-    for (const p of rawProducts) {
-      const items = await transformProduct(p);
-      transformed.push(...items);
-    }
+    const transformed = (await mapWithConcurrency(rawProducts, 5, transformProduct)).flat();
 
     return {
       statusCode: 200,
