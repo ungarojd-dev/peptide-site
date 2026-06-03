@@ -3,5 +3,8 @@
   "private": true,
   "dependencies": {
     "@netlify/blobs": "^10.0.8"
+  },
+  "engines": {
+    "node": "20.x"
   }
 }
