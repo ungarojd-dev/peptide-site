@@ -71,21 +71,21 @@ export function detectGlpComponents(product = {}) {
   if (
     text.includes("semaglutide") ||
     has(text, /\bsema\b/) ||
-    has(text, /\b(?:pep[\s-]*sm|peptide[\s-]*sm|gla-1\s*sm|glp-1\s*sm|ion-1s|sa-1s)\b/) ||
+    has(text, /\b(?:pep[\s-]*sm|peptide[\s-]*sm|gla-1\s*sm|glp-1\s*sm|ion-1s|sa-1s|fg1-s)\b/) ||
     has(text, /\bsm\b/)
   ) add("sm");
 
   if (
     text.includes("tirzepatide") ||
     has(text, /\btirz(?:ep)?\b/) ||
-    has(text, /\b(?:pep[\s-]*(?:tz|trz)|peptide[\s-]*(?:tz|trz)|gla-2(?:\.5)?\s*trz|glp-2\s*trz|glp2-t|glp-t2|ion-2t|mhc-2\s*trz|sa-2t)\b/) ||
+    has(text, /\b(?:pep[\s-]*(?:tz|trz)|peptide[\s-]*(?:tz|trz)|gla-2(?:\.5)?\s*trz|glp-2\s*trz|glp2-t|glp-t2|ion-2t|mhc-2\s*trz|sa-2t|fg2-t)\b/) ||
     has(text, /\b(?:tz|trz)\b/)
   ) add("tz");
 
   if (
     text.includes("retatrutide") ||
     has(text, /\breta\b/) ||
-    has(text, /\b(?:pep[\s-]*rt|peptide[\s-]*rt|gla-3\s*rt|glp-3\s*rt|glp-3r|glp3-r|glp-r3|ion-3r|oc-3rt|sa-3r)\b/) ||
+    has(text, /\b(?:pep[\s-]*rt|peptide[\s-]*rt|gla-3\s*rt|glp-3\s*rt|glp-3r|glp3-r|glp-r3|ion-3r|oc-3rt|sa-3r|fg3-r)\b/) ||
     has(text, /\brt\b/)
   ) add("rt");
 
@@ -126,7 +126,7 @@ function looksLikeGlpCandidate(product = {}) {
     "glp", "sema", "tirz", "reta", "retatrutide", "semaglutide", "tirzepatide",
     "cagri", "cagrilintide", "pep-sm", "pep-tz", "pep-trz", "pep-rt", "pep-cag",
     "ion-1", "ion-2", "ion-3", "gla-1", "gla-2", "gla-3", "sa-2", "sa-3", "sa-4",
-    "oc-3rt", "trz/rt", "tz/rt"
+    "oc-3rt", "trz/rt", "tz/rt", "fg1-s", "fg2-t", "fg3-r"
   ].some(term => text.includes(term));
 }
 
@@ -142,8 +142,8 @@ export function classifyCatalogCategory(product = {}) {
 
   if (containsAny(text, [
     "bacteriostatic", "sterile water", "reconstitution water", "acetic acid", "syringe",
-    "needle", "vial cap", "vial cover", "vial case", "storage case", "travel case", "cartridge",
-    "research starter kit", "supplies", "supply", "pen needle", "reusable peptide pen"
+    "needle", "vial cap", "vial cover", "vial case", "case slots", "storage case", "travel case", "cartridge",
+    "research starter kit", "supplies", "supply", "pen needle", "reusable peptide pen", "bac water", "reconstitution solution"
   ])) return "Supplies";
 
   if (containsAny(text, ["capsule", "tablet", "troche", "oral strip", "dissolvable strip"])) return "Capsules";

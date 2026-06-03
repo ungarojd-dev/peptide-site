@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.0.1",
   "exclude_terms": [
     "ship safely",
     "shipping protection",
@@ -8,7 +8,13 @@
     "route protection",
     "gift card",
     "giftcard",
-    "gift certificate"
+    "gift certificate",
+    "extended product protection",
+    "limited edition 7x tested 1st anniversary tee",
+    "anniversary tee",
+    "oversized tee",
+    "t-shirt",
+    "tee shirt"
   ],
   "forced_aliases": {
     "gla 1 sm": "semaglutide",
@@ -29,7 +35,17 @@
     "pep cag": "cagrilintide",
     "oc 3rt": "retatrutide",
     "glp t2": "tirzepatide",
-    "glp r3": "retatrutide"
+    "glp r3": "retatrutide",
+    "fg1 s": "semaglutide",
+    "fg2 t": "tirzepatide",
+    "fg3 r": "retatrutide",
+    "5amino 1mq": "5-amino-1mq",
+    "methyline blue": "methylene-blue",
+    "glutathilone": "glutathione",
+    "cargilintide": "cagrilintide",
+    "cjc ipa no dac": "cjc-1295-plus-ipamorelin-blend",
+    "reconstitution solution": "reconstitution-water",
+    "hospira sodiumbenzyl bac water": "bacteriostatic-water"
   },
   "category_overrides": {},
   "format_overrides": {}

@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.0.1",
   "products": [
     {
       "id": "5-amino-1mq",
@@ -7,7 +7,9 @@
       "category": "Metabolic & Mitochondrial",
       "aliases": [
         "5-amino-1mq",
-        "5 amino 1mq"
+        "5 amino 1mq",
+        "5Amino-1MQ",
+        "5Amino 1MQ"
       ]
     },
     {
@@ -105,6 +107,14 @@
       ]
     },
     {
+      "id": "astaxanthin-complex",
+      "name": "Astaxanthin Complex",
+      "category": "Longevity & Cellular Health",
+      "aliases": [
+        "Astaxanthin Complex"
+      ]
+    },
+    {
       "id": "bacteriostatic-water",
       "name": "Bacteriostatic Water",
       "category": "Supplies",
@@ -112,7 +122,10 @@
         "Bacteriostatic Water",
         "BW",
         "BW-H Brand",
-        "Benzyl Alcohol Solution"
+        "Benzyl Alcohol Solution",
+        "BAC Water",
+        "Hospira Sodium Benzyl BAC Water",
+        "Hospira SodiumBenzyl BAC Water"
       ]
     },
     {
@@ -250,7 +263,8 @@
         "cagri",
         "pep-cag",
         "sa-4c",
-        "Cag"
+        "Cag",
+        "Cargilintide"
       ]
     },
     {
@@ -259,6 +273,14 @@
       "category": "Bioregulators",
       "aliases": [
         "cardiogen"
+      ]
+    },
+    {
+      "id": "carfilflex",
+      "name": "CarfilFlex",
+      "category": "Other",
+      "aliases": [
+        "CarfilFlex"
       ]
     },
     {
@@ -276,6 +298,22 @@
       "category": "Other",
       "aliases": [
         "Cartalax, BPC-157, TB-500 & KPV Blend"
+      ]
+    },
+    {
+      "id": "centella-asiatica-complex",
+      "name": "Centella Asiatica Complex",
+      "category": "Other",
+      "aliases": [
+        "Centella Asiatica Complex"
+      ]
+    },
+    {
+      "id": "cerebro-protein",
+      "name": "Cerebro Protein",
+      "category": "Cognitive & Nootropic",
+      "aliases": [
+        "Cerebro Protein"
       ]
     },
     {
@@ -344,7 +382,11 @@
         "CJC/IPA",
         "CJC IPA",
         "CJC / IPA",
-        "CJC-1295 + Ipamorelin"
+        "CJC-1295 + Ipamorelin",
+        "CJC + IPA",
+        "CJC + IPA (NO DAC)",
+        "CJC + IPA NO DAC",
+        "CJC-1295 + Ipamorelin (NO DAC)"
       ]
     },
     {
@@ -542,7 +584,9 @@
       "name": "Glutathione",
       "category": "Metabolic & Mitochondrial",
       "aliases": [
-        "glutathione"
+        "glutathione",
+        "Glutathilone",
+        "Glutathione Injection"
       ]
     },
     {
@@ -635,6 +679,14 @@
       ]
     },
     {
+      "id": "hyaluronic-acid-serum",
+      "name": "Hyaluronic Acid Serum",
+      "category": "Skin, Tanning & Sexual Health",
+      "aliases": [
+        "Hyaluronic Acid Serum"
+      ]
+    },
+    {
       "id": "igf-1-lr3",
       "name": "IGF-1 LR3",
       "category": "Growth Hormone Research",
@@ -644,6 +696,14 @@
         "igf-lr3",
         "IGF1-LR3",
         "IGF1 LR3"
+      ]
+    },
+    {
+      "id": "insulin-syringes",
+      "name": "Insulin Syringes",
+      "category": "Supplies",
+      "aliases": [
+        "Insulin Syringes"
       ]
     },
     {
@@ -713,6 +773,22 @@
       "category": "Other",
       "aliases": [
         "L-Glutathione"
+      ]
+    },
+    {
+      "id": "lemon-bottle",
+      "name": "Lemon Bottle",
+      "category": "Metabolic & Mitochondrial",
+      "aliases": [
+        "Lemon Bottle"
+      ]
+    },
+    {
+      "id": "lipo-clear",
+      "name": "Lipo Clear",
+      "category": "Metabolic & Mitochondrial",
+      "aliases": [
+        "Lipo Clear"
       ]
     },
     {
@@ -800,6 +876,14 @@
       ]
     },
     {
+      "id": "metaboflex",
+      "name": "MetaboFlex",
+      "category": "Metabolic & Mitochondrial",
+      "aliases": [
+        "METABOFLEX"
+      ]
+    },
+    {
       "id": "methionine-inositol-and-choline-blend",
       "name": "Methionine, Inositol, & Choline Blend",
       "category": "Other",
@@ -813,7 +897,8 @@
       "category": "Metabolic & Mitochondrial",
       "aliases": [
         "Methylene Blue",
-        "Metholine Blue"
+        "Metholine Blue",
+        "Methyline Blue"
       ]
     },
     {
@@ -822,6 +907,14 @@
       "category": "Other",
       "aliases": [
         "mgf"
+      ]
+    },
+    {
+      "id": "mitocore",
+      "name": "MitoCore",
+      "category": "Metabolic & Mitochondrial",
+      "aliases": [
+        "MitoCore"
       ]
     },
     {
@@ -869,6 +962,14 @@
       ]
     },
     {
+      "id": "mts-31",
+      "name": "MTS-31",
+      "category": "Metabolic & Mitochondrial",
+      "aliases": [
+        "MTS-31"
+      ]
+    },
+    {
       "id": "n-acetyl-semax",
       "name": "N-Acetyl Semax",
       "category": "Other",
@@ -900,6 +1001,22 @@
         "nad+",
         "nad plus",
         "nad"
+      ]
+    },
+    {
+      "id": "neuroluxe",
+      "name": "NeuroLuxe",
+      "category": "Cognitive & Nootropic",
+      "aliases": [
+        "NEUROLUXE"
+      ]
+    },
+    {
+      "id": "neuromatrix",
+      "name": "NeuroMatrix",
+      "category": "Cognitive & Nootropic",
+      "aliases": [
+        "NeuroMatrix"
       ]
     },
     {
@@ -970,6 +1087,22 @@
       ]
     },
     {
+      "id": "pdrn-collagen-complex",
+      "name": "PDRN Collagen Complex",
+      "category": "Skin, Tanning & Sexual Health",
+      "aliases": [
+        "PDRN Collagen Complex"
+      ]
+    },
+    {
+      "id": "pdrn-pink-cream",
+      "name": "PDRN Pink Cream",
+      "category": "Skin, Tanning & Sexual Health",
+      "aliases": [
+        "PDRN Pink Cream"
+      ]
+    },
+    {
       "id": "pe-22-28",
       "name": "PE-22-28",
       "category": "Cognitive & Nootropic",
@@ -996,6 +1129,16 @@
       ]
     },
     {
+      "id": "peptide-pen-needles",
+      "name": "Peptide Pen Needles",
+      "category": "Supplies",
+      "aliases": [
+        "Pen Needles",
+        "4mm Pen Needles",
+        "32G 4mm Pen Needles"
+      ]
+    },
+    {
       "id": "phosphate-buffered-saline",
       "name": "Phosphate Buffered Saline",
       "category": "Supplies",
@@ -1009,6 +1152,14 @@
       "category": "Bioregulators",
       "aliases": [
         "pinealon"
+      ]
+    },
+    {
+      "id": "pm-recovery",
+      "name": "PM Recovery",
+      "category": "Repair & Recovery",
+      "aliases": [
+        "PM Recovery"
       ]
     },
     {
@@ -1026,6 +1177,17 @@
       "category": "Other",
       "aliases": [
         "ProstaMax"
+      ]
+    },
+    {
+      "id": "protective-travel-case",
+      "name": "Protective Travel Case",
+      "category": "Supplies",
+      "aliases": [
+        "Protective Travel Case",
+        "Black Protective Travel Case",
+        "Black Protective Travel Case for Injection Pens",
+        "Black Protective Travel Case for Injection Pens (Case ONLY)"
       ]
     },
     {
@@ -1051,7 +1213,17 @@
       "name": "Reconstitution Water",
       "category": "Supplies",
       "aliases": [
-        "Reconstitution Water"
+        "Reconstitution Water",
+        "Reconstitution Solution"
+      ]
+    },
+    {
+      "id": "research-starter-kit",
+      "name": "Research Starter Kit",
+      "category": "Supplies",
+      "aliases": [
+        "Research Starter Kit",
+        "Research Starter Kits"
       ]
     },
     {
@@ -1075,7 +1247,9 @@
         "peptide r",
         "peptide-rt",
         "gla-3-rt",
-        "glp3-r"
+        "glp3-r",
+        "FG3-R",
+        "FG3 R"
       ]
     },
     {
@@ -1092,6 +1266,15 @@
       "category": "Other",
       "aliases": [
         "Retatrutide & Tirzepatide Blend"
+      ]
+    },
+    {
+      "id": "reusable-peptide-pen",
+      "name": "Reusable Peptide Pen",
+      "category": "Supplies",
+      "aliases": [
+        "Reusable Peptide Pen",
+        "Reusable Peptide Pen With 2 Sterile Cartridges"
       ]
     },
     {
@@ -1127,7 +1310,9 @@
         "sm",
         "peptide-sm",
         "gla-1-sm",
-        "glp-1-sm"
+        "glp-1-sm",
+        "FG1-S",
+        "FG1 S"
       ]
     },
     {
@@ -1472,7 +1657,9 @@
         "peptide t",
         "gla-2.5 trz",
         "glp2-t",
-        "mhc-2 trz"
+        "mhc-2 trz",
+        "FG2-T",
+        "FG2 T"
       ]
     },
     {
@@ -1500,6 +1687,38 @@
       ]
     },
     {
+      "id": "vial-caps-and-covers",
+      "name": "Vial Caps & Covers",
+      "category": "Supplies",
+      "aliases": [
+        "Vial Caps/Cover",
+        "Vial Caps & Covers",
+        "3ML Vial Caps/Cover",
+        "Aegis Vial Covers",
+        "Aegis Vial Cover"
+      ]
+    },
+    {
+      "id": "vial-case",
+      "name": "Vial Case",
+      "category": "Supplies",
+      "aliases": [
+        "Vial Case",
+        "9 Vial Case",
+        "9 Vial Case (3ML Slots)"
+      ]
+    },
+    {
+      "id": "vial-storage-case",
+      "name": "Vial Storage Case",
+      "category": "Supplies",
+      "aliases": [
+        "Vial Storage Case",
+        "30 Vial Storage Case",
+        "Glacier Aminos 30 Vial Storage Case"
+      ]
+    },
+    {
       "id": "vilon",
       "name": "Vilon",
       "category": "Bioregulators",
@@ -1513,6 +1732,18 @@
       "category": "Cognitive & Nootropic",
       "aliases": [
         "vip"
+      ]
+    },
+    {
+      "id": "vitamin-b12",
+      "name": "Vitamin B12",
+      "category": "Other",
+      "aliases": [
+        "Vitamin B12",
+        "Vitamin B12 (Methylcobalamin)",
+        "B12",
+        "B12 (Methylated)",
+        "B12 Buccal Strip"
       ]
     },
     {

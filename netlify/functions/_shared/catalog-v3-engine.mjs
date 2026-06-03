@@ -2,7 +2,7 @@ import catalogPayload from "../../../data/catalog-v3-products.json" with { type:
 import overridePayload from "../../../data/catalog-v3-overrides.json" with { type: "json" };
 import vendorPayload from "../../../data/vendor-config.json" with { type: "json" };
 
-export const ENGINE_VERSION = "3.0.0-preview";
+export const ENGINE_VERSION = "3.0.1-preview";
 export const COUPON_CODE = vendorPayload.coupon_code || "SAMMYC";
 export const VENDOR_CONFIG = vendorPayload.vendors || {};
 
@@ -11,8 +11,8 @@ const DEFAULT_CATEGORY = "Other";
 const DEFAULT_FORMAT = "Vials";
 const SUPPLY_TERMS = [
   "bacteriostatic", "bac water", "sterile water", "reconstitution water", "acetic acid",
-  "syringe", "needle", "pen needle", "vial cap", "vial cover", "storage case", "travel case",
-  "cartridge", "starter kit", "supplies", "supply"
+  "syringe", "needle", "pen needle", "vial cap", "vial cover", "vial case", "case slots", "storage case", "travel case",
+  "cartridge", "starter kit", "supplies", "supply", "reconstitution solution", "reusable peptide pen"
 ];
 const FORMAT_TERMS = {
   "Dissolvable Strips": ["buccal strip", "dissolvable strip", "oral strip", "lozenge"],
@@ -112,16 +112,16 @@ const forcedAliases = Object.entries(overridePayload.forced_aliases || {})
   .sort((a, b) => b.norm.split(/\s+/).length - a.norm.split(/\s+/).length || b.norm.length - a.norm.length);
 
 const BLEND_COMPONENTS = [
-  ["Semaglutide", ["semaglutide", "sema", "pep-sm", "peptide sm", "gla-1 sm", "ion-1s", "sa-1s"]],
-  ["Tirzepatide", ["tirzepatide", "tirz", "trz", "pep-trz", "pep-tz", "peptide trz", "peptide tz", "gla-2 trz", "glp-t2", "ion-2t", "sa-2t"]],
-  ["Retatrutide", ["retatrutide", "reta", "pep-rt", "peptide rt", "gla-3 rt", "glp-r3", "ion-3r", "sa-3r", "oc-3rt"]],
+  ["Semaglutide", ["semaglutide", "sema", "pep-sm", "peptide sm", "gla-1 sm", "ion-1s", "sa-1s", "fg1-s", "fg1 s"]],
+  ["Tirzepatide", ["tirzepatide", "tirz", "trz", "pep-trz", "pep-tz", "peptide trz", "peptide tz", "gla-2 trz", "glp-t2", "ion-2t", "sa-2t", "fg2-t", "fg2 t"]],
+  ["Retatrutide", ["retatrutide", "reta", "pep-rt", "peptide rt", "gla-3 rt", "glp-r3", "ion-3r", "sa-3r", "oc-3rt", "fg3-r", "fg3 r"]],
   ["Cagrilintide", ["cagrilintide", "cagrilinitide", "cagri", "pep-cag", "sa-4c"]],
   ["BPC-157", ["bpc-157", "bpc157"]],
   ["TB-500", ["tb-500", "tb500", "tb-4", "tb4"]],
   ["GHK-Cu", ["ghk-cu", "ghk cu", "ghkcu"]],
   ["KPV", ["kpv"]],
   ["CJC-1295", ["cjc-1295", "cjc 1295"]],
-  ["Ipamorelin", ["ipamorelin", "ipamo"]],
+  ["Ipamorelin", ["ipamorelin", "ipamo", "ipa"]],
   ["Tesamorelin", ["tesamorelin", "tesa"]],
   ["Semax", ["semax"]],
   ["Selank", ["selank"]],
@@ -238,9 +238,14 @@ function vendorMeta(vendor) {
   };
 }
 
-function isExcluded(raw) {
+function exclusionReason(raw) {
   const haystack = normalized([raw.product, raw.listing, raw.sku, raw.category, raw.raw_category].filter(Boolean).join(" "));
-  return (overridePayload.exclude_terms || []).some(term => haystack.includes(normalized(term)));
+  const matched = (overridePayload.exclude_terms || []).find(term => haystack.includes(normalized(term)));
+  return matched ? `exclude-term:${matched}` : "";
+}
+
+function isExcluded(raw) {
+  return Boolean(exclusionReason(raw));
 }
 
 export function normalizeOffer(raw = {}, options = {}) {
@@ -314,7 +319,13 @@ export function buildCatalog(rawRows = [], options = {}) {
   for (const row of rawRows || []) {
     const offer = normalizeOffer(row, { source_layer: row.source_layer || options.source_layer });
     if (!offer) {
-      excludedRows.push(row);
+      excludedRows.push({
+        vendor: compact(row.company || row.vendor || "Unknown vendor"),
+        raw_product: compact(row.raw_product || row.product || row.name || row.title || row.listing || "Untitled product"),
+        raw_listing: compact(row.raw_listing || row.listing || row.product || row.name || row.title || "Untitled product"),
+        sku: compact(row.sku || ""),
+        reason: exclusionReason(row) || "explicit exclusion"
+      });
       continue;
     }
     const key = rawOfferKey(offer);
@@ -403,10 +414,19 @@ export function buildCatalog(rawRows = [], options = {}) {
 
   const vendors = {};
   const layers = {};
+  const categories = {};
+  const formats = {};
   for (const offer of normalizedRows) {
     vendors[offer.vendor_name] = (vendors[offer.vendor_name] || 0) + 1;
     layers[offer.source_layer] = (layers[offer.source_layer] || 0) + 1;
+    categories[offer.category] = (categories[offer.category] || 0) + 1;
+    formats[offer.format] = (formats[offer.format] || 0) + 1;
   }
+  const mappedOfferCount = normalizedRows.filter(offer => offer.mapped).length;
+  const supplyOfferCount = normalizedRows.filter(offer => offer.category === "Supplies" || offer.format === "Supplies").length;
+  const reviewOfferCount = unmapped.length;
+  const mappedCardCount = productCards.filter(card => card.mapped).length;
+  const reviewCardCount = productCards.length - mappedCardCount;
 
   return {
     schema_version: "catalog-v3",
@@ -416,6 +436,11 @@ export function buildCatalog(rawRows = [], options = {}) {
     product_card_count: productCards.length,
     normalized_offer_count: normalizedRows.length,
     visible_unmapped_count: unmapped.length,
+    mapped_offer_count: mappedOfferCount,
+    supply_offer_count: supplyOfferCount,
+    review_offer_count: reviewOfferCount,
+    mapped_card_count: mappedCardCount,
+    review_card_count: reviewCardCount,
     excluded_count: excludedRows.length,
     silent_drop_count: 0,
     vendors_loaded: Object.keys(vendors).length,
@@ -426,12 +451,20 @@ export function buildCatalog(rawRows = [], options = {}) {
       product_card_count: productCards.length,
       normalized_offer_count: normalizedRows.length,
       visible_unmapped_count: unmapped.length,
+      mapped_offer_count: mappedOfferCount,
+      supply_offer_count: supplyOfferCount,
+      review_offer_count: reviewOfferCount,
+      mapped_card_count: mappedCardCount,
+      review_card_count: reviewCardCount,
       excluded_count: excludedRows.length,
       silent_drop_count: 0,
       vendors,
       layers,
+      categories,
+      formats,
       vendor_status: options.vendor_status || {},
       unmapped_products: unmapped,
+      excluded_products: excludedRows,
       warnings: options.warnings || []
     }
   };
