@@ -1,9 +1,7 @@
-import { getStore } from "@netlify/blobs";
 import fallbackSnapshot from "../../data/catalog-v3-fallback-snapshot.json" with { type: "json" };
 import { buildCatalog, publicSnapshot } from "./_shared/catalog-v3-engine.mjs";
+import { readCatalogV3Snapshot } from "./_shared/catalog-v3-store.mjs";
 
-const STORE_NAME = "mpp-catalog-v3";
-const SNAPSHOT_KEY = "latest";
 const FALLBACK_ORIGIN = "https://mypeptideprice.com";
 
 function response(body, status = 200, source = "blob") {
@@ -35,16 +33,14 @@ async function fetchJSON(url, timeoutMs = 9000) {
 export default async req => {
   if (req.method === "OPTIONS") return response({}, 200, "preflight");
   try {
-    const store = getStore(STORE_NAME);
-    const snapshot = await store.get(SNAPSHOT_KEY, { type: "json" });
+    const { snapshot, source } = await readCatalogV3Snapshot();
     if (snapshot && Array.isArray(snapshot.products) && snapshot.products.length) {
-      return response(publicSnapshot(snapshot), 200, "blob");
+      return response(publicSnapshot(snapshot), 200, source);
     }
   } catch (error) {
     console.warn("Catalog V3 blob read skipped:", error.message);
   }
 
-  // First deploy bootstrap. Reuse the existing stable raw snapshot, but group it on the server.
   try {
     const origin = new URL(req.url || FALLBACK_ORIGIN).origin || FALLBACK_ORIGIN;
     const legacy = await fetchJSON(`${origin}/.netlify/functions/products-snapshot?catalog_v3_bootstrap=1`, 9000);

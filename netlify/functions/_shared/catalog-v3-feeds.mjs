@@ -36,7 +36,22 @@ async function fetchJSON(url, timeoutMs = 14000) {
   const timer = setTimeout(() => ctrl.abort(), timeoutMs);
   try {
     const response = await fetch(url, { signal: ctrl.signal });
-    if (!response.ok) throw new Error(`HTTP ${response.status}`);
+    if (!response.ok) {
+      let detail = "";
+      try {
+        const body = await response.text();
+        if (body) {
+          try {
+            const parsed = JSON.parse(body);
+            detail = compact(parsed.error || parsed.message || body);
+          } catch {
+            detail = compact(body);
+          }
+        }
+      } catch {}
+      const suffix = detail ? `: ${detail.slice(0, 240)}` : "";
+      throw new Error(`HTTP ${response.status}${suffix}`);
+    }
     return await response.json();
   } finally {
     clearTimeout(timer);
@@ -106,10 +121,14 @@ export async function buildFreshCatalog({ origin, previousSnapshot = null, timeo
 
   const rows = Object.values(rowsByVendor).flat();
   const catalog = buildCatalog(rows, { vendor_status: vendorStatus, warnings });
+  const snapshotUpdatedAt = new Date().toISOString();
+  const snapshotRefreshMs = Date.now() - started;
   return {
     ...catalog,
-    snapshot_updated_at: new Date().toISOString(),
-    snapshot_refresh_ms: Date.now() - started,
+    snapshot_updated_at: snapshotUpdatedAt,
+    snapshot_refresh_ms: snapshotRefreshMs,
+    last_live_refresh_at: snapshotUpdatedAt,
+    last_live_refresh_ms: snapshotRefreshMs,
     raw_offers_by_vendor: rowsByVendor
   };
 }

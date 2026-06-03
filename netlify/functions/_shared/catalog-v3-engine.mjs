@@ -2,7 +2,7 @@ import catalogPayload from "../../../data/catalog-v3-products.json" with { type:
 import overridePayload from "../../../data/catalog-v3-overrides.json" with { type: "json" };
 import vendorPayload from "../../../data/vendor-config.json" with { type: "json" };
 
-export const ENGINE_VERSION = "3.0.1-preview";
+export const ENGINE_VERSION = "3.0.2-preview";
 export const COUPON_CODE = vendorPayload.coupon_code || "SAMMYC";
 export const VENDOR_CONFIG = vendorPayload.vendors || {};
 

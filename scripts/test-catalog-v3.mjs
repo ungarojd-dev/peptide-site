@@ -3,6 +3,7 @@ import fallbackPayload from "../data/catalog-v3-fallback.json" with { type: "jso
 import snapshot from "../data/catalog-v3-fallback-snapshot.json" with { type: "json" };
 import { buildCatalog, normalizeOffer } from "../netlify/functions/_shared/catalog-v3-engine.mjs";
 import { buildFreshCatalog } from "../netlify/functions/_shared/catalog-v3-feeds.mjs";
+import { reprocessStoredSnapshot, snapshotNeedsReprocessing } from "../netlify/functions/_shared/catalog-v3-reprocess.mjs";
 
 const rows = (fallbackPayload.products || []).map(row => ({ ...row, source_layer: "test-fallback" }));
 const rebuilt = buildCatalog(rows);
@@ -49,6 +50,22 @@ assert.ok(cleaned.products.some(card => card.name === "Bacteriostatic Water" && 
 assert.ok(cleaned.products.some(card => card.name === "CJC-1295 + Ipamorelin Blend"), "CJC + IPA shorthand should map to the canonical blend card");
 assert.equal(cleaned.diagnostics.excluded_products.length, 2, "Excluded product diagnostics should retain reviewable details");
 assert.equal(snapshot.schema_version, "catalog-v3", "Static snapshot schema must remain Catalog V3");
+
+const staleEngineSnapshot = {
+  engine_version: "3.0.1-preview",
+  products: [{ id: "old-placeholder" }],
+  diagnostics: { vendor_status: {}, warnings: [] },
+  raw_offers_by_vendor: {
+    "Glow Aminos": [{ company: "Glow Aminos", product: "FG1-S", listing: "FG1-S - 10MG", price: "$50.00", source_layer: "stale-previous-snapshot" }],
+    "Mile High Peptides": [{ company: "Mile High Peptides", product: "Limited Edition 7x Tested 1st Anniversary Tee (Oversized)", listing: "Limited Edition 7x Tested 1st Anniversary Tee (Oversized) - White - Large", price: "$25.00", source_layer: "stale-previous-snapshot" }]
+  }
+};
+assert.equal(snapshotNeedsReprocessing(staleEngineSnapshot), true, "Older blob snapshots should be reprocessed after deploy");
+const reprocessed = reprocessStoredSnapshot(staleEngineSnapshot);
+assert.equal(reprocessed.engine_version, "3.0.2-preview", "Reprocessed snapshot should use the current engine");
+assert.equal(reprocessed.visible_unmapped_count, 0, "Stored FG1-S rows should map after reprocessing");
+assert.equal(reprocessed.excluded_count, 1, "Stored merchandise rows should be excluded after reprocessing");
+assert.ok(reprocessed.products.some(card => card.name === "Semaglutide"), "Reprocessed snapshot should contain the Semaglutide card");
 const originalFetch = globalThis.fetch;
 globalThis.fetch = async () => { throw new Error("offline test"); };
 const offline = await buildFreshCatalog({ origin: "https://example.test", timeoutMs: 50 });
