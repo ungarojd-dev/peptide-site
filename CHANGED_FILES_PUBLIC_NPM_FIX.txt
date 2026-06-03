@@ -1,3 +1,0 @@
-Public npm deploy fix
-
-Updated package-lock.json registry URLs from an internal build registry to the public npm registry so Netlify can install @netlify/blobs and its dependencies during deployment.
