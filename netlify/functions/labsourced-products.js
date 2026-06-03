@@ -1,65 +1,65 @@
 // Netlify Serverless Function — LabSourced Peptides Product Feed
-// Public API — no credentials needed, CORS open
+// Public API — no credentials needed
 // Deployed at: https://mypeptideprice.com/.netlify/functions/labsourced-products
 
-const FEED_URL = "https://labsourced.com/api/public/products";
+const FEED_URL    = "https://labsourced.com/api/public/products";
+const COMPANY     = "LabSourced Peptides";
+const FETCH_TIMEOUT = 15000;
+
+function fetchWithTimeout(url, ms = FETCH_TIMEOUT) {
+  const ctrl  = new AbortController();
+  const timer = setTimeout(() => ctrl.abort(), ms);
+  return fetch(url, { signal: ctrl.signal }).finally(() => clearTimeout(timer));
+}
 
 function mapCategory(name) {
-  const n = name.toLowerCase();
-  if (n.includes("glp") || n.includes("semaglutide") || n.includes("tirzepatide") || n.includes("retatrutide") || n.includes("cagrilintide") || n.includes("cagri") || n.includes("mazdutide") || n.includes("orforglipron") || n.includes("survodutide") || n.includes("liraglutide") || n.includes("amycretin") || n.includes("weight") || n.includes("ion-1s") || n.includes("ion-2t") || n.includes("ion-3r") || n.includes("sa-2t") || n.includes("sa-3r") || n.includes("sa-4c") || n.includes("gla-1") || n.includes("gla-2") || n.includes("gla-3") || n.includes("glp-1") || n.includes("glp-2") || n.includes("glp-3") || n.includes("glp2-t") || n.includes("glp3-r") || n.includes("glp-t2") || n.includes("glp-r3") || n.includes("mhc-2") || n.includes("oc-3rt") || n.includes("pep-sm") || n.includes("pep-trz") || n.includes("pep-rt") || n.includes("peptide-t") || n.includes("peptide-r") || n.includes("tesofensine") || n.includes("metaboflex")) return "GLP-1 & Incretin";
-  if (n.includes("bpc") || n.includes("tb-500") || n.includes("tb500") || n.includes("wolverine") || n.includes("repair") || n.includes("kpv") || n.includes("ll-37") || n.includes("ll37")) return "Repair & Recovery";
-  if (n.includes("nad") || n.includes("epitalon") || n.includes("snap-8") || n.includes("tesamorelin") || n.includes("longevity") || n.includes("anti-ag") || n.includes("humanin") || n.includes("mtp-31")) return "Longevity & Cellular Health";
-  if (n.includes("semax") || n.includes("selank") || n.includes("dihexa") || n.includes("nootropic") || n.includes("cogni") || n.includes("cerebrolysin")) return "Cognitive & Nootropic";
-  if (n.includes("ipamorelin") || n.includes("cjc") || n.includes("ghrp") || n.includes("sermorelin") || n.includes("growth") || n.includes("igf") || n.includes("hexarelin") || n.includes("ghrh")) return "Growth Hormone Research";
-  if (n.includes("melanotan") || n.includes("pt-141") || n.includes("bremelanotide") || n.includes("kisspeptin") || n.includes("sexual") || n.includes("tanning") || n.includes("mt-1") || n.includes("mt-2")) return "Skin, Tanning & Sexual Health";
-  if (n.includes("aod") || n.includes("mots") || n.includes("metabol") || n.includes("energy") || n.includes("lipo") || n.includes("slu-pp")) return "Metabolic & Mitochondrial";
-  if (n.includes("capsule") || n.includes("oral") || n.includes("tablet")) return "Capsules";
-  if (n.includes("water") || n.includes("bac") || n.includes("acetic") || n.includes("sterile") || n.includes("vial case") || n.includes("kit") || n.includes("suppl") || n.includes("l-carnitine")) return "Supplies";
+  const n = (name || "").toLowerCase();
+  if (/glp|semaglutide|tirzepatide|retatrutide|cagrilintide|cagri|mazdutide|orforglipron|survodutide|liraglutide|amycretin|weight|gla-[123]|ion-[123][str]|pep-(?:sm|tz|trz|rt)|tesofensine|metaboflex/.test(n)) return "GLP-1 & Incretin";
+  if (/bpc|tb-500|tb500|wolverine|repair|kpv|ll-37|ll37/.test(n)) return "Repair & Recovery";
+  if (/nad|epitalon|snap-8|tesamorelin|longevity|anti-ag|humanin|mtp-31/.test(n)) return "Longevity & Cellular Health";
+  if (/semax|selank|dihexa|nootropic|cogni|cerebrolysin/.test(n)) return "Cognitive & Nootropic";
+  if (/ipamorelin|cjc|ghrp|sermorelin|growth|igf|hexarelin|ghrh/.test(n)) return "Growth Hormone Research";
+  if (/melanotan|pt-141|bremelanotide|kisspeptin|sexual|tanning|mt-[12]/.test(n)) return "Skin, Tanning & Sexual Health";
+  if (/aod|mots|metabol|energy|lipo|slu-pp/.test(n)) return "Metabolic & Mitochondrial";
+  if (/capsule|oral|tablet/.test(n)) return "Capsules";
+  if (/water|bac|acetic|sterile|vial case|kit|suppl|l-carnitine/.test(n)) return "Supplies";
   return "Other";
 }
 
+const HEADERS = {
+  "Access-Control-Allow-Origin":  "https://mypeptideprice.com",
+  "Access-Control-Allow-Methods": "GET, OPTIONS",
+  "Content-Type":                 "application/json",
+  "Cache-Control":                "public, max-age=300, stale-while-revalidate=21600",
+  "Netlify-CDN-Cache-Control":    "public, durable, max-age=900, stale-while-revalidate=21600"
+};
+
 export const handler = async (event) => {
-  const headers = {
-    "Access-Control-Allow-Origin": "https://mypeptideprice.com",
-    "Access-Control-Allow-Methods": "GET",
-    "Content-Type": "application/json",
-    "Cache-Control": "public, max-age=300, stale-while-revalidate=21600",
-    "Netlify-CDN-Cache-Control": "public, durable, max-age=900, stale-while-revalidate=21600"
-  };
-
-  if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };
-
+  if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers: HEADERS, body: "" };
   try {
-    const resp = await fetch(FEED_URL);
+    const resp = await fetchWithTimeout(FEED_URL);
     if (!resp.ok) throw new Error(`Feed error: ${resp.status}`);
     const data = await resp.json();
 
     const products = (data.products || []).map(p => ({
-      product: p.name,
-      listing: p.full_name || p.name,
-      company: "LabSourced Peptides",
+      product:  p.name,
+      listing:  p.full_name || p.name,
+      company:  COMPANY,
       category: mapCategory(p.name),
-      price: `$${parseFloat(p.price).toFixed(2)}`,
-      sku: p.sku || p.id,
+      price:    `$${parseFloat(p.price).toFixed(2)}`,
+      sku:      p.sku || p.id,
       in_stock: p.in_stock === true,
-      url: p.url ? `${p.url}?ref=SammyC` : null,
-      image: p.image || null,
-      source: "api"
+      url:      p.url ? `${p.url}?ref=SammyC` : null,
+      image:    p.image || null,
+      source:   "api"
     }));
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        vendor: "LabSourced Peptides",
-        fetched_at: data.generated_at || new Date().toISOString(),
-        count: products.length,
-        products
-      })
-    };
-
+    return { statusCode: 200, headers: HEADERS, body: JSON.stringify({
+      vendor: COMPANY, fetched_at: data.generated_at || new Date().toISOString(),
+      count: products.length, products
+    })};
   } catch (err) {
-    console.error("LabSourced feed error:", err.message);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
+    console.error(`${COMPANY} feed error:`, err.message);
+    return { statusCode: 500, headers: HEADERS, body: JSON.stringify({ error: err.message }) };
   }
 };
