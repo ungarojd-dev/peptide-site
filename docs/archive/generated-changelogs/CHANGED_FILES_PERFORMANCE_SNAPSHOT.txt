@@ -1,0 +1,31 @@
+Performance snapshot update
+
+Changed files:
+- index.html
+- glp-weight-loss.html
+- netlify.toml
+- sitemap.xml
+- package.json
+- package-lock.json
+- netlify/functions/all-products.js
+- netlify/functions/products-snapshot.mjs
+- netlify/functions/refresh-products-snapshot.mjs
+- netlify/functions/*-products.js vendor adapters
+- assets/vendor-logos/*.webp
+
+Main improvements:
+- Browser now requests one cached snapshot instead of ten vendor endpoints.
+- Homepage waits until entry disclaimer acceptance before making the snapshot request.
+- Scheduled function refreshes the last-known-good Netlify Blob snapshot every 15 minutes.
+- Snapshot reader falls back safely to the combined feed on the first deploy or if the blob is unavailable.
+- Vendor adapters use capped concurrency for variation processing.
+- Netlify durable CDN cache headers added to feed endpoints.
+- Search and resize rerenders are debounced.
+- GLP bitwise operator bugs fixed.
+- Sitemap now includes the blog index and current blog articles.
+- Vendor logos resized for their small card display size.
+
+After deployment:
+1. Netlify installs @netlify/blobs from package.json automatically.
+2. In Netlify, open Functions > refresh-products-snapshot and click Run now once to seed the first snapshot immediately.
+3. Confirm /.netlify/functions/products-snapshot returns JSON with products and header X-MPP-Snapshot-Source: blob after seeding.

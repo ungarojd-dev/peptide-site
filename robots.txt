@@ -3,3 +3,5 @@ Allow: /
 
 Sitemap: https://mypeptideprice.com/sitemap.xml
 Disallow: /catalog-debug.html
+Disallow: /catalog-v2.html
+Disallow: /catalog-v2-debug.html

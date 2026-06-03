@@ -1,0 +1,10 @@
+TikTok hero pill copy adjustment
+
+Changed files:
+- index.html
+- glp-weight-loss.html
+
+Update:
+- Removed the descriptive line from the hero TikTok pill.
+- The pill now shows only the TikTok-style icon, @sammyc2296 handle, and outbound arrow.
+- Existing TikTok profile link and social_click tracking remain intact.

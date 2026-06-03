@@ -1,0 +1,13 @@
+Oneday Compounds integration files changed:
+
+- netlify/functions/oneday-products.js
+- netlify/functions/all-products.js
+- index.html
+- glp-weight-loss.html
+- vendors.html
+- faq.html
+- llms.txt
+- ONEDAY_SETUP_NOTES.md
+
+Follow-up fix:
+- Filtered Ship Safely / shipping protection / gift card style non-product add-ons from the Oneday API feed.

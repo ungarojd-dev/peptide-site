@@ -1,0 +1,21 @@
+PRODUCT FAMILY FILTER CLEANUP
+
+Modified files:
+- index.html
+- glp-weight-loss.html
+
+Homepage changes:
+- Removed the vendor chip filter row.
+- Added an All Products shortcut to reset popular product filters.
+- Replaced loose popular-chip text searches with controlled canonical family filters.
+- Added centralized GLP shorthand mapping for Peptide SM, Peptide TZ, Peptide RT, and Cagrilintide.
+- Preserved GLP combination products as separate blend cards before generic alias matching runs.
+- Added typed-search aliases so searches such as sema, tirz, reta, PEP-SM, PEP-TZ, PEP-TRZ, and PEP-RT find the correct cards.
+- Updated the hero copy to emphasize category filtering and cross-vendor comparison.
+
+GLP page changes:
+- Removed the vendor dropdown.
+- Added an All GLP shortcut to reset popular filters.
+- Replaced loose popular-chip searches with controlled GLP family matching.
+- Kept blends separate from pure Sema, Tirz, Reta, and Cagri shortcut results.
+- Added shorthand aliases to typed GLP searches.

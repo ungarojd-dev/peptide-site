@@ -1,0 +1,12 @@
+Netlify dependency installation fix
+
+Added:
+- .nvmrc: pins Netlify builds to Node.js 20
+- .npmrc: explicitly uses the public npm registry
+
+Updated:
+- package.json: declares Node.js 20.x compatibility
+- package-lock.json: preserves the public npm registry and Node.js 20.x metadata
+
+Reason:
+The prior Netlify deploy attempted dependency installation under Node.js 22 and npm 10.9.8, then aborted with "Exit handler never called!". Pinning Node.js 20 uses a stable LTS build environment for the snapshot dependency installation.
