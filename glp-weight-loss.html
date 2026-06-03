@@ -774,6 +774,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
+<script src="assets/catalog-engine.js"></script>
 <script>
 const FULL_LOGOS = {
   glacier: "assets/vendor-logos/glacier-aminos.webp",
@@ -807,7 +808,7 @@ const CATEGORY_ALIASES = {
 };
 
 function productText(p){
-  return `${p.product||""} ${p.listing||""} ${p.raw_product||""} ${p.raw_listing||""} ${p.sku||""} ${p.category||""} ${p.raw_category||""} ${p.source_slug||""}`.toLowerCase();
+  return `${p.product||""} ${p.listing||""} ${p.sku||""} ${p.category||""}`.toLowerCase();
 }
 function hasAny(text, terms){
   return terms.some(term=>text.includes(term));
@@ -823,6 +824,7 @@ const GLP_WEIGHT_LOSS_TERMS = [
   "tesofensine", "aod-9604", "aod9604", "adipotide", "lipo-c", "lipoc", "5-amino", "5 amino", "5amino"
 ];
 function isGlpWeightLossProduct(p){
+  if(window.MPPCatalog) return window.MPPCatalog.isGlpOffer(p);
   const text = productText(p).replace(/[\u2013\u2014]/g, "-");
   const rawCat = CATEGORY_ALIASES[p.raw_category] || CATEGORY_ALIASES[p.category] || p.raw_category || p.category || "";
   return rawCat === "GLP-1 & Incretin" || rawCat === "GLP / Weight Loss" || hasAny(text, GLP_WEIGHT_LOSS_TERMS);
@@ -841,7 +843,7 @@ function detectCategory(p){
   if(hasAny(text,["mots", "ss-31", "ss31", "§-31", "aod", "5-amino", "5 amino", "5amino", "slu-pp", "slu pp", "glutathione", "adipotide", "tesofensine", "metabolic", "mitochondrial"])) return "Metabolic & Mitochondrial";
   if(hasAny(text,["nad", "ghk-cu", "ghk cu", "ahk-cu", "ahk cu", "copper peptide", "snap-8", "snap8", "foxo4", "fox04", "humanin", "longevity", "cellular"])) return "Longevity & Cellular Health";
 
-  if(oldCat && oldCat !== "Other") return oldCat;
+  if(oldCat & oldCat !== "Other") return oldCat;
   return "Uncategorized";
 }
 
@@ -857,12 +859,11 @@ function detectFormat(p){
 }
 
 function normalizeProduct(p){
+  if(window.MPPCatalog) return window.MPPCatalog.normalizeOffer(p);
   const rawCategory = p.raw_category || p.source_category || p.vendor_category || p.original_category || p.category || "";
   const normalized = { ...p, raw_category: rawCategory };
-  // API rows are classified once on the server. Do not overwrite that result in the browser.
-  // Static emergency fallback rows still use the local classifier.
-  normalized.category = (normalized.source === "api" && normalized.category) ? normalized.category : detectCategory(normalized);
-  normalized.format = normalized.format || detectFormat(normalized);
+  normalized.category = detectCategory(normalized);
+  normalized.format = detectFormat(normalized);
   return normalized;
 }
 
@@ -875,6 +876,7 @@ normalizeProducts();
 
 // ── Display name: maps vendor codes to Peptide SM / TZ / RT ─────────────────
 function displayProductName(p) {
+  if(window.MPPCatalog) return window.MPPCatalog.familyForOffer(p);
   const raw = (p.product || "").trim();
   const s = raw
     .replace(/\s*[-–]\s*\d[\d.,]*\s*m[cgl]?g?\b/gi, "")
@@ -1010,20 +1012,21 @@ function afterCodeText(price, pct){
 }
 
 function getGlpProductText(p){
-  return `${p.product||""} ${p.listing||""} ${p.raw_product||""} ${p.raw_listing||""} ${p.sku||""} ${(p.components||[]).join(" ")}`.toLowerCase();
+  return `${p.product||""} ${p.listing||""} ${p.sku||""}`.toLowerCase();
 }
 
 function getGlpCompoundFlags(p){
   const s = getGlpProductText(p);
   return {
-    sm: s.includes("semaglutide") || /\bsema\b/.test(s) || /\b(?:gla-1\s*sm|glp-1\s*sm|ion-1s|pep[\s-]*sm|peptide[\s-]*sm|sm)\b/.test(s),
-    tz: s.includes("tirzepatide") || /\btirz(?:ep)?\b/.test(s) || /\b(?:gla-2(?:\.5)?\s*trz|glp-2\s*trz|glp2-t|glp-t2|ion-2t|mhc-2\s*trz|pep[\s-]*(?:tz|trz)|peptide[\s-]*(?:tz|trz)|sa-2t|tz|trz)\b/.test(s) || /\bpep-cag[\s/-]+(?:pep[\s-]*)?(?:tz|trz)\b/.test(s),
-    rt: s.includes("retatrutide") || /\breta\b/.test(s) || /\b(?:gla-3\s*rt|glp-3\s*rt|glp-3r|glp3-r|glp-r3|ion-3r|oc-3rt|pep[\s-]*rt|peptide[\s-]*rt|sa-3r|rt)\b/.test(s) || /\b(?:trz|tz)\s*[/+]\s*rt\b/.test(s),
+    sm: s.includes("semaglutide") || /\b(?:gla-1\s*sm|glp-1\s*sm|ion-1s|pep[\s-]*sm|peptide[\s-]*sm)\b/.test(s),
+    tz: s.includes("tirzepatide") || /\b(?:gla-2(?:\.5)?\s*trz|glp-2\s*trz|glp2-t|glp-t2|ion-2t|mhc-2\s*trz|pep[\s-]*(?:tz|trz)|peptide[\s-]*(?:tz|trz)|sa-2t)\b/.test(s) || /\bpep-cag[\s/-]+(?:pep[\s-]*)?(?:tz|trz)\b/.test(s),
+    rt: s.includes("retatrutide") || /\b(?:gla-3\s*rt|glp-3\s*rt|glp-3r|glp3-r|glp-r3|ion-3r|oc-3rt|pep[\s-]*rt|peptide[\s-]*rt|sa-3r)\b/.test(s) || /\b(?:trz|tz)\s*[/+]\s*rt\b/.test(s),
     cagri: s.includes("cagrilintide") || s.includes("cagrilinitide") || /\b(?:cagri|sa-4c|pep[\s-]*cag)\b/.test(s)
   };
 }
 
 function matchesGlpPopular(p, selected){
+  if(window.MPPCatalog) return window.MPPCatalog.matchesGlpPopular(p,selected);
   if(selected === "all") return true;
   const s = getGlpProductText(p);
   const flags = getGlpCompoundFlags(p);
@@ -1036,6 +1039,7 @@ function matchesGlpPopular(p, selected){
 }
 
 function getGlpSearchAliases(p){
+  if(window.MPPCatalog) return window.MPPCatalog.getFamilySearchAliases(window.MPPCatalog.familyForOffer(p));
   const flags = getGlpCompoundFlags(p);
   const aliases = [];
   if(flags.sm) aliases.push("semaglutide sema pep-sm peptide sm");
@@ -1094,7 +1098,7 @@ function applyFilters(){
     const mF = activeFormat==="all" || p.format===activeFormat;
     const mP = matchesGlpPopular(p, activePopular);
     const q = searchTerm;
-    const searchable = `${p.product||""} ${p.listing||""} ${p.raw_product||""} ${p.raw_listing||""} ${p.company||""} ${p.category||""} ${p.format||""} ${p.raw_category||""} ${getGlpSearchAliases(p)}`.toLowerCase();
+    const searchable = `${p.product||""} ${p.listing||""} ${p.company||""} ${p.category||""} ${p.format||""} ${p.raw_category||""} ${getGlpSearchAliases(p)}`.toLowerCase();
     const mS = !q || searchable.includes(q);
     return mC && mF && mP && mS;
   });
@@ -1354,8 +1358,9 @@ window.addEventListener("resize",()=>{
 // ── Cached product snapshot, one browser request ───────────────────────────
 // Static GLP products render first. One cached snapshot refresh replaces the
 // previous ten browser-side vendor requests and repeated full-page rerenders.
-const SNAPSHOT_ENDPOINT = "/.netlify/functions/products-snapshot?schema=ingestion-v3";
-const SNAPSHOT_CACHE_KEY = "mpp_products_snapshot_v3";
+const SNAPSHOT_ENDPOINT = "/.netlify/functions/products-snapshot";
+const SNAPSHOT_CACHE_KEY = "mpp_products_snapshot_v4";
+const ENRICHMENT_ENDPOINT = "/.netlify/functions/catalog-enrichment";
 const SNAPSHOT_CACHE_MAX_AGE = 6 * 60 * 60 * 1000;
 window._apisLoading = false;
 window._liveVendorLoading = new Set();
@@ -1381,21 +1386,40 @@ function addLiveDot(vendorName){
 function mergeSnapshotProducts(liveProducts){
   if(!Array.isArray(liveProducts) || liveProducts.length===0) return false;
   const normalized = liveProducts
-    .map((p,index)=>normalizeProduct({
-      ...(p||{}),
-      product:(p&& (p.product || p.name || p.title || p.listing)) || `Unnamed API Product ${index+1}`,
-      listing:(p&& (p.listing || p.product || p.name || p.title)) || `Unnamed API Product ${index+1}`
-    }))
+    .map(p=>normalizeProduct({ ...p, product:p.product || p.name || p.title || p.listing || "Untitled API Product" }))
     .filter(isGlpWeightLossProduct);
   if(normalized.length===0) return false;
-
-  // Preserve static GLP rows for vendors missing from a partial snapshot.
-  const refreshedVendors = new Set(normalized.map(p=>p.company).filter(Boolean));
-  const fallback = PRODUCTS.filter(p=>!refreshedVendors.has(p.company));
+  const currentGlp = PRODUCTS.filter(isGlpWeightLossProduct);
+  const merged = window.MPPCatalog ? window.MPPCatalog.mergeStaticAndLive(currentGlp,normalized) : normalized;
   PRODUCTS.length = 0;
-  [...fallback, ...normalized].forEach(p=>PRODUCTS.push(p));
+  merged.filter(isGlpWeightLossProduct).forEach(p=>PRODUCTS.push(p));
+  const refreshedVendors = new Set(normalized.map(p=>p.company).filter(Boolean));
   refreshedVendors.forEach(addLiveDot);
   return true;
+}
+
+function mergeEnrichmentProducts(enrichedProducts){
+  if(!window.MPPCatalog || !Array.isArray(enrichedProducts) || enrichedProducts.length===0) return false;
+  const glp = enrichedProducts.map(normalizeProduct).filter(isGlpWeightLossProduct);
+  if(!glp.length) return false;
+  const merged = window.MPPCatalog.mergeEnrichment(PRODUCTS,glp);
+  PRODUCTS.length=0;
+  merged.filter(isGlpWeightLossProduct).forEach(p=>PRODUCTS.push(p));
+  return true;
+}
+
+async function refreshCatalogEnrichment(){
+  try{
+    const resp=await fetchWithTimeout(ENRICHMENT_ENDPOINT,14000);
+    if(!resp.ok) throw new Error(`${resp.status}`);
+    const data=await resp.json();
+    if(mergeEnrichmentProducts(data.products)){
+      applyFilters();
+      console.log(`Loaded optional GLP enrichment: ${data.products.length} offers`);
+    }
+  }catch(e){
+    console.log(`GLP enrichment skipped safely: ${e.message}`);
+  }
 }
 
 function applySnapshotPayload(data){
@@ -1428,6 +1452,7 @@ async function refreshProductSnapshot(){
       try{ localStorage.setItem(SNAPSHOT_CACHE_KEY,JSON.stringify({saved_at:Date.now(),data})); }
       catch(e){ console.log(`Snapshot cache write skipped: ${e.message}`); }
       console.log(`✓ Loaded cached product snapshot: ${data.products.length} products`);
+      setTimeout(refreshCatalogEnrichment,0);
     }
   }catch(e){
     console.log(`✗ Product snapshot refresh skipped: ${e.message}`);

@@ -1,0 +1,26 @@
+EMERGENCY ROLLBACK PACKAGE
+
+Purpose:
+Restore the last stable build before the API ingestion v2/v3 adapter rewrite.
+
+This rollback keeps:
+- Performance snapshot endpoint
+- Scheduled snapshot refresh
+- Simplified product-family filters
+- Removed vendor filter row
+- Compact mobile sticky filter dock
+
+This rollback removes by overwrite:
+- Shared WooCommerce ingestion adapter rollout
+- Centralized v3 normalizer changes
+- v3 browser snapshot changes
+
+V3-only files may remain in GitHub if this package is uploaded over the current repository because GitHub uploads do not delete absent files. They are unused by the restored code and can be deleted after production is stable:
+- netlify/functions/snapshot-diagnostics.mjs
+- netlify/functions/_shared/product-normalizer.mjs
+- netlify/functions/_shared/woocommerce-feed.mjs
+- CHANGED_FILES_API_INGESTION_V2.txt
+- CHANGED_FILES_API_INGESTION_V3_FULL_COVERAGE.txt
+
+Recommended commit message:
+revert: restore stable API adapters after ingestion regression

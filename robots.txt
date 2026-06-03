@@ -2,3 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://mypeptideprice.com/sitemap.xml
+Disallow: /catalog-debug.html
