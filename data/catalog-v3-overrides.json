@@ -1,0 +1,36 @@
+{
+  "version": "3.0.0",
+  "exclude_terms": [
+    "ship safely",
+    "shipping protection",
+    "shipping insurance",
+    "package protection",
+    "route protection",
+    "gift card",
+    "giftcard",
+    "gift certificate"
+  ],
+  "forced_aliases": {
+    "gla 1 sm": "semaglutide",
+    "gla 2 trz": "tirzepatide",
+    "gla 2 5 trz": "tirzepatide",
+    "gla 3 rt": "retatrutide",
+    "ion 1s": "semaglutide",
+    "ion 2t": "tirzepatide",
+    "ion 3r": "retatrutide",
+    "sa 1s": "semaglutide",
+    "sa 2t": "tirzepatide",
+    "sa 3r": "retatrutide",
+    "sa 4c": "cagrilintide",
+    "pep sm": "semaglutide",
+    "pep tz": "tirzepatide",
+    "pep trz": "tirzepatide",
+    "pep rt": "retatrutide",
+    "pep cag": "cagrilintide",
+    "oc 3rt": "retatrutide",
+    "glp t2": "tirzepatide",
+    "glp r3": "retatrutide"
+  },
+  "category_overrides": {},
+  "format_overrides": {}
+}

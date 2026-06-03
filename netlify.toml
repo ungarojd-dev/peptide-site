@@ -15,6 +15,11 @@
 [functions."refresh-products-snapshot"]
   schedule = "*/15 * * * *"
 
+
+# Refresh the pre-grouped Catalog V3 snapshot every 15 minutes.
+[functions."refresh-catalog-v3-snapshot"]
+  schedule = "*/15 * * * *"
+
 # Keep static pages fresh at the CDN while allowing fast stale responses during revalidation.
 [[headers]]
   for = "/"
@@ -39,9 +44,15 @@
   [headers.values]
     Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
 
-# Internal QA page for product mapping checks. Keep it out of search indexes.
+# Parallel Catalog V3 preview and QA pages should not be indexed.
 [[headers]]
-  for = "/catalog-debug.html"
+  for = "/catalog-v3.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
+
+[[headers]]
+  for = "/catalog-v3-debug.html"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
     Cache-Control = "no-store"

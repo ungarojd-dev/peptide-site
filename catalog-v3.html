@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Catalog V3 Preview | MyPeptidePrice.com</title>
+<link rel="icon" href="favicon.png"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;700;800;900&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="assets/catalog-v3.css"/>
+</head>
+<body>
+<header class="v3-top"><div class="v3-top-inner"><div class="v3-brand">MyPeptidePrice.com <span class="v3-preview">Catalog V3 Preview</span></div><a class="v3-back" href="/">Return to live homepage</a></div></header>
+<section class="v3-hero"><div class="v3-hero-inner"><p class="v3-kicker">Clean rebuild · parallel preview</p><h1>Compare Research Peptide Prices</h1><p>Each card represents one product family and one format. Select a size, then compare tracked vendors from lowest estimated after-code price to highest.</p><div class="v3-metrics" id="v3Metrics"><div class="v3-metric"><span class="v3-spinner"></span> Loading catalog snapshot...</div></div></div></section>
+<section class="v3-controls"><div class="v3-search-row"><input class="v3-search" id="v3Search" placeholder="Search products, suppliers, listings, or SKUs..."/><button class="v3-clear" id="v3Clear" type="button">Clear</button></div><div class="v3-filter-title">Popular</div><div class="v3-chips" id="v3Popular"></div><div class="v3-filter-category"><div class="v3-filter-title">Category</div><div class="v3-chips" id="v3Categories"></div></div><div class="v3-filter-title">Format</div><div class="v3-chips" id="v3Formats"></div></section>
+<main class="v3-main"><div class="v3-status"><span id="v3Status">Loading product cards...</span><span id="v3Source"></span></div><div class="v3-grid" id="v3Grid"></div></main>
+<section class="v3-note"><div class="v3-note-box"><strong>QA preview:</strong> this page uses one pre-grouped catalog snapshot. The browser only searches, filters, changes sizes, and expands suppliers. Review mapping issues at <a href="/catalog-v3-debug.html">catalog-v3-debug.html</a>.</div></section>
+<footer class="v3-footer"><div class="v3-footer-inner">Internal preview only. Prices are estimates based on listed vendor pricing and known SAMMYC discounts. Confirm final pricing directly on the vendor site.</div></footer>
+<div class="v3-mobile-dock"><div class="v3-mobile-search-row"><input class="v3-mobile-search" id="v3MobileSearch" placeholder="Search catalog..."/><button class="v3-mobile-clear" id="v3MobileClear" type="button">Clear</button></div><div class="v3-mobile-chips" id="v3MobilePopular"></div></div>
+<script src="assets/catalog-v3-ui.js"></script>
+<script>window.CatalogV3UI.boot();</script>
+</body>
+</html>

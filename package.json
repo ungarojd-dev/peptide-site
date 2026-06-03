@@ -6,5 +6,9 @@
   },
   "engines": {
     "node": "20.x"
+  },
+  "scripts": {
+    "build:catalog-v3-fallback": "node scripts/build-catalog-v3-fallback.mjs",
+    "test:catalog-v3": "node scripts/test-catalog-v3.mjs"
   }
 }

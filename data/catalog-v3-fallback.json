@@ -1,0 +1,2162 @@
+{
+  "generated_from": "index.html static fallback",
+  "count": 308,
+  "products": [
+    {
+      "company": "Glacier Aminos",
+      "product": "GLA-3 RT",
+      "listing": "Glacier GLA-3 RT Peptide Vial",
+      "price": "$64.99 to $260.99",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "GLA-2 TRZ",
+      "listing": "Glacier GLA-2 TRZ Peptide Vial",
+      "price": "$68.99 to $183.99",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "GLA-1 SM 15MG",
+      "listing": "GLA-1 SM 15MG Peptide Vial",
+      "price": "$74.99",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "GLA-3 RT/CAGRI 20MG/4MG",
+      "listing": "Glacier GLA-3 RT CAGRI 20MG 4MG Peptide Vial",
+      "price": "$134.99",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "GLA-2.5 TRZ/RT 18MG",
+      "listing": "Glacier GLA-2.5 TRZ-RT 18MG Peptide Vial",
+      "price": "$99.99",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "CAGRILINTIDE",
+      "listing": "Glacier Cagrilintide Peptide Vial",
+      "price": "$56.99 to $101.99",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "SLU-PP-332 1MG CAPSULE",
+      "listing": "SLU-PP-332 Capsules",
+      "price": "$127.99",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "BPC-157 500MCG CAPSULES",
+      "listing": "BPC-157 Capsules",
+      "price": "$112.99",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "BPC-KPV 1MG CAPSULES",
+      "listing": "BPC-KPV Capsules",
+      "price": "$118.99",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "METHOLINE BLUE CAPSULES 20MG",
+      "listing": "METHOLINE BLUE CAPSULES 20MG",
+      "price": "$61.99",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "TESOFENSINE CAPSULES 500MCG",
+      "listing": "Tesofensine Capsules",
+      "price": "$122.99",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "TESA/IPA Peptide Blend 10mg/3mg",
+      "listing": "Glacier Tesa-IPA 10MG-3MG Peptide Vial",
+      "price": "$101.99",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "GHK-Cu",
+      "listing": "Glacier GHK-Cu Peptide Vial",
+      "price": "$41.99 to $62.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "GHKPV",
+      "listing": "Glacier GHKPV Peptide Vial",
+      "price": "$72.99",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "SEMAX/SELANK BLEND 20MG",
+      "listing": "Glacier Semax-Selank 20MG Peptide Vial",
+      "price": "$81.99",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "SELANK 10MG",
+      "listing": "Glacier Selank 10MG Peptide Vial",
+      "price": "$40.99",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "SEMAX 10MG",
+      "listing": "Glacier Semax 10MG Peptide Vial",
+      "price": "$40.99",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "BPC/TB 500 Wolverine",
+      "listing": "Glacier BPC-157TB-500 Wolverine Peptide Vial",
+      "price": "$62.99 to $101.99",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "BPC-157",
+      "listing": "Glacier BPC-157 Peptide Vial",
+      "price": "$45.99 to $79.99",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "TB-500 10MG",
+      "listing": "Glacier TB-500 Peptide Vial",
+      "price": "$58.99",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "KPV 10MG",
+      "listing": "Glacier KPV 10MG Peptide Vial",
+      "price": "$51.99",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "KLOW 80MG",
+      "listing": "Glacier KLOW 80MG Peptide Vial",
+      "price": "$118.99",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "GLOW 70MG",
+      "listing": "Glacier GLOW Peptide Vial",
+      "price": "$96.99",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "SERMORELIN 10MG",
+      "listing": "Glacier Sermorelin 10MG Peptide Vial",
+      "price": "$62.99",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "TESAMORELIN",
+      "listing": "Glacier TESAMORELIN Peptide Vial",
+      "price": "$67.99 to $117.99",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "IPAMORELIN 10MG",
+      "listing": "Glacier Ipamorelin 10MG Peptide Vial",
+      "price": "$51.99",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "CJC 1295 No DAC/IPA Blend 10MG",
+      "listing": "Glacier CJC No DACIPA 5MG5MG Peptide Vial",
+      "price": "$56.99",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "CJC-1295 W/O DAC 10MG",
+      "listing": "Glacier CJC-1295 No DAC Peptide Vial",
+      "price": "$67.99",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "CJC-1295 W/DAC 5MG",
+      "listing": "Glacier CJC-1295 wDAC 5MG Peptide Vial",
+      "price": "$51.99",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "MOTS-C",
+      "listing": "Glacier MOTS-C Peptide Vial",
+      "price": "$45.99 to $79.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "S-31-S 10MG",
+      "listing": "Glacier S-31-S 10MG Peptide Vial",
+      "price": "$49.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "GLUTATHIONE 1500MG",
+      "listing": "Glacier Glutathione 1500MG Peptide Vial",
+      "price": "$75.99",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "AOD-9604 10MG",
+      "listing": "AOD-9604 10MG",
+      "price": "$92.99",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "LIPO-C 10mL",
+      "listing": "Glacier LIPO-C Peptide Vial",
+      "price": "$63.99",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "ARA-290 10MG",
+      "listing": "Glacier ARA 290 Peptide Vial",
+      "price": "$54.99",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "FOXO4-DRI 10MG",
+      "listing": "Glacier FOX04-DRI 10MG Peptide Vial",
+      "price": "$134.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "CARTALAX 20MG",
+      "listing": "Glacier Cartalax 200MG Peptide Vial",
+      "price": "$67.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "TESTAGEN 20MG",
+      "listing": "Glacier Testagen 20MG Peptide Vial",
+      "price": "$67.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "KISSPEPTIN 10MG",
+      "listing": "Glacier Kisspeptin Peptide Vial",
+      "price": "$40.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "DSIP 5MG",
+      "listing": "Glacier DSIP Peptide Vial",
+      "price": "$33.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "EPITALON 10MG",
+      "listing": "Glacier Epitalon 10MG Peptide Vial",
+      "price": "$45.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "PT-141 10MG",
+      "listing": "Glacier PT-141 10MG Peptide Vial",
+      "price": "$40.99",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "VIP 10MG",
+      "listing": "Glacier VIP 10MG Peptide Vial",
+      "price": "$65.99",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "MELANOTAN 1 10MG",
+      "listing": "Glacier MT1 10MG Peptide Vial",
+      "price": "$33.99",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "MELANOTAN 2 10MG",
+      "listing": "MELANOTAN 2 10MG",
+      "price": "$33.99",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "NAD+ 500MG Buffered",
+      "listing": "Glacier NAD+ Buffered 500MG Peptide Vial",
+      "price": "$56.99",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "5-AMINO-1MQ",
+      "listing": "Glacier 5-Amino-1MQ Peptide Vial",
+      "price": "$51.99 to $101.99",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "THYMOSIN ALPHA 1 10MG",
+      "listing": "Glacier Thymosin Alpha 1 10MG Peptide Vial",
+      "price": "$63.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "Acetic Acid 0.6%",
+      "listing": "Acetic Acid 0.6%",
+      "price": "$9.99",
+      "category": "Supplies"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "STERILE WATER 10mL",
+      "listing": "STERILE WATER 10mL",
+      "price": "$9.99",
+      "category": "Supplies"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "Reconstitution Water 0.9% Alcohol 10mL",
+      "listing": "Reconstitution Water 0.9% Alcohol 10mL",
+      "price": "$14.99",
+      "category": "Supplies"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "Reconstitution Water 0.9% Alcohol 30mL",
+      "listing": "Reconstitution Water 0.9% Alcohol 30mL",
+      "price": "$27.99",
+      "category": "Supplies"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "Glacier Aminos 30 Vial Storage Case",
+      "listing": "Glacier Aminos 30 Vial Storage Case",
+      "price": "$34.99",
+      "category": "Supplies"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "\u00a7-31",
+      "listing": "\u00a7-31",
+      "price": "$55.00 to $139.00",
+      "category": "Other"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "3ML Vial Caps/Cover (10 Pack)",
+      "listing": "3ML Vial Caps/Cover (10 Pack)",
+      "price": "$7.95",
+      "category": "Capsules"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "5-Amino-1MQ",
+      "listing": "5-Amino-1MQ",
+      "price": "$35.00 to $115.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "9 Vial Case (3ML Slots)",
+      "listing": "9 Vial Case (3ML Slots)",
+      "price": "$12.95",
+      "category": "Supplies"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Acetic Acid 0.6%",
+      "listing": "Acetic Acid 0.6%",
+      "price": "$12.95",
+      "category": "Supplies"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Acetyl Hexapeptide-8 (Raw) - 1g",
+      "listing": "Acetyl Hexapeptide-8 (Raw) - 1g",
+      "price": "$129.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Adamax - 10mg",
+      "listing": "Adamax - 10mg",
+      "price": "$69.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "AHK-Cu",
+      "listing": "AHK-Cu",
+      "price": "$63.00 to $93.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "AHK-Cu (Raw) - 1g",
+      "listing": "AHK-Cu (Raw) - 1g",
+      "price": "$65.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "AOD-9604",
+      "listing": "AOD-9604",
+      "price": "$49.00 to $69.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "ARA-290",
+      "listing": "ARA-290",
+      "price": "$59.00 to $179.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Astaxanthin Complex",
+      "listing": "Astaxanthin Complex",
+      "price": "$45.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "B12 - 10mg",
+      "listing": "B12 - 10mg",
+      "price": "$35.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "B12 (Methylated) - 10mg",
+      "listing": "B12 (Methylated) - 10mg",
+      "price": "$75.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "B12 Buccal Strip",
+      "listing": "B12 Buccal Strip",
+      "price": "$35.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "BPC-157",
+      "listing": "BPC-157",
+      "price": "$29.00 to $85.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "BPC157+TB500",
+      "listing": "BPC157+TB500",
+      "price": "$48.00 to $79.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "BPC157+TB500+KPV - 30mg",
+      "listing": "BPC157+TB500+KPV - 30mg",
+      "price": "$119.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Bronchogen - 20mg",
+      "listing": "Bronchogen - 20mg",
+      "price": "$79.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "BW",
+      "listing": "BW",
+      "price": "$7.00 to $14.95",
+      "category": "Supplies"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "BW-H Brand",
+      "listing": "BW-H Brand",
+      "price": "$25.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Cag",
+      "listing": "Cag",
+      "price": "$59.00 to $99.00",
+      "category": "Other"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Cartalax - 20mg",
+      "listing": "Cartalax - 20mg",
+      "price": "$79.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Cartalax / TB4 / BPC-157 - 40mg",
+      "listing": "Cartalax / TB4 / BPC-157 - 40mg",
+      "price": "$129.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Centella Asiatica Complex",
+      "listing": "Centella Asiatica Complex",
+      "price": "$45.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Cerebro Protein - 60mg",
+      "listing": "Cerebro Protein - 60mg",
+      "price": "$49.95",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "CJC-1295 (No DAC)",
+      "listing": "CJC-1295 (No DAC)",
+      "price": "$29.00 to $49.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "CJC-1295 With Dac - 5mg",
+      "listing": "CJC-1295 With Dac - 5mg",
+      "price": "$59.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "CJC-1295+Ipamo - 5/5mg (No DAC)",
+      "listing": "CJC-1295+Ipamo - 5/5mg (No DAC)",
+      "price": "$59.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Cortagen - 20mg",
+      "listing": "Cortagen - 20mg",
+      "price": "$79.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "DSIP",
+      "listing": "DSIP",
+      "price": "$29.00 to $45.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Epithalon",
+      "listing": "Epithalon",
+      "price": "$35.00 to $119.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "FOXO4-DRI - 10mg",
+      "listing": "FOXO4-DRI - 10mg",
+      "price": "$119.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "GHK-Cu",
+      "listing": "GHK-Cu",
+      "price": "$29.00 to $45.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "GHK-Cu (Raw) - 1g",
+      "listing": "GHK-Cu (Raw) - 1g",
+      "price": "$39.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "GHK-Cu + HLA Sheet Mask (25 mL) - 10 Pack",
+      "listing": "GHK-Cu + HLA Sheet Mask (25 mL) - 10 Pack",
+      "price": "$49.95",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "GHK-Cu 50mg / KPV - 10mg",
+      "listing": "GHK-Cu 50mg / KPV - 10mg",
+      "price": "$59.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "GHK-Cu Complex",
+      "listing": "GHK-Cu Complex",
+      "price": "$55.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "GHK-Cu Copper Peptide Conditioner",
+      "listing": "GHK-Cu Copper Peptide Conditioner",
+      "price": "$44.95",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "GHK-Cu Copper Peptide Shampoo",
+      "listing": "GHK-Cu Copper Peptide Shampoo",
+      "price": "$44.95",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "GHK-Cu Tallow Honey Balm",
+      "listing": "GHK-Cu Tallow Honey Balm",
+      "price": "$34.95",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "GHRP-2 - 5mg",
+      "listing": "GHRP-2 - 5mg",
+      "price": "$29.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "GHRP-6 - 5mg",
+      "listing": "GHRP-6 - 5mg",
+      "price": "$29.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "GLOW - 70mg",
+      "listing": "GLOW - 70mg",
+      "price": "$89.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Glutathione",
+      "listing": "Glutathione",
+      "price": "$29.00 to $55.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Glutathione (Raw) - 1g",
+      "listing": "Glutathione (Raw) - 1g",
+      "price": "$15.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Glutathione Buccal Strip",
+      "listing": "Glutathione Buccal Strip",
+      "price": "$35.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Hyaluronic Acid Serum",
+      "listing": "Hyaluronic Acid Serum",
+      "price": "$14.95",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "IGF-LR3 - 1mg",
+      "listing": "IGF-LR3 - 1mg",
+      "price": "$90.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "ION-1S",
+      "listing": "ION-1S",
+      "price": "$39.00 to $99.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "ION-2T",
+      "listing": "ION-2T",
+      "price": "$49.00 to $199.00",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "ION-3R",
+      "listing": "ION-3R",
+      "price": "$39.00 to $219.00",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Ipamo",
+      "listing": "Ipamo",
+      "price": "$35.00 to $42.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "KLOW - 80mg",
+      "listing": "KLOW - 80mg",
+      "price": "$109.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "KPV - 10mg",
+      "listing": "KPV - 10mg",
+      "price": "$49.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "KSPTN",
+      "listing": "KSPTN",
+      "price": "$29.00 to $39.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Lemon Bottle - 10ml",
+      "listing": "Lemon Bottle - 10ml",
+      "price": "$39.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "LIPO-C + B12 (Methylated) - 10mg",
+      "listing": "LIPO-C + B12 (Methylated) - 10mg",
+      "price": "$79.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "LL-37 - 5mg",
+      "listing": "LL-37 - 5mg",
+      "price": "$45.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Matrixyl - 10mg",
+      "listing": "Matrixyl - 10mg",
+      "price": "$129.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Methylene Blue 1% - 60ml",
+      "listing": "Methylene Blue 1% - 60ml",
+      "price": "$24.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "MLT I",
+      "listing": "MLT I",
+      "price": "$19.00 to $35.00",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "MLT II",
+      "listing": "MLT II",
+      "price": "$35.00 to $67.00",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "MOTS-c",
+      "listing": "MOTS-c",
+      "price": "$42.00 to $115.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "NAD+",
+      "listing": "NAD+",
+      "price": "$44.00 to $85.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "NAD+ Buccal Strip",
+      "listing": "NAD+ Buccal Strip",
+      "price": "$25.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "NAD+ Buffered - 500mg",
+      "listing": "NAD+ Buffered - 500mg",
+      "price": "$59.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Oxytocin - 2mg",
+      "listing": "Oxytocin - 2mg",
+      "price": "$39.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "PDRN Collagen Complex",
+      "listing": "PDRN Collagen Complex",
+      "price": "$45.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "PDRN Pink Cream",
+      "listing": "PDRN Pink Cream",
+      "price": "$34.95",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "PEG-MGF - 2mg",
+      "listing": "PEG-MGF - 2mg",
+      "price": "$39.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Phosphate Buffered Saline - 10ml",
+      "listing": "Phosphate Buffered Saline - 10ml",
+      "price": "$9.95",
+      "category": "Supplies"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Phosphate Buffered Saline (Biologix) 100ml",
+      "listing": "Phosphate Buffered Saline (Biologix) 100ml",
+      "price": "$14.95",
+      "category": "Supplies"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Pinealon - 10mg",
+      "listing": "Pinealon - 10mg",
+      "price": "$45.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "PNC-27 - 10mg",
+      "listing": "PNC-27 - 10mg",
+      "price": "$119.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "PT-141 - 10mg",
+      "listing": "PT-141 - 10mg",
+      "price": "$37.00",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Selank",
+      "listing": "Selank",
+      "price": "$25.00 to $34.65",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Selank (N-Acetyl) - 10mg",
+      "listing": "Selank (N-Acetyl) - 10mg",
+      "price": "$49.00",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Semax - 10mg",
+      "listing": "Semax - 10mg",
+      "price": "$32.90",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Semax (N-Acetyl)",
+      "listing": "Semax (N-Acetyl)",
+      "price": "$49.00 to $99.00",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Semax/Selank",
+      "listing": "Semax/Selank",
+      "price": "$59.00 to $89.00",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Sermo",
+      "listing": "Sermo",
+      "price": "$39.00 to $85.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "SLU-PP-332",
+      "listing": "SLU-PP-332",
+      "price": "$39.00 to $149.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Snap 8 (Raw) - 1g",
+      "listing": "Snap 8 (Raw) - 1g",
+      "price": "$149.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Snap-8 - 10mg",
+      "listing": "Snap-8 - 10mg",
+      "price": "$39.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Syn-Ake (Raw) - 1g",
+      "listing": "Syn-Ake (Raw) - 1g",
+      "price": "$129.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "TB-500",
+      "listing": "TB-500",
+      "price": "$29.00 to $89.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Tesa",
+      "listing": "Tesa",
+      "price": "$45.00 to $119.95",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Tesa/Ipamo",
+      "listing": "Tesa/Ipamo",
+      "price": "$79.95 to $99.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Thymalin - 10mg",
+      "listing": "Thymalin - 10mg",
+      "price": "$59.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "Thymosin Alpha-1",
+      "listing": "Thymosin Alpha-1",
+      "price": "$42.00 to $65.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Ion Peptide",
+      "product": "VIP - 10mg",
+      "listing": "VIP - 10mg",
+      "price": "$79.00",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "5-Amino 1MQ",
+      "listing": "5-Amino 1MQ",
+      "price": "$36.75 to $59.25",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "5-AMINO 1MQ - CAPSULES",
+      "listing": "5-AMINO 1MQ - CAPSULES",
+      "price": "$149.25",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Aegis Vial Covers",
+      "listing": "Aegis Vial Covers",
+      "price": "$3.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "AOD-9604 5mg",
+      "listing": "AOD-9604 5mg",
+      "price": "$44.25",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "ARA-290 10mg",
+      "listing": "ARA-290 10mg",
+      "price": "$44.25",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Bacteriostatic Water - 10mL",
+      "listing": "Bacteriostatic Water - 10mL",
+      "price": "$8.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "BPC-157",
+      "listing": "BPC-157",
+      "price": "$36.75 to $39.75",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "BPC-157 - CAPSULES",
+      "listing": "BPC-157 - CAPSULES",
+      "price": "$161.25",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Cerebrolysin 60mg",
+      "listing": "Cerebrolysin 60mg",
+      "price": "$59.25",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "CJC-1295 NO DAC/IPAMORELIN",
+      "listing": "CJC-1295 NO DAC/IPAMORELIN",
+      "price": "$41.25",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "DSIP 5mg",
+      "listing": "DSIP 5mg",
+      "price": "$36.75",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Epithalon 10mg",
+      "listing": "Epithalon 10mg",
+      "price": "$36.75",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "FOX04-DRI 10mg",
+      "listing": "FOX04-DRI 10mg",
+      "price": "$134.25",
+      "category": "Other"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "GHK-Cu 100mg",
+      "listing": "GHK-Cu 100mg",
+      "price": "$36.75",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "GLOW 70mg",
+      "listing": "GLOW 70mg",
+      "price": "$59.25",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Glutathione 1200mg",
+      "listing": "Glutathione 1200mg",
+      "price": "$44.25",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "HGH Frag 176-191 5mg",
+      "listing": "HGH Frag 176-191 5mg",
+      "price": "$59.25",
+      "category": "Other"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Hospira Bacteriostatic Water - 30mL",
+      "listing": "Hospira Bacteriostatic Water - 30mL",
+      "price": "$22.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Hospira Sodium Chloride/Benzyl Bacteriostatic Water - 30mL",
+      "listing": "Hospira Sodium Chloride/Benzyl Bacteriostatic Water - 30mL",
+      "price": "$16.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "IGF-1 LR3 1MG",
+      "listing": "IGF-1 LR3 1MG",
+      "price": "$74.25",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Ipamorelin 10mg",
+      "listing": "Ipamorelin 10mg",
+      "price": "$36.75",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "KISSPEPTIN 10mg",
+      "listing": "KISSPEPTIN 10mg",
+      "price": "$48.75",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "KLOW 80mg",
+      "listing": "KLOW 80mg",
+      "price": "$81.75",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "KPV 10mg",
+      "listing": "KPV 10mg",
+      "price": "$36.75",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "LL-37 5MG",
+      "listing": "LL-37 5MG",
+      "price": "$59.25",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "MAZDUTIDE 10mg",
+      "listing": "MAZDUTIDE 10mg",
+      "price": "$74.25",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "MELANOTAN I 10mg",
+      "listing": "MELANOTAN I 10mg",
+      "price": "$36.75",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "MELANOTAN II 10mg",
+      "listing": "MELANOTAN II 10mg",
+      "price": "$36.75",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "METABOFLEX 120MG",
+      "listing": "METABOFLEX 120MG",
+      "price": "$104.25",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "METHYLENE BLUE",
+      "listing": "METHYLENE BLUE",
+      "price": "$126.75",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "MOTS-C",
+      "listing": "MOTS-C",
+      "price": "$63.75 to $96.75",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "MTT-31 10mg",
+      "listing": "MTT-31 10mg",
+      "price": "$51.75",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "NAD+",
+      "listing": "NAD+",
+      "price": "$44.25 to $59.25",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "NEUROLUXE 48MG",
+      "listing": "NEUROLUXE 48MG",
+      "price": "$89.25",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "ORFORGLIPRON TABLETS",
+      "listing": "ORFORGLIPRON TABLETS",
+      "price": "$318.75",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "OXT-10",
+      "listing": "OXT-10",
+      "price": "$44.25",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Pinealon 10mg",
+      "listing": "Pinealon 10mg",
+      "price": "$74.25",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "PT-141 10mg",
+      "listing": "PT-141 10mg",
+      "price": "$44.25",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "SA-2T",
+      "listing": "SA-2T",
+      "price": "$66.75 to $134.25",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "SA-3R",
+      "listing": "SA-3R",
+      "price": "$66.75 to $201.75",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "SA-3R / SA-2T BLEND 34mg",
+      "listing": "SA-3R / SA-2T BLEND 34mg",
+      "price": "$134.25",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "SA-3R/SA-4C BLEND 45mg",
+      "listing": "SA-3R/SA-4C BLEND 45mg",
+      "price": "$164.25",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "SA-4C",
+      "listing": "SA-4C",
+      "price": "$66.75 to $82.50",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Selank 10mg",
+      "listing": "Selank 10mg",
+      "price": "$48.75",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Semax 10mg",
+      "listing": "Semax 10mg",
+      "price": "$44.25",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Sermorelin 10MG",
+      "listing": "Sermorelin 10MG",
+      "price": "$74.25",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "SLU-PP-332",
+      "listing": "SLU-PP-332",
+      "price": "$225.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "TB-4 Full Chain 10mg",
+      "listing": "TB-4 Full Chain 10mg",
+      "price": "$59.25",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "TB-500 10mg",
+      "listing": "TB-500 10mg",
+      "price": "$51.75",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Tesa/IPA 10MG",
+      "listing": "Tesa/IPA 10MG",
+      "price": "$74.25",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Tesamorelin 10mg",
+      "listing": "Tesamorelin 10mg",
+      "price": "$66.75",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "TESOFENSINE CAPSULES",
+      "listing": "TESOFENSINE CAPSULES",
+      "price": "$146.25",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Thymalin 10mg",
+      "listing": "Thymalin 10mg",
+      "price": "$59.25",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Thymosin Alpha-1 10mg",
+      "listing": "Thymosin Alpha-1 10mg",
+      "price": "$74.25",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "Thymulin 10mg",
+      "listing": "Thymulin 10mg",
+      "price": "$74.25",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Southern Aminos",
+      "product": "WOLVERINE 5MG/5MG",
+      "listing": "WOLVERINE 5MG/5MG",
+      "price": "$59.25",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "0.9% Benzyl Alcohol Solution (30 mL)",
+      "listing": "0.9% Benzyl Alcohol Solution (30 mL)",
+      "price": "$25.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Adamax (10mg)",
+      "listing": "Adamax (10mg)",
+      "price": "$89.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "DSIP (5mg)",
+      "listing": "DSIP (5mg)",
+      "price": "$49.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "FOX04 (2mg)",
+      "listing": "FOX04 (2mg)",
+      "price": "$209.00",
+      "category": "Other"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "GHK-CU (50mg)",
+      "listing": "GHK-CU (50mg)",
+      "price": "$49.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Hexarelin Acetate (5mg)",
+      "listing": "Hexarelin Acetate (5mg)",
+      "price": "$59.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Humanin (10mg)",
+      "listing": "Humanin (10mg)",
+      "price": "$119.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "L-Carnitine (10mL)",
+      "listing": "L-Carnitine (10mL)",
+      "price": "$69.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "LL 37 (5mg)",
+      "listing": "LL 37 (5mg)",
+      "price": "$69.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "MOTS-c (10mg)",
+      "listing": "MOTS-c (10mg)",
+      "price": "$69.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "MTP-31 (10mg)",
+      "listing": "MTP-31 (10mg)",
+      "price": "$89.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "PE-22-28 (10mg)",
+      "listing": "PE-22-28 (10mg)",
+      "price": "$49.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "PEG-MGF (2mg)",
+      "listing": "PEG-MGF (2mg)",
+      "price": "$89.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Peptide-R (5mg)",
+      "listing": "Peptide-R (5mg)",
+      "price": "$59.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "PNC-27 (5mg)",
+      "listing": "PNC-27 (5mg)",
+      "price": "$59.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Thymalin (10mg)",
+      "listing": "Thymalin (10mg)",
+      "price": "$89.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Thymosin Alpha 1 (10mg)",
+      "listing": "Thymosin Alpha 1 (10mg)",
+      "price": "$89.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Peptide-R (10mg)",
+      "listing": "Peptide-R (10mg)",
+      "price": "$79.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Peptide-R (15mg)",
+      "listing": "Peptide-R (15mg)",
+      "price": "$109.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Peptide-R (20mg)",
+      "listing": "Peptide-R (20mg)",
+      "price": "$139.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Peptide-R (30mg)",
+      "listing": "Peptide-R (30mg)",
+      "price": "$159.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Peptide-R (50mg)",
+      "listing": "Peptide-R (50mg)",
+      "price": "$209.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Peptide-R (60mg)",
+      "listing": "Peptide-R (60mg)",
+      "price": "$239.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Peptide-T (30mg)",
+      "listing": "Peptide-T (30mg)",
+      "price": "$109.00",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Peptide-T (60mg)",
+      "listing": "Peptide-T (60mg)",
+      "price": "$159.00",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "BPC-157 (10mg)",
+      "listing": "BPC-157 (10mg)",
+      "price": "$49.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Cagrilinitide (10mg)",
+      "listing": "Cagrilinitide (10mg)",
+      "price": "$89.00",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "5-Amino-1MQ (10mg)",
+      "listing": "5-Amino-1MQ (10mg)",
+      "price": "$49.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "AOD-9604 (5mg)",
+      "listing": "AOD-9604 (5mg)",
+      "price": "$59.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "CJC/IPA (5/5mg)",
+      "listing": "CJC/IPA (5/5mg)",
+      "price": "$79.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "0.9% Benzyl Alcohol Solution (10 mL)",
+      "listing": "0.9% Benzyl Alcohol Solution (10 mL)",
+      "price": "$8.50",
+      "category": "Supplies"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Acetic Acid (10mL)",
+      "listing": "Acetic Acid (10mL)",
+      "price": "$25.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Epithalon (10mg)",
+      "listing": "Epithalon (10mg)",
+      "price": "$49.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Epithalon (50mg)",
+      "listing": "Epithalon (50mg)",
+      "price": "$109.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "GHK-CU (100mg)",
+      "listing": "GHK-CU (100mg)",
+      "price": "$69.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "GLOW (70mg)",
+      "listing": "GLOW (70mg)",
+      "price": "$109.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Glutathione (1500mg)",
+      "listing": "Glutathione (1500mg)",
+      "price": "$59.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "HCG (10,000 IU)",
+      "listing": "HCG (10,000 IU)",
+      "price": "$89.00",
+      "category": "Other"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "IGF1-LR3 (1mg)",
+      "listing": "IGF1-LR3 (1mg)",
+      "price": "$109.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Ipamorelin (10mg)",
+      "listing": "Ipamorelin (10mg)",
+      "price": "$49.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "KLOW (80mg)",
+      "listing": "KLOW (80mg)",
+      "price": "$129.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "KPV (10mg)",
+      "listing": "KPV (10mg)",
+      "price": "$49.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "MOTS-c (40mg)",
+      "listing": "MOTS-c (40mg)",
+      "price": "$109.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "MT1 (10mg)",
+      "listing": "MT1 (10mg)",
+      "price": "$59.00",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "MT2 (10mg)",
+      "listing": "MT2 (10mg)",
+      "price": "$49.00",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "NAD+ (500mg)",
+      "listing": "NAD+ (500mg)",
+      "price": "$59.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Oxytocin (10mg)",
+      "listing": "Oxytocin (10mg)",
+      "price": "$79.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "PT-141 (10mg)",
+      "listing": "PT-141 (10mg)",
+      "price": "$49.00",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Selank (10mg)",
+      "listing": "Selank (10mg)",
+      "price": "$49.00",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Semax (10mg)",
+      "listing": "Semax (10mg)",
+      "price": "$49.00",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Sermorelin (10mg)",
+      "listing": "Sermorelin (10mg)",
+      "price": "$79.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Snap-8 (10mg)",
+      "listing": "Snap-8 (10mg)",
+      "price": "$39.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "MTP-31 (50mg)",
+      "listing": "MTP-31 (50mg)",
+      "price": "$209.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "TB-500 (10mg)",
+      "listing": "TB-500 (10mg)",
+      "price": "$89.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Tesamorelin (10mg)",
+      "listing": "Tesamorelin (10mg)",
+      "price": "$99.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "VIP (10mg)",
+      "listing": "VIP (10mg)",
+      "price": "$99.00",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Wolverine (10/10mg)",
+      "listing": "Wolverine (10/10mg)",
+      "price": "$129.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "LabSourced Peptides",
+      "product": "Wolverine (5/5mg)",
+      "listing": "Wolverine (5/5mg)",
+      "price": "$69.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "2x Blend Ipamorelin 5mg + Tesamorelin 5mg | Blend (10mg total)",
+      "listing": "2x Blend Ipamorelin 5mg + Tesamorelin 5mg | Blend (10mg total)",
+      "price": "$90.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "32G 4mm Pen Needles (Universal Fit for V2 Pen) Sterile Single-Use Packs",
+      "listing": "32G 4mm Pen Needles (Universal Fit for V2 Pen) Sterile Single-Use Packs",
+      "price": "$3.99 to $6.99",
+      "category": "Supplies"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "5-Amino-1MQ 50mg Capsules (60ct)",
+      "listing": "5-Amino-1MQ 50mg Capsules (60ct)",
+      "price": "$119.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "5-Amino-1MQ 5mg",
+      "listing": "5-Amino-1MQ 5mg",
+      "price": "$40.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "AHK-CU 50mg or 100mg",
+      "listing": "AHK-CU 50mg or 100mg",
+      "price": "$30.00 to $55.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "AOD9604 5mg",
+      "listing": "AOD9604 5mg",
+      "price": "$35.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Bacteriostatic Water 30ml",
+      "listing": "Bacteriostatic Water 30ml",
+      "price": "$12.99",
+      "category": "Supplies"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Black Protective Travel Case for Injection Pens (Case ONLY)",
+      "listing": "Black Protective Travel Case for Injection Pens (Case ONLY)",
+      "price": "$14.99",
+      "category": "Supplies"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "BPC-157 5mg or 10mg",
+      "listing": "BPC-157 5mg or 10mg",
+      "price": "$30.00 to $55.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Cagrilintide 5mg",
+      "listing": "Cagrilintide 5mg",
+      "price": "$55.00",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "CJC-1295 (No DAC), Ipamorelin (Blend) 10mg",
+      "listing": "CJC-1295 (No DAC), Ipamorelin (Blend) 10mg",
+      "price": "$60.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "DSIP 15mg",
+      "listing": "DSIP 15mg",
+      "price": "$30.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Epitalon (Epithalon) 10mg",
+      "listing": "Epitalon (Epithalon) 10mg",
+      "price": "$35.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "GHK-Cu Copper Peptide 100mg",
+      "listing": "GHK-Cu Copper Peptide 100mg",
+      "price": "$30.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "GHRP-6 10mg",
+      "listing": "GHRP-6 10mg",
+      "price": "$30.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Glow Blend (50/10/10mg)",
+      "listing": "Glow Blend (50/10/10mg)",
+      "price": "$100.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "GLP-R3 (Retatrutide) 10mg or 15mg or 20mg or 30mg or 40mg",
+      "listing": "GLP-R3 (Retatrutide) 10mg or 15mg or 20mg or 30mg or 40mg",
+      "price": "$120.00 to $215.00",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "GLP-T2 (Tirzepatide) 5mg or 10mg or 15mg or 20mg or 30mg or 40mg",
+      "listing": "GLP-T2 (Tirzepatide) 5mg or 10mg or 15mg or 20mg or 30mg or 40mg",
+      "price": "$50.00 to $175.00",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Glutathione 1500mg",
+      "listing": "Glutathione 1500mg",
+      "price": "$55.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "IGF-1 LR3 0.1mg",
+      "listing": "IGF-1 LR3 0.1mg",
+      "price": "$50.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Insulin Syringes, 31G 1cc 5/16\"-10pk",
+      "listing": "Insulin Syringes, 31G 1cc 5/16\"-10pk",
+      "price": "$6.99 to $11.99",
+      "category": "Supplies"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Ipamorelin 5mg or 10mg",
+      "listing": "Ipamorelin 5mg or 10mg",
+      "price": "$30.00 to $40.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Kisspeptin-10 10mg",
+      "listing": "Kisspeptin-10 10mg",
+      "price": "$45.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Klow Blend (50/10/10/10)",
+      "listing": "Klow Blend (50/10/10/10)",
+      "price": "$125.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "KPV 10mg",
+      "listing": "KPV 10mg",
+      "price": "$60.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "KPV 250mcg Capsules (60ct)",
+      "listing": "KPV 250mcg Capsules (60ct)",
+      "price": "$89.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "LL-37 5mg",
+      "listing": "LL-37 5mg",
+      "price": "$37.50",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "MOTS-C 10mg",
+      "listing": "MOTS-C 10mg",
+      "price": "$35.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "NAD+ 500mg or 1000mg",
+      "listing": "NAD+ 500mg or 1000mg",
+      "price": "$55.00 to $75.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "PT-141 10mg",
+      "listing": "PT-141 10mg",
+      "price": "$35.00",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Research Starter Kits",
+      "listing": "Research Starter Kits",
+      "price": "$9.99 to $26.99",
+      "category": "Supplies"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Retatrutide 20mg + Tirzepatide 40mg | Blend (60mg Total)",
+      "listing": "Retatrutide 20mg + Tirzepatide 40mg | Blend (60mg Total)",
+      "price": "$299.00",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Retatrutide 5mg + Cagrilintide 5mg | Blend (10mg Total)",
+      "listing": "Retatrutide 5mg + Cagrilintide 5mg | Blend (10mg Total)",
+      "price": "$120.00",
+      "category": "GLP / Weight Loss"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Selank 5mg or 10mg",
+      "listing": "Selank 5mg or 10mg",
+      "price": "$20.00 to $30.00",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Semax 10mg + Selank 10mg | Blend (20mg Total)",
+      "listing": "Semax 10mg + Selank 10mg | Blend (20mg Total)",
+      "price": "$70.00",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Semax 5mg or 10mg",
+      "listing": "Semax 5mg or 10mg",
+      "price": "$35.00 to $45.00",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Sermorelin 5mg or 10mg",
+      "listing": "Sermorelin 5mg or 10mg",
+      "price": "$50.00 to $70.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "SLU-PP-332 500mcg Capsules (100ct)",
+      "listing": "SLU-PP-332 500mcg Capsules (100ct)",
+      "price": "$149.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "SLU-PP-332 5mg",
+      "listing": "SLU-PP-332 5mg",
+      "price": "$75.00",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Snap-8 10mg",
+      "listing": "Snap-8 10mg",
+      "price": "$28.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "SS-31 10mg",
+      "listing": "SS-31 10mg",
+      "price": "$45.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "TB500 5mg or 10mg",
+      "listing": "TB500 5mg or 10mg",
+      "price": "$40.00 to $55.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Tesamorelin 5mg or 10mg",
+      "listing": "Tesamorelin 5mg or 10mg",
+      "price": "$55.00 to $75.00",
+      "category": "Growth Hormone"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Thymalin (Thymulin) 10mg",
+      "listing": "Thymalin (Thymulin) 10mg",
+      "price": "$20.00",
+      "category": "Recovery & Healing"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Thymosin Alpha-1 5mg",
+      "listing": "Thymosin Alpha-1 5mg",
+      "price": "$45.00",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "v2 Reusable Peptide Pen With 2 Sterile Cartridges",
+      "listing": "v2 Reusable Peptide Pen With 2 Sterile Cartridges",
+      "price": "$28.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "v2 Reusable Peptide Pen With 2 Sterile Cartridges and Black Case",
+      "listing": "v2 Reusable Peptide Pen With 2 Sterile Cartridges and Black Case",
+      "price": "$38.00",
+      "category": "Supplies"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "VIP 5mg",
+      "listing": "VIP 5mg",
+      "price": "$45.00",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Mile High Peptides",
+      "product": "Wolverine Blend 10mg or 20mg or 30mg",
+      "listing": "Wolverine Blend 10mg or 20mg or 30mg",
+      "price": "$75.00 to $130.00",
+      "category": "Recovery & Healing"
+    }
+  ]
+}

@@ -1,7 +1,7 @@
 User-agent: *
 Allow: /
 
+Disallow: /catalog-v3.html
+Disallow: /catalog-v3-debug.html
+
 Sitemap: https://mypeptideprice.com/sitemap.xml
-Disallow: /catalog-debug.html
-Disallow: /catalog-v2.html
-Disallow: /catalog-v2-debug.html
