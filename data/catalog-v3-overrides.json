@@ -15,7 +15,11 @@
     "oversized tee",
     "t-shirt",
     "tee shirt",
-    "extend product protection"
+    "extend product protection",
+    "biotinyl tripeptide raw",
+    "biotinyl tripeptide (raw)",
+    "palmitoyl pentapeptide-4 (raw)",
+    "palmitoyl pentapeptide 4 raw"
   ],
   "forced_aliases": {
     "gla 1 sm": "semaglutide",
@@ -97,7 +101,11 @@
     "glutathione": "glutathione",
     "fox04 dri": "foxo4-dri",
     "fox04": "foxo4-dri",
-    "fox04 dri 10mg": "foxo4-dri"
+    "fox04 dri 10mg": "foxo4-dri",
+    "cargilintide 10mg": "cagrilintide",
+    "cargilintide 10 mg": "cagrilintide",
+    "glutathione standard": "glutathione",
+    "solyn glutathione": "glutathione"
   },
   "category_overrides": {},
   "format_overrides": {}
