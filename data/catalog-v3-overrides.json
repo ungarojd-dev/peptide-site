@@ -90,7 +90,14 @@
     "foxo 4": "foxo4-dri",
     "biotinyl tripeptide raw": "biotinyl-tripeptide",
     "pda 10mg": "pentadeca-arginate-pda",
-    "\u00a7 31": "ss-31"
+    "\u00a7 31": "ss-31",
+    "biotinyl tripeptide 1": "biotinyl-tripeptide",
+    "foxo4 2mg": "foxo4-dri",
+    "foxo4 10mg": "foxo4-dri",
+    "glutathione": "glutathione",
+    "fox04 dri": "foxo4-dri",
+    "fox04": "foxo4-dri",
+    "fox04 dri 10mg": "foxo4-dri"
   },
   "category_overrides": {},
   "format_overrides": {}

@@ -524,7 +524,12 @@
         "FOXO4-DRI",
         "foxo4 dri 10mg",
         "foxo4 2mg",
-        "foxo 4 dri"
+        "foxo 4 dri",
+        "fox04-dri",
+        "fox04 dri",
+        "fox04",
+        "FOX04-DRI",
+        "fox04 dri 10mg"
       ]
     },
     {
@@ -622,7 +627,9 @@
         "reduced glutathione",
         "glutathilone",
         "Glutathione",
-        "glutathione standard"
+        "glutathione standard",
+        "glutathione vial",
+        "solyn glutathione"
       ]
     },
     {
@@ -1864,6 +1871,18 @@
       "aliases": [
         "ksptn",
         "KSPTN"
+      ]
+    },
+    {
+      "id": "palmitoyl-pentapeptide-4",
+      "name": "Palmitoyl Pentapeptide-4",
+      "category": "Longevity & Cellular Health",
+      "aliases": [
+        "palmitoyl pentapeptide-4",
+        "palmitoyl pentapeptide 4",
+        "palmitoyl pentapeptide-4 raw",
+        "pal-kttks",
+        "matrixyl"
       ]
     }
   ]
