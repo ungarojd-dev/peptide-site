@@ -873,7 +873,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
         <span class="hero-tiktok-copy"><span class="hero-tiktok-handle">@sammyc2296</span></span>
         <span class="hero-tiktok-arrow">↗</span>
       </a>
-      <p class="hero-sub">Compare research peptide prices across tracked vendors that meet our full <strong style="color:#fff">7/7 third-party testing standard</strong>. Search by compound, filter by vendor, then check the current vendor price before you leave the site.</p>
+      <p class="hero-sub">Compare research peptide prices across tracked vendors that meet our full <strong style="color:#fff">7/7 third-party testing standard</strong>. Search by compound, filter by category, then compare the current vendor prices before you leave the site.</p>
       <div class="hero-actions"><a href="#priceTable" class="hero-cta">Start Comparing Prices</a><a href="vendors.html" class="hero-cta-secondary">View Vendors</a></div>
       <div class="hero-pills">
         <span class="hero-pill">✓ 7/7 Testing Required</span>
@@ -902,20 +902,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     </div>
     <div class="filters-row popular-row" id="popularRow" aria-label="Popular product shortcuts">
       <span class="filter-label">Popular</span>
-      <button class="search-chip" data-search="BPC-157">BPC-157</button>
-      <button class="search-chip" data-search="TB-500">TB-500</button>
-      <button class="search-chip" data-search="Semaglutide">Sema</button>
-      <button class="search-chip" data-search="Tirzepatide">Tirz</button>
-      <button class="search-chip" data-search="Retatrutide">Reta</button>
-      <button class="search-chip" data-search="NAD+">NAD+</button>
-      <button class="search-chip" data-search="GHK-Cu">GHK-Cu</button>
-      <button class="search-chip" data-search="CJC">CJC/Ipa</button>
+      <button class="search-chip active" data-family="all">All Products</button>
+      <button class="search-chip" data-family="BPC-157">BPC-157</button>
+      <button class="search-chip" data-family="TB-500">TB-500</button>
+      <button class="search-chip" data-family="Peptide SM">Sema</button>
+      <button class="search-chip" data-family="Peptide TZ">Tirz</button>
+      <button class="search-chip" data-family="Peptide RT">Reta</button>
+      <button class="search-chip" data-family="NAD+">NAD+</button>
+      <button class="search-chip" data-family="GHK-Cu">GHK-Cu</button>
+      <button class="search-chip" data-family="CJC-1295">CJC/Ipa</button>
     </div>
     <!-- Hidden legacy selects keep JS wiring intact -->
     <div style="display:none" aria-hidden="true">
       <select id="categorySelect"><option value="all">All Categories</option></select>
       <select id="formatSelect"><option value="all">All Types</option></select>
-      <select id="vendorSelect"><option value="all">All Vendors</option></select>
       <select id="sortSelect"><option value="product-asc">Name A-Z</option></select>
     </div>
     <div class="active-filter-row" id="activeFilterRow" aria-live="polite"></div>
@@ -942,24 +942,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
             </select>
           </div>
           <button class="cf-more-btn" onclick="clearFilters()" id="clearAllBtn" style="display:none">✕ Clear filters</button>
-        </div>
-
-        <!-- Row 1b: vendor chips -->
-        <div class="ufb-chips-row">
-          <span class="ufb-label">VENDOR</span>
-          <div class="cf-chips" id="vendorChips" role="group" aria-label="Vendor filter">
-            <button class="cf-chip active" data-vendor="all" onclick="setVendorChip('all',this)">All vendors</button>
-            <button class="cf-chip" data-vendor="Glacier Aminos"      onclick="setVendorChip('Glacier Aminos',this)">Glacier Aminos</button>
-            <button class="cf-chip" data-vendor="Ion Peptide"         onclick="setVendorChip('Ion Peptide',this)">Ion Peptide</button>
-            <button class="cf-chip" data-vendor="LabSourced Peptides" onclick="setVendorChip('LabSourced Peptides',this)">LabSourced</button>
-            <button class="cf-chip" data-vendor="Mile High Peptides"  onclick="setVendorChip('Mile High Peptides',this)">Mile High</button>
-            <button class="cf-chip" data-vendor="Southern Aminos"     onclick="setVendorChip('Southern Aminos',this)">Southern Aminos</button>
-            <button class="cf-chip" data-vendor="Flawless Compounds"  onclick="setVendorChip('Flawless Compounds',this)">Flawless</button>
-            <button class="cf-chip" data-vendor="Glow Aminos"         onclick="setVendorChip('Glow Aminos',this)">Glow Aminos</button>
-            <button class="cf-chip" data-vendor="Instant Peptides"    onclick="setVendorChip('Instant Peptides',this)">Instant Peptides</button>
-            <button class="cf-chip" data-vendor="Solyn Labs"          onclick="setVendorChip('Solyn Labs',this)">Solyn Labs</button>
-            <button class="cf-chip" data-vendor="Oneday Compounds"    onclick="setVendorChip('Oneday Compounds',this)">Oneday</button>
-          </div>
         </div>
 
         <!-- Row 2: category chips -->
@@ -1209,6 +1191,43 @@ function afterCodeText(price, pct){
 // ── PRODUCT FAMILY NORMALIZATION ──────────────────────────
 const PRODUCT_ALIASES = {}; // populated below
 
+function getGlpFamilyComponents(raw){
+  const s = String(raw||"").toLowerCase();
+  const components = [];
+  const add = value => { if(!components.includes(value)) components.push(value); };
+
+  if(
+    s.includes("semaglutide") ||
+    /\b(?:gla-1\s*sm|glp-1\s*sm|ion-1s|pep[\s-]*sm|peptide[\s-]*sm)\b/.test(s)
+  ) add("Peptide SM");
+
+  if(
+    s.includes("tirzepatide") ||
+    /\b(?:gla-2(?:\.5)?\s*trz|glp-2\s*trz|glp2-t|glp-t2|ion-2t|mhc-2\s*trz|pep[\s-]*(?:tz|trz)|peptide[\s-]*(?:tz|trz)|sa-2t)\b/.test(s) ||
+    /\bpep-cag[\s/-]+(?:pep[\s-]*)?(?:tz|trz)\b/.test(s)
+  ) add("Peptide TZ");
+
+  if(
+    s.includes("retatrutide") ||
+    /\b(?:gla-3\s*rt|glp-3\s*rt|glp-3r|glp3-r|glp-r3|ion-3r|oc-3rt|pep[\s-]*rt|peptide[\s-]*rt|sa-3r)\b/.test(s) ||
+    /\b(?:trz|tz)\s*[/+]\s*rt\b/.test(s)
+  ) add("Peptide RT");
+
+  if(
+    s.includes("cagrilintide") || s.includes("cagrilinitide") ||
+    /\b(?:cagri|sa-4c|pep[\s-]*cag)\b/.test(s)
+  ) add("Cagrilintide");
+
+  return components;
+}
+
+function canonicalGlpFamily(raw){
+  const components = getGlpFamilyComponents(raw);
+  if(!components.length) return "";
+  if(components.length === 1) return components[0];
+  return `${components.join(" + ")} Blend`;
+}
+
 function normalizeFamily(raw){
   const s = raw.trim();
   const t = s.toLowerCase();
@@ -1231,6 +1250,11 @@ function normalizeFamily(raw){
   clean = clean.replace(/\s*(research\s*)?(peptide\s+)?(vial|capsules?|spray|liquid|topical)\s*$/i,'').trim();
 
   const cl = clean.toLowerCase();
+
+  // Normalize GLP shorthand before the generic alias lookup. This keeps pure
+  // products together while preserving combination products as separate cards.
+  const glpFamily = canonicalGlpFamily(cl);
+  if(glpFamily) return glpFamily;
 
   // Step 4: alias lookup (longest match wins)
   const ALIASES = {
@@ -1361,16 +1385,20 @@ function normalizeFamily(raw){
     "hgh frag 176-191":"HGH Frag 176-191","hgh frag":"HGH Frag 176-191",
     // ── Peptide SM — all vendor semaglutide codes ──
     "gla-1 sm":"Peptide SM","glp-1 sm":"Peptide SM",
-    "ion-1s":"Peptide SM","pep-sm":"Peptide SM","semaglutide":"Peptide SM",
+    "ion-1s":"Peptide SM","pep-sm":"Peptide SM","pep sm":"Peptide SM",
+    "peptide-sm":"Peptide SM","peptide sm":"Peptide SM","semaglutide":"Peptide SM",
     // ── Peptide TZ — all vendor tirzepatide codes ──
     "gla-2 trz":"Peptide TZ","glp-2 trz":"Peptide TZ","glp2-t":"Peptide TZ",
     "glp-t2 (tirzepatide)":"Peptide TZ","glp-t2":"Peptide TZ",
     "ion-2t":"Peptide TZ","mhc-2 trz":"Peptide TZ","pep-trz":"Peptide TZ",
+    "pep-tz":"Peptide TZ","pep trz":"Peptide TZ","pep tz":"Peptide TZ",
+    "peptide-trz":"Peptide TZ","peptide-tz":"Peptide TZ","peptide trz":"Peptide TZ","peptide tz":"Peptide TZ",
     "sa-2t":"Peptide TZ","tirzepatide":"Peptide TZ",
     // ── Peptide RT — all vendor retatrutide codes ──
     "gla-3 rt":"Peptide RT","glp-3 rt":"Peptide RT","glp-3r":"Peptide RT","glp3-r":"Peptide RT",
     "glp-r3 (retatrutide)":"Peptide RT","glp-r3":"Peptide RT",
-    "ion-3r":"Peptide RT","oc-3rt":"Peptide RT","pep-rt":"Peptide RT",
+    "ion-3r":"Peptide RT","oc-3rt":"Peptide RT","pep-rt":"Peptide RT","pep rt":"Peptide RT",
+    "peptide-rt":"Peptide RT","peptide rt":"Peptide RT",
     "sa-3r":"Peptide RT","retatrutide":"Peptide RT",
     // ── Cagrilintide stays separate ──
     "sa-4c":"SA-4C (Cagrilintide)",
@@ -1428,7 +1456,11 @@ function normalizeFamily(raw){
   return clean || s;
 }
 
-function getProductFamily(p){ return normalizeFamily(p.product||""); }
+function getProductFamily(p){
+  const primary = normalizeFamily(p.product||"");
+  const combinedGlp = canonicalGlpFamily(`${p.product||""} ${p.listing||""} ${p.sku||""}`);
+  return combinedGlp || primary;
+}
 
 
 function buildGroups(products){
@@ -1461,7 +1493,7 @@ function fp(p){
 }
 
 // ── STATE ─────────────────────────────────────────────────
-let activeCat="all", activeFmt="all", activeVendorFilter="all", searchTerm="";
+let activeCat="all", activeFmt="all", activePopularFamily="all", searchTerm="";
 const requestedCat = new URLSearchParams(window.location.search).get("cat");
 if(requestedCat) activeCat = requestedCat;
 let sortMode="name-asc", displayMode="compare";
@@ -1735,15 +1767,39 @@ function selectVariation(btn, gIdx){
 }
 
 // ── FILTER + RENDER PIPELINE ───────────────────────────────
+function getFamilySearchAliases(family){
+  const aliases = {
+    "Peptide SM":"semaglutide sema pep-sm peptide sm",
+    "Peptide TZ":"tirzepatide tirz pep-tz pep-trz peptide tz peptide trz",
+    "Peptide RT":"retatrutide reta pep-rt peptide rt",
+    "Cagrilintide":"cagri",
+    "CJC-1295 + Ipamorelin":"cjc ipa cjc/ipa"
+  };
+  return aliases[family] || "";
+}
+
+function matchesPopularFamily(family, selected){
+  if(selected === "all") return true;
+  if(selected === "NAD+") return family.startsWith("NAD+");
+  if(selected === "GHK-Cu") return family.startsWith("GHK-Cu");
+  if(selected === "CJC-1295") return family.startsWith("CJC-1295");
+  return family === selected;
+}
+
+function updateClearButton(){
+  const cb = document.getElementById("clearAllBtn");
+  if(cb) cb.style.display = (activeCat!=="all" || activeFmt!=="all" || activePopularFamily!=="all" || searchTerm) ? "" : "none";
+}
+
 function getFilteredGroups(){
   let groups = allGroups.filter(g=>{
     // catChips now drives format filtering (compound categories removed)
     if(activeCat!=="all" && !g.listings.some(p=>p.format===activeCat)) return false;
     if(activeFmt!=="all" && !g.listings.some(p=>p.format===activeFmt)) return false;
-    if(activeVendorFilter!=="all" && !g.listings.some(p=>p.company===activeVendorFilter)) return false;
+    if(!matchesPopularFamily(g.family, activePopularFamily)) return false;
     if(searchTerm){
       const q = searchTerm.toLowerCase();
-      const hay = (g.family+" "+g.category+" "+g.listings.map(p=>p.company+" "+p.product+" "+(p.listing||"")).join(" ")).toLowerCase();
+      const hay = (g.family+" "+getFamilySearchAliases(g.family)+" "+g.category+" "+g.listings.map(p=>p.company+" "+p.product+" "+(p.listing||"")).join(" ")).toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
@@ -1795,29 +1851,18 @@ function renderVendorView(){}
 function setDisplayMode(){}
 
 // ── FILTER HANDLERS ────────────────────────────────────────
-function setVendorChip(vendor, btn){
-  activeVendorFilter = vendor;
-  document.querySelectorAll("#vendorChips .cf-chip").forEach(b=>b.classList.remove("active"));
-  btn.classList.add("active");
-  // sync hidden vendor select
-  const vs = document.getElementById("vendorSelect");
-  if(vs) vs.value = vendor;
-  // show/hide clear button
-  const cb = document.getElementById("clearAllBtn");
-  if(cb) cb.style.display = (activeCat!=="all"||activeFmt!=="all"||activeVendorFilter!=="all"||searchTerm) ? "" : "none";
-  renderCompareView();
-}
-
 function setCatFilter(cat, btn){
   activeCat = cat;
   document.querySelectorAll("#catChips .cf-chip").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
+  updateClearButton();
   renderCompareView();
 }
 function setFmtFilter(fmt, btn){
   activeFmt = fmt;
   document.querySelectorAll("#fmtChips .cf-chip").forEach(b=>b.classList.remove("active"));
   btn.classList.add("active");
+  updateClearButton();
   renderCompareView();
 }
 function onSortChange(){
@@ -1826,15 +1871,16 @@ function onSortChange(){
   renderCompareView();
 }
 
-// Keep old search chips working (Popular row in search bar)
+// Popular chips use canonical product families, not loose text searches.
 document.querySelectorAll(".search-chip").forEach(btn=>{
   btn.addEventListener("click",()=>{
-    const q = btn.dataset.search||"";
+    const selected = btn.dataset.family || "all";
+    activePopularFamily = (selected === activePopularFamily && selected !== "all") ? "all" : selected;
+    searchTerm = "";
     const inp = document.getElementById("searchInput");
-    if(inp){inp.value=q;}
-    searchTerm = q.trim().toLowerCase();
-    document.querySelectorAll(".search-chip").forEach(b=>b.classList.remove("active"));
-    btn.classList.add("active");
+    if(inp) inp.value = "";
+    document.querySelectorAll(".search-chip").forEach(b=>b.classList.toggle("active", (b.dataset.family||"all") === activePopularFamily));
+    updateClearButton();
     renderCompareView();
   });
 });
@@ -1844,35 +1890,33 @@ let _searchRenderTimer;
 if(_sinput){
   _sinput.addEventListener("input", e=>{
     searchTerm = e.target.value.trim().toLowerCase();
-    document.querySelectorAll(".search-chip").forEach(b=>b.classList.remove("active"));
+    activePopularFamily = "all";
+    document.querySelectorAll(".search-chip").forEach(b=>b.classList.toggle("active", (b.dataset.family||"all") === "all"));
+    updateClearButton();
     clearTimeout(_searchRenderTimer);
     _searchRenderTimer=setTimeout(renderCompareView,150);
   });
 }
 
-// Old filter selects (category / format / vendor dropdowns) — keep working
+// Old category and format selects remain wired for compatibility
 function clearFilters(){
-  activeCat="all"; activeFmt="all"; activeVendorFilter="all"; searchTerm="";
+  activeCat="all"; activeFmt="all"; activePopularFamily="all"; searchTerm="";
   const inp=document.getElementById("searchInput"); if(inp) inp.value="";
   const cs=document.getElementById("categorySelect"); if(cs) cs.value="all";
   const fs=document.getElementById("formatSelect");   if(fs) fs.value="all";
-  const vs=document.getElementById("vendorSelect");   if(vs) vs.value="all";
   document.querySelectorAll(".cf-chip").forEach(b=>b.classList.remove("active"));
   document.querySelectorAll("#catChips .cf-chip[data-cat=\"all\"]").forEach(b=>b.classList.add("active"));
-  document.querySelectorAll("#vendorChips .cf-chip[data-vendor=\"all\"]").forEach(b=>b.classList.add("active"));
-  document.querySelectorAll(".search-chip").forEach(b=>b.classList.remove("active"));
+  document.querySelectorAll(".search-chip").forEach(b=>b.classList.toggle("active", (b.dataset.family||"all") === "all"));
   const cb=document.getElementById("clearAllBtn"); if(cb) cb.style.display="none";
   renderCompareView();
 }
 (function(){
   const cs=document.getElementById("categorySelect");
   const fs=document.getElementById("formatSelect");
-  const vs=document.getElementById("vendorSelect");
   const ss=document.getElementById("sortSelect");
   // map old dropdowns → new state
   if(cs) cs.addEventListener("change",e=>{ activeCat=e.target.value; renderCompareView(); });
   if(fs) fs.addEventListener("change",e=>{ activeFmt=e.target.value; renderCompareView(); });
-  if(vs) vs.addEventListener("change",e=>{ activeVendorFilter=e.target.value; renderCompareView(); });
   // The new sort select already has onchange; ignore duplicate
 })();
 
@@ -1945,15 +1989,8 @@ function fetchWithTimeout(url, ms=10000){
   return fetch(url, {signal:ctrl.signal}).finally(()=>clearTimeout(timer));
 }
 
-function addLiveDot(vendorName){
-  const btn=document.querySelector(`[data-vendor="${vendorName}"]`);
-  if(btn&&!btn.querySelector('.live-dot')){
-    const dot=document.createElement("span");
-    dot.className="live-dot";
-    dot.style.cssText="width:6px;height:6px;background:#5faf78;border-radius:50%;display:inline-block;margin-left:4px;";
-    dot.title="Snapshot pricing loaded";
-    btn.appendChild(dot);
-  }
+function addLiveDot(){
+  // Vendor filter chips were removed. Snapshot health is reflected by the live loading state.
 }
 
 function mergeSnapshotProducts(liveProducts){

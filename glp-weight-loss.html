@@ -645,20 +645,20 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="search-row">
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
-        <input class="search-input" id="searchInput" type="search" placeholder="Search GLP / weight loss products, vendors, or compounds..." autocomplete="off" spellcheck="false"/>
+        <input class="search-input" id="searchInput" type="search" placeholder="Search GLP / weight loss products or compounds..." autocomplete="off" spellcheck="false"/>
       </div>
       <span class="results-meta">Showing <strong id="visibleCount">0</strong> of <strong id="totalProdCount">0</strong> GLP / weight loss listings</span>
     </div>
     <div class="filters-row popular-row" id="popularRow" aria-label="Popular product shortcuts">
       <span class="filter-label">Popular</span>
-      <button class="search-chip" data-search="Semaglutide">Sema</button>
-      <button class="search-chip" data-search="Tirzepatide">Tirz</button>
-      <button class="search-chip" data-search="Retatrutide">Reta</button>
-      <button class="search-chip" data-search="Cagrilintide">Cagri</button>
-      <button class="search-chip" data-search="Mazdutide">Mazdu</button>
-      <button class="search-chip" data-search="Orforglipron">Oral GLP</button>
-      <button class="search-chip" data-search="Tesofensine">Teso</button>
-      <button class="search-chip" data-search="SA-2T">SA-2T</button>
+      <button class="search-chip active" data-popular="all">All GLP</button>
+      <button class="search-chip" data-popular="sm">Sema</button>
+      <button class="search-chip" data-popular="tz">Tirz</button>
+      <button class="search-chip" data-popular="rt">Reta</button>
+      <button class="search-chip" data-popular="cagri">Cagri</button>
+      <button class="search-chip" data-popular="mazdu">Mazdu</button>
+      <button class="search-chip" data-popular="oral-glp">Oral GLP</button>
+      <button class="search-chip" data-popular="teso">Teso</button>
     </div>
     <div class="filter-select-row" id="filterRow" aria-label="Product filters">
       <label class="filter-select-group" for="categorySelect">
@@ -678,22 +678,6 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
           <option value="Liquids">Liquids</option>
           <option value="Topicals">Topicals</option>
           <option value="Supplies">Supplies</option>
-        </select>
-      </label>
-      <label class="filter-select-group" for="vendorSelect">
-        <span class="filter-select-label">Vendor</span>
-        <select class="filter-select" id="vendorSelect">
-          <option value="all">All Vendors</option>
-          <option value="Glacier Aminos">Glacier Aminos</option>
-          <option value="Ion Peptide">Ion Peptide</option>
-          <option value="LabSourced Peptides">LabSourced Peptides</option>
-          <option value="Mile High Peptides">Mile High Peptides</option>
-          <option value="Southern Aminos">Southern Aminos</option>
-          <option value="Flawless Compounds">Flawless Compounds</option>
-          <option value="Glow Aminos">Glow Aminos</option>
-          <option value="Instant Peptides">Instant Peptides</option>
-          <option value="Solyn Labs">Solyn Labs</option>
-          <option value="Oneday Compounds">Oneday Compounds</option>
         </select>
       </label>
       <label class="filter-select-group sort-select-group" for="sortSelect">
@@ -717,7 +701,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 
 <main>
   <section class="table-section view-cards" id="priceTable">
-    <div class="glp-note"><strong>Locked to GLP / weight loss research listings.</strong> Use search, vendor, format, and sort to narrow the cards. Clear filters resets back to this GLP / weight loss view.</div>
+    <div class="glp-note"><strong>Locked to GLP / weight loss research listings.</strong> Use search, popular shortcuts, format, and sort to narrow the cards. Clear filters resets back to this GLP / weight loss view.</div>
     <div class="table-wrap">
       <div class="table-scroll" aria-hidden="true">
         <table id="desktopTable"><tbody id="tableBody"></tbody></table>
@@ -1023,7 +1007,47 @@ function afterCodeText(price, pct){
   return `${formatMoney(adjusted[0])} to ${formatMoney(adjusted[adjusted.length-1])}`;
 }
 
-let activeCat="GLP-1 & Incretin", activeFormat="all", activeVendor="all", searchTerm="", sortCol="after", sortDir="asc", filtered=[...PRODUCTS];
+function getGlpProductText(p){
+  return `${p.product||""} ${p.listing||""} ${p.sku||""}`.toLowerCase();
+}
+
+function getGlpCompoundFlags(p){
+  const s = getGlpProductText(p);
+  return {
+    sm: s.includes("semaglutide") || /\b(?:gla-1\s*sm|glp-1\s*sm|ion-1s|pep[\s-]*sm|peptide[\s-]*sm)\b/.test(s),
+    tz: s.includes("tirzepatide") || /\b(?:gla-2(?:\.5)?\s*trz|glp-2\s*trz|glp2-t|glp-t2|ion-2t|mhc-2\s*trz|pep[\s-]*(?:tz|trz)|peptide[\s-]*(?:tz|trz)|sa-2t)\b/.test(s) || /\bpep-cag[\s/-]+(?:pep[\s-]*)?(?:tz|trz)\b/.test(s),
+    rt: s.includes("retatrutide") || /\b(?:gla-3\s*rt|glp-3\s*rt|glp-3r|glp3-r|glp-r3|ion-3r|oc-3rt|pep[\s-]*rt|peptide[\s-]*rt|sa-3r)\b/.test(s) || /\b(?:trz|tz)\s*[/+]\s*rt\b/.test(s),
+    cagri: s.includes("cagrilintide") || s.includes("cagrilinitide") || /\b(?:cagri|sa-4c|pep[\s-]*cag)\b/.test(s)
+  };
+}
+
+function matchesGlpPopular(p, selected){
+  if(selected === "all") return true;
+  const s = getGlpProductText(p);
+  const flags = getGlpCompoundFlags(p);
+  const coreCount = [flags.sm, flags.tz, flags.rt, flags.cagri].filter(Boolean).length;
+  if(selected === "sm" || selected === "tz" || selected === "rt" || selected === "cagri") return flags[selected] && coreCount === 1;
+  if(selected === "mazdu") return s.includes("mazdutide");
+  if(selected === "oral-glp") return s.includes("orforglipron");
+  if(selected === "teso") return s.includes("tesofensine");
+  return true;
+}
+
+function getGlpSearchAliases(p){
+  const flags = getGlpCompoundFlags(p);
+  const aliases = [];
+  if(flags.sm) aliases.push("semaglutide sema pep-sm peptide sm");
+  if(flags.tz) aliases.push("tirzepatide tirz pep-tz pep-trz peptide tz peptide trz");
+  if(flags.rt) aliases.push("retatrutide reta pep-rt peptide rt");
+  if(flags.cagri) aliases.push("cagrilintide cagri");
+  return aliases.join(" ");
+}
+
+function getPopularLabel(value){
+  return ({sm:"Sema",tz:"Tirz",rt:"Reta",cagri:"Cagri",mazdu:"Mazdu","oral-glp":"Oral GLP",teso:"Teso"})[value] || value;
+}
+
+let activeCat="GLP-1 & Incretin", activeFormat="all", activePopular="all", searchTerm="", sortCol="after", sortDir="asc", filtered=[...PRODUCTS];
 let viewMode = "cards";
 window._apisLoading = true;
 
@@ -1066,10 +1090,11 @@ function applyFilters(){
   filtered = PRODUCTS.filter(p=>{
     const mC = activeCat==="all" || p.category===activeCat;
     const mF = activeFormat==="all" || p.format===activeFormat;
-    const mV = activeVendor==="all" || p.company===activeVendor;
+    const mP = matchesGlpPopular(p, activePopular);
     const q = searchTerm;
-    const mS = !q || (p.product||"").toLowerCase().includes(q) || (p.listing||"").toLowerCase().includes(q) || (p.company||"").toLowerCase().includes(q) || (p.category||"").toLowerCase().includes(q) || (p.format||"").toLowerCase().includes(q) || (p.raw_category||"").toLowerCase().includes(q);
-    return mC && mF && mV && mS;
+    const searchable = `${p.product||""} ${p.listing||""} ${p.company||""} ${p.category||""} ${p.format||""} ${p.raw_category||""} ${getGlpSearchAliases(p)}`.toLowerCase();
+    const mS = !q || searchable.includes(q);
+    return mC && mF && mP && mS;
   });
 
   // Sort
@@ -1098,9 +1123,8 @@ function applyFilters(){
   const mLoading = document.getElementById("mLoading");
   const isMobile = window.matchMedia("(max-width: 768px)").matches;
 
-  const waitingForSelectedVendor = activeVendor !== "all" && window._liveVendorLoading && window._liveVendorLoading.has(activeVendor);
-  noRes.classList.toggle("show", count===0 && !waitingForSelectedVendor);
-  if(mLoading) mLoading.classList.toggle("show", count===0 && waitingForSelectedVendor);
+  noRes.classList.toggle("show", count===0);
+  if(mLoading) mLoading.classList.remove("show");
 
   renderDesktop(filtered);
   renderMobile(filtered);
@@ -1221,7 +1245,7 @@ function renderActiveFilters(){
   if(searchTerm) chips.push({type:"search", label:`Search: ${searchLabel}`});
   // Category is intentionally locked on this landing page, so do not show it as a removable chip.
   if(activeFormat !== "all") chips.push({type:"format", label:activeFormat});
-  if(activeVendor !== "all") chips.push({type:"vendor", label:activeVendor});
+  if(activePopular !== "all") chips.push({type:"popular", label:`Popular: ${getPopularLabel(activePopular)}`});
 
   if(!chips.length){
     row.classList.remove("show");
@@ -1240,7 +1264,7 @@ function renderActiveFilters(){
     }
     if(type === "category") activeCat = "GLP-1 & Incretin";
     if(type === "format") activeFormat = "all";
-    if(type === "vendor") activeVendor = "all";
+    if(type === "popular") activePopular = "all";
     updateFilterControls();
     applyFilters();
   }));
@@ -1249,10 +1273,8 @@ function renderActiveFilters(){
 function updateFilterControls(){
   setSelectValue("categorySelect", activeCat);
   setSelectValue("formatSelect", activeFormat);
-  setSelectValue("vendorSelect", activeVendor);
   document.querySelectorAll(".search-chip").forEach(btn=>{
-    const q = (btn.dataset.search || "").toLowerCase().trim();
-    btn.classList.toggle("active", !!searchTerm && q === searchTerm);
+    btn.classList.toggle("active", (btn.dataset.popular || "all") === activePopular);
   });
   renderActiveFilters();
 }
@@ -1264,7 +1286,7 @@ function filterCat(cat){
 }
 
 function clearFilters(){
-  activeCat="GLP-1 & Incretin"; activeFormat="all"; activeVendor="all"; searchTerm="";
+  activeCat="GLP-1 & Incretin"; activeFormat="all"; activePopular="all"; searchTerm="";
   document.getElementById("searchInput").value="";
   updateFilterControls();
   applyFilters();
@@ -1272,34 +1294,32 @@ function clearFilters(){
 
 const categorySelect = document.getElementById("categorySelect");
 const formatSelect = document.getElementById("formatSelect");
-const vendorSelect = document.getElementById("vendorSelect");
 const sortSelect = document.getElementById("sortSelect");
 if(categorySelect) categorySelect.addEventListener("change",e=>{activeCat="GLP-1 & Incretin";updateFilterControls();applyFilters();});
 if(formatSelect) formatSelect.addEventListener("change",e=>{activeFormat=e.target.value;updateFilterControls();applyFilters();});
-if(vendorSelect) vendorSelect.addEventListener("change",e=>{activeVendor=e.target.value;updateFilterControls();applyFilters();});
 if(sortSelect) sortSelect.addEventListener("change",e=>setSortOption(e.target.value));
 
 document.querySelectorAll(".search-chip").forEach(btn=>btn.addEventListener("click",()=>{
-  const q=btn.dataset.search||"";
-  searchTerm=q.toLowerCase().trim();
-  document.getElementById("searchInput").value=q;
+  const selected=btn.dataset.popular||"all";
+  activePopular=(selected===activePopular && selected!=="all")?"all":selected;
+  searchTerm="";
+  document.getElementById("searchInput").value="";
   updateFilterControls();
   applyFilters();
 }));
 let _glpSearchTimer;
 document.getElementById("searchInput").addEventListener("input",e=>{
   searchTerm=e.target.value.toLowerCase().trim();
+  activePopular="all";
   clearTimeout(_glpSearchTimer);
   _glpSearchTimer=setTimeout(()=>{updateFilterControls();applyFilters();},150);
 });
 const params=new URLSearchParams(window.location.search);
 const urlFormat=params.get("format");
-const urlVendor=params.get("vendor");
 const urlSearch=params.get("q")||params.get("search");
-const hasUrlFilters=params.has("format")||params.has("vendor")||params.has("q")||params.has("search");
+const hasUrlFilters=params.has("format")||params.has("q")||params.has("search");
 activeCat = "GLP-1 & Incretin";
 if(urlFormat) activeFormat = urlFormat;
-if(urlVendor) activeVendor = urlVendor;
 if(urlSearch){
   searchTerm=urlSearch.toLowerCase().trim();
   document.getElementById("searchInput").value=urlSearch;
