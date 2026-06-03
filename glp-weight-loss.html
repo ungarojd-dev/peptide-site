@@ -807,7 +807,7 @@ const CATEGORY_ALIASES = {
 };
 
 function productText(p){
-  return `${p.product||""} ${p.listing||""} ${p.sku||""} ${p.category||""}`.toLowerCase();
+  return `${p.product||""} ${p.listing||""} ${p.raw_product||""} ${p.raw_listing||""} ${p.sku||""} ${p.category||""} ${p.raw_category||""} ${p.source_slug||""}`.toLowerCase();
 }
 function hasAny(text, terms){
   return terms.some(term=>text.includes(term));
@@ -841,7 +841,7 @@ function detectCategory(p){
   if(hasAny(text,["mots", "ss-31", "ss31", "§-31", "aod", "5-amino", "5 amino", "5amino", "slu-pp", "slu pp", "glutathione", "adipotide", "tesofensine", "metabolic", "mitochondrial"])) return "Metabolic & Mitochondrial";
   if(hasAny(text,["nad", "ghk-cu", "ghk cu", "ahk-cu", "ahk cu", "copper peptide", "snap-8", "snap8", "foxo4", "fox04", "humanin", "longevity", "cellular"])) return "Longevity & Cellular Health";
 
-  if(oldCat & oldCat !== "Other") return oldCat;
+  if(oldCat && oldCat !== "Other") return oldCat;
   return "Uncategorized";
 }
 
@@ -859,8 +859,10 @@ function detectFormat(p){
 function normalizeProduct(p){
   const rawCategory = p.raw_category || p.source_category || p.vendor_category || p.original_category || p.category || "";
   const normalized = { ...p, raw_category: rawCategory };
-  normalized.category = detectCategory(normalized);
-  normalized.format = detectFormat(normalized);
+  // API rows are classified once on the server. Do not overwrite that result in the browser.
+  // Static emergency fallback rows still use the local classifier.
+  normalized.category = (normalized.source === "api" && normalized.category) ? normalized.category : detectCategory(normalized);
+  normalized.format = normalized.format || detectFormat(normalized);
   return normalized;
 }
 
@@ -1008,15 +1010,15 @@ function afterCodeText(price, pct){
 }
 
 function getGlpProductText(p){
-  return `${p.product||""} ${p.listing||""} ${p.sku||""}`.toLowerCase();
+  return `${p.product||""} ${p.listing||""} ${p.raw_product||""} ${p.raw_listing||""} ${p.sku||""} ${(p.components||[]).join(" ")}`.toLowerCase();
 }
 
 function getGlpCompoundFlags(p){
   const s = getGlpProductText(p);
   return {
-    sm: s.includes("semaglutide") || /\b(?:gla-1\s*sm|glp-1\s*sm|ion-1s|pep[\s-]*sm|peptide[\s-]*sm)\b/.test(s),
-    tz: s.includes("tirzepatide") || /\b(?:gla-2(?:\.5)?\s*trz|glp-2\s*trz|glp2-t|glp-t2|ion-2t|mhc-2\s*trz|pep[\s-]*(?:tz|trz)|peptide[\s-]*(?:tz|trz)|sa-2t)\b/.test(s) || /\bpep-cag[\s/-]+(?:pep[\s-]*)?(?:tz|trz)\b/.test(s),
-    rt: s.includes("retatrutide") || /\b(?:gla-3\s*rt|glp-3\s*rt|glp-3r|glp3-r|glp-r3|ion-3r|oc-3rt|pep[\s-]*rt|peptide[\s-]*rt|sa-3r)\b/.test(s) || /\b(?:trz|tz)\s*[/+]\s*rt\b/.test(s),
+    sm: s.includes("semaglutide") || /\bsema\b/.test(s) || /\b(?:gla-1\s*sm|glp-1\s*sm|ion-1s|pep[\s-]*sm|peptide[\s-]*sm|sm)\b/.test(s),
+    tz: s.includes("tirzepatide") || /\btirz(?:ep)?\b/.test(s) || /\b(?:gla-2(?:\.5)?\s*trz|glp-2\s*trz|glp2-t|glp-t2|ion-2t|mhc-2\s*trz|pep[\s-]*(?:tz|trz)|peptide[\s-]*(?:tz|trz)|sa-2t|tz|trz)\b/.test(s) || /\bpep-cag[\s/-]+(?:pep[\s-]*)?(?:tz|trz)\b/.test(s),
+    rt: s.includes("retatrutide") || /\breta\b/.test(s) || /\b(?:gla-3\s*rt|glp-3\s*rt|glp-3r|glp3-r|glp-r3|ion-3r|oc-3rt|pep[\s-]*rt|peptide[\s-]*rt|sa-3r|rt)\b/.test(s) || /\b(?:trz|tz)\s*[/+]\s*rt\b/.test(s),
     cagri: s.includes("cagrilintide") || s.includes("cagrilinitide") || /\b(?:cagri|sa-4c|pep[\s-]*cag)\b/.test(s)
   };
 }
@@ -1092,7 +1094,7 @@ function applyFilters(){
     const mF = activeFormat==="all" || p.format===activeFormat;
     const mP = matchesGlpPopular(p, activePopular);
     const q = searchTerm;
-    const searchable = `${p.product||""} ${p.listing||""} ${p.company||""} ${p.category||""} ${p.format||""} ${p.raw_category||""} ${getGlpSearchAliases(p)}`.toLowerCase();
+    const searchable = `${p.product||""} ${p.listing||""} ${p.raw_product||""} ${p.raw_listing||""} ${p.company||""} ${p.category||""} ${p.format||""} ${p.raw_category||""} ${getGlpSearchAliases(p)}`.toLowerCase();
     const mS = !q || searchable.includes(q);
     return mC && mF && mP && mS;
   });
@@ -1352,8 +1354,8 @@ window.addEventListener("resize",()=>{
 // ── Cached product snapshot, one browser request ───────────────────────────
 // Static GLP products render first. One cached snapshot refresh replaces the
 // previous ten browser-side vendor requests and repeated full-page rerenders.
-const SNAPSHOT_ENDPOINT = "/.netlify/functions/products-snapshot";
-const SNAPSHOT_CACHE_KEY = "mpp_products_snapshot_v1";
+const SNAPSHOT_ENDPOINT = "/.netlify/functions/products-snapshot?schema=ingestion-v3";
+const SNAPSHOT_CACHE_KEY = "mpp_products_snapshot_v3";
 const SNAPSHOT_CACHE_MAX_AGE = 6 * 60 * 60 * 1000;
 window._apisLoading = false;
 window._liveVendorLoading = new Set();
@@ -1379,8 +1381,11 @@ function addLiveDot(vendorName){
 function mergeSnapshotProducts(liveProducts){
   if(!Array.isArray(liveProducts) || liveProducts.length===0) return false;
   const normalized = liveProducts
-    .filter(p=>p && (p.product || p.name || p.title))
-    .map(p=>normalizeProduct({ ...p, product:p.product || p.name || p.title }))
+    .map((p,index)=>normalizeProduct({
+      ...(p||{}),
+      product:(p&& (p.product || p.name || p.title || p.listing)) || `Unnamed API Product ${index+1}`,
+      listing:(p&& (p.listing || p.product || p.name || p.title)) || `Unnamed API Product ${index+1}`
+    }))
     .filter(isGlpWeightLossProduct);
   if(normalized.length===0) return false;
 

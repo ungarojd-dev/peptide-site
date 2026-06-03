@@ -1,82 +1,116 @@
-// Netlify Serverless Function — Instant Peptides Product Feed
-// Fetches from their custom JSON feed endpoint
-// Deployed at: https://mypeptideprice.com/.netlify/functions/instant-products
+import { classifyCatalogCategory } from "./_shared/product-normalizer.mjs";
 
 const FEED_URL = "https://instantpeptides.com/api/feeds/peptide-price";
 
-function mapCategory(name) {
-  const n = name.toLowerCase();
-  if (n.includes("glp") || n.includes("semaglutide") || n.includes("tirzepatide") || n.includes("retatrutide") || n.includes("cagrilintide") || n.includes("cagri") || n.includes("mazdutide") || n.includes("orforglipron") || n.includes("survodutide") || n.includes("liraglutide") || n.includes("amycretin") || n.includes("weight") || n.includes("ion-1s") || n.includes("ion-2t") || n.includes("ion-3r") || n.includes("sa-2t") || n.includes("sa-3r") || n.includes("sa-4c") || n.includes("gla-1") || n.includes("gla-2") || n.includes("gla-3") || n.includes("glp-1") || n.includes("glp-2") || n.includes("glp-3") || n.includes("glp2-t") || n.includes("glp3-r") || n.includes("glp-t2") || n.includes("glp-r3") || n.includes("mhc-2") || n.includes("oc-3rt") || n.includes("pep-sm") || n.includes("pep-trz") || n.includes("pep-rt") || n.includes("peptide-t") || n.includes("peptide-r") || n.includes("tesofensine") || n.includes("metaboflex")) return "GLP-1 & Incretin";
-  if (n.includes("bpc") || n.includes("tb-500") || n.includes("tb500") || n.includes("recover") || n.includes("heal") || n.includes("repair")) return "Repair & Recovery";
-  if (n.includes("nad") || n.includes("epitalon") || n.includes("longev") || n.includes("anti-ag") || n.includes("snap-8") || n.includes("tesamorelin")) return "Longevity & Cellular Health";
-  if (n.includes("semax") || n.includes("selank") || n.includes("nootropic") || n.includes("cogni") || n.includes("dihexa")) return "Cognitive & Nootropic";
-  if (n.includes("ipamorelin") || n.includes("cjc") || n.includes("ghrp") || n.includes("growth") || n.includes("ghrh") || n.includes("igf") || n.includes("sermorelin")) return "Growth Hormone Research";
-  if (n.includes("melanotan") || n.includes("mt-") || n.includes("pt-141") || n.includes("bremelanotide") || n.includes("sexual") || n.includes("tann") || n.includes("kisspeptin")) return "Skin, Tanning & Sexual Health";
-  if (n.includes("aod") || n.includes("mots") || n.includes("metabol") || n.includes("energy") || n.includes("lipo")) return "Metabolic & Mitochondrial";
-  if (n.includes("capsule") || n.includes("oral") || n.includes("tablet")) return "Capsules";
-  if (n.includes("water") || n.includes("bac") || n.includes("acetic") || n.includes("sterile") || n.includes("vial") || n.includes("kit") || n.includes("suppl")) return "Supplies";
-  return "Other";
+function formatPrice(value) {
+  if (value === undefined || value === null || value === "") return "Contact for price";
+  const parsed = parseFloat(value);
+  return Number.isFinite(parsed) ? `$${parsed.toFixed(2)}` : "Contact for price";
 }
 
-function buildListing(product, variant) {
-  const qty = variant.pack_qty > 1 ? ` (${variant.pack_qty} vials)` : "";
-  return `${product.name} — ${variant.size}${variant.unit}${qty}`;
+function withReferral(url) {
+  if (!url) return "";
+  try {
+    const parsed = new URL(url);
+    parsed.searchParams.set("ref", "SAMMYC");
+    return parsed.toString();
+  } catch {
+    return url;
+  }
 }
 
-export const handler = async (event) => {
+function sourceId(product, index) {
+  return String(product.id || product.sku || product.slug || product.name || `instant-${index}`);
+}
+
+function buildBase(product, index, warning = "") {
+  const productName = String(product.name || `Unnamed API Product ${sourceId(product, index)}`).trim();
+  const row = {
+    product: productName,
+    listing: productName,
+    raw_product: productName,
+    raw_listing: productName,
+    raw_category: String(product.category || product.type || ""),
+    company: "Instant Peptides",
+    category: classifyCatalogCategory({ product: productName, listing: productName, raw_category: product.category || product.type || "" }),
+    price: formatPrice(product.price),
+    sku: product.sku || "",
+    in_stock: typeof product.in_stock === "boolean" ? product.in_stock : null,
+    url: withReferral(product.url),
+    source: "api",
+    source_slug: product.slug || "",
+    source_type: "custom_feed_parent",
+    source_product_id: sourceId(product, index)
+  };
+  if (warning) row.ingestion_warning = warning;
+  return row;
+}
+
+function buildVariant(product, variant, index, variantIndex) {
+  const base = buildBase(product, index);
+  const size = `${variant.size ?? ""}${variant.unit ?? ""}`.trim();
+  const quantity = Number(variant.pack_qty || 0) > 1 ? ` (${variant.pack_qty} vials)` : "";
+  const detail = `${size}${quantity}`.trim();
+  const listing = detail ? `${base.product} - ${detail}` : base.product;
+  return {
+    ...base,
+    listing,
+    raw_listing: listing,
+    category: classifyCatalogCategory({ ...base, listing, raw_listing: listing, sku: variant.sku || base.sku }),
+    price: formatPrice(variant.price),
+    sku: variant.sku || `${variant.size ?? ""}${variant.unit ?? ""}-${variant.form || ""}-x${variant.pack_qty || 1}`,
+    in_stock: typeof variant.in_stock === "boolean" ? variant.in_stock : null,
+    source_type: "custom_feed_variant",
+    source_variation_id: String(variant.id || `${base.source_product_id}-${variantIndex}`)
+  };
+}
+
+export const handler = async event => {
   const headers = {
     "Access-Control-Allow-Origin": "https://mypeptideprice.com",
-    "Access-Control-Allow-Methods": "GET",
+    "Access-Control-Allow-Methods": "GET, OPTIONS",
     "Content-Type": "application/json",
     "Cache-Control": "public, max-age=300, stale-while-revalidate=21600",
     "Netlify-CDN-Cache-Control": "public, durable, max-age=900, stale-while-revalidate=21600"
   };
-
   if (event.httpMethod === "OPTIONS") return { statusCode: 200, headers, body: "" };
 
   try {
-    const resp = await fetch(FEED_URL);
-    if (!resp.ok) throw new Error(`Feed error: ${resp.status}`);
-    const data = await resp.json();
-
+    const response = await fetch(FEED_URL);
+    if (!response.ok) throw new Error(`Feed error: ${response.status}`);
+    const data = await response.json();
+    const sourceProducts = Array.isArray(data.products) ? data.products : [];
     const products = [];
+    const warnings = [];
 
-    for (const p of data.products || []) {
-      const category = mapCategory(p.name);
-      const variants = p.variants || [];
-
-      if (variants.length === 0) continue;
-
-      // One row per variant
-      for (const v of variants) {
-        const listing = buildListing(p, v);
-        products.push({
-          product: p.name,
-          listing,
-          company: "Instant Peptides",
-          category,
-          price: `$${parseFloat(v.price).toFixed(2)}`,
-          sku: `${v.size}${v.unit}-${v.form}-x${v.pack_qty}`,
-          in_stock: v.in_stock === true,
-          url: p.url ? (p.url + (p.url.includes("?") ? "&" : "?") + "ref=SAMMYC") : null,
-          source: "api"
-        });
+    sourceProducts.forEach((product, index) => {
+      const variants = Array.isArray(product.variants) ? product.variants : [];
+      if (!variants.length) {
+        const warning = "custom_feed_product_has_no_variants_parent_retained";
+        warnings.push({ source_product_id: sourceId(product, index), product: product.name || "", warning });
+        products.push(buildBase(product, index, warning));
+        return;
       }
-    }
+      variants.forEach((variant, variantIndex) => products.push(buildVariant(product, variant, index, variantIndex)));
+    });
 
-    return {
-      statusCode: 200,
-      headers,
-      body: JSON.stringify({
-        vendor: "Instant Peptides",
-        fetched_at: new Date().toISOString(),
-        count: products.length,
-        products
-      })
+    const represented = new Set(products.map(product => product.source_product_id).filter(Boolean));
+    const metadata = {
+      source_product_count: sourceProducts.length,
+      represented_source_products: represented.size,
+      unrepresented_source_products: Math.max(0, sourceProducts.length - represented.size),
+      explicit_exclusions: 0,
+      variable_products: sourceProducts.filter(product => Array.isArray(product.variants) && product.variants.length > 0).length,
+      variation_rows: products.filter(product => product.source_type === "custom_feed_variant").length,
+      variation_fetch_errors: 0,
+      transform_fallback_rows: products.filter(product => product.ingestion_warning).length,
+      returned_rows: products.length,
+      warnings
     };
 
-  } catch (err) {
-    console.error("Instant Peptides feed error:", err.message);
-    return { statusCode: 500, headers, body: JSON.stringify({ error: err.message }) };
+    return { statusCode: 200, headers, body: JSON.stringify({ vendor: "Instant Peptides", fetched_at: new Date().toISOString(), raw_count: sourceProducts.length, count: products.length, metadata, products }) };
+  } catch (error) {
+    console.error("Instant Peptides feed error:", error.message);
+    return { statusCode: 500, headers, body: JSON.stringify({ error: error.message }) };
   }
 };

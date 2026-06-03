@@ -676,49 +676,6 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .vrow-initials{width:28px;height:28px;border-radius:7px;background:var(--forest);color:#fff;font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;flex-shrink:0;letter-spacing:.3px}
     .vrow-logo[src*="flawless-compounds"],.vrow-logo[src*="glow-aminos"]{background:#fff9fb;border-color:#e4d8d8}
     .vrow-logo[src*="oneday-compounds"]{background:#f2f8fb;border-color:#d8e4ee}
-
-    /* ── COMPACT MOBILE FILTER DOCK ───────────────────────── */
-    .mobile-filter-dock,.mobile-filter-sheet-overlay,.mobile-filter-sheet{display:none}
-    @media(max-width:768px){
-      .search-section{position:static;top:auto;z-index:auto}
-      html{scroll-padding-top:calc(var(--mobile-filter-dock-top, 0px) + 92px)}
-      .mobile-filter-dock{display:block;position:fixed;left:0;right:0;top:var(--mobile-filter-dock-top,0px);z-index:295;background:rgba(255,255,255,.97);border-bottom:1px solid var(--border);box-shadow:0 6px 18px rgba(30,30,27,.14);transform:translateY(-112%);opacity:0;pointer-events:none;transition:transform .2s ease,opacity .2s ease;backdrop-filter:blur(10px)}
-      .mobile-filter-dock.visible{transform:translateY(0);opacity:1;pointer-events:auto}
-      .mfd-inner{padding:7px 10px 6px;display:flex;flex-direction:column;gap:6px}
-      .mfd-search-row{display:flex;align-items:center;gap:6px}
-      .mfd-search-wrap{position:relative;min-width:0;flex:1}
-      .mfd-search-icon{position:absolute;left:10px;top:50%;transform:translateY(-50%);font-size:12px;color:var(--ink-3);pointer-events:none}
-      .mfd-search-input{width:100%;height:34px;border:1.5px solid var(--border);border-radius:999px;background:var(--bg);color:var(--ink);font-family:var(--fb);font-size:12px;padding:0 10px 0 29px;outline:none}
-      .mfd-search-input:focus{border-color:var(--forest)}
-      .mfd-filter-btn,.mfd-reset-btn{height:34px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-2);font-family:var(--fb);font-size:11px;font-weight:900;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;gap:4px;white-space:nowrap;padding:0 10px}
-      .mfd-filter-btn.has-filters{border-color:var(--forest);color:var(--forest);background:var(--olive-lt)}
-      .mfd-filter-count{min-width:17px;height:17px;padding:0 4px;border-radius:999px;background:var(--forest);color:#fff;display:inline-flex;align-items:center;justify-content:center;font-size:9px;line-height:1}
-      .mfd-filter-count[hidden],.mfd-reset-btn[hidden]{display:none}
-      .mfd-reset-btn{width:34px;padding:0;color:var(--olive)}
-      .mfd-popular-row{display:flex;align-items:center;gap:5px;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch;padding-bottom:1px}
-      .mfd-popular-row::-webkit-scrollbar{display:none}
-      .mfd-chip{flex-shrink:0;border:1.5px solid var(--border);border-radius:999px;background:var(--surface);color:var(--ink-2);font-family:var(--fb);font-size:10px;font-weight:800;line-height:1;padding:5px 9px;cursor:pointer;white-space:nowrap}
-      .mfd-chip.active{background:var(--forest);border-color:var(--forest);color:#fff}
-      .mobile-filter-sheet-overlay{display:block;position:fixed;inset:0;z-index:840;background:rgba(0,0,0,.42);opacity:0;pointer-events:none;transition:opacity .2s ease}
-      .mobile-filter-sheet-overlay.open{opacity:1;pointer-events:auto}
-      .mobile-filter-sheet{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:850;max-height:78vh;background:var(--surface);border-radius:20px 20px 0 0;box-shadow:0 -6px 28px rgba(0,0,0,.2);transform:translateY(105%);transition:transform .24s cubic-bezier(.4,0,.2,1);flex-direction:column}
-      .mobile-filter-sheet.open{transform:translateY(0)}
-      .mfs-handle{width:38px;height:4px;background:var(--border);border-radius:99px;margin:9px auto 0}
-      .mfs-head{display:flex;align-items:center;justify-content:space-between;padding:11px 16px;border-bottom:1px solid var(--border)}
-      .mfs-head h3{font-family:var(--fd);font-size:17px;color:var(--ink)}
-      .mfs-close{width:32px;height:32px;border:0;border-radius:50%;background:var(--surface-2);color:var(--ink-3);font-size:16px;cursor:pointer}
-      .mfs-body{overflow-y:auto;padding:15px 16px 12px}
-      .mfs-label{font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:1px;color:var(--ink-3);margin-bottom:9px}
-      .mfs-category-grid{display:flex;flex-wrap:wrap;gap:7px}
-      .mfs-category-chip{border:1.5px solid var(--border);border-radius:999px;background:var(--surface);color:var(--ink-2);font-family:var(--fb);font-size:12px;font-weight:800;padding:7px 12px;cursor:pointer}
-      .mfs-category-chip.active{background:var(--forest);border-color:var(--forest);color:#fff}
-      .mfs-footer{display:flex;gap:9px;padding:12px 16px calc(12px + env(safe-area-inset-bottom));border-top:1px solid var(--border)}
-      .mfs-clear,.mfs-apply{border-radius:999px;font-family:var(--fb);font-size:13px;font-weight:900;padding:11px 12px;cursor:pointer}
-      .mfs-clear{flex:1;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-3)}
-      .mfs-apply{flex:1.7;border:1.5px solid var(--forest);background:var(--forest);color:#fff}
-      body.mobile-filter-sheet-open{overflow:hidden}
-      #mobileFilterDockSentinel{height:1px}
-    }
 </style>
 </head>
 <body>
@@ -1158,7 +1115,7 @@ const CATEGORY_ALIASES = {
 };
 
 function productText(p){
-  return `${p.product||""} ${p.listing||""} ${p.sku||""} ${p.category||""}`.toLowerCase();
+  return `${p.product||""} ${p.listing||""} ${p.raw_product||""} ${p.raw_listing||""} ${p.sku||""} ${p.category||""} ${p.raw_category||""} ${p.source_slug||""}`.toLowerCase();
 }
 function hasAny(text, terms){
   return terms.some(term=>text.includes(term));
@@ -1168,7 +1125,7 @@ function detectCategory(p){
   const oldCat = CATEGORY_ALIASES[p.category] || p.category;
 
   if(hasAny(text,["bacteriostatic", "bac water", "bac-water", "sterile water", "syringe", "needle", "pen needle", "peptide pen", "cartridge", "vial cover", "vial caps", "caps/cover", "vial cap", "travel case", "starter kit", "reconstitution", "alcohol swab"])) return "Supplies";
-  if(hasAny(text,["semaglutide", "tirzepatide", "retatrutide", "cagrilintide", "mazdutide", "survodutide", "liraglutide", "glp-", "glp ", "glp-r", "glp-t", "sa-2t", "sa-3r", "sa-4c", "gla-1", "gla-2", "gla-3", "gla-4", "trz", "cagri", "cag"])) return "GLP-1 & Incretin";
+  if(hasAny(text,["semaglutide", "sema", "tirzepatide", "tirz", "retatrutide", "reta", "cagrilintide", "mazdutide", "survodutide", "liraglutide", "glp-", "glp ", "glp-r", "glp-t", "sa-2t", "sa-3r", "sa-4c", "gla-1", "gla-2", "gla-3", "gla-4", "pep-sm", "pep-tz", "pep-trz", "pep-rt", "trz", "cagri", "cag"])) return "GLP-1 & Incretin";
   if(hasAny(text,["cjc", "ipamorelin", "sermorelin", "tesamorelin", "ghrp", "hexarelin", "mod grf", "igf-1", "igf1", "hgh", "growth hormone"])) return "Growth Hormone Research";
   if(hasAny(text,["semax", "selank", "dihexa", "cerebrolysin", "nootropic", "vip", "dsip", "cortexin"])) return "Cognitive & Nootropic";
   if(hasAny(text,["pt-141", "pt141", "melanotan", "mt-1", "mt-2", "kisspeptin", "hcg", "tanning", "libido"])) return "Skin, Tanning & Sexual Health";
@@ -1206,8 +1163,10 @@ function detectFormat(p){
 function normalizeProduct(p){
   const rawCategory = p.raw_category || p.source_category || p.vendor_category || p.original_category || p.category || "";
   const normalized = { ...p, raw_category: rawCategory };
-  normalized.category = detectCategory(normalized);
-  normalized.format = detectFormat(normalized);
+  // API rows are classified once on the server. Do not overwrite that result in the browser.
+  // Static emergency fallback rows still use the local classifier.
+  normalized.category = (normalized.source === "api" && normalized.category) ? normalized.category : detectCategory(normalized);
+  normalized.format = normalized.format || detectFormat(normalized);
   return normalized;
 }
 
@@ -1297,19 +1256,19 @@ function getGlpFamilyComponents(raw){
   const add = value => { if(!components.includes(value)) components.push(value); };
 
   if(
-    s.includes("semaglutide") ||
-    /\b(?:gla-1\s*sm|glp-1\s*sm|ion-1s|pep[\s-]*sm|peptide[\s-]*sm)\b/.test(s)
+    s.includes("semaglutide") || /\bsema\b/.test(s) ||
+    /\b(?:gla-1\s*sm|glp-1\s*sm|ion-1s|pep[\s-]*sm|peptide[\s-]*sm|sm)\b/.test(s)
   ) add("Peptide SM");
 
   if(
-    s.includes("tirzepatide") ||
-    /\b(?:gla-2(?:\.5)?\s*trz|glp-2\s*trz|glp2-t|glp-t2|ion-2t|mhc-2\s*trz|pep[\s-]*(?:tz|trz)|peptide[\s-]*(?:tz|trz)|sa-2t)\b/.test(s) ||
+    s.includes("tirzepatide") || /\btirz(?:ep)?\b/.test(s) ||
+    /\b(?:gla-2(?:\.5)?\s*trz|glp-2\s*trz|glp2-t|glp-t2|ion-2t|mhc-2\s*trz|pep[\s-]*(?:tz|trz)|peptide[\s-]*(?:tz|trz)|sa-2t|tz|trz)\b/.test(s) ||
     /\bpep-cag[\s/-]+(?:pep[\s-]*)?(?:tz|trz)\b/.test(s)
   ) add("Peptide TZ");
 
   if(
-    s.includes("retatrutide") ||
-    /\b(?:gla-3\s*rt|glp-3\s*rt|glp-3r|glp3-r|glp-r3|ion-3r|oc-3rt|pep[\s-]*rt|peptide[\s-]*rt|sa-3r)\b/.test(s) ||
+    s.includes("retatrutide") || /\breta\b/.test(s) ||
+    /\b(?:gla-3\s*rt|glp-3\s*rt|glp-3r|glp3-r|glp-r3|ion-3r|oc-3rt|pep[\s-]*rt|peptide[\s-]*rt|sa-3r|rt)\b/.test(s) ||
     /\b(?:trz|tz)\s*[/+]\s*rt\b/.test(s)
   ) add("Peptide RT");
 
@@ -2000,7 +1959,7 @@ function getFilteredGroups(){
     if(!matchesPopularFamily(g.family, activePopularFamily)) return false;
     if(searchTerm){
       const q = searchTerm.toLowerCase();
-      const hay = (g.family+" "+getFamilySearchAliases(g.family)+" "+g.category+" "+g.listings.map(p=>p.company+" "+p.product+" "+(p.listing||"")).join(" ")).toLowerCase();
+      const hay = (g.family+" "+getFamilySearchAliases(g.family)+" "+g.category+" "+g.listings.map(p=>p.company+" "+p.product+" "+(p.listing||"")+" "+(p.raw_product||"")+" "+(p.raw_listing||"")+" "+(p.sku||"")).join(" ")).toLowerCase();
       if(!hay.includes(q)) return false;
     }
     return true;
@@ -2194,8 +2153,8 @@ window.addEventListener("resize", ()=>{
 // ── Cached product snapshot, one browser request ───────────────────────────
 // Static products render first. After disclaimer acceptance, the browser reads
 // one fast cached snapshot instead of triggering ten vendor refresh workflows.
-const SNAPSHOT_ENDPOINT = "/.netlify/functions/products-snapshot";
-const SNAPSHOT_CACHE_KEY = "mpp_products_snapshot_v1";
+const SNAPSHOT_ENDPOINT = "/.netlify/functions/products-snapshot?schema=ingestion-v3";
+const SNAPSHOT_CACHE_KEY = "mpp_products_snapshot_v3";
 const SNAPSHOT_CACHE_MAX_AGE = 6 * 60 * 60 * 1000;
 window._apisLoading = false;
 window._liveVendorLoading = new Set();
@@ -2214,8 +2173,11 @@ function addLiveDot(){
 function mergeSnapshotProducts(liveProducts){
   if(!Array.isArray(liveProducts) || liveProducts.length===0) return false;
   const normalized = liveProducts
-    .filter(p=>p && (p.product || p.name || p.title))
-    .map(p=>normalizeProduct({ ...p, product:p.product || p.name || p.title }));
+    .map((p,index)=>normalizeProduct({
+      ...(p||{}),
+      product:(p&& (p.product || p.name || p.title || p.listing)) || `Unnamed API Product ${index+1}`,
+      listing:(p&& (p.listing || p.product || p.name || p.title)) || `Unnamed API Product ${index+1}`
+    }));
   if(normalized.length===0) return false;
 
   // Keep static fallback rows for vendors missing from a partial snapshot.
