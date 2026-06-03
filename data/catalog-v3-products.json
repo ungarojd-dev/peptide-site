@@ -290,7 +290,11 @@
       "name": "CarfilFlex",
       "category": "Other",
       "aliases": [
-        "CarfilFlex"
+        "CarfilFlex",
+        "cartiflex",
+        "CartiFlex",
+        "cartiflex 20ml",
+        "CarfilFlex 20mL"
       ]
     },
     {
@@ -516,7 +520,11 @@
         "foxo4-dri",
         "foxo4 dri",
         "foxo4",
-        "foxo-4"
+        "foxo-4",
+        "FOXO4-DRI",
+        "foxo4 dri 10mg",
+        "foxo4 2mg",
+        "foxo 4 dri"
       ]
     },
     {
@@ -612,7 +620,9 @@
         "glutathione",
         "l-glutathione",
         "reduced glutathione",
-        "glutathilone"
+        "glutathilone",
+        "Glutathione",
+        "glutathione standard"
       ]
     },
     {
@@ -1168,7 +1178,13 @@
       "name": "Pentadeca Arginate (PDA)",
       "category": "Other",
       "aliases": [
-        "Pentadeca Arginate (PDA)"
+        "Pentadeca Arginate (PDA)",
+        "PDA",
+        "pda",
+        "pentadeca arginate",
+        "pentadeca-arginate",
+        "PDA 10mg",
+        "pentadecapeptide"
       ]
     },
     {
@@ -1476,7 +1492,12 @@
       "aliases": [
         "ss-31",
         "ss31",
-        "elamipretide"
+        "elamipretide",
+        "s-31",
+        "s31",
+        "ss 31",
+        "\u00a7-31",
+        "\u00a7 31"
       ]
     },
     {
@@ -1823,6 +1844,26 @@
       "category": "Other",
       "aliases": [
         "Zhenoluten"
+      ]
+    },
+    {
+      "id": "biotinyl-tripeptide",
+      "name": "Biotinyl Tripeptide-1",
+      "category": "Longevity & Cellular Health",
+      "aliases": [
+        "biotinyl tripeptide",
+        "biotinyl tripeptide-1",
+        "biotinyl tripeptide 1",
+        "biotinyl tripeptide raw"
+      ]
+    },
+    {
+      "id": "ksptn",
+      "name": "KSPTN",
+      "category": "Longevity & Cellular Health",
+      "aliases": [
+        "ksptn",
+        "KSPTN"
       ]
     }
   ]

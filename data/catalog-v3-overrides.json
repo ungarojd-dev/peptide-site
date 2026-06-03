@@ -14,7 +14,8 @@
     "anniversary tee",
     "oversized tee",
     "t-shirt",
-    "tee shirt"
+    "tee shirt",
+    "extend product protection"
   ],
   "forced_aliases": {
     "gla 1 sm": "semaglutide",
@@ -81,7 +82,15 @@
     "n acetyl selank": "na-selank-amidate",
     "hospira bacteriostatic water": "bacteriostatic-water",
     "hospira sodium chloride benzyl bacteriostatic water": "bacteriostatic-water",
-    "cjc 1295 no dac ipamorelin": "cjc-1295-plus-ipamorelin-blend"
+    "cjc 1295 no dac ipamorelin": "cjc-1295-plus-ipamorelin-blend",
+    "s 31": "ss-31",
+    "s31": "ss-31",
+    "s 31 5": "ss-31",
+    "foxo4 dri": "foxo4-dri",
+    "foxo 4": "foxo4-dri",
+    "biotinyl tripeptide raw": "biotinyl-tripeptide",
+    "pda 10mg": "pentadeca-arginate-pda",
+    "\u00a7 31": "ss-31"
   },
   "category_overrides": {},
   "format_overrides": {}
