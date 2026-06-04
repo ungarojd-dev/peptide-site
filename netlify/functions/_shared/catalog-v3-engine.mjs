@@ -384,7 +384,7 @@ export function buildCatalog(rawRows = [], options = {}) {
         all_offer_count: variant.all_offer_count,
         suppliers
       };
-    }).sort((a, b) => a.sort - b.sort || a.label.localeCompare(b.label));
+    }).sort((a, b) => b.supplier_count - a.supplier_count || a.sort - b.sort || a.label.localeCompare(b.label));
     const allSuppliers = variants.flatMap(variant => variant.suppliers);
     const priced = allSuppliers.map(offer => offer.effective_price_min).filter(value => value != null);
     return {
