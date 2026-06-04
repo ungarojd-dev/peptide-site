@@ -169,7 +169,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .search-input::placeholder{color:var(--ink-3)}
     .results-meta{font-size:11px;color:var(--ink-3);white-space:nowrap}
     .filters-row{display:flex;align-items:center;gap:6px;flex-wrap:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-    .popular-row{margin-bottom:8px}
+    
     .filter-label{font-size:9px;font-weight:800;text-transform:uppercase;letter-spacing:1px;color:var(--ink-2);margin-right:2px;white-space:nowrap}
     .search-chip{flex-shrink:0;font-size:11px;font-weight:700;padding:4px 12px;border-radius:999px;border:1.5px solid var(--border);background:var(--surface);color:var(--ink-2);cursor:pointer;transition:all .15s;white-space:nowrap}
     .search-chip:hover{border-color:var(--forest);color:var(--forest)}
@@ -284,7 +284,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       .search-inner{padding:8px 12px}
       .search-input{font-size:13px}
       .filters-row{gap:5px}
-      .popular-row{margin-bottom:7px;max-height:30px;overflow-x:auto;flex-wrap:nowrap;padding-bottom:2px;-webkit-overflow-scrolling:touch}
+      
       .search-chip{flex-shrink:0;font-size:10px;padding:3px 9px}
       .filter-select-row{display:grid;grid-template-columns:1fr 1fr;gap:7px}
       .filter-select-group{min-width:0}
@@ -660,8 +660,8 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
       .mfd-filter-btn.has-filters{background:var(--olive);border-color:var(--olive)}
       .mfd-reset-btn{width:34px;padding:0;font-size:13px}
       .mfd-filter-count{display:inline-flex;align-items:center;justify-content:center;min-width:16px;height:16px;padding:0 4px;border-radius:999px;background:#fff;color:var(--forest);font-size:9px;font-weight:900}
-      .mfd-popular-row{display:flex;gap:5px;margin-top:6px;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
-      .mfd-popular-row::-webkit-scrollbar{display:none}
+      
+      
       .mfd-chip{flex:0 0 auto;border:1px solid var(--border);border-radius:999px;background:var(--surface);color:var(--ink-2);padding:4px 8px;font-family:var(--fb);font-size:10px;font-weight:800;white-space:nowrap;cursor:pointer}
       .mfd-chip.active{border-color:var(--forest);background:var(--forest);color:#fff}
 
@@ -945,19 +945,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </div>
       <span class="results-meta">Showing <strong id="visibleCountLegacy">0</strong> of <strong id="totalProdCount">0</strong> products</span>
     </div>
-    <div class="filters-row popular-row" id="popularRow" aria-label="Popular product shortcuts">
-      <span class="filter-label">Popular</span>
-      <button class="search-chip active" data-family="all">All Products</button>
-      <button class="search-chip" data-family="BPC-157">BPC-157</button>
-      <button class="search-chip" data-family="TB-500">TB-500</button>
-      <button class="search-chip" data-family="Peptide SM">Sema</button>
-      <button class="search-chip" data-family="Peptide TZ">Tirz</button>
-      <button class="search-chip" data-family="Peptide RT">Reta</button>
-      <button class="search-chip" data-family="NAD+">NAD+</button>
-      <button class="search-chip" data-family="GHK-Cu">GHK-Cu</button>
-      <button class="search-chip" data-family="CJC-1295">CJC/Ipa</button>
-    </div>
-    <!-- Hidden legacy selects keep JS wiring intact -->
+<!-- Hidden legacy selects keep JS wiring intact -->
     <div style="display:none" aria-hidden="true">
       <select id="categorySelect"><option value="all">All Categories</option></select>
       <select id="formatSelect"><option value="all">All Types</option></select>
@@ -981,18 +969,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
       </button>
       <button class="mfd-reset-btn" id="mobileDockResetBtn" type="button" onclick="clearMobileDockFilters()" aria-label="Clear all filters" hidden>✕</button>
     </div>
-    <div class="mfd-popular-row" id="mobileDockPopularRow" aria-label="Popular product shortcuts">
-      <button class="mfd-chip active" type="button" data-family="all">All</button>
-      <button class="mfd-chip" type="button" data-family="BPC-157">BPC-157</button>
-      <button class="mfd-chip" type="button" data-family="TB-500">TB-500</button>
-      <button class="mfd-chip" type="button" data-family="Peptide SM">Sema</button>
-      <button class="mfd-chip" type="button" data-family="Peptide TZ">Tirz</button>
-      <button class="mfd-chip" type="button" data-family="Peptide RT">Reta</button>
-      <button class="mfd-chip" type="button" data-family="NAD+">NAD+</button>
-      <button class="mfd-chip" type="button" data-family="GHK-Cu">GHK-Cu</button>
-      <button class="mfd-chip" type="button" data-family="CJC-1295">CJC/Ipa</button>
-    </div>
-  </div>
+</div>
 </div>
 <div class="mobile-filter-sheet-overlay" id="mobileFilterSheetOverlay" onclick="closeMobileFilterSheet()" aria-hidden="true"></div>
 <section class="mobile-filter-sheet" id="mobileFilterSheet" role="dialog" aria-modal="true" aria-labelledby="mobileFilterSheetTitle" aria-hidden="true">
@@ -1950,7 +1927,7 @@ function scrollMobileResultsToTop(){
   window.scrollTo({top:Math.max(0,top),behavior:"smooth"});
 }
 function setPopularFamily(selected,{scroll=false}={}){
-  activePopularFamily=(selected===activePopularFamily && selected!=="all")?"all":selected;
+  activePopularFamily="all";
   searchTerm="";
   const original=document.getElementById("searchInput"); if(original) original.value="";
   const dock=document.getElementById("mobileDockSearchInput"); if(dock) dock.value="";
@@ -2205,8 +2182,8 @@ window.addEventListener("resize", ()=>{
 // ── Cached product snapshot, one browser request ───────────────────────────
 // Static products render first. After disclaimer acceptance, the browser reads
 // one fast cached snapshot instead of triggering ten vendor refresh workflows.
-const SNAPSHOT_ENDPOINT = "/.netlify/functions/products-snapshot";
-const SNAPSHOT_CACHE_KEY = "mpp_products_snapshot_v4";
+const SNAPSHOT_ENDPOINT = "/.netlify/functions/all-products";
+const SNAPSHOT_CACHE_KEY = "mpp_products_snapshot_v5";
 const ENRICHMENT_ENDPOINT = "/.netlify/functions/catalog-enrichment";
 const SNAPSHOT_CACHE_MAX_AGE = 6 * 60 * 60 * 1000;
 window._apisLoading = false;
@@ -2280,7 +2257,7 @@ function loadCachedSnapshot(){
 async function refreshProductSnapshot(){
   loadCachedSnapshot();
   try{
-    const resp=await fetchWithTimeout(SNAPSHOT_ENDPOINT,10000);
+    const resp=await fetchWithTimeout(SNAPSHOT_ENDPOINT,25000);
     if(!resp.ok) throw new Error(`${resp.status}`);
     const data=await resp.json();
     if(applySnapshotPayload(data)){
