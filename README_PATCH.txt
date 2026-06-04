@@ -1,11 +1,12 @@
-MYPEPTIDEPRICE MOBILE STICKY SALES ROLODEX PATCH
+MyPeptidePrice mobile sticky rolodex + category filters patch
 
-Overwrite these files in the repository root.
+Upload the contents of this patch to the repository root.
 
 Changes:
-- Makes the summer sales rolodex sticky while scrolling on mobile only.
-- Keeps desktop behavior unchanged.
-- Dynamically offsets the sticky catalog controls below the mobile rolodex to prevent overlap.
-- Adds cache-busting asset versions to the homepage and GLP landing page.
+- keeps the summer sales rolodex sticky while scrolling on mobile
+- restores the mobile category filter as a compact horizontal swipe row
+- keeps the mobile format filter directly below the category row
+- keeps sticky catalog controls positioned beneath the rolodex
+- bumps asset versions so browsers load the current CSS and JavaScript
 
-No catalog refresh is required after deployment.
+No API refresh is required.
