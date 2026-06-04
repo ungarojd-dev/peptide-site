@@ -149,6 +149,18 @@ function blendRecord(value) {
   return { id, name, category: inferCategory(name, {}), aliases: [], dynamic: true };
 }
 
+function dedupeLeadingPhrase(str) {
+  const words = str.split(" ");
+  for (let n = Math.floor(words.length / 2); n >= 1; n--) {
+    const prefix = words.slice(0, n).join(" ");
+    const after = words.slice(n).join(" ");
+    if (after.toLowerCase().startsWith(prefix.toLowerCase())) {
+      return (prefix + " " + after.slice(prefix.length).trim()).replace(/\s+/g, " ").trim();
+    }
+  }
+  return str;
+}
+
 function cleanFallbackName(value) {
   let cleaned = compact(value || "Untitled product")
     .replace(/^(glacier\s+aminos?|ion\s+peptide|southern\s+aminos?|labsourced\s+peptides?|mile\s+high\s+(?:compounds?|peptides?)?|solyn\s+labs?|oneday\s+compounds?|glow\s+aminos?|flawless\s+compounds?|instant\s+peptides?)\s*[-:|]?\s*/i, "")
@@ -158,6 +170,14 @@ function cleanFallbackName(value) {
     .replace(/\(\s*\)/g, "")
     .replace(/\s+/g, " ")
     .replace(/\s*[-:/|]\s*$/g, "")
+    .trim();
+  cleaned = dedupeLeadingPhrase(cleaned);
+  cleaned = cleaned
+    .replace(/\s+[A-Z]{2,3}-[A-Z0-9]+-[A-Z0-9]+$/g, "")
+    .replace(/\s+[A-Z]{2,3}-[A-Z]{1,3}\d+\w*$/g, "")
+    .replace(/\s+[a-z]{2,}\d*[a-z]{2,}$/g, "")
+    .replace(/\s+[a-z]{4,}$/g, m => /^(blend|cream|serum|spray|nasal|oral|raw|plus|with|and|for)$/.test(m.trim()) ? m : "")
+    .replace(/\s+/g, " ")
     .trim();
   return cleaned || compact(value) || "Untitled product";
 }
