@@ -105,7 +105,6 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
 
     /* ── NAV ──────────────────────────────────────────────── */
     .sticky-header{position:sticky;top:0;z-index:300;}
-    body.disclaimer-open .sticky-header{pointer-events:none}
     nav{position:relative;z-index:2;background:var(--surface);border-bottom:1px solid var(--border);box-shadow:var(--shadow-sm)}
     .nav-inner{max-width:1200px;margin:0 auto;padding:0 20px;height:60px;display:flex;align-items:center;justify-content:space-between;gap:16px}
     .logo{display:flex;align-items:center;gap:9px;color:var(--ink)}
@@ -330,7 +329,6 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .intro-para p{font-size:12px;color:var(--ink-2);line-height:1.7}
     .intro-para h2{font-family:var(--fd);font-size:18px;line-height:1.2;color:var(--forest);margin-bottom:8px}
     .below-table-intro{padding-top:18px}
-    .disclaimer-bar{background:var(--surface);border:1px solid var(--border);border-left:4px solid var(--olive);border-radius:var(--r-lg);padding:12px 16px;font-size:11px;color:var(--ink-3);line-height:1.6;margin-bottom:16px}
 
     /* ── FOOTER ───────────────────────────────────────────── */
     footer{background:var(--forest);color:rgba(255,255,255,.55);padding:36px 20px 24px;margin-top:48px}
@@ -408,75 +406,42 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     }
 
     /* ── DISCLAIMER MODAL ─────────────────────────────────── */
-    .disclaimer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.78);z-index:999999;display:flex;align-items:center;justify-content:center;padding:16px;backdrop-filter:blur(5px)}
     .disclaimer-overlay.hidden{display:none}
-    .disclaimer-modal{background:var(--surface);border:1px solid rgba(255,255,255,.35);border-radius:var(--r-xl);max-width:540px;width:100%;max-height:min(92vh,780px);overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.42)}
-    .disclaimer-header{background:linear-gradient(135deg,var(--forest) 0%,var(--forest-lt) 100%);padding:20px 24px;border-radius:var(--r-xl) var(--r-xl) 0 0;display:flex;align-items:flex-start;gap:12px;flex-shrink:0}
-    .disclaimer-icon{font-size:22px;line-height:1;flex-shrink:0;margin-top:2px}
     .disclaimer-header h2{font-family:var(--fd);font-size:20px;font-weight:800;color:#fff;line-height:1.2;margin-bottom:4px}
     .disclaimer-header p{font-size:12px;color:rgba(255,255,255,.78);line-height:1.5;max-width:430px}
-    .disclaimer-body{padding:18px 24px 16px;overflow-y:auto;overscroll-behavior:contain}
     .disclaimer-body p{font-size:13px;color:var(--ink-2);line-height:1.6;margin-bottom:12px}
-    .disclaimer-body .disclaimer-prompt{margin:0;font-size:11px;font-weight:900;text-transform:uppercase;letter-spacing:.85px;color:var(--ink-3)}
-    .disclaimer-checks{display:flex;flex-direction:column;gap:8px;margin:10px 0 12px}
-    .disclaimer-check{display:flex;align-items:flex-start;gap:10px;padding:10px 12px;border:1.5px solid var(--border);border-radius:var(--r-md);background:var(--surface);cursor:pointer;transition:border-color .15s,background .15s,box-shadow .15s;user-select:none}
+    .disclaimer-body
     .disclaimer-check:hover{border-color:var(--forest);background:var(--olive-lt)}
     .disclaimer-check.checked{border-color:var(--forest);background:var(--olive-lt);box-shadow:inset 3px 0 0 var(--forest)}
     .disclaimer-check input[type=checkbox]{width:17px;height:17px;flex-shrink:0;margin-top:1px;accent-color:var(--forest);cursor:pointer}
     .disclaimer-check span{font-size:12px;color:var(--ink-2);line-height:1.45;font-weight:650}
     .disclaimer-check strong{color:var(--ink);font-weight:900}
     .disclaimer-check a{color:var(--forest);font-weight:900;text-decoration:underline;text-underline-offset:2px}
-    .disclaimer-more{text-align:center;margin-top:2px}
-    .disclaimer-footer{padding:14px 24px 18px;border-top:1px solid var(--border);display:grid;grid-template-columns:auto auto minmax(190px,1fr);align-items:center;gap:9px;flex-shrink:0;background:var(--surface)}
     .disclaimer-footer button{min-height:42px;border-radius:999px;font-family:var(--fb);font-weight:800;cursor:pointer;transition:all .15s;white-space:nowrap}
-    .disclaimer-accept{padding:11px 18px;background:var(--forest);color:#fff;font-size:13px;border:none;display:flex;align-items:center;justify-content:center;gap:6px}
     .disclaimer-accept:hover:not(:disabled){background:var(--forest-2)}
     .disclaimer-accept:disabled{background:var(--border);cursor:not-allowed;color:var(--ink-3);opacity:.72}
     .disclaimer-decline,.disclaimer-accept-all{padding:10px 14px;font-size:12px}
-    .disclaimer-decline{background:transparent;border:1.5px solid var(--border);color:var(--ink-3)}
     .disclaimer-decline:hover{border-color:var(--ink-2);color:var(--ink-2)}
-    .disclaimer-accept-all{background:var(--sand-lt);border:1.5px solid var(--border);color:var(--ink-2)}
     .disclaimer-accept-all:hover{background:var(--olive-lt);border-color:var(--forest);color:var(--forest)}
-    .disclaimer-link{font-size:11px;color:var(--forest);font-weight:800;text-decoration:underline;text-underline-offset:2px;cursor:pointer;background:none;border:none;font-family:var(--fb);padding:4px 6px}
     @media(max-width:560px){
-      .disclaimer-overlay{align-items:center;padding:10px}
-      .disclaimer-modal{max-height:94vh;border-radius:18px}
-      .disclaimer-header{padding:16px 17px;border-radius:18px 18px 0 0;gap:10px}
-      .disclaimer-icon{font-size:20px}
       .disclaimer-header h2{font-size:18px}
       .disclaimer-header p{font-size:11.5px;line-height:1.45}
-      .disclaimer-body{padding:14px 15px 12px}
       .disclaimer-body p{font-size:12px;line-height:1.5;margin-bottom:10px}
-      .disclaimer-checks{gap:7px;margin:9px 0 9px}
-      .disclaimer-check{gap:9px;padding:9px 10px;border-radius:10px}
       .disclaimer-check input[type=checkbox]{width:16px;height:16px}
       .disclaimer-check span{font-size:11.25px;line-height:1.38}
-      .disclaimer-footer{padding:11px 14px 14px;grid-template-columns:1fr 1fr;gap:8px}
       .disclaimer-footer button{min-height:40px}
-      .disclaimer-accept{grid-column:1/-1;grid-row:1;padding:10px 14px;font-size:12.5px}
-      .disclaimer-decline{grid-column:1;grid-row:2;padding:9px 8px;font-size:11.5px}
-      .disclaimer-accept-all{grid-column:2;grid-row:2;padding:9px 8px;font-size:11.5px}
     }
 
     /* ── FULL DISCLAIMER OVERLAY ──────────────────────────── */
-    .full-disclaimer-overlay{position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:1000001;display:flex;align-items:center;justify-content:center;padding:16px}
     .full-disclaimer-overlay.hidden{display:none}
-    .full-disclaimer-modal{background:var(--surface);border-radius:var(--r-xl);max-width:600px;width:100%;max-height:90vh;display:flex;flex-direction:column;box-shadow:0 24px 64px rgba(0,0,0,.4);border:1px solid var(--border)}
-    .full-disclaimer-header{background:linear-gradient(135deg,var(--forest) 0%,var(--forest-lt) 100%);padding:16px 20px;border-radius:var(--r-xl) var(--r-xl) 0 0;display:flex;align-items:flex-start;justify-content:space-between;gap:10px;flex-shrink:0}
-    .full-disclaimer-header-left{display:flex;align-items:flex-start;gap:10px}
     .full-disclaimer-header h3{font-family:var(--fd);font-size:16px;font-weight:800;color:#fff;margin-bottom:3px}
     .full-disclaimer-header p{font-size:11px;color:rgba(255,255,255,.8)}
-    .full-disclaimer-close{background:rgba(255,255,255,.2);border:none;color:#fff;width:26px;height:26px;border-radius:50%;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
     .full-disclaimer-close:hover{background:rgba(255,255,255,.35)}
-    .full-disclaimer-body{overflow-y:auto;padding:20px 24px;flex:1;color:var(--ink-2);font-size:12px;line-height:1.7}
     .full-disclaimer-body h4{font-size:13px;font-weight:800;color:var(--ink);margin:18px 0 6px;padding-bottom:4px;border-bottom:1px solid var(--border)}
     .full-disclaimer-body h4:first-child{margin-top:0}
     .full-disclaimer-body p{margin-bottom:10px;color:var(--ink-2)}
     .full-disclaimer-body ul{margin:6px 0 10px 18px;display:flex;flex-direction:column;gap:4px}
     .full-disclaimer-body li{color:var(--ink-2)}
-    .full-disclaimer-reminder{background:var(--olive-lt);border:1px solid var(--border);border-radius:var(--r-md);padding:10px 14px;margin-top:16px;font-size:11px;color:var(--ink-2);line-height:1.6}
-    .full-disclaimer-footer{padding:14px 20px;border-top:1px solid var(--border);flex-shrink:0}
-    .full-disclaimer-return{width:100%;padding:11px;border-radius:999px;background:var(--forest);border:none;color:#fff;font-family:var(--fb);font-size:12px;font-weight:700;cursor:pointer;transition:all .15s}
     .full-disclaimer-return:hover{background:var(--forest-2)}
   
     /* MOBILE DRAWER */
@@ -728,102 +693,6 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
 
 
 <!-- Full Disclaimers Modal -->
-<div class="full-disclaimer-overlay hidden" id="fullDisclaimerOverlay">
-  <div class="full-disclaimer-modal">
-    <div class="full-disclaimer-header">
-      <div class="full-disclaimer-header-left">
-        <span style="font-size:20px">📋</span>
-        <div>
-          <h3>Full Legal Disclosures</h3>
-          <p>For reference only. Close this to return to the entry screen.</p>
-        </div>
-      </div>
-      <button class="full-disclaimer-close" onclick="closeFullDisclaimer()">✕</button>
-    </div>
-    <div class="full-disclaimer-body">
-      <h4>What MyPeptidePrice.com Is</h4>
-      <p>MyPeptidePrice.com is an independent price comparison and data aggregation platform. We track and display pricing information from third-party vendors who sell research compounds. We do not manufacture, sell, distribute, ship, or handle any products. Every purchase you make happens directly between you and the vendor, we are not involved in that transaction in any way.</p>
-
-      <h4>Research Use Only</h4>
-      <p>Every product displayed on this site is listed by third-party vendors as a research-use-only (RUO) compound. This means:</p>
-      <ul>
-        <li>These compounds are intended strictly for in-vitro laboratory research and are not approved for human or animal consumption.</li>
-        <li>Nothing on this site has been evaluated by the FDA. These products are not intended to diagnose, treat, cure, or prevent any disease.</li>
-        <li>You are responsible for understanding and complying with the laws in your jurisdiction before accessing, purchasing, or using any product referenced here.</li>
-      </ul>
-
-      <h4>We Are a Price Tracker, Not a Store</h4>
-      <p>We display data. We don't take payments, manage orders, handle shipping, process refunds, or resolve disputes. If you have an issue with a product, order, or vendor, that conversation happens directly with the vendor, not us. All vendor information displayed on this site is provided by the vendors themselves or pulled from their public APIs and product feeds.</p>
-
-      <h4>Affiliate Links & Compensation</h4>
-      <p>Some links on this site are affiliate links. If you click a vendor link and make a purchase, we may earn a commission from the vendor. This commission is paid by the vendor and has no effect on the price you pay. Our affiliate relationships do not determine which vendors are listed, how they are ranked, or how pricing is displayed. We disclose all affiliate relationships in compliance with FTC guidelines.</p>
-
-      <h4>Pricing Accuracy</h4>
-      <p>We update pricing regularly, either through direct vendor API feeds or manual weekly reviews. Despite our best efforts, prices can change between updates, products can go out of stock, and discounts can expire. Always confirm current pricing directly on the vendor's site before purchasing. We are not responsible for discrepancies between prices shown here and prices at checkout.</p>
-
-      <h4>No Rankings, No Endorsements</h4>
-      <p>Displaying a vendor on this site is not an endorsement, certification, or recommendation. We apply a 7/7 third-party testing standard as a minimum listing requirement, but we do not independently verify vendor claims, test products ourselves, or guarantee product quality, purity, or legality. Vendor inclusion is based on meeting our published listing criteria, nothing more.</p>
-
-      <h4>Your Responsibility</h4>
-      <p>By using this site you agree that you are solely responsible for verifying the legal status of any compound in your jurisdiction, using any information on this site lawfully and appropriately, and directing any product or order concerns to the relevant vendor directly.</p>
-
-      <h4>Limitation of Liability</h4>
-      <p>To the fullest extent permitted by applicable law, MyPeptidePrice.com and its operators are not liable for any damages arising from your use of this site, reliance on information displayed here, or purchases made through vendor links. This site is provided as-is without warranties of any kind. Your use of this site is entirely at your own risk.</p>
-
-      <h4>Age Requirement</h4>
-      <p>This site is intended for users who are 21 years of age or older. By continuing, you confirm that you meet this requirement.</p>
-
-      <div class="full-disclaimer-reminder">
-        <strong>Note:</strong> Reviewing these disclosures does not grant access to the site. Return to the entry screen, check all four boxes, and click "Accept All &amp; Enter" to proceed.
-      </div>
-    </div>
-    <div class="full-disclaimer-footer">
-      <button class="full-disclaimer-return" onclick="closeFullDisclaimer()">← Return to acceptance screen</button>
-    </div>
-  </div>
-</div>
-<!-- Research Use Disclaimer Modal -->
-<div class="disclaimer-overlay" id="disclaimerOverlay">
-  <div class="disclaimer-modal" role="dialog" aria-modal="true" aria-labelledby="disclaimerTitle">
-    <div class="disclaimer-header">
-      <span class="disclaimer-icon" aria-hidden="true">⚗️</span>
-      <div>
-        <h2 id="disclaimerTitle">Before You Continue</h2>
-        <p>MyPeptidePrice.com is a research price comparison tool. Please confirm the following before entering.</p>
-      </div>
-    </div>
-    <div class="disclaimer-body">
-      <p>We display current pricing from third-party vendors selling research compounds. We do not sell, ship, manufacture, or handle any products.</p>
-      <p class="disclaimer-prompt">Please acknowledge each item:</p>
-      <div class="disclaimer-checks">
-        <label class="disclaimer-check" for="dc1">
-          <input type="checkbox" id="dc1" />
-          <span>I understand all products are sold for <strong>laboratory research purposes only</strong>, not for human or animal consumption.</span>
-        </label>
-        <label class="disclaimer-check" for="dc2">
-          <input type="checkbox" id="dc2" />
-          <span>I am 21 years of age or older.</span>
-        </label>
-        <label class="disclaimer-check" for="dc3">
-          <input type="checkbox" id="dc3" />
-          <span>I am accessing this site in a research or informational capacity.</span>
-        </label>
-        <label class="disclaimer-check" for="dc4">
-          <input type="checkbox" id="dc4" />
-          <span>I agree to the <a href="terms.html" target="_blank" rel="noopener">Terms of Service</a> and understand that MyPeptidePrice.com is not responsible for third-party vendor products.</span>
-        </label>
-      </div>
-      <div class="disclaimer-more">
-        <button class="disclaimer-link" type="button" onclick="openFullDisclaimer()">📋 View full legal disclosures</button>
-      </div>
-    </div>
-    <div class="disclaimer-footer">
-      <button class="disclaimer-decline" type="button" onclick="declineDisclaimer()">Decline &amp; Exit</button>
-      <button class="disclaimer-accept-all" type="button" onclick="acceptAllAndEnter()">✓ Accept All</button>
-      <button class="disclaimer-accept" id="agreeEnterBtn" type="button" onclick="acceptDisclaimer()" disabled aria-disabled="true">✓ Agree &amp; Enter Site</button>
-    </div>
-  </div>
-</div>
 <!-- Google Tag Manager (noscript) -->
 <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDQM5TBB"
 height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -907,6 +776,9 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <div class="astrip">
   <span class="astrip-desktop">📌 Affiliate disclosure: links include our referral code. <strong>SAMMYC</strong> may apply an additional discount at checkout depending on the vendor.</span>
   <span class="astrip-mobile">📌 Affiliate links use our referral code. <strong>SAMMYC</strong> may add a checkout discount.</span>
+</div>
+<div style="background:#f0ebe0;border-bottom:1px solid #ddd3b8;padding:7px 16px;font-size:11px;color:#555;text-align:center;line-height:1.5;">
+  <strong style="color:#1f3a2d;">Research Use Only:</strong> All products are sold by third-party vendors for laboratory research purposes only. Not for human consumption. Not FDA evaluated. By using this site you confirm you are 21+ and accessing it in a research capacity. <a href="terms.html" style="color:#1f3a2d;font-weight:700;text-decoration:underline;">Terms</a> · <a href="faq.html" style="color:#1f3a2d;font-weight:700;text-decoration:underline;">FAQ</a>
 </div>
 
 <section class="hero">
@@ -1984,19 +1856,20 @@ function rebuildAndRender(){
 }
 
 function renderCompareView(){
+  const grid = document.getElementById("cardsGrid");
+  if(!grid) return; // v3 grid in use — legacy grid removed
   const groups = getFilteredGroups();
-  const grid   = document.getElementById("cardsGrid");
   const noRes  = document.getElementById("noResults");
   document.getElementById("visibleCount").textContent = groups.length;
   const legEl=document.getElementById("visibleCountLegacy"); if(legEl) legEl.textContent=groups.length;
   const legTot=document.getElementById("totalProdCount"); if(legTot) legTot.textContent=PRODUCTS.length;
   if(!groups.length){
     grid.innerHTML = "";
-    noRes.classList.add("show");
+    if(noRes) noRes.classList.add("show");
     const mload2=document.getElementById("mLoading"); if(mload2) mload2.classList.remove("show");
     return;
   }
-  noRes.classList.remove("show");
+  if(noRes) noRes.classList.remove("show");
   const mload=document.getElementById("mLoading"); if(mload) mload.classList.remove("show");
   grid.innerHTML = groups.map((g,i)=>renderCard(g,i)).join("");
 }
@@ -2125,13 +1998,11 @@ document.querySelectorAll("#catChips .cf-chip").forEach(btn=>{
   btn.classList.toggle("active", btn.dataset.cat === activeCat);
 });
 allGroups = buildGroups(PRODUCTS);
-document.getElementById("totalCount").textContent = PRODUCTS.length;
+const _tc=document.getElementById("totalCount"); if(_tc) _tc.textContent=PRODUCTS.length;
 const heroEl=document.getElementById("heroProductsCount");
 if(heroEl) heroEl.textContent=PRODUCTS.length;
 const totalEl=document.getElementById("totalProdCount");
 if(totalEl) totalEl.textContent=PRODUCTS.length;
-const vcEl=document.getElementById("visibleCount");
-if(vcEl) vcEl.textContent="0";
 renderCompareView();
 window.mppCatalogDiagnostics=()=>window.MPPCatalog?window.MPPCatalog.diagnostics(PRODUCTS):{error:"Catalog engine unavailable"};
 let _lastCompareMobile = window.matchMedia("(max-width: 768px)").matches;
@@ -2246,97 +2117,29 @@ async function refreshProductSnapshot(){
 function startSnapshotRefresh(){
   if(_snapshotLoadStarted) return;
   _snapshotLoadStarted=true;
-  // Boot the catalog-v3 UI — this is the live product grid
-  if(window.CatalogV3UI && !window.CatalogV3UI._booted) {
-    window.CatalogV3UI._booted = true;
+  if(window.CatalogV3UI && !window.CatalogV3UI._booted){
+    window.CatalogV3UI._booted=true;
     window.CatalogV3UI.boot();
   }
-  // Legacy snapshot refresh (no-op safe — old cardsGrid no longer in DOM)
   setTimeout(refreshProductSnapshot,600);
 }
 
-// Disclaimer Modal
-const disclaimerCheckboxIds = ['dc1','dc2','dc3','dc4'];
-
-function hasAcceptedDisclaimer(){
-  try { return sessionStorage.getItem('disc_ok') === '1'; }
-  catch(e) { return false; }
-}
-function saveDisclaimerAcceptance(){
-  try { sessionStorage.setItem('disc_ok','1'); }
-  catch(e) { console.log('Disclaimer session storage unavailable'); }
-}
-function allDisclaimerBoxesChecked(){
-  return disclaimerCheckboxIds.every(id=>{
-    const box=document.getElementById(id);
-    return box && box.checked;
-  });
-}
-function updateDisclaimer(){
-  const ready=allDisclaimerBoxesChecked();
-  const btn=document.getElementById('agreeEnterBtn');
-  if(btn){
-    btn.disabled=!ready;
-    btn.setAttribute('aria-disabled', String(!ready));
-  }
-  disclaimerCheckboxIds.forEach(id=>{
-    const box=document.getElementById(id);
-    const label=box ? box.closest('.disclaimer-check') : null;
-    if(label) label.classList.toggle('checked', Boolean(box.checked));
-  });
-  return ready;
-}
-function enterSite(){
-  saveDisclaimerAcceptance();
-  const o=document.getElementById('disclaimerOverlay');
-  if(o) o.style.display='none';
+// Disclaimer removed — replaced with inline legal notice bar
+const disclaimerCheckboxIds=[];
+function hasAcceptedDisclaimer(){ return true; }
+function saveDisclaimerAcceptance(){}
+function updateDisclaimer(){}
+function enterSite(){ startSnapshotRefresh(); }
+function acceptAllAndEnter(){ startSnapshotRefresh(); }
+function acceptAllDisclaimer(){ startSnapshotRefresh(); }
+function acceptDisclaimer(){ startSnapshotRefresh(); }
+function declineDisclaimer(){ window.location.href='https://www.google.com'; }
+function openFullDisclaimer(){}
+function closeFullDisclaimer(){}
+(function initDisclaimer(){
   document.body.classList.remove('disclaimer-open');
   document.body.style.overflow='';
   startSnapshotRefresh();
-}
-function acceptAllAndEnter(){
-  disclaimerCheckboxIds.forEach(id=>{
-    const box=document.getElementById(id);
-    if(box) box.checked=true;
-  });
-  updateDisclaimer();
-  enterSite();
-}
-function declineDisclaimer(){ window.location.href='https://www.google.com'; }
-function acceptDisclaimer(){
-  if(updateDisclaimer()) enterSite();
-}
-function acceptAllDisclaimer(){ acceptAllAndEnter(); }
-function openFullDisclaimer(){
-  const modal=document.getElementById('fullDisclaimerOverlay');
-  if(modal) modal.classList.remove('hidden');
-}
-function closeFullDisclaimer(){
-  const modal=document.getElementById('fullDisclaimerOverlay');
-  if(modal) modal.classList.add('hidden');
-}
-(function initDisclaimer(){
-  const overlay=document.getElementById('disclaimerOverlay');
-  if(!overlay){ startSnapshotRefresh(); return; }
-  // Auto-accept if already done this session
-  if(hasAcceptedDisclaimer()){
-    overlay.style.display='none';
-    document.body.classList.remove('disclaimer-open');
-    document.body.style.overflow='';
-    startSnapshotRefresh();
-    return;
-  }
-  document.body.classList.add('disclaimer-open');
-  document.body.style.overflow='hidden';
-  // Pre-check all boxes so buttons work immediately
-  disclaimerCheckboxIds.forEach(id=>{
-    const box=document.getElementById(id);
-    if(box){
-      box.checked=true;
-      box.addEventListener('change', updateDisclaimer);
-    }
-  });
-  updateDisclaimer();
 })();
 
 function openDrawer(){
