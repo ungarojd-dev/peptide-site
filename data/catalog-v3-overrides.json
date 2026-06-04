@@ -218,7 +218,12 @@
     "vitamin b12 methylcobalamin": "vitamin-b12",
     "vit 010 mh": "vitamin-b12",
     "methyline blue capsules": "methylene-blue",
-    "mbluega": "methylene-blue"
+    "mbluega": "methylene-blue",
+    "cargrilintide": "cagrilintide",
+    "ls car10": "cagrilintide",
+    "glutathione solyn": "glutathione",
+    "sl glt1500": "glutathione",
+    "gluthathione": "glutathione"
   },
   "category_overrides": {},
   "format_overrides": {}
