@@ -2148,39 +2148,7 @@ window.addEventListener("resize", ()=>{
 });
 
 
-// ── Catalog V3 boot (replaces legacy product grid)
-window.addEventListener("DOMContentLoaded", function() {
-  if(window.CatalogV3UI) {
-    // Override clear to also clear search input
-    const origClear = window.CatalogV3UI.clear;
-    window.CatalogV3UI.clear = function() {
-      origClear.call(window.CatalogV3UI);
-      const si = document.getElementById("searchInput");
-      if(si) si.value = "";
-      const cb = document.getElementById("v3ClearFilters");
-      if(cb) cb.style.display = "none";
-    };
-    // Show clear button when filters active
-    const origRender = window.CatalogV3UI.renderCards;
-    window.CatalogV3UI.renderCards = function(scroll) {
-      origRender.call(window.CatalogV3UI, scroll);
-      const s = window.CatalogV3UI.state;
-      const cb = document.getElementById("v3ClearFilters");
-      if(cb) cb.style.display = (s.query||s.category!=="All"||s.format!=="All") ? "" : "none";
-      // Update hero product count
-      const cnt = window.CatalogV3UI.state.cards.length;
-      const heroEl = document.getElementById("heroProdCount");
-      const statsEl = document.getElementById("totalProdCount");
-      const totalEl = document.getElementById("totalCount");
-      if(heroEl) heroEl.textContent = cnt;
-      if(statsEl) statsEl.textContent = cnt;
-      if(totalEl) totalEl.textContent = cnt;
-    };
-    window.CatalogV3UI.boot();
-  }
-});
-
-// ── Cached product snapshot (legacy — no longer used for grid), one browser request ───────────────────────────
+// ── Cached product snapshot (legacy — grid now powered by catalog-v3-ui.js), one browser request ───────────────────────────
 // Static products render first. After disclaimer acceptance, the browser reads
 // one fast cached snapshot instead of triggering ten vendor refresh workflows.
 const SNAPSHOT_ENDPOINT = "/.netlify/functions/all-products";
@@ -2278,6 +2246,12 @@ async function refreshProductSnapshot(){
 function startSnapshotRefresh(){
   if(_snapshotLoadStarted) return;
   _snapshotLoadStarted=true;
+  // Boot the catalog-v3 UI — this is the live product grid
+  if(window.CatalogV3UI && !window.CatalogV3UI._booted) {
+    window.CatalogV3UI._booted = true;
+    window.CatalogV3UI.boot();
+  }
+  // Legacy snapshot refresh (no-op safe — old cardsGrid no longer in DOM)
   setTimeout(refreshProductSnapshot,600);
 }
 
