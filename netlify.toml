@@ -4,55 +4,27 @@
 [functions]
   node_bundler = "esbuild"
 
-# Decap CMS — Netlify Identity for login
-[[headers]]
-  for = "/admin/*"
-  [headers.values]
-    X-Frame-Options = "SAMEORIGIN"
-    X-Content-Type-Options = "nosniff"
-
-# Refresh the last-known-good product snapshot every 15 minutes.
-[functions."refresh-products-snapshot"]
+[functions."refresh-catalog-snapshot"]
   schedule = "*/15 * * * *"
-
-
-# Refresh the pre-grouped Catalog V3 snapshot every 15 minutes.
-[functions."refresh-catalog-v3-snapshot"]
-  schedule = "*/15 * * * *"
-
-# Keep static pages fresh at the CDN while allowing fast stale responses during revalidation.
-[[headers]]
-  for = "/"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-    Netlify-CDN-Cache-Control = "public, max-age=0, stale-while-revalidate=86400"
-
-[[headers]]
-  for = "/*.html"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-    Netlify-CDN-Cache-Control = "public, max-age=0, stale-while-revalidate=86400"
-
-[[headers]]
-  for = "/blog/*"
-  [headers.values]
-    Cache-Control = "public, max-age=0, must-revalidate"
-    Netlify-CDN-Cache-Control = "public, max-age=0, stale-while-revalidate=86400"
 
 [[headers]]
   for = "/assets/*"
   [headers.values]
     Cache-Control = "public, max-age=604800, stale-while-revalidate=86400"
 
-# Parallel Catalog V3 preview and QA pages should not be indexed.
 [[headers]]
-  for = "/catalog-v3.html"
+  for = "/data/catalog-fallback-snapshot.json"
+  [headers.values]
+    Cache-Control = "public, max-age=300, stale-while-revalidate=21600"
+
+[[headers]]
+  for = "/admin/catalog-status.html"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
     Cache-Control = "no-store"
 
 [[headers]]
-  for = "/catalog-v3-debug.html"
+  for = "/admin/*"
   [headers.values]
-    X-Robots-Tag = "noindex, nofollow"
-    Cache-Control = "no-store"
+    X-Frame-Options = "SAMEORIGIN"
+    X-Content-Type-Options = "nosniff"

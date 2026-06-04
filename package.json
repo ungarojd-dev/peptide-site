@@ -1,6 +1,7 @@
 {
-  "name": "mypeptideprice-static-site",
+  "name": "mypeptideprice-clean-static-site",
   "private": true,
+  "type": "module",
   "dependencies": {
     "@netlify/blobs": "^10.0.8"
   },
@@ -8,7 +9,9 @@
     "node": "20.x"
   },
   "scripts": {
-    "build:catalog-v3-fallback": "node scripts/build-catalog-v3-fallback.mjs",
-    "test:catalog-v3": "node scripts/test-catalog-v3.mjs"
+    "build:fallback": "node scripts/build-catalog-fallback.mjs",
+    "test:catalog": "node scripts/test-catalog.mjs",
+    "validate": "node scripts/validate-build.mjs",
+    "test": "npm run build:fallback && npm run test:catalog && npm run validate"
   }
 }

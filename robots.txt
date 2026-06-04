@@ -1,7 +1,4 @@
 User-agent: *
 Allow: /
-
-Disallow: /catalog-v3.html
-Disallow: /catalog-v3-debug.html
-
+Disallow: /admin/
 Sitemap: https://mypeptideprice.com/sitemap.xml
