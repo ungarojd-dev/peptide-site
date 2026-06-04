@@ -722,6 +722,7 @@ src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1"
     .vrow-logo[src*="flawless-compounds"],.vrow-logo[src*="glow-aminos"]{background:#fff9fb;border-color:#e4d8d8}
     .vrow-logo[src*="oneday-compounds"]{background:#f2f8fb;border-color:#d8e4ee}
 </style>
+  <link rel="stylesheet" href="assets/catalog-v3.css"/>
 </head>
 <body>
 
@@ -941,7 +942,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <div class="search-row">
       <div class="search-wrap">
         <span class="search-icon">🔍</span>
-        <input class="search-input" id="searchInput" type="search" placeholder="Search products, vendors, or compounds, e.g. BPC-157, Semaglutide, NAD+..." autocomplete="off" spellcheck="false"/>
+        <input class="search-input" id="searchInput" type="search" oninput="if(window.CatalogV3UI){window.CatalogV3UI.state.query=this.value;window.CatalogV3UI.renderCards(false);}" placeholder="Search products, vendors, or compounds, e.g. BPC-157, Semaglutide, NAD+..." autocomplete="off" spellcheck="false"/>
       </div>
       <span class="results-meta">Showing <strong id="visibleCountLegacy">0</strong> of <strong id="totalProdCount">0</strong> products</span>
     </div>
@@ -1000,64 +1001,32 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 </section>
 
 <main id="priceTable">
-
-  <!-- ── COMPARE BY PRODUCT VIEW ─────────────────────────── -->
-  <div id="compareView">
-
-    <!-- Unified filter bar: view toggle + category + format + more filters -->
-    <div class="unified-filter-bar">
-      <div class="unified-filter-inner">
-
-        <!-- Row 1: count + sort -->
-        <div class="ufb-top-row">
-          <div class="ufb-meta">
-            <span class="ufb-count">Showing <strong id="visibleCount">0</strong> groups</span>
-            <select class="vm-sort" id="cardSortSelect" onchange="onSortChange()" aria-label="Sort results">
-              <option value="name-asc">A to Z</option>
-              <option value="name-desc">Z to A</option>
-              <option value="vendors-desc">Most vendors</option>
-            </select>
-          </div>
-          <button class="cf-more-btn" onclick="clearFilters()" id="clearAllBtn" style="display:none">✕ Clear filters</button>
-        </div>
-
-        <!-- Row 2: category chips -->
-        <div class="ufb-chips-row">
-          <span class="ufb-label">CATEGORY</span>
-          <div class="cf-chips" id="catChips" role="group" aria-label="Format filter">
-            <button class="cf-chip active" data-cat="all"                   onclick="setCatFilter('all',this)">All</button>
-            <button class="cf-chip" data-cat="Peptides"                     onclick="setCatFilter('Peptides',this)">Peptides</button>
-            <button class="cf-chip" data-cat="Bioregulators"                onclick="setCatFilter('Bioregulators',this)">Bioregulators</button>
-            <button class="cf-chip" data-cat="Capsules"                     onclick="setCatFilter('Capsules',this)">Capsules</button>
-            <button class="cf-chip" data-cat="Liquids"                      onclick="setCatFilter('Liquids',this)">Liquids</button>
-            <button class="cf-chip" data-cat="Aminos"                       onclick="setCatFilter('Aminos',this)">Aminos</button>
-            <button class="cf-chip" data-cat="Nasal Sprays"                 onclick="setCatFilter('Nasal Sprays',this)">Nasal Sprays</button>
-            <button class="cf-chip" data-cat="Topicals"                     onclick="setCatFilter('Topicals',this)">Topicals</button>
-            <button class="cf-chip" data-cat="Supplies"                     onclick="setCatFilter('Supplies',this)">Supplies</button>
-            <button class="cf-chip" data-cat="Dissolvable Strips"           onclick="setCatFilter('Dissolvable Strips',this)">Dissolvable Strips</button>
-          </div>
-        </div>
-
-
-
+  <section class="v3-controls" style="background:var(--surface,#fff);border-bottom:1px solid var(--border,#e8e0d0);padding:10px 0;">
+    <div style="max-width:1200px;margin:0 auto;padding:0 14px;">
+      <div class="v3-filter-category">
+        <div class="v3-filter-title">CATEGORY</div>
+        <div class="v3-chips" id="v3Categories"></div>
+      </div>
+      <div style="display:flex;align-items:center;gap:10px;margin-top:8px;">
+        <span class="v3-filter-title">FORMAT</span>
+        <div class="v3-chips" id="v3Formats"></div>
+      </div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:8px;">
+        <span id="v3Status" style="font-size:12px;color:var(--ink-2,#666);">Loading product cards...</span>
+        <button type="button" id="v3ClearFilters" onclick="window.CatalogV3UI&&window.CatalogV3UI.clear()" style="display:none;font-size:11px;font-weight:700;color:var(--forest,#1f3a2d);background:none;border:none;cursor:pointer;padding:4px 8px;">✕ Clear filters</button>
       </div>
     </div>
-
-    <div id="mobileFilterDockSentinel" aria-hidden="true"></div>
-
-    <!-- Product cards -->
-    <div class="grouped-cards-wrap">
-      <div class="grouped-cards" id="cardsGrid"></div>
-      <div class="no-results" id="noResults">
-        <div class="no-results-icon">🔍</div>
-        <div class="no-results-text">No products found</div>
-        <div class="no-results-sub">Try adjusting your search or clearing filters</div>
-      </div>
-      <div class="m-loading" id="mLoading"><div class="m-spinner"></div>Loading live prices…</div>
+  </section>
+  <div id="mobileFilterDockSentinel" aria-hidden="true"></div>
+  <div style="max-width:1200px;margin:0 auto;">
+    <main class="v3-main" style="padding:0;"><div class="v3-grid" id="v3Grid"></div></main>
+  </div>
+  <div class="v3-mobile-dock">
+    <div class="v3-mobile-search-row">
+      <input class="v3-mobile-search" id="v3MobileSearch" placeholder="Search catalog..."/>
+      <button class="v3-mobile-clear" id="v3MobileClear" type="button">Clear</button>
     </div>
   </div>
-
-
 </main>
 
 <footer>
@@ -1104,7 +1073,7 @@ height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
   </div>
 </footer>
 
-<script src="assets/catalog-engine.js"></script>
+<script src="assets/catalog-v3-ui.js"></script>
 <script>
 const FULL_LOGOS = {
   glacier: "assets/vendor-logos/glacier-aminos.webp",
@@ -2179,7 +2148,39 @@ window.addEventListener("resize", ()=>{
 });
 
 
-// ── Cached product snapshot, one browser request ───────────────────────────
+// ── Catalog V3 boot (replaces legacy product grid)
+window.addEventListener("DOMContentLoaded", function() {
+  if(window.CatalogV3UI) {
+    // Override clear to also clear search input
+    const origClear = window.CatalogV3UI.clear;
+    window.CatalogV3UI.clear = function() {
+      origClear.call(window.CatalogV3UI);
+      const si = document.getElementById("searchInput");
+      if(si) si.value = "";
+      const cb = document.getElementById("v3ClearFilters");
+      if(cb) cb.style.display = "none";
+    };
+    // Show clear button when filters active
+    const origRender = window.CatalogV3UI.renderCards;
+    window.CatalogV3UI.renderCards = function(scroll) {
+      origRender.call(window.CatalogV3UI, scroll);
+      const s = window.CatalogV3UI.state;
+      const cb = document.getElementById("v3ClearFilters");
+      if(cb) cb.style.display = (s.query||s.category!=="All"||s.format!=="All") ? "" : "none";
+      // Update hero product count
+      const cnt = window.CatalogV3UI.state.cards.length;
+      const heroEl = document.getElementById("heroProdCount");
+      const statsEl = document.getElementById("totalProdCount");
+      const totalEl = document.getElementById("totalCount");
+      if(heroEl) heroEl.textContent = cnt;
+      if(statsEl) statsEl.textContent = cnt;
+      if(totalEl) totalEl.textContent = cnt;
+    };
+    window.CatalogV3UI.boot();
+  }
+});
+
+// ── Cached product snapshot (legacy — no longer used for grid), one browser request ───────────────────────────
 // Static products render first. After disclaimer acceptance, the browser reads
 // one fast cached snapshot instead of triggering ten vendor refresh workflows.
 const SNAPSHOT_ENDPOINT = "/.netlify/functions/all-products";
