@@ -17,7 +17,11 @@
       "name": "Acetic Acid",
       "category": "Supplies",
       "aliases": [
-        "Acetic Acid"
+        "Acetic Acid",
+        "acetic acid",
+        "acetic acid 0.6%",
+        "acetic acid solution",
+        "glacial acetic acid"
       ]
     },
     {
@@ -128,7 +132,12 @@
         "Hospira SodiumBenzyl BAC Water",
         "bacteriostatic water 10ml",
         "bacteriostatic water 30ml",
-        "hospira bac water"
+        "hospira bac water",
+        "0.9% benzyl alcohol solution",
+        "benzyl alcohol 0.9%",
+        "0.9 benzyl alcohol",
+        "benzyl alcohol solution 10ml",
+        "benzyl alcohol solution 30ml"
       ]
     },
     {
@@ -1315,7 +1324,10 @@
         "gla-3-rt",
         "glp3-r",
         "FG3-R",
-        "FG3 R"
+        "FG3 R",
+        "peptide-r",
+        "peptide r",
+        "peptide r retatrutide"
       ]
     },
     {
@@ -1381,7 +1393,10 @@
         "gla-1-sm",
         "glp-1-sm",
         "FG1-S",
-        "FG1 S"
+        "FG1 S",
+        "peptide-s",
+        "peptide s",
+        "peptide s semaglutide"
       ]
     },
     {
@@ -1400,7 +1415,10 @@
         "semax",
         "n-acetyl semax",
         "na semax",
-        "semax acetyl"
+        "semax acetyl",
+        "n acetyl semax",
+        "semax (n-acetyl)",
+        "na-semax"
       ]
     },
     {
@@ -1744,7 +1762,10 @@
         "glp2-t",
         "mhc-2 trz",
         "FG2-T",
-        "FG2 T"
+        "FG2 T",
+        "peptide-t",
+        "peptide t",
+        "peptide t tirzepatide"
       ]
     },
     {
