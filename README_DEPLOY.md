@@ -39,3 +39,7 @@ Run:
 npm install
 npm test
 ```
+
+## Summer sales rolodex and affiliate URL rules
+
+The homepage and GLP landing page include a compact rotating summer-sales rolodex. Product-card links use vendor-specific rules. For vendors that support direct links, the exact product permalink is retained and the approved referral or coupon query parameters are appended after the product path. Solyn Labs and Oneday Compounds intentionally use their partner landing URLs instead of direct product permalinks.

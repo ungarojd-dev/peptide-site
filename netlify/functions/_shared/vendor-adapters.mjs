@@ -265,11 +265,11 @@ function configUrl(vendor) {
 }
 
 export const VENDOR_ADAPTERS = [
-  wooAdapter({ vendor: "Glacier Aminos", base: "https://glacieraminos.shop/wp-json/wc/v3", ckEnv: "GLACIER_CK", csEnv: "GLACIER_CS", affiliateUrl: configUrl("Glacier Aminos"), affiliateParams: { coupon: "SammyC" } }),
-  wooAdapter({ vendor: "Ion Peptide", base: "https://ionpeptide.com/wp-json/wc/v3", ckEnv: "ION_CK", csEnv: "ION_CS", affiliateUrl: configUrl("Ion Peptide"), affiliateParams: { ref: "SAMMYC" }, timeoutMs: 25000 }),
+  wooAdapter({ vendor: "Glacier Aminos", base: "https://glacieraminos.shop/wp-json/wc/v3", ckEnv: "GLACIER_CK", csEnv: "GLACIER_CS", affiliateUrl: configUrl("Glacier Aminos"), affiliateParams: { ref: "SammyC", coupon: "SammyC" } }),
+  wooAdapter({ vendor: "Ion Peptide", base: "https://ionpeptide.com/wp-json/wc/v3", ckEnv: "ION_CK", csEnv: "ION_CS", affiliateUrl: configUrl("Ion Peptide"), affiliateParams: { ref: "SammyC" }, timeoutMs: 25000 }),
   wooAdapter({ vendor: "Southern Aminos", base: "https://southernaminos.com/wp-json/wc/v3", ckEnv: "SOUTHERN_CK", csEnv: "SOUTHERN_CS", affiliateUrl: configUrl("Southern Aminos"), affiliateParams: { coupon: "sammyc" } }),
   wooAdapter({ vendor: "Flawless Compounds", base: "https://flawlesscompounds.com/wp-json/wc/v3", ckEnv: "FLAWLESS_CK", csEnv: "FLAWLESS_CS", affiliateUrl: configUrl("Flawless Compounds"), affiliateParams: { coupon: "SammyC" } }),
-  wooAdapter({ vendor: "Glow Aminos", base: "https://glowaminos.com/wp-json/wc/v3", ckEnv: "GLOW_CK", csEnv: "GLOW_CS", affiliateUrl: configUrl("Glow Aminos"), affiliateParams: { coupon: "SammyC" } }),
+  wooAdapter({ vendor: "Glow Aminos", base: "https://glowaminos.com/wp-json/wc/v3", ckEnv: "GLOW_CK", csEnv: "GLOW_CS", affiliateUrl: configUrl("Glow Aminos"), affiliateParams: { ref: "sammyc", coupon: "SammyC" } }),
   wooAdapter({ vendor: "Mile High Peptides", base: "https://milehighcompounds.is/wp-json/wc/v3", ckEnv: "MILEHIGH_CK", csEnv: "MILEHIGH_CS", affiliateUrl: configUrl("Mile High Peptides"), affiliateParams: { ref: "sammyc" } }),
   instantAdapter(),
   labSourcedAdapter(),
