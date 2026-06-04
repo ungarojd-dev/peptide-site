@@ -21,7 +21,9 @@
         "acetic acid",
         "acetic acid 0.6%",
         "acetic acid solution",
-        "glacial acetic acid"
+        "glacial acetic acid",
+        "acetic acid 10ml",
+        "0.6% acetic acid"
       ]
     },
     {
@@ -39,7 +41,10 @@
       "name": "Adamax",
       "category": "Other",
       "aliases": [
-        "adamax"
+        "adamax",
+        "Adamax",
+        "adamax 10mg",
+        "adx-010"
       ]
     },
     {
@@ -605,7 +610,11 @@
       "category": "Growth Hormone Research",
       "aliases": [
         "ghrp-6",
-        "ghrp 6"
+        "ghrp 6",
+        "GHRP-6",
+        "ghrp6",
+        "ghrp-6 10mg",
+        "ghrp 6 5mg"
       ]
     },
     {
@@ -753,7 +762,11 @@
         "IGF1-LR3",
         "IGF1 LR3",
         "igf-1-lr3",
-        "igf lr3"
+        "igf lr3",
+        "igf-lr3 1mg",
+        "igf1-lr3 1mg",
+        "igf-lr3",
+        "IGF-LR3"
       ]
     },
     {
@@ -825,7 +838,11 @@
       "name": "L-Carnitine",
       "category": "Metabolic & Mitochondrial",
       "aliases": [
-        "L-Carnitine"
+        "l-carnitine",
+        "l carnitine",
+        "L-Carnitine",
+        "lcarnitine",
+        "l-carnitine 10ml"
       ]
     },
     {
@@ -1119,7 +1136,13 @@
       "category": "Skin, Tanning & Sexual Health",
       "aliases": [
         "oxytocin",
-        "oxy"
+        "Oxytocin",
+        "oxt",
+        "oxytocin 10mg",
+        "oxytocin 5mg",
+        "oxt-10",
+        "oxt 10",
+        "OXYTOCIN"
       ]
     },
     {
@@ -1177,7 +1200,10 @@
       "category": "Cognitive & Nootropic",
       "aliases": [
         "pe-22-28",
-        "pe 22 28"
+        "pe 22 28",
+        "PE-22-28",
+        "pe-22-28 10mg",
+        "pe2228"
       ]
     },
     {
@@ -1186,7 +1212,10 @@
       "category": "Other",
       "aliases": [
         "peg-mgf",
-        "peg mgf"
+        "peg mgf",
+        "pegmgf",
+        "PEG-MGF",
+        "peg-mgf 2mg"
       ]
     },
     {
@@ -1243,7 +1272,10 @@
       "category": "Other",
       "aliases": [
         "pnc-27",
-        "pnc 27"
+        "pnc 27",
+        "PNC-27",
+        "pnc-27 5mg",
+        "pnc27"
       ]
     },
     {
@@ -1288,8 +1320,12 @@
       "name": "Reconstitution Water",
       "category": "Supplies",
       "aliases": [
-        "Reconstitution Water",
-        "Reconstitution Solution"
+        "reconstitution water",
+        "reconstitution solution",
+        "Reconstitution Water 0.9% Alcohol",
+        "BAC Water 0.9%",
+        "reconstitution water 0.9",
+        "bacteriostatic alcohol solution"
       ]
     },
     {
@@ -1546,7 +1582,10 @@
       "name": "Sterile Water",
       "category": "Supplies",
       "aliases": [
-        "Sterile Water"
+        "sterile water",
+        "STERILE WATER",
+        "sterile water 10ml",
+        "sterile saline"
       ]
     },
     {
@@ -1801,7 +1840,13 @@
         "Vial Caps & Covers",
         "3ML Vial Caps/Cover",
         "Aegis Vial Covers",
-        "Aegis Vial Cover"
+        "Aegis Vial Cover",
+        "Aegis Vial Covers",
+        "aegis vial cover",
+        "aegis vial covers",
+        "vial cover blue",
+        "vial cover red",
+        "vial cover white"
       ]
     },
     {
