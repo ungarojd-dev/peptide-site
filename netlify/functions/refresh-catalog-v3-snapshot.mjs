@@ -1,3 +1,5 @@
+// catalog bundle-bust: 1780575024
+// catalog-v3-overrides bundle-bust: v1780575024
 import { buildFreshCatalog } from "./_shared/catalog-v3-feeds.mjs";
 import { readCatalogV3Snapshot, writeCatalogV3Snapshot } from "./_shared/catalog-v3-store.mjs";
 
