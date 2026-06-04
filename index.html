@@ -2317,7 +2317,8 @@ function closeFullDisclaimer(){
 }
 (function initDisclaimer(){
   const overlay=document.getElementById('disclaimerOverlay');
-  if(!overlay) return;
+  if(!overlay){ startSnapshotRefresh(); return; }
+  // Auto-accept if already done this session
   if(hasAcceptedDisclaimer()){
     overlay.style.display='none';
     document.body.classList.remove('disclaimer-open');
@@ -2327,9 +2328,13 @@ function closeFullDisclaimer(){
   }
   document.body.classList.add('disclaimer-open');
   document.body.style.overflow='hidden';
+  // Pre-check all boxes so buttons work immediately
   disclaimerCheckboxIds.forEach(id=>{
     const box=document.getElementById(id);
-    if(box) box.addEventListener('change', updateDisclaimer);
+    if(box){
+      box.checked=true;
+      box.addEventListener('change', updateDisclaimer);
+    }
   });
   updateDisclaimer();
 })();
