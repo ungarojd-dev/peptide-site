@@ -17,6 +17,16 @@
     {vendor:"Glow Aminos",line:"20% off sitewide",detail:"+ stackable pack deals, extra savings with code SAMMYC",href:"https://glowaminos.com/?ref=sammyc&coupon=SammyC"},
     {vendor:"Flawless Compounds",line:"20% off sitewide",detail:"+ stackable pack deals, extra savings with code SAMMYC",href:"https://flawlesscompounds.com/shop/?coupon=SammyC"}
   ];
+  const saleBanner=document.querySelector(".sale-banner");
+  const syncSaleBannerHeight=()=>{
+    if(!saleBanner) return;
+    document.documentElement.style.setProperty("--sale-banner-height",`${Math.ceil(saleBanner.offsetHeight)}px`);
+  };
+  if(saleBanner){
+    syncSaleBannerHeight();
+    window.addEventListener("resize",syncSaleBannerHeight);
+    if("ResizeObserver" in window) new ResizeObserver(syncSaleBannerHeight).observe(saleBanner);
+  }
   const saleCard=document.querySelector("[data-sale-card]");
   if(saleCard&&summerDeals.length){
     const saleCount=document.querySelector("[data-sale-count]");
@@ -30,7 +40,7 @@
       saleCard.innerHTML=`<span class="sale-vendor">${deal.vendor}</span><span class="sale-pct"><strong>${deal.line}</strong> ${deal.detail}</span><span class="sale-cta-chip">View deal</span>`;
       if(saleCount) saleCount.textContent=`${saleIndex+1} / ${summerDeals.length}`;
       saleCard.classList.remove("sale-flip-in");
-      requestAnimationFrame(()=>requestAnimationFrame(()=>saleCard.classList.add("sale-flip-in")));
+      requestAnimationFrame(()=>requestAnimationFrame(()=>{saleCard.classList.add("sale-flip-in");syncSaleBannerHeight()}));
     };
     const rotate=direction=>{saleIndex=(saleIndex+direction+summerDeals.length)%summerDeals.length;renderSale()};
     const restart=()=>{clearInterval(saleTimer);saleTimer=setInterval(()=>rotate(1),3600)};

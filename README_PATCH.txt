@@ -1,12 +1,11 @@
-MyPeptidePrice rolodex cache fix
+MYPEPTIDEPRICE MOBILE STICKY SALES ROLODEX PATCH
 
-Copy the files in this folder into the root of the local peptide-site repository.
-Choose Replace the files in the destination when Windows asks.
+Overwrite these files in the repository root.
 
-This patch:
-- forces browsers to load the current rolodex CSS and JavaScript
-- restores the summer sales rolodex styling
-- keeps mobile category filters hidden
-- does not change catalog API logic
+Changes:
+- Makes the summer sales rolodex sticky while scrolling on mobile only.
+- Keeps desktop behavior unchanged.
+- Dynamically offsets the sticky catalog controls below the mobile rolodex to prevent overlap.
+- Adds cache-busting asset versions to the homepage and GLP landing page.
 
-After the Netlify deployment publishes, hard-refresh the homepage once.
+No catalog refresh is required after deployment.
