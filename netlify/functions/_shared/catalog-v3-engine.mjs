@@ -107,7 +107,39 @@ for (const record of catalogPayload.products || []) {
 }
 aliasEntries.sort((a, b) => b.tokens - a.tokens || b.length - a.length);
 
-const forcedAliases = Object.entries(overridePayload.forced_aliases || {})
+// Hardcoded critical aliases — always present regardless of JSON bundle state
+const HARDCODED_FORCED_ALIASES = {
+  // LabSourced Peptide-R/T/S naming
+  "peptide r": "retatrutide", "peptide-r": "retatrutide",
+  "peptide t": "tirzepatide", "peptide-t": "tirzepatide",
+  "peptide s": "semaglutide", "peptide-s": "semaglutide",
+  // Ion shortcodes
+  "tesa": "tesamorelin", "tesa ipamo": "ipamorelin-plus-tesamorelin-blend",
+  "cag": "cagrilintide", "sermo": "sermorelin", "ipamo": "ipamorelin",
+  "bw h brand": "bacteriostatic-water",
+  "mlt i": "melanotan-i", "mlt ii": "melanotan-ii", "mlt 1": "melanotan-i", "mlt 2": "melanotan-ii",
+  "oxt 10": "oxytocin", "oxt10": "oxytocin",
+  // Southern SKU patterns
+  "us hgh176 5": "hgh-fragment-176-191",
+  "us oxy 10": "oxytocin", "oxn 010 mh": "oxytocin",
+  // FOX04 zero typo
+  "fox04 dri": "foxo4-dri", "fox04": "foxo4-dri",
+  // § symbol for SS-31
+  "§ 31": "ss-31",
+  // Glacier patterns
+  "s 31 s": "ss-31", "mtp10ga": "ss-31",
+  "bpc tb 500 wolverine": "bpc-157-plus-tb-500-blend",
+  "gla 1 sm": "semaglutide", "gla 2 trz": "tirzepatide", "gla 3 rt": "retatrutide",
+  // Cargilintide typo
+  "cargilintide": "cagrilintide", "cargrilintide": "cagrilintide",
+  "cargilintide 10mg": "cagrilintide",
+  // Glutathione typo
+  "gluthathione": "glutathione", "sl glt1500": "glutathione",
+  // Methylene blue typo
+  "methyline blue": "methylene-blue", "methyline blue capsules": "methylene-blue",
+};
+
+const forcedAliases = Object.entries({ ...(overridePayload.forced_aliases || {}), ...HARDCODED_FORCED_ALIASES })
   .map(([alias, id]) => ({ alias, id, norm: normalized(alias), regex: phraseRegex(alias) }))
   .sort((a, b) => b.norm.split(/\s+/).length - a.norm.split(/\s+/).length || b.norm.length - a.norm.length);
 
@@ -260,7 +292,18 @@ function vendorMeta(vendor) {
 
 function exclusionReason(raw) {
   const haystack = normalized([raw.product, raw.listing, raw.sku, raw.category, raw.raw_category].filter(Boolean).join(" "));
-  const matched = (overridePayload.exclude_terms || []).find(term => haystack.includes(normalized(term)));
+  const HARDCODED_EXCLUDES = [
+    "limited edition 7x tested 1st anniversary tee", "anniversary tee", "mhc-tee",
+    "1st anniversary tee", "oversized tee", "tee shirt", "t-shirt",
+    "lemon bottle", "ksptn", "extend product protection", "helloextend",
+    "ship safely", "shipping protection", "shipping insurance",
+    "package protection", "route protection", "gift card",
+    "syn-ake (raw)", "biotinyl tripeptide", "palmitoyl pentapeptide-4 (raw)",
+    "ghk-cu copper peptide shampoo", "ghk-cu copper peptide conditioner",
+    "ghk-cu tallow honey balm", "ghk-cu hla sheet mask",
+  ];
+  const allExcludes = [...(overridePayload.exclude_terms || []), ...HARDCODED_EXCLUDES];
+  const matched = allExcludes.find(term => haystack.includes(normalized(term)));
   return matched ? `exclude-term:${matched}` : "";
 }
 
