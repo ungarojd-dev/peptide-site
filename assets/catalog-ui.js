@@ -45,8 +45,8 @@
   function applyCatalog(catalog,source){if(!catalog?.products?.length)return;state.catalog=catalog;state.cards=catalog.products;state.source=source;updateStats();renderFilters();renderCards(false);}
   function clear(){state.query="";state.category=document.body.dataset.defaultCategory||"All";state.format="All";$("catalogSearch").value="";renderFilters();renderCards(true);}
   async function boot(){
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=base-affiliate-links-20260605a",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=base-affiliate-links-20260605a",10000);
     try{const fallback=await fallbackPromise;applyInitialFilters();applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message)}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){$("catalogStatus").textContent="Catalog unavailable";$("catalogGrid").innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`}}
     $("catalogSearch").oninput=event=>{state.query=event.target.value;renderCards(false)};$("catalogClear").onclick=clear;
