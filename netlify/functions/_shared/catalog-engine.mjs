@@ -344,7 +344,7 @@ export function normalizeOffer(raw = {}, options = {}) {
     discount_percent: discount,
     coupon_code: discount > 0 ? COUPON_CODE : "",
     in_stock: source.in_stock !== false,
-    affiliate_url: compact(source.url || meta.affiliate_url || "#"),
+    affiliate_url: compact((meta.use_product_deep_links === true ? source.url : meta.affiliate_url) || meta.affiliate_url || "#"),
     raw_product: compact(source.raw_product || source.product || source.name || source.title || source.listing || "Untitled product"),
     raw_listing: compact(source.raw_listing || source.listing || source.product || source.name || source.title || "Untitled product"),
     sku: compact(source.sku || ""),
