@@ -150,7 +150,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260608-promotions1";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260608-promotions2";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{

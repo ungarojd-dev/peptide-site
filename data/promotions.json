@@ -1,7 +1,7 @@
 {
-  "version": "2026-06-08-promotions-v1",
+  "version": "2026-06-08-promotions-v2",
   "timezone": "America/New_York",
-  "updated_at": "2026-06-08T00:00:00-04:00",
+  "updated_at": "2026-06-08T18:30:00-04:00",
   "promotions": [
     {
       "id": "southern-sitewide-25",
@@ -20,31 +20,31 @@
       "id": "southern-giveaway-june-8-12",
       "vendor": "Southern Aminos",
       "display_vendor": "Southern Aminos",
-      "headline": "$75+ order giveaway",
-      "short_detail": "June 8 to 12, $75+ orders enter drawing, 3 winners",
+      "headline": "$75+ giveaway, 3 winners",
+      "short_detail": "June 8 to 12, each winner gets $300 store credit and a white 10-slot vial case",
       "full_detail": "Orders of $75 or more placed from June 8 through June 12 are automatically entered into a drawing. There will be three winners. Each winner will receive $300 in Southern Aminos store credit and one white 10-slot vial case. Confirm official giveaway terms directly with Southern Aminos.",
       "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
       "start_at": "2026-06-08T00:00:00-04:00",
       "end_at": "2026-06-12T23:59:59-04:00",
       "show_in_rolodex": true,
       "show_vendor_badge": true,
-      "priority": 115,
-      "badge": "Giveaway: $75+ orders"
+      "priority": 140,
+      "badge": "Giveaway: $75+ orders, 3 winners"
     },
     {
       "id": "southern-giveaway-june-15-19",
       "vendor": "Southern Aminos",
       "display_vendor": "Southern Aminos",
-      "headline": "$75+ order giveaway",
-      "short_detail": "June 15 to 19, $75+ orders enter drawing, 3 winners",
+      "headline": "$75+ giveaway, 3 winners",
+      "short_detail": "June 15 to 19, each winner gets $300 store credit and a white 10-slot vial case",
       "full_detail": "Orders of $75 or more placed from June 15 through June 19 are automatically entered into a drawing. There will be three winners. Each winner will receive $300 in Southern Aminos store credit and one white 10-slot vial case. Confirm official giveaway terms directly with Southern Aminos.",
       "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
       "start_at": "2026-06-15T00:00:00-04:00",
       "end_at": "2026-06-19T23:59:59-04:00",
       "show_in_rolodex": true,
       "show_vendor_badge": true,
-      "priority": 115,
-      "badge": "Giveaway: $75+ orders"
+      "priority": 140,
+      "badge": "Giveaway: $75+ orders, 3 winners"
     },
     {
       "id": "mile-high-sammyc-20-june-8-14",

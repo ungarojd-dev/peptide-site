@@ -13,6 +13,7 @@ function ageMs(status = {}) {
 }
 
 export function isRecentActiveRefresh(status = {}) {
+  if (!status || typeof status !== "object") return false;
   return ["queued", "running"].includes(status.state) && ageMs(status) < ACTIVE_STATUS_MAX_AGE_MS;
 }
 
