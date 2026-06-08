@@ -1,5 +1,5 @@
 import fallbackSnapshot from "../../data/catalog-fallback-snapshot.json" with { type: "json" };
-import { readRawSnapshot } from "./_shared/catalog-store.mjs";
+import { readRawSnapshot, readRefreshStatus } from "./_shared/catalog-store.mjs";
 
 function reply(body, status = 200, source = "blob") {
   return new Response(JSON.stringify(body), { status, headers: { "Content-Type": "application/json; charset=utf-8", "Cache-Control": "no-store", "X-MPP-Catalog-Source": source } });
@@ -12,7 +12,7 @@ function authorized(request) {
   return bearer === expected || request.headers.get("x-catalog-refresh-token") === expected;
 }
 
-function details(snapshot = {}) {
+function details(snapshot = {}, refreshStatus = null) {
   return {
     schema_version: snapshot.schema_version,
     engine_version: snapshot.engine_version,
@@ -25,17 +25,20 @@ function details(snapshot = {}) {
     visible_unmapped_count: snapshot.visible_unmapped_count,
     excluded_count: snapshot.excluded_count,
     silent_drop_count: snapshot.silent_drop_count,
+    refresh_status: refreshStatus,
     diagnostics: snapshot.diagnostics
   };
 }
 
 export default async request => {
   if (!authorized(request)) return reply({ error: "Unauthorized" }, 401, "protected");
+  let refreshStatus = null;
+  try { refreshStatus = await readRefreshStatus(); } catch (error) { console.warn("Catalog refresh status Blob unavailable:", error.message); }
   try {
     const snapshot = await readRawSnapshot();
-    if (snapshot?.products?.length) return reply(details(snapshot), 200, "blob");
+    if (snapshot?.products?.length) return reply(details(snapshot, refreshStatus), 200, "blob");
   } catch (error) {
     console.warn("Catalog diagnostics Blob unavailable:", error.message);
   }
-  return reply(details(fallbackSnapshot), 200, "bundled-fallback");
+  return reply(details(fallbackSnapshot, refreshStatus), 200, "bundled-fallback");
 };

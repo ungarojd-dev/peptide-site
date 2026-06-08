@@ -27,10 +27,10 @@ Upload the contents of this folder to the root of the GitHub repository connecte
 Instant Peptides and LabSourced Peptides use public JSON feeds and do not require credentials.
 
 ## Runtime design
-The browser loads a bundled catalog fallback immediately and requests one cached endpoint: `/.netlify/functions/catalog-snapshot`. A scheduled function refreshes all vendor feeds every 15 minutes, groups comparable products, and writes the latest snapshot to Netlify Blobs. A failed vendor retains its previous successful rows or its bundled fallback rows.
+The browser loads a bundled catalog fallback immediately and requests one cached endpoint: `/.netlify/functions/catalog-snapshot`. A short scheduled trigger runs every 15 minutes and queues a Netlify Background Function. The background worker refreshes all vendor feeds, groups comparable products, and writes the latest snapshot to Netlify Blobs without being constrained by the 30-second scheduled-function limit. A failed vendor retains its previous successful rows or its bundled fallback rows.
 
 ## Protected diagnostics
-Open `/catalog-status` after deployment. Enter the private `CATALOG_REFRESH_TOKEN` value to inspect feed status or run a manual refresh.
+Open `/catalog-status` after deployment. Enter the private `CATALOG_REFRESH_TOKEN` value to inspect feed status or queue a manual background refresh. The page polls automatically while a refresh is queued or running.
 
 ## Local validation
 Run:
@@ -42,4 +42,4 @@ npm test
 
 ## Summer sales rolodex and affiliate URL rules
 
-The homepage and GLP landing page include a compact rotating summer-sales rolodex. Product-card links use vendor-specific rules. For vendors that support direct links, the exact product permalink is retained and the approved referral or coupon query parameters are appended after the product path. Solyn Labs and Oneday Compounds intentionally use their partner landing URLs instead of direct product permalinks.
+The homepage and GLP landing page include a compact rotating vendor-deals rolodex powered by `data/promotions.json`. Product-card links currently use the confirmed base affiliate URLs in `data/vendor-config.json` while product-level affiliate tracking is verified with partners. Each vendor can later be switched back to product deep links independently.

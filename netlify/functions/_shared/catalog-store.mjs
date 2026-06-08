@@ -4,6 +4,7 @@ import { buildCatalog, publicSnapshot } from "./catalog-engine.mjs";
 const STORE_NAME = "mpp-catalog";
 const RAW_KEY = "raw-latest";
 const PUBLIC_KEY = "public-latest";
+const REFRESH_STATUS_KEY = "refresh-status";
 
 function store() {
   return getStore(STORE_NAME);
@@ -31,6 +32,25 @@ export async function readPublicSnapshot() {
   const publicData = publicSnapshot(rebuilt);
   await catalogStore.setJSON(PUBLIC_KEY, publicData);
   return publicData;
+}
+
+export async function readRefreshStatus() {
+  return await store().get(REFRESH_STATUS_KEY, { type: "json" });
+}
+
+export async function writeRefreshStatus(status = {}) {
+  const payload = {
+    ...status,
+    status_updated_at: new Date().toISOString()
+  };
+  await store().setJSON(REFRESH_STATUS_KEY, payload, {
+    metadata: {
+      state: payload.state || "unknown",
+      refresh_id: payload.refresh_id || "",
+      updated_at: payload.status_updated_at
+    }
+  });
+  return payload;
 }
 
 export async function writeSnapshots(rawSnapshot) {
