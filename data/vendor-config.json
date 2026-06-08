@@ -60,7 +60,7 @@
     },
     "Solyn Labs": {
       "id": "solyn-labs",
-      "discount_percent": 15,
+      "discount_percent": 10,
       "affiliate_url": "https://partner.solyn.com/?ref=SammyC",
       "logo": "/assets/vendor-logos/solyn-labs.webp",
       "use_product_deep_links": false

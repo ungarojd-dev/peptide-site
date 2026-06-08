@@ -1,10 +1,12 @@
 import catalogPayload from "../../../data/catalog-products.json" with { type: "json" };
 import overridePayload from "../../../data/catalog-overrides.json" with { type: "json" };
 import vendorPayload from "../../../data/vendor-config.json" with { type: "json" };
+import promotionPayload from "../../../data/promotions.json" with { type: "json" };
 
 export const ENGINE_VERSION = "1.0.0-clean";
 export const COUPON_CODE = vendorPayload.coupon_code || "SAMMYC";
 export const VENDOR_CONFIG = vendorPayload.vendors || {};
+export const PROMOTIONS = promotionPayload.promotions || [];
 
 const GLP_CATEGORY = "GLP-1 & Incretin";
 const DEFAULT_CATEGORY = "Other";
@@ -281,13 +283,31 @@ function inferQuantity(raw, family, format) {
   return { id: slug(label), label, sort: Number.isFinite(number) ? number * factor : 999999 };
 }
 
+function isPromotionActive(promotion, when = new Date()) {
+  const now = when instanceof Date ? when.getTime() : new Date(when).getTime();
+  if (!Number.isFinite(now)) return false;
+  const starts = promotion.start_at ? new Date(promotion.start_at).getTime() : Number.NEGATIVE_INFINITY;
+  const ends = promotion.end_at ? new Date(promotion.end_at).getTime() : Number.POSITIVE_INFINITY;
+  return now >= starts && now <= ends;
+}
+
+export function discountPercentForVendor(vendor, when = new Date()) {
+  const standard = Number(VENDOR_CONFIG[vendor]?.discount_percent || 0);
+  const overrides = PROMOTIONS
+    .filter(promotion => promotion.vendor === vendor && promotion.discount_override_percent != null && isPromotionActive(promotion, when))
+    .map(promotion => Number(promotion.discount_override_percent))
+    .filter(Number.isFinite);
+  return overrides.length ? Math.max(standard, ...overrides) : standard;
+}
+
 function vendorMeta(vendor) {
-  return VENDOR_CONFIG[vendor] || {
+  const base = VENDOR_CONFIG[vendor] || {
     id: slug(vendor || "unknown-vendor"),
     discount_percent: 0,
     affiliate_url: "#",
     logo: ""
   };
+  return { ...base, discount_percent: discountPercentForVendor(vendor) };
 }
 
 function exclusionReason(raw) {

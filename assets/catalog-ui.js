@@ -29,7 +29,9 @@
     const regular=supplier.discount_percent>0&&supplier.regular_price_label!==supplier.effective_price_label?`<div class="supplier-regular">${esc(supplier.regular_price_label)}</div>`:"";
     const stock=supplier.in_stock===false?`<span class="supplier-oos">Out of stock</span>`:`<span>Listed</span>`;
     const alternate=supplier.alternate_offer_count?`<span>${esc(Number(supplier.alternate_offer_count)+1)} listings</span>`:"";
-    return `<a class="supplier-row" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div style="min-width:0"><div class="supplier-name">${esc(supplier.vendor_name)}</div><div class="supplier-sub">${stock}${supplier.discount_percent?`<span class="supplier-discount">${esc(supplier.discount_percent)}% off with ${esc(supplier.coupon_code)}</span>`:""}${alternate}</div></div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div><div class="supplier-go">Visit vendor ›</div></div></a>`;
+    const promotions=global.MPPPromotions?.forOffer?.(supplier,card)||[];
+    const promoBadges=promotions.length?`<div class="supplier-promos">${promotions.slice(0,2).map(promotion=>`<span class="supplier-promo-badge">${esc(promotion.badge||promotion.headline)}</span>`).join("")}${promotions.length>2?`<span class="supplier-promo-more">+${promotions.length-2} more</span>`:""}</div>`:"";
+    return `<a class="supplier-row" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div style="min-width:0"><div class="supplier-name">${esc(supplier.vendor_name)}</div><div class="supplier-sub">${stock}${supplier.discount_percent?`<span class="supplier-discount">${esc(supplier.discount_percent)}% off with ${esc(supplier.coupon_code)}</span>`:""}${alternate}</div>${promoBadges}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div><div class="supplier-go">Visit vendor ›</div></div></a>`;
   }
   function cardHtml(card){
     const variant=activeVariant(card);const expanded=!!state.expanded[card.id];const suppliers=variant.suppliers||[];const visible=expanded?suppliers:suppliers.slice(0,3);const hidden=Math.max(0,suppliers.length-3);
@@ -45,8 +47,9 @@
   function applyCatalog(catalog,source){if(!catalog?.products?.length)return;state.catalog=catalog;state.cards=catalog.products;state.source=source;updateStats();renderFilters();renderCards(false);}
   function clear(){state.query="";state.category=document.body.dataset.defaultCategory||"All";state.format="All";$("catalogSearch").value="";renderFilters();renderCards(true);}
   async function boot(){
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=base-affiliate-links-20260605a",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=base-affiliate-links-20260605a",10000);
+    try{await global.MPPPromotions?.ready}catch(error){console.warn("Promotion badges unavailable",error.message)}
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=promotions-20260608a",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=promotions-20260608a",10000);
     try{const fallback=await fallbackPromise;applyInitialFilters();applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message)}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){$("catalogStatus").textContent="Catalog unavailable";$("catalogGrid").innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`}}
     $("catalogSearch").oninput=event=>{state.query=event.target.value;renderCards(false)};$("catalogClear").onclick=clear;
