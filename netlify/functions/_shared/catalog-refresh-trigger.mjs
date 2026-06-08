@@ -16,10 +16,12 @@ export function isRecentActiveRefresh(status = {}) {
   return ["queued", "running"].includes(status.state) && ageMs(status) < ACTIVE_STATUS_MAX_AGE_MS;
 }
 
-function siteOrigin(request) {
+function backgroundEndpoint(request) {
+  const requestOrigin = new URL(request.url).origin;
   const configured = compact(process.env.URL || process.env.DEPLOY_PRIME_URL);
-  if (configured) return configured.replace(/\/$/, "");
-  return new URL(request.url).origin;
+  const origin = requestOrigin && requestOrigin !== "null" ? requestOrigin : configured;
+  if (!origin) throw new Error("Unable to determine the deployed site origin for the background refresh worker");
+  return new URL("/.netlify/functions/catalog-refresh-background", origin.replace(/\/$/, "")).href;
 }
 
 export async function triggerBackgroundRefresh(request, requestedBy = "manual") {
@@ -47,20 +49,24 @@ export async function triggerBackgroundRefresh(request, requestedBy = "manual") 
     message: "Catalog refresh queued for background processing"
   });
 
-  const response = await fetch(`${siteOrigin(request)}/.netlify/functions/catalog-refresh-background`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json; charset=utf-8",
-      "x-catalog-refresh-token": token
-    },
-    body: JSON.stringify({ refresh_id: refreshId, requested_at: requestedAt, requested_by: requestedBy })
-  });
+  try {
+    const response = await fetch(backgroundEndpoint(request), {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json; charset=utf-8",
+        "x-catalog-refresh-token": token
+      },
+      body: JSON.stringify({ refresh_id: refreshId, requested_at: requestedAt, requested_by: requestedBy })
+    });
 
-  if (response.status !== 202 && !response.ok) {
-    const text = await response.text().catch(() => "");
-    const error = `Background refresh invocation failed with HTTP ${response.status}${text ? `: ${text.slice(0, 300)}` : ""}`;
-    await writeRefreshStatus({ ...queued, state: "error", error, failed_at: new Date().toISOString() });
-    throw new Error(error);
+    if (response.status !== 202 && !response.ok) {
+      const text = await response.text().catch(() => "");
+      throw new Error(`Background refresh invocation failed with HTTP ${response.status}${text ? `: ${text.slice(0, 300)}` : ""}`);
+    }
+  } catch (error) {
+    const message = error.message || String(error);
+    await writeRefreshStatus({ ...queued, state: "error", error: message, failed_at: new Date().toISOString() });
+    throw error;
   }
 
   return {

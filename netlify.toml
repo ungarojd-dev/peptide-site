@@ -7,6 +7,9 @@
 [functions."refresh-catalog-snapshot"]
   schedule = "*/15 * * * *"
 
+[functions."catalog-refresh-background"]
+  background = true
+
 [[headers]]
   for = "/assets/*"
   [headers.values]

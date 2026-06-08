@@ -87,5 +87,6 @@ export default async request => {
 };
 
 export const config = {
-  background: true
+  background: true,
+  path: "/.netlify/functions/catalog-refresh-background"
 };

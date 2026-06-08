@@ -21,8 +21,8 @@
       "vendor": "Southern Aminos",
       "display_vendor": "Southern Aminos",
       "headline": "$75+ order giveaway",
-      "short_detail": "June 8 to 12, automatic entry for store credit and vial cases",
-      "full_detail": "Orders of $75 or more placed from June 8 through June 12 automatically qualify for a giveaway featuring $300 in store credit and three white 10-slot vial cases. Confirm official giveaway terms directly with Southern Aminos.",
+      "short_detail": "June 8 to 12, $75+ orders enter drawing, 3 winners",
+      "full_detail": "Orders of $75 or more placed from June 8 through June 12 are automatically entered into a drawing. There will be three winners. Each winner will receive $300 in Southern Aminos store credit and one white 10-slot vial case. Confirm official giveaway terms directly with Southern Aminos.",
       "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
       "start_at": "2026-06-08T00:00:00-04:00",
       "end_at": "2026-06-12T23:59:59-04:00",
@@ -36,8 +36,8 @@
       "vendor": "Southern Aminos",
       "display_vendor": "Southern Aminos",
       "headline": "$75+ order giveaway",
-      "short_detail": "June 15 to 19, automatic entry for store credit and vial cases",
-      "full_detail": "Orders of $75 or more placed from June 15 through June 19 automatically qualify for a giveaway featuring $300 in store credit and three white 10-slot vial cases. Confirm official giveaway terms directly with Southern Aminos.",
+      "short_detail": "June 15 to 19, $75+ orders enter drawing, 3 winners",
+      "full_detail": "Orders of $75 or more placed from June 15 through June 19 are automatically entered into a drawing. There will be three winners. Each winner will receive $300 in Southern Aminos store credit and one white 10-slot vial case. Confirm official giveaway terms directly with Southern Aminos.",
       "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
       "start_at": "2026-06-15T00:00:00-04:00",
       "end_at": "2026-06-19T23:59:59-04:00",
@@ -113,8 +113,22 @@
       "show_vendor_badge": true,
       "priority": 90,
       "badge": "Promo: 15% off select groups",
-      "applicable_categories": ["GLP-1 & Incretin"],
-      "match_terms": ["copper peptide", "ghk-cu", "ghk cu", "ahk-cu", "ahk cu", "mt-1", "mt 1", "mt-2", "mt 2", "melanotan i", "melanotan ii"]
+      "applicable_categories": [
+        "GLP-1 & Incretin"
+      ],
+      "match_terms": [
+        "copper peptide",
+        "ghk-cu",
+        "ghk cu",
+        "ahk-cu",
+        "ahk cu",
+        "mt-1",
+        "mt 1",
+        "mt-2",
+        "mt 2",
+        "melanotan i",
+        "melanotan ii"
+      ]
     },
     {
       "id": "solyn-first-order-20",
