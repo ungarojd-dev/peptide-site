@@ -1,0 +1,12 @@
+# Changelog
+
+## June 2026
+- Rebuilt the catalog around one stored snapshot instead of visitor-time vendor API fan-out.
+- Added direct adapters for the tracked vendor APIs with stale-row fallback protection.
+- Added background catalog refresh processing, manual refresh controls, refresh status polling, and overlap protection.
+- Added base affiliate URL routing while product-level deep-link attribution is verified with partners.
+- Added a session-based research-use compliance gate and full disclaimer page.
+- Restored the sticky mobile vendor-deals rolodex and swipeable mobile category filters.
+- Added data-driven promotions, a full active-deals panel, vendor-row promo badges, and scheduled Southern Aminos giveaway windows.
+- Added the compact VANTYX Supply homepage banner with code `SAMMYC` for 10% off lab and research supplies.
+- Consolidated deployment notes into one maintenance guide and removed one-off patch README files.
