@@ -9,6 +9,7 @@
   const nav=document.querySelector("[data-site-nav]");
   if(toggle&&nav) toggle.addEventListener("click",()=>nav.classList.toggle("show"));
   document.querySelectorAll("[data-year]").forEach(node=>node.textContent=String(new Date().getFullYear()));
+  document.querySelectorAll("[data-vantyx-supply-link]").forEach(link=>link.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"VANTYX Supply homepage banner",product_category:"lab_supplies",button_text:"Shop VANTYX Supply",button_location:"homepage_supply_banner",affiliate_network:"direct_vendor",vendor_name:"VANTYX Supply",affiliate_url:link.href,discount_code:"SAMMYC",discount_percent:10})}));
 
   const escapeHtml=value=>String(value).replace(/[&<>\"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;","'":"&#039;"}[char]));
 
