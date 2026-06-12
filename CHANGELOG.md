@@ -10,3 +10,4 @@
 - Added data-driven promotions, a full active-deals panel, vendor-row promo badges, and scheduled Southern Aminos giveaway windows.
 - Added the compact VANTYX Supply homepage banner with code `SAMMYC` for 10% off lab and research supplies.
 - Consolidated deployment notes into one maintenance guide and removed one-off patch README files.
+- Added Glacier Aminos June 12 through June 19 rolodex-only stackable promotion.

@@ -1,7 +1,7 @@
 {
-  "version": "2026-06-08-promotions-v2",
+  "version": "2026-06-12-glacier-promo-v1",
   "timezone": "America/New_York",
-  "updated_at": "2026-06-08T18:30:00-04:00",
+  "updated_at": "2026-06-12T13:00:00-04:00",
   "promotions": [
     {
       "id": "southern-sitewide-25",
@@ -142,6 +142,20 @@
       "show_vendor_badge": true,
       "priority": 85,
       "badge": "New customers: 20% off first order"
+    },
+    {
+      "id": "glacier-sitewide-zelle-june-12-19",
+      "vendor": "Glacier Aminos",
+      "display_vendor": "Glacier Aminos",
+      "headline": "10% off sitewide + stackable SAMMYC",
+      "short_detail": "Pay with Zelle for another stackable 10% off, June 12 to 19",
+      "full_detail": "Glacier Aminos is offering 10% off sitewide from June 12 through June 19. Code SAMMYC adds another stackable 10% off. Paying with Zelle adds another stackable 10% off. Confirm final pricing and payment terms directly with Glacier Aminos.",
+      "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
+      "start_at": "2026-06-12T00:00:00-04:00",
+      "end_at": "2026-06-19T23:59:59-04:00",
+      "show_in_rolodex": true,
+      "show_vendor_badge": false,
+      "priority": 130
     }
   ]
 }
