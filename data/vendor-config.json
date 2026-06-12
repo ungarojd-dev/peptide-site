@@ -4,7 +4,7 @@
   "vendors": {
     "Glacier Aminos": {
       "id": "glacier-aminos",
-      "discount_percent": 5,
+      "discount_percent": 10,
       "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
       "logo": "/assets/vendor-logos/glacier-aminos.webp",
       "use_product_deep_links": false
