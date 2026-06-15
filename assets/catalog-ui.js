@@ -44,40 +44,12 @@
   }
   function renderCards(scroll){const filtered=cards();$("catalogStatus").textContent=`Showing ${filtered.length} of ${state.cards.length} product cards`;$("catalogSource").textContent=state.source;$("catalogGrid").innerHTML=filtered.length?filtered.map(cardHtml).join(""):`<div class="catalog-empty">No product cards match these filters.</div>`;bindCardActions();if(scroll)$("catalogGrid").scrollIntoView({behavior:"smooth",block:"start"});}
   function applyInitialFilters(){const params=new URLSearchParams(location.search);state.category=params.get("cat")||params.get("category")||document.body.dataset.defaultCategory||"All";state.format=params.get("format")||"All";state.query=params.get("q")||"";$("catalogSearch").value=state.query;}
-  function forceKnownDiscountMinimums(catalog){
-    if(!catalog?.products?.length)return catalog;
-    for(const card of catalog.products){
-      for(const variant of card.variants||[]){
-        for(const supplier of variant.suppliers||[]){
-          if(supplier.vendor_name!=="Glacier Aminos"||Number(supplier.discount_percent||0)>=10)continue;
-          supplier.discount_percent=10;
-          supplier.coupon_code=supplier.coupon_code||"SAMMYC";
-          const regularMin=Number(supplier.regular_price_min);
-          if(Number.isFinite(regularMin)){
-            supplier.effective_price_min=Math.round(regularMin*0.9*100)/100;
-          }
-          if(supplier.regular_price_label){
-            supplier.effective_price_label=String(supplier.regular_price_label).replace(/\$[\d,]+(?:\.\d+)?/g,value=>{
-              const amount=Number(value.replace(/[$,]/g,""));
-              return Number.isFinite(amount)?`$${(amount*0.9).toFixed(2)}`:value;
-            });
-          }
-        }
-        (variant.suppliers||[]).sort((a,b)=>{
-          const left=a.effective_price_min==null?Number.POSITIVE_INFINITY:Number(a.effective_price_min);
-          const right=b.effective_price_min==null?Number.POSITIVE_INFINITY:Number(b.effective_price_min);
-          return left-right;
-        });
-      }
-    }
-    return catalog;
-  }
-  function applyCatalog(catalog,source){if(!catalog?.products?.length)return;catalog=forceKnownDiscountMinimums(catalog);state.catalog=catalog;state.cards=catalog.products;state.source=source;updateStats();renderFilters();renderCards(false);}
+  function applyCatalog(catalog,source){if(!catalog?.products?.length)return;state.catalog=catalog;state.cards=catalog.products;state.source=source;updateStats();renderFilters();renderCards(false);}
   function clear(){state.query="";state.category=document.body.dataset.defaultCategory||"All";state.format="All";$("catalogSearch").value="";renderFilters();renderCards(true);}
   async function boot(){
     try{await global.MPPPromotions?.ready}catch(error){console.warn("Promotion badges unavailable",error.message)}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=glacier-lenient-excludes-20260612a",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=glacier-lenient-excludes-20260612a",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=lenient-exclusions-20260615b",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=lenient-exclusions-20260615b",10000);
     try{const fallback=await fallbackPromise;applyInitialFilters();applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message)}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){$("catalogStatus").textContent="Catalog unavailable";$("catalogGrid").innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`}}
     $("catalogSearch").oninput=event=>{state.query=event.target.value;renderCards(false)};$("catalogClear").onclick=clear;

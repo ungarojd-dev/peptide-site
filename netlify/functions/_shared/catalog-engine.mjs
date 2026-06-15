@@ -3,7 +3,7 @@ import overridePayload from "../../../data/catalog-overrides.json" with { type: 
 import vendorPayload from "../../../data/vendor-config.json" with { type: "json" };
 import promotionPayload from "../../../data/promotions.json" with { type: "json" };
 
-export const ENGINE_VERSION = "1.0.1-lenient-excludes";
+export const ENGINE_VERSION = "1.0.0-clean";
 export const COUPON_CODE = vendorPayload.coupon_code || "SAMMYC";
 export const VENDOR_CONFIG = vendorPayload.vendors || {};
 export const PROMOTIONS = promotionPayload.promotions || [];
@@ -291,13 +291,8 @@ function isPromotionActive(promotion, when = new Date()) {
   return now >= starts && now <= ends;
 }
 
-const MINIMUM_VENDOR_DISCOUNTS = {
-  "Glacier Aminos": 10
-};
-
 export function discountPercentForVendor(vendor, when = new Date()) {
-  const configured = Number(VENDOR_CONFIG[vendor]?.discount_percent || 0);
-  const standard = Math.max(configured, Number(MINIMUM_VENDOR_DISCOUNTS[vendor] || 0));
+  const standard = Number(VENDOR_CONFIG[vendor]?.discount_percent || 0);
   const overrides = PROMOTIONS
     .filter(promotion => promotion.vendor === vendor && promotion.discount_override_percent != null && isPromotionActive(promotion, when))
     .map(promotion => Number(promotion.discount_override_percent))
@@ -318,13 +313,13 @@ function vendorMeta(vendor) {
 function exclusionReason(raw) {
   const haystack = normalized([raw.product, raw.listing, raw.sku, raw.category, raw.raw_category].filter(Boolean).join(" "));
   const HARDCODED_EXCLUDES = [
-    // Keep only obvious transaction, shipping, protection, gift card, and merch rows out of the public catalog.
-    // Product-like listings, raw powders, topicals, and unusual peptide labels should flow through for review/mapping.
     "ship safely", "shipping protection", "shipping insurance",
-    "package protection", "route protection", "gift card", "giftcard", "gift certificate",
-    "extend product protection", "extended product protection", "helloextend", "helloextend-product-protection",
-    "limited edition 7x tested 1st anniversary tee", "anniversary tee", "mhc-tee",
-    "1st anniversary tee", "oversized tee", "tee shirt", "t-shirt"
+    "package protection", "route protection", "gift card", "giftcard",
+    "gift certificate", "extend product protection", "extended product protection",
+    "helloextend", "helloextend-product-protection",
+    "limited edition 7x tested 1st anniversary tee", "anniversary tee",
+    "1st anniversary tee", "oversized tee", "tee shirt", "t-shirt",
+    "snapback hat", "mhc-tee",
   ];
   const allExcludes = [...(overridePayload.exclude_terms || []), ...HARDCODED_EXCLUDES];
   const matched = allExcludes.find(term => haystack.includes(normalized(term)));
