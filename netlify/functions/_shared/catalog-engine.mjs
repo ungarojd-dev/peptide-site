@@ -131,7 +131,14 @@ const HARDCODED_FORCED_ALIASES = {
   // Glacier patterns
   "s 31 s": "ss-31", "mtp10ga": "ss-31",
   "bpc tb 500 wolverine": "bpc-157-plus-tb-500-blend",
-  "gla 1 sm": "semaglutide", "gla 2 trz": "tirzepatide", "gla 3 rt": "retatrutide",
+  "gla 1 sm": "semaglutide", "gla 1 sm 15mg": "semaglutide",
+  "gla 2 trz": "tirzepatide", "gla 3 rt": "retatrutide",
+  "gla 2 5 trz rt": "retatrutide-and-tirzepatide-blend",
+  "gla 2.5 trz rt": "retatrutide-and-tirzepatide-blend",
+  "gla 2 5 trz rt 20mg": "retatrutide-and-tirzepatide-blend",
+  "gla 2.5 trz rt 20mg": "retatrutide-and-tirzepatide-blend",
+  "gla 3 rt cagri": "retatrutide-and-cagrilintide-blend",
+  "gla 3 rt cagri 20mg 4mg": "retatrutide-and-cagrilintide-blend",
   // Cargilintide typo
   "cargilintide": "cagrilintide", "cargrilintide": "cagrilintide",
   "cargilintide 10mg": "cagrilintide",
@@ -147,8 +154,8 @@ const forcedAliases = Object.entries({ ...(overridePayload.forced_aliases || {})
 
 const BLEND_COMPONENTS = [
   ["Semaglutide", ["semaglutide", "sema", "pep-sm", "peptide sm", "gla-1 sm", "ion-1s", "sa-1s", "fg1-s", "fg1 s"]],
-  ["Tirzepatide", ["tirzepatide", "tirz", "trz", "pep-trz", "pep-tz", "peptide trz", "peptide tz", "gla-2 trz", "glp-t2", "ion-2t", "sa-2t", "fg2-t", "fg2 t"]],
-  ["Retatrutide", ["retatrutide", "reta", "pep-rt", "peptide rt", "gla-3 rt", "glp-r3", "ion-3r", "sa-3r", "oc-3rt", "fg3-r", "fg3 r"]],
+  ["Tirzepatide", ["tirzepatide", "tirz", "trz", "pep-trz", "pep-tz", "peptide trz", "peptide tz", "gla-2 trz", "gla-2.5 trz", "gla 2 5 trz", "glp-t2", "ion-2t", "sa-2t", "fg2-t", "fg2 t"]],
+  ["Retatrutide", ["retatrutide", "reta", "pep-rt", "peptide rt", "gla-3 rt", "gla-2.5 trz/rt", "gla 2 5 trz rt", "glp-r3", "ion-3r", "sa-3r", "oc-3rt", "fg3-r", "fg3 r"]],
   ["Cagrilintide", ["cagrilintide", "cagrilinitide", "cagri", "pep-cag", "sa-4c"]],
   ["BPC-157", ["bpc-157", "bpc157"]],
   ["TB-500", ["tb-500", "tb500", "tb-4", "tb4"]],
@@ -178,6 +185,19 @@ function looksLikeBlend(value, components) {
 function blendRecord(value) {
   const components = detectBlendComponents(value);
   if (!looksLikeBlend(value, components)) return null;
+  const componentKey = components.map(component => slug(component)).sort().join("+");
+  const knownBlendIds = {
+    "bpc-157+tb-500": "bpc-157-plus-tb-500-blend",
+    "cagrilintide+retatrutide": "retatrutide-and-cagrilintide-blend",
+    "cagrilintide+semaglutide": "semaglutide-and-cagrilintide-blend",
+    "cagrilintide+tirzepatide": "tirzepatide-and-cagrilintide-blend",
+    "retatrutide+tirzepatide": "retatrutide-and-tirzepatide-blend",
+    "ipamorelin+tesamorelin": "ipamorelin-plus-tesamorelin-blend",
+    "semax+selank": "semax-plus-selank-blend",
+    "ghk-cu+kpv": "ghk-cu-plus-kpv-blend"
+  };
+  const knownRecord = recordById.get(knownBlendIds[componentKey]);
+  if (knownRecord) return { ...knownRecord, mapped: true, mapping: `blend-components:${componentKey}` };
   const name = `${components.join(" + ")} Blend`;
   const id = slug(name);
   return { id, name, category: inferCategory(name, {}), aliases: [], dynamic: true };
@@ -260,7 +280,7 @@ function inferQuantity(raw, family, format) {
   const normalizedFamily = compact(family);
   let remaining = source;
   if (normalizedFamily) {
-    const familyRegex = new RegExp(escapeRegex(normalizedFamily).replace(/\\ /g, "\\s+") + "\\s*[-:/|]?\\s*", "i");
+    const familyRegex = new RegExp(escapeRegex(normalizedFamily).replace(/\\ /g, "\\s+") + "\\s*[-:/|]?\\s*", "ig");
     remaining = source.replace(familyRegex, " ");
   }
   const doseMatches = [...remaining.matchAll(/\d+(?:\.\d+)?\s*(?:mcg|mg|g|ml|iu|units?)/gi)].map(match => compact(match[0]).replace(/\s+/g, ""));

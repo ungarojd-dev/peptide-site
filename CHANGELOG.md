@@ -18,4 +18,7 @@
 - Relaxed catalog exclusions so product-like listings such as raw peptide, topical, nasal, cosmetic peptide, KSPTN, and Lemon Bottle rows are no longer filtered out.
 - Kept only non-catalog exclusions such as shipping protection, product protection, gift cards, and merch.
 - Bumped catalog cache keys so the relaxed exclusion rules are pulled after deploy.
+## 2026-06-15
 
+- Surfaced raw vendor listing names inside comparison rows so Glacier code names like GLA-1 SM, GLA-2 TRZ, and GLA-3 RT are visible under their canonical comparison cards.
+- Mapped Glacier GLA-2.5 TRZ/RT listings to the Retatrutide and Tirzepatide blend card instead of the plain Tirzepatide card.

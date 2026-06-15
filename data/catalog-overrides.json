@@ -1,5 +1,5 @@
 {
-  "version": "3.1.0",
+  "version": "3.0.3-glacier-listing-visibility",
   "exclude_terms": [
     "ship safely",
     "shipping protection",
@@ -193,7 +193,20 @@
     "ls car10": "cagrilintide",
     "glutathione solyn": "glutathione",
     "sl glt1500": "glutathione",
-    "gluthathione": "glutathione"
+    "gluthathione": "glutathione",
+    "gla 2.5 trz rt": "retatrutide-and-tirzepatide-blend",
+    "gla 2 5 trz rt": "retatrutide-and-tirzepatide-blend",
+    "gla-2.5 trz/rt": "retatrutide-and-tirzepatide-blend",
+    "gla 2.5 trz/rt": "retatrutide-and-tirzepatide-blend",
+    "gla-2.5 trz-rt": "retatrutide-and-tirzepatide-blend",
+    "gla 2 5 trz-rt": "retatrutide-and-tirzepatide-blend",
+    "gla-2.5 trz rt 20mg": "retatrutide-and-tirzepatide-blend",
+    "gla 2 5 trz rt 20mg": "retatrutide-and-tirzepatide-blend",
+    "gla-2.5 trz rt 18mg": "retatrutide-and-tirzepatide-blend",
+    "gla 2 5 trz rt 18mg": "retatrutide-and-tirzepatide-blend",
+    "gla 1 sm 15mg": "semaglutide",
+    "gla 3 rt cagri": "retatrutide-and-cagrilintide-blend",
+    "gla 3 rt cagri 20mg 4mg": "retatrutide-and-cagrilintide-blend"
   },
   "category_overrides": {},
   "format_overrides": {}

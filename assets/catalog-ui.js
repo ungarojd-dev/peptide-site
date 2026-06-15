@@ -6,6 +6,7 @@
   const $=id=>document.getElementById(id);
   const esc=value=>String(value==null?"":value).replace(/[&<>\"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
   const attr=value=>esc(value).replace(/'/g,"&#39;");
+  const normalizedListing=value=>String(value||"").toLowerCase().replace(/[^a-z0-9]+/g," ").replace(/\s+/g," ").trim();
   function json(url,ms=10000){const ctrl=new AbortController();const timer=setTimeout(()=>ctrl.abort(),ms);return fetch(url,{signal:ctrl.signal,cache:"no-store"}).then(response=>{if(!response.ok)throw new Error(`HTTP ${response.status}`);return response.json().then(data=>({data,response}))}).finally(()=>clearTimeout(timer));}
   function initials(name){return String(name||"?").split(/\s+/).map(word=>word[0]).join("").slice(0,2).toUpperCase();}
   function filterValues(order,property){const found=new Set(state.cards.map(card=>card[property]).filter(Boolean));return order.filter(item=>item==="All"||found.has(item));}
@@ -29,9 +30,11 @@
     const regular=supplier.discount_percent>0&&supplier.regular_price_label!==supplier.effective_price_label?`<div class="supplier-regular">${esc(supplier.regular_price_label)}</div>`:"";
     const stock=supplier.in_stock===false?`<span class="supplier-oos">Out of stock</span>`:`<span>Listed</span>`;
     const alternate=supplier.alternate_offer_count?`<span>${esc(Number(supplier.alternate_offer_count)+1)} listings</span>`:"";
+    const listingName=supplier.raw_listing||supplier.raw_product||"";
+    const productListing=listingName&&normalizedListing(listingName)!==normalizedListing(card.name)?`<div class="supplier-listing">${esc(listingName)}</div>`:"";
     const promotions=global.MPPPromotions?.forOffer?.(supplier,card)||[];
     const promoBadges=promotions.length?`<div class="supplier-promos">${promotions.slice(0,2).map(promotion=>`<span class="supplier-promo-badge">${esc(promotion.badge||promotion.headline)}</span>`).join("")}${promotions.length>2?`<span class="supplier-promo-more">+${promotions.length-2} more</span>`:""}</div>`:"";
-    return `<a class="supplier-row" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div style="min-width:0"><div class="supplier-name">${esc(supplier.vendor_name)}</div><div class="supplier-sub">${stock}${supplier.discount_percent?`<span class="supplier-discount">${esc(supplier.discount_percent)}% off with ${esc(supplier.coupon_code)}</span>`:""}${alternate}</div>${promoBadges}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div><div class="supplier-go">Visit vendor ›</div></div></a>`;
+    return `<a class="supplier-row" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div style="min-width:0"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${productListing}<div class="supplier-sub">${stock}${supplier.discount_percent?`<span class="supplier-discount">${esc(supplier.discount_percent)}% off with ${esc(supplier.coupon_code)}</span>`:""}${alternate}</div>${promoBadges}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div><div class="supplier-go">Visit vendor ›</div></div></a>`;
   }
   function cardHtml(card){
     const variant=activeVariant(card);const expanded=!!state.expanded[card.id];const suppliers=variant.suppliers||[];const visible=expanded?suppliers:suppliers.slice(0,3);const hidden=Math.max(0,suppliers.length-3);

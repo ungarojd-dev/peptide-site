@@ -1,6 +1,6 @@
 {
   "generated_from": "index.html static fallback",
-  "count": 308,
+  "count": 316,
   "products": [
     {
       "company": "Glacier Aminos",
@@ -28,13 +28,14 @@
       "product": "GLA-3 RT/CAGRI 20MG/4MG",
       "listing": "Glacier GLA-3 RT CAGRI 20MG 4MG Peptide Vial",
       "price": "$134.99",
-      "category": "GLP / Weight Loss"
+      "category": "GLP / Weight Loss",
+      "in_stock": false
     },
     {
       "company": "Glacier Aminos",
-      "product": "GLA-2.5 TRZ/RT 18MG",
-      "listing": "Glacier GLA-2.5 TRZ-RT 18MG Peptide Vial",
-      "price": "$99.99",
+      "product": "GLA-2.5 TRZ/RT 20MG",
+      "listing": "Glacier GLA-2.5 TRZ-RT 20MG Peptide Vial",
+      "price": "$109.99",
       "category": "GLP / Weight Loss"
     },
     {
@@ -46,16 +47,9 @@
     },
     {
       "company": "Glacier Aminos",
-      "product": "SLU-PP-332 1MG CAPSULE",
-      "listing": "SLU-PP-332 Capsules",
-      "price": "$127.99",
-      "category": "Metabolic & Energy"
-    },
-    {
-      "company": "Glacier Aminos",
       "product": "BPC-157 500MCG CAPSULES",
       "listing": "BPC-157 Capsules",
-      "price": "$112.99",
+      "price": "$99.99",
       "category": "Recovery & Healing"
     },
     {
@@ -63,20 +57,44 @@
       "product": "BPC-KPV 1MG CAPSULES",
       "listing": "BPC-KPV Capsules",
       "price": "$118.99",
-      "category": "Recovery & Healing"
+      "category": "Recovery & Healing",
+      "in_stock": false
     },
     {
       "company": "Glacier Aminos",
-      "product": "METHOLINE BLUE CAPSULES 20MG",
-      "listing": "METHOLINE BLUE CAPSULES 20MG",
+      "product": "5-AMINO-1MQ CAPSULES 50MG",
+      "listing": "5-Amino-1MQ Capsules",
+      "price": "$105.99",
+      "category": "Metabolic & Energy",
+      "in_stock": false
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "GHK-Cu CAPSULES 2MG",
+      "listing": "GHK-Cu Capsules",
+      "price": "$79.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "METHYLINE BLUE CAPSULES 20MG",
+      "listing": "METHYLINE BLUE CAPSULES 20MG",
       "price": "$61.99",
       "category": "Metabolic & Energy"
     },
     {
       "company": "Glacier Aminos",
+      "product": "SLU-PP-332 CAPSULES 20MG",
+      "listing": "SLU-PP-332 Capsules",
+      "price": "$199.99",
+      "category": "Metabolic & Energy",
+      "in_stock": false
+    },
+    {
+      "company": "Glacier Aminos",
       "product": "TESOFENSINE CAPSULES 500MCG",
       "listing": "Tesofensine Capsules",
-      "price": "$122.99",
+      "price": "$114.99",
       "category": "GLP / Weight Loss"
     },
     {
@@ -84,7 +102,8 @@
       "product": "TESA/IPA Peptide Blend 10mg/3mg",
       "listing": "Glacier Tesa-IPA 10MG-3MG Peptide Vial",
       "price": "$101.99",
-      "category": "Growth Hormone"
+      "category": "Growth Hormone",
+      "in_stock": false
     },
     {
       "company": "Glacier Aminos",
@@ -112,7 +131,8 @@
       "product": "SELANK 10MG",
       "listing": "Glacier Selank 10MG Peptide Vial",
       "price": "$40.99",
-      "category": "Cognitive & Nootropic"
+      "category": "Cognitive & Nootropic",
+      "in_stock": false
     },
     {
       "company": "Glacier Aminos",
@@ -161,7 +181,8 @@
       "product": "GLOW 70MG",
       "listing": "Glacier GLOW Peptide Vial",
       "price": "$96.99",
-      "category": "Metabolic & Energy"
+      "category": "Metabolic & Energy",
+      "in_stock": false
     },
     {
       "company": "Glacier Aminos",
@@ -273,13 +294,56 @@
       "product": "KISSPEPTIN 10MG",
       "listing": "Glacier Kisspeptin Peptide Vial",
       "price": "$40.99",
+      "category": "Sexual Health & Tanning"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "Acetyl Hexapeptide-8 (RAW)",
+      "listing": "Acetyl Hexapeptide-8 (RAW)",
+      "price": "$128.99",
       "category": "Longevity & Anti-Aging"
     },
     {
       "company": "Glacier Aminos",
-      "product": "DSIP 5MG",
+      "product": "ADAMAX 10MG",
+      "listing": "Glacier Adamax 10MG Peptide Vial",
+      "price": "$74.99",
+      "category": "Cognitive & Nootropic",
+      "in_stock": false
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "AHK-Cu (RAW)",
+      "listing": "AHK-Cu (RAW)",
+      "price": "$64.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "DSIP 10MG",
       "listing": "Glacier DSIP Peptide Vial",
-      "price": "$33.99",
+      "price": "$59.99",
+      "category": "Cognitive & Nootropic"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "GHK-Cu (RAW)",
+      "listing": "GHK-Cu (RAW)",
+      "price": "$39.99",
+      "category": "Longevity & Anti-Aging"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "SLU-PP-332 5MG",
+      "listing": "Glacier SLU-PP-332 5MG Peptide Vial",
+      "price": "$49.99",
+      "category": "Metabolic & Energy"
+    },
+    {
+      "company": "Glacier Aminos",
+      "product": "Snap-8 (RAW)",
+      "listing": "Snap-8 (RAW)",
+      "price": "$148.99",
       "category": "Longevity & Anti-Aging"
     },
     {
@@ -322,7 +386,7 @@
       "product": "NAD+ 500MG Buffered",
       "listing": "Glacier NAD+ Buffered 500MG Peptide Vial",
       "price": "$56.99",
-      "category": "Metabolic & Energy"
+      "category": "Longevity & Anti-Aging"
     },
     {
       "company": "Glacier Aminos",
@@ -364,14 +428,16 @@
       "product": "Reconstitution Water 0.9% Alcohol 30mL",
       "listing": "Reconstitution Water 0.9% Alcohol 30mL",
       "price": "$27.99",
-      "category": "Supplies"
+      "category": "Supplies",
+      "in_stock": false
     },
     {
       "company": "Glacier Aminos",
       "product": "Glacier Aminos 30 Vial Storage Case",
       "listing": "Glacier Aminos 30 Vial Storage Case",
       "price": "$34.99",
-      "category": "Supplies"
+      "category": "Supplies",
+      "in_stock": false
     },
     {
       "company": "Ion Peptide",
