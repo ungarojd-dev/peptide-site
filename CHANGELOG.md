@@ -1,6 +1,7 @@
 # Changelog
 
 ## June 2026
+- Relaxed catalog exclusions so product-like vendor listings flow into the catalog or review queue instead of being filtered out.
 - Corrected the standard Glacier Aminos `SAMMYC` estimate from 5% to 10% across comparison pricing and the vendor directory.
 - Rebuilt the catalog around one stored snapshot instead of visitor-time vendor API fan-out.
 - Added direct adapters for the tracked vendor APIs with stale-row fallback protection.
