@@ -468,7 +468,15 @@ export function buildCatalog(rawRows = [], options = {}) {
     }
     const variant = card.variants.get(offer.quantity_id);
     variant.all_offer_count += 1;
-    variant.suppliers.set(offer.vendor_id, bestOffer(variant.suppliers.get(offer.vendor_id), stripInternalOffer(offer)));
+    const supplierKey = normalized([
+      offer.vendor_id,
+      offer.source_product_id,
+      offer.source_variation_id,
+      offer.raw_listing,
+      offer.sku,
+      offer.regular_price_label
+    ].join(" || "));
+    variant.suppliers.set(supplierKey, bestOffer(variant.suppliers.get(supplierKey), stripInternalOffer(offer)));
   }
 
   const productCards = [...cards.values()].map(card => {

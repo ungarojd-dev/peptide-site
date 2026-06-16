@@ -22,3 +22,9 @@
 
 - Surfaced raw vendor listing names inside comparison rows so Glacier code names like GLA-1 SM, GLA-2 TRZ, and GLA-3 RT are visible under their canonical comparison cards.
 - Mapped Glacier GLA-2.5 TRZ/RT listings to the Retatrutide and Tirzepatide blend card instead of the plain Tirzepatide card.
+
+## 2026-06-16
+
+- Updated product cards to open on an All listings view so each size and vendor listing is visible by default.
+- Preserved individual vendor variation rows instead of collapsing every vendor down to one row per product size.
+- Added visible size/listing labels inside vendor rows for Glacier and other variable products.
