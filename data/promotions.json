@@ -83,7 +83,7 @@
       "short_detail": "GLPs, copper peptides, MT-1 and MT-2, stackable with SAMMYC",
       "full_detail": "LabSourced Peptides is offering 15% off GLP products, the copper peptide group, MT-1, and MT-2. The promotion is stackable with the standard SAMMYC discount. Confirm eligible products and final checkout pricing directly with LabSourced Peptides.",
       "affiliate_url": "https://labsourced.com/?ref=SammyC",
-      "show_in_rolodex": true,
+      "show_in_rolodex": false,
       "show_vendor_badge": true,
       "priority": 90,
       "badge": "Promo: 15% off select groups",
