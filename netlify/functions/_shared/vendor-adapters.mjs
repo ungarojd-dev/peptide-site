@@ -274,5 +274,6 @@ export const VENDOR_ADAPTERS = [
   instantAdapter(),
   labSourcedAdapter(),
   wooAdapter({ vendor: "Solyn Labs", base: "https://solyn.com/wp-json/wc/v3", ckEnv: "SOLYN_CK", csEnv: "SOLYN_CS", affiliateUrl: configUrl("Solyn Labs"), alwaysUseAffiliateUrl: true }),
-  wooAdapter({ vendor: "Oneday Compounds", base: `${(process.env.ONEDAY_BASE_URL || "https://onedaycompounds.net").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "ONEDAY_CK", csEnv: "ONEDAY_CS", affiliateUrl: process.env.ONEDAY_AFFILIATE_URL || configUrl("Oneday Compounds"), alwaysUseAffiliateUrl: true })
+  wooAdapter({ vendor: "Oneday Compounds", base: `${(process.env.ONEDAY_BASE_URL || "https://onedaycompounds.net").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "ONEDAY_CK", csEnv: "ONEDAY_CS", affiliateUrl: process.env.ONEDAY_AFFILIATE_URL || configUrl("Oneday Compounds"), alwaysUseAffiliateUrl: true }),
+  wooAdapter({ vendor: "Coffee and Peppers", base: "https://coffeeandpeppers.com/wp-json/wc/v3", ckEnv: "COFFEEANDPEPPERS_CK", csEnv: "COFFEEANDPEPPERS_CS", affiliateUrl: configUrl("Coffee and Peppers"), affiliateParams: { coupon: "sammyc" } })
 ];

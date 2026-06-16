@@ -128,5 +128,18 @@
       176,
       132
     ]
+  },
+  "coffee-and-peppers": {
+    "vendor": "Coffee and Peppers",
+    "source": "uploaded logo",
+    "output": "assets/vendor-logos/coffee-and-peppers.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      380,
+      109
+    ]
   }
 }

@@ -71,6 +71,13 @@
       "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
       "logo": "/assets/vendor-logos/oneday-compounds.webp",
       "use_product_deep_links": false
+    },
+    "Coffee and Peppers": {
+      "id": "coffee-and-peppers",
+      "discount_percent": 15,
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "logo": "/assets/vendor-logos/coffee-and-peppers.webp",
+      "use_product_deep_links": false
     }
   }
 }
