@@ -200,116 +200,46 @@
     promoPanelRoot.querySelectorAll("[data-promo-affiliate='1']").forEach(link=>link.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Active deals panel",product_category:"promotion",button_text:"Visit vendor",button_location:"active_deals_panel",affiliate_network:"direct_vendor",vendor_name:link.dataset.promoVendor||"",affiliate_url:link.href})}));
   }
   function setupPromotionRolodex(promotions){
-    const track=document.querySelector("[data-ticker-track]");
-    if(!track)return;
+    const saleCard=document.querySelector("[data-sale-card]");
+    if(!saleCard) return;
+    const rolodexDeals=promotions.filter(promotion=>promotion.show_in_rolodex!==false);
     const banner=document.querySelector(".sale-banner");
-    const tickerDeals=promotions.filter(p=>p.show_in_rolodex!==false);
-    if(!tickerDeals.length){if(banner)banner.hidden=true;return;}
-
-    // Wire up "View all" button
-    document.querySelectorAll("[data-promotions-open]").forEach(btn=>btn.addEventListener("click",openPromotionPanel));
-
-    // Group by vendor in priority order
-    const vendorOrder=[];
-    const vendorMap={};
-    tickerDeals.forEach(deal=>{
-      const v=deal.vendor;
-      if(!vendorMap[v]){vendorMap[v]=[];vendorOrder.push(v);}
-      vendorMap[v].push(deal);
-    });
-
-    // Build one pass of ticker HTML
-    const buildHTML=()=>{
-      let html="";
-      vendorOrder.forEach((vendor,vi)=>{
-        vendorMap[vendor].forEach((deal)=>{
-          const vendorName=escapeHtml(deal.display_vendor||deal.vendor);
-          const shortDetail=deal.short_detail?` — ${escapeHtml(deal.short_detail.substring(0,55))}${deal.short_detail.length>55?"…":""}`:""
-          html+=`<a class="sale-ticker-item" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><span class="sale-ticker-vendor">${vendorName}</span><span class="sale-ticker-deal"><strong>${escapeHtml(deal.headline)}</strong>${shortDetail}<span class="sale-ticker-chip">View ›</span></span></a>`;
-        });
-        if(vi<vendorOrder.length-1)html+=`<span class="sale-ticker-divider" aria-hidden="true">◆</span>`;
-      });
-      return html;
-    };
-
-    const singlePass=buildHTML();
-    track.innerHTML=singlePass+singlePass;
-
-    // Scroll state
-    const BASE_SPEED=1.2;
-    const MAX_SPEED=6;
-    let pos=0;
-    let halfWidth=0;
-    let currentSpeed=BASE_SPEED;
-    let paused=false;
-
-    // Touch swipe state
-    let touchStartX=0;
-    let touchStartTime=0;
-    let swipeVelocity=0;
-    let isSwiping=false;
-
-    const wrap=track.closest(".sale-ticker-track-wrap");
-
-    // Mouse hover pause
-    if(wrap){
-      wrap.addEventListener("mouseenter",()=>{paused=true;});
-      wrap.addEventListener("mouseleave",()=>{paused=false;currentSpeed=BASE_SPEED;});
+    const saleCount=document.querySelector("[data-sale-count]");
+    const headline=document.querySelector(".sale-headline");
+    const kicker=document.querySelector(".sale-mobile-kicker span:nth-child(2)");
+    const subline=document.querySelector(".sale-subline");
+    if(headline)headline.textContent="🎁 Father's Day Deals";
+    if(kicker)kicker.textContent="Active deals";
+    if(subline)subline.innerHTML=`Use <strong>SAMMYC</strong> where listed for available extra savings. <button class="sale-view-all" type="button" data-promotions-open>View all active deals</button>`;
+    const mobileKicker=document.querySelector(".sale-mobile-kicker");
+    if(mobileKicker&&!mobileKicker.querySelector("[data-promotions-open]")){
+      const mobileButton=document.createElement("button");
+      mobileButton.type="button";
+      mobileButton.className="sale-mobile-view-all";
+      mobileButton.dataset.promotionsOpen="1";
+      mobileButton.textContent="All deals";
+      mobileKicker.insertBefore(mobileButton,saleCount||null);
     }
-
-    // Touch handlers
-    track.addEventListener("touchstart",e=>{
-      touchStartX=e.touches[0].clientX;
-      touchStartTime=Date.now();
-      swipeVelocity=0;
-      isSwiping=false;
-      paused=false;
-    },{passive:true});
-
-    track.addEventListener("touchmove",e=>{
-      const dx=touchStartX-e.touches[0].clientX; // positive = swiping left = speed up
-      const dt=Math.max(1,Date.now()-touchStartTime);
-      swipeVelocity=dx/dt*16; // px per frame approx
-      if(Math.abs(dx)>8) isSwiping=true;
-      // Apply speed boost from swipe — clamp between 0 (stop) and MAX_SPEED
-      currentSpeed=Math.max(0,Math.min(MAX_SPEED, BASE_SPEED + swipeVelocity));
-    },{passive:true});
-
-    track.addEventListener("touchend",e=>{
-      // If it was a tap (not a swipe) let the link fire
-      if(!isSwiping){
-        currentSpeed=BASE_SPEED;
-        return;
-      }
-      // Gradually decay back to base speed
-      const decay=setInterval(()=>{
-        const diff=currentSpeed-BASE_SPEED;
-        if(Math.abs(diff)<0.05){currentSpeed=BASE_SPEED;clearInterval(decay);}
-        else currentSpeed-=diff*0.08;
-      },16);
-    },{passive:true});
-
-    // Prevent link navigation on swipe
-    track.addEventListener("click",e=>{
-      if(isSwiping){e.preventDefault();isSwiping=false;return;}
-      const item=e.target.closest(".sale-ticker-item");
-      if(!item)return;
-      window.dataLayer=window.dataLayer||[];
-      window.dataLayer.push({event:"affiliate_click",product_name:"Deals ticker",product_category:"promotion",vendor_name:item.dataset.vendor||"",button_text:"View",button_location:"deals_ticker",affiliate_url:item.href});
-    });
-
-    // Animation loop
-    const tick=()=>{
-      if(!paused){
-        if(!halfWidth) halfWidth=track.scrollWidth/2;
-        pos+=currentSpeed;
-        if(pos>=halfWidth) pos=0;
-        track.style.transform=`translateX(${-pos}px)`;
-      }
-      requestAnimationFrame(tick);
+    document.querySelectorAll("[data-promotions-open]").forEach(button=>button.addEventListener("click",openPromotionPanel));
+    if(!rolodexDeals.length){if(banner)banner.hidden=true;return}
+    let saleIndex=0;
+    let saleTimer;
+    const renderSale=()=>{
+      const deal=rolodexDeals[saleIndex];
+      saleCard.href=deal.affiliate_url||"#";
+      saleCard.setAttribute("aria-label",`${deal.display_vendor||deal.vendor} promotion, ${deal.headline}, ${deal.short_detail||""}`);
+      saleCard.dataset.vendor=deal.vendor;
+      saleCard.innerHTML=`<span class="sale-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span><span class="sale-pct"><strong>${escapeHtml(deal.headline)}</strong> ${escapeHtml(deal.short_detail||"")}</span><span class="sale-cta-chip">View deal</span>`;
+      if(saleCount)saleCount.textContent=`${saleIndex+1} / ${rolodexDeals.length}`;
+      saleCard.classList.remove("sale-flip-in");
+      requestAnimationFrame(()=>requestAnimationFrame(()=>saleCard.classList.add("sale-flip-in")));
     };
-
-    requestAnimationFrame(()=>requestAnimationFrame(tick));
+    const rotate=direction=>{saleIndex=(saleIndex+direction+rolodexDeals.length)%rolodexDeals.length;renderSale()};
+    const restart=()=>{clearInterval(saleTimer);saleTimer=setInterval(()=>rotate(1),4200)};
+    document.querySelector("[data-sale-prev]")?.addEventListener("click",()=>{rotate(-1);restart()});
+    document.querySelector("[data-sale-next]")?.addEventListener("click",()=>{rotate(1);restart()});
+    saleCard.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Current deals rolodex",product_category:"promotion",lab_result:"tracked_vendor",button_text:"View deal",button_location:"current_deals_rolodex",affiliate_network:"direct_vendor",vendor_name:saleCard.dataset.vendor||"",affiliate_url:saleCard.href})});
+    renderSale();restart();
   }
 
   function addVendorDirectoryBadges(promotions){
