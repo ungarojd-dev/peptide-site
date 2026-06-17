@@ -209,7 +209,7 @@
     // Wire up "View all" button
     document.querySelectorAll("[data-promotions-open]").forEach(btn=>btn.addEventListener("click",openPromotionPanel));
 
-    // Group deals by vendor, preserving priority order within each vendor
+    // Group by vendor in priority order
     const vendorOrder=[];
     const vendorMap={};
     tickerDeals.forEach(deal=>{
@@ -218,46 +218,31 @@
       vendorMap[v].push(deal);
     });
 
-    // Build ticker items grouped by vendor
-    const items=[];
-    vendorOrder.forEach((vendor,vi)=>{
-      const deals=vendorMap[vendor];
-      deals.forEach((deal,di)=>{
-        const isFirstInVendor=di===0;
-        const isLastInVendor=di===deals.length-1;
-        items.push({deal,isFirstInVendor,isLastInVendor,isLastVendor:vi===vendorOrder.length-1&&isLastInVendor});
+    // Build one set of ticker HTML
+    const buildHTML=()=>{
+      let html="";
+      vendorOrder.forEach((vendor,vi)=>{
+        vendorMap[vendor].forEach((deal,di)=>{
+          const vendorName=escapeHtml(deal.display_vendor||deal.vendor);
+          const shortDetail=deal.short_detail?` — ${escapeHtml(deal.short_detail.substring(0,55))}${deal.short_detail.length>55?"…":""}`:""
+          html+=`<a class="sale-ticker-item" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><span class="sale-ticker-vendor">${vendorName}</span><span class="sale-ticker-deal"><strong>${escapeHtml(deal.headline)}</strong>${shortDetail}<span class="sale-ticker-chip">View ›</span></span></a>`;
+        });
+        if(vi<vendorOrder.length-1)html+=`<span class="sale-ticker-divider" aria-hidden="true">◆</span>`;
       });
-    });
+      return html;
+    };
 
-    // Render ticker — duplicate for seamless loop
-    const renderItems=(items)=>items.map(({deal,isFirstInVendor,isLastVendor})=>{
-      const vendorLabel=isFirstInVendor?`<span class="sale-ticker-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span><span class="sale-ticker-sep">›</span>`:"";
-      return `<a class="sale-ticker-item" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}">${vendorLabel}<span class="sale-ticker-deal"><strong>${escapeHtml(deal.headline)}</strong>${deal.short_detail?" — "+escapeHtml(deal.short_detail.substring(0,55))+(deal.short_detail.length>55?"…":""):""}</span><span class="sale-ticker-chip">View ›</span></a>${isLastVendor?"":!items[items.indexOf({deal})+1]?.isFirstInVendor?"":"<span class='sale-ticker-divider'>◆</span>"}`;
-    }).join("");
-
-    // Build grouped items with dividers between vendors
-    let html="";
-    vendorOrder.forEach((vendor,vi)=>{
-      vendorMap[vendor].forEach((deal,di)=>{
-        const isFirst=di===0;
-        const vendorLabel=isFirst?`<span class="sale-ticker-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span><span class="sale-ticker-sep">›</span>`:"";
-        html+=`<a class="sale-ticker-item" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}">${vendorLabel}<span class="sale-ticker-deal"><strong>${escapeHtml(deal.headline)}</strong>${deal.short_detail?" — "+escapeHtml(deal.short_detail.substring(0,55))+(deal.short_detail.length>55?"…":""):""}</span><span class="sale-ticker-chip">View ›</span></a>`;
-      });
-      if(vi<vendorOrder.length-1)html+=`<span class="sale-ticker-divider" aria-hidden="true">◆</span>`;
-    });
-
-    // Duplicate for seamless infinite scroll
+    // Duplicate for seamless infinite loop
+    const html=buildHTML();
     track.innerHTML=html+html;
 
-    // GTM tracking on click
+    // GTM tracking
     track.addEventListener("click",e=>{
       const item=e.target.closest(".sale-ticker-item");
       if(!item)return;
       window.dataLayer=window.dataLayer||[];
       window.dataLayer.push({event:"affiliate_click",product_name:"Deals ticker",product_category:"promotion",vendor_name:item.dataset.vendor||"",button_text:"View",button_location:"deals_ticker",affiliate_url:item.href});
     });
-
-    // Pause on hover handled by CSS animation-play-state:paused
   }
 
   function addVendorDirectoryBadges(promotions){
