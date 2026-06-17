@@ -200,47 +200,66 @@
     promoPanelRoot.querySelectorAll("[data-promo-affiliate='1']").forEach(link=>link.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Active deals panel",product_category:"promotion",button_text:"Visit vendor",button_location:"active_deals_panel",affiliate_network:"direct_vendor",vendor_name:link.dataset.promoVendor||"",affiliate_url:link.href})}));
   }
   function setupPromotionRolodex(promotions){
-    const saleCard=document.querySelector("[data-sale-card]");
-    if(!saleCard) return;
-    const rolodexDeals=promotions.filter(promotion=>promotion.show_in_rolodex);
+    const track=document.querySelector("[data-ticker-track]");
+    if(!track)return;
     const banner=document.querySelector(".sale-banner");
-    const saleCount=document.querySelector("[data-sale-count]");
-    const headline=document.querySelector(".sale-headline");
-    const kicker=document.querySelector(".sale-mobile-kicker span:nth-child(2)");
-    const subline=document.querySelector(".sale-subline");
-    if(headline)headline.textContent="Current vendor deals";
-    if(kicker)kicker.textContent="Active deals";
-    if(subline)subline.innerHTML=`Promotions change frequently. <button class="sale-view-all" type="button" data-promotions-open>View all active deals</button>`;
-    const mobileKicker=document.querySelector(".sale-mobile-kicker");
-    if(mobileKicker&&!mobileKicker.querySelector("[data-promotions-open]")){
-      const mobileButton=document.createElement("button");
-      mobileButton.type="button";
-      mobileButton.className="sale-mobile-view-all";
-      mobileButton.dataset.promotionsOpen="1";
-      mobileButton.textContent="All deals";
-      mobileKicker.insertBefore(mobileButton,saleCount||null);
-    }
-    document.querySelectorAll("[data-promotions-open]").forEach(button=>button.addEventListener("click",openPromotionPanel));
-    if(!rolodexDeals.length){if(banner)banner.hidden=true;return}
-    let saleIndex=0;
-    let saleTimer;
-    const renderSale=()=>{
-      const deal=rolodexDeals[saleIndex];
-      saleCard.href=deal.affiliate_url||"#";
-      saleCard.setAttribute("aria-label",`${deal.display_vendor||deal.vendor} promotion, ${deal.headline}, ${deal.short_detail||""}`);
-      saleCard.dataset.vendor=deal.vendor;
-      saleCard.innerHTML=`<span class="sale-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span><span class="sale-pct"><strong>${escapeHtml(deal.headline)}</strong> ${escapeHtml(deal.short_detail||"")}</span><span class="sale-cta-chip">View deal</span>`;
-      if(saleCount)saleCount.textContent=`${saleIndex+1} / ${rolodexDeals.length}`;
-      saleCard.classList.remove("sale-flip-in");
-      requestAnimationFrame(()=>requestAnimationFrame(()=>saleCard.classList.add("sale-flip-in")));
-    };
-    const rotate=direction=>{saleIndex=(saleIndex+direction+rolodexDeals.length)%rolodexDeals.length;renderSale()};
-    const restart=()=>{clearInterval(saleTimer);saleTimer=setInterval(()=>rotate(1),4200)};
-    document.querySelector("[data-sale-prev]")?.addEventListener("click",()=>{rotate(-1);restart()});
-    document.querySelector("[data-sale-next]")?.addEventListener("click",()=>{rotate(1);restart()});
-    saleCard.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Current deals rolodex",product_category:"promotion",lab_result:"tracked_vendor",button_text:"View deal",button_location:"current_deals_rolodex",affiliate_network:"direct_vendor",vendor_name:saleCard.dataset.vendor||"",affiliate_url:saleCard.href})});
-    renderSale();restart();
+    const tickerDeals=promotions.filter(p=>p.show_in_rolodex!==false);
+    if(!tickerDeals.length){if(banner)banner.hidden=true;return;}
+
+    // Wire up "View all" button
+    document.querySelectorAll("[data-promotions-open]").forEach(btn=>btn.addEventListener("click",openPromotionPanel));
+
+    // Group deals by vendor, preserving priority order within each vendor
+    const vendorOrder=[];
+    const vendorMap={};
+    tickerDeals.forEach(deal=>{
+      const v=deal.vendor;
+      if(!vendorMap[v]){vendorMap[v]=[];vendorOrder.push(v);}
+      vendorMap[v].push(deal);
+    });
+
+    // Build ticker items grouped by vendor
+    const items=[];
+    vendorOrder.forEach((vendor,vi)=>{
+      const deals=vendorMap[vendor];
+      deals.forEach((deal,di)=>{
+        const isFirstInVendor=di===0;
+        const isLastInVendor=di===deals.length-1;
+        items.push({deal,isFirstInVendor,isLastInVendor,isLastVendor:vi===vendorOrder.length-1&&isLastInVendor});
+      });
+    });
+
+    // Render ticker — duplicate for seamless loop
+    const renderItems=(items)=>items.map(({deal,isFirstInVendor,isLastVendor})=>{
+      const vendorLabel=isFirstInVendor?`<span class="sale-ticker-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span><span class="sale-ticker-sep">›</span>`:"";
+      return `<a class="sale-ticker-item" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}">${vendorLabel}<span class="sale-ticker-deal"><strong>${escapeHtml(deal.headline)}</strong>${deal.short_detail?" — "+escapeHtml(deal.short_detail.substring(0,55))+(deal.short_detail.length>55?"…":""):""}</span><span class="sale-ticker-chip">View ›</span></a>${isLastVendor?"":!items[items.indexOf({deal})+1]?.isFirstInVendor?"":"<span class='sale-ticker-divider'>◆</span>"}`;
+    }).join("");
+
+    // Build grouped items with dividers between vendors
+    let html="";
+    vendorOrder.forEach((vendor,vi)=>{
+      vendorMap[vendor].forEach((deal,di)=>{
+        const isFirst=di===0;
+        const vendorLabel=isFirst?`<span class="sale-ticker-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span><span class="sale-ticker-sep">›</span>`:"";
+        html+=`<a class="sale-ticker-item" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}">${vendorLabel}<span class="sale-ticker-deal"><strong>${escapeHtml(deal.headline)}</strong>${deal.short_detail?" — "+escapeHtml(deal.short_detail.substring(0,55))+(deal.short_detail.length>55?"…":""):""}</span><span class="sale-ticker-chip">View ›</span></a>`;
+      });
+      if(vi<vendorOrder.length-1)html+=`<span class="sale-ticker-divider" aria-hidden="true">◆</span>`;
+    });
+
+    // Duplicate for seamless infinite scroll
+    track.innerHTML=html+html;
+
+    // GTM tracking on click
+    track.addEventListener("click",e=>{
+      const item=e.target.closest(".sale-ticker-item");
+      if(!item)return;
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:"affiliate_click",product_name:"Deals ticker",product_category:"promotion",vendor_name:item.dataset.vendor||"",button_text:"View",button_location:"deals_ticker",affiliate_url:item.href});
+    });
+
+    // Pause on hover handled by CSS animation-play-state:paused
   }
+
   function addVendorDirectoryBadges(promotions){
     document.querySelectorAll(".vendor-card").forEach(card=>{
       const name=card.querySelector("h3")?.textContent.trim();
