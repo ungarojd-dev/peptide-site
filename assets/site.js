@@ -218,11 +218,11 @@
       vendorMap[v].push(deal);
     });
 
-    // Build one set of ticker HTML
+    // Build one pass of ticker HTML
     const buildHTML=()=>{
       let html="";
       vendorOrder.forEach((vendor,vi)=>{
-        vendorMap[vendor].forEach((deal,di)=>{
+        vendorMap[vendor].forEach((deal)=>{
           const vendorName=escapeHtml(deal.display_vendor||deal.vendor);
           const shortDetail=deal.short_detail?` — ${escapeHtml(deal.short_detail.substring(0,55))}${deal.short_detail.length>55?"…":""}`:""
           html+=`<a class="sale-ticker-item" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><span class="sale-ticker-vendor">${vendorName}</span><span class="sale-ticker-deal"><strong>${escapeHtml(deal.headline)}</strong>${shortDetail}<span class="sale-ticker-chip">View ›</span></span></a>`;
@@ -232,9 +232,39 @@
       return html;
     };
 
-    // Duplicate for seamless infinite loop
-    const html=buildHTML();
-    track.innerHTML=html+html;
+    // Render duplicate set for seamless loop
+    const singlePass=buildHTML();
+    track.innerHTML=singlePass+singlePass;
+
+    // JS-driven scroll — reliable across all browsers/devices
+    let pos=0;
+    let halfWidth=0;
+    let paused=false;
+    const SPEED=0.5; // px per frame — adjust for speed
+
+    const getHalfWidth=()=>{
+      // Half of total width = one full pass
+      return track.scrollWidth/2;
+    };
+
+    const tick=()=>{
+      if(!paused){
+        halfWidth=halfWidth||getHalfWidth();
+        pos+=SPEED;
+        if(pos>=halfWidth) pos=0; // seamless reset
+        track.style.transform=`translateX(${-pos}px)`;
+      }
+      requestAnimationFrame(tick);
+    };
+
+    // Pause on hover/touch
+    const wrap=track.closest(".sale-ticker-track-wrap");
+    if(wrap){
+      wrap.addEventListener("mouseenter",()=>{paused=true;});
+      wrap.addEventListener("mouseleave",()=>{paused=false;});
+      wrap.addEventListener("touchstart",()=>{paused=true;},{passive:true});
+      wrap.addEventListener("touchend",()=>{setTimeout(()=>{paused=false;},1200);},{passive:true});
+    }
 
     // GTM tracking
     track.addEventListener("click",e=>{
@@ -243,6 +273,9 @@
       window.dataLayer=window.dataLayer||[];
       window.dataLayer.push({event:"affiliate_click",product_name:"Deals ticker",product_category:"promotion",vendor_name:item.dataset.vendor||"",button_text:"View",button_location:"deals_ticker",affiliate_url:item.href});
     });
+
+    // Start after layout is ready
+    requestAnimationFrame(()=>requestAnimationFrame(tick));
   }
 
   function addVendorDirectoryBadges(promotions){
