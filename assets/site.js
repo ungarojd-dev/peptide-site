@@ -265,7 +265,7 @@
       if(bonusDeals.length){
         const deal=bonusDeals[0];
         teaserLink.href=deal.affiliate_url||"#";
-        teaserText.innerHTML=`Also running: <strong>${escapeHtml(deal.headline)}</strong>${deal.short_detail?" — "+escapeHtml(deal.short_detail):""}`;
+        teaserText.innerHTML=`Also running — <strong>${escapeHtml(deal.display_vendor||deal.vendor)}:</strong> ${escapeHtml(deal.headline)}${deal.short_detail?" — "+escapeHtml(deal.short_detail):""}`;
         teaserLink.dataset.vendor=deal.vendor;
         teaser.hidden=false;
         teaserLink.addEventListener("click",()=>{
