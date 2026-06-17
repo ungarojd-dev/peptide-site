@@ -240,7 +240,7 @@
     let pos=0;
     let halfWidth=0;
     let paused=false;
-    const SPEED=0.5; // px per frame — adjust for speed
+    const SPEED=1.2; // px per frame — adjust for speed
 
     const getHalfWidth=()=>{
       // Half of total width = one full pass
