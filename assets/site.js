@@ -232,49 +232,83 @@
       return html;
     };
 
-    // Render duplicate set for seamless loop
     const singlePass=buildHTML();
     track.innerHTML=singlePass+singlePass;
 
-    // JS-driven scroll — reliable across all browsers/devices
+    // Scroll state
+    const BASE_SPEED=1.2;
+    const MAX_SPEED=6;
     let pos=0;
     let halfWidth=0;
+    let currentSpeed=BASE_SPEED;
     let paused=false;
-    const SPEED=1.2; // px per frame — adjust for speed
 
-    const getHalfWidth=()=>{
-      // Half of total width = one full pass
-      return track.scrollWidth/2;
-    };
+    // Touch swipe state
+    let touchStartX=0;
+    let touchStartTime=0;
+    let swipeVelocity=0;
+    let isSwiping=false;
 
-    const tick=()=>{
-      if(!paused){
-        halfWidth=halfWidth||getHalfWidth();
-        pos+=SPEED;
-        if(pos>=halfWidth) pos=0; // seamless reset
-        track.style.transform=`translateX(${-pos}px)`;
-      }
-      requestAnimationFrame(tick);
-    };
-
-    // Pause on hover/touch
     const wrap=track.closest(".sale-ticker-track-wrap");
+
+    // Mouse hover pause
     if(wrap){
       wrap.addEventListener("mouseenter",()=>{paused=true;});
-      wrap.addEventListener("mouseleave",()=>{paused=false;});
-      wrap.addEventListener("touchstart",()=>{paused=true;},{passive:true});
-      wrap.addEventListener("touchend",()=>{setTimeout(()=>{paused=false;},1200);},{passive:true});
+      wrap.addEventListener("mouseleave",()=>{paused=false;currentSpeed=BASE_SPEED;});
     }
 
-    // GTM tracking
+    // Touch handlers
+    track.addEventListener("touchstart",e=>{
+      touchStartX=e.touches[0].clientX;
+      touchStartTime=Date.now();
+      swipeVelocity=0;
+      isSwiping=false;
+      paused=false;
+    },{passive:true});
+
+    track.addEventListener("touchmove",e=>{
+      const dx=touchStartX-e.touches[0].clientX; // positive = swiping left = speed up
+      const dt=Math.max(1,Date.now()-touchStartTime);
+      swipeVelocity=dx/dt*16; // px per frame approx
+      if(Math.abs(dx)>8) isSwiping=true;
+      // Apply speed boost from swipe — clamp between 0 (stop) and MAX_SPEED
+      currentSpeed=Math.max(0,Math.min(MAX_SPEED, BASE_SPEED + swipeVelocity));
+    },{passive:true});
+
+    track.addEventListener("touchend",e=>{
+      // If it was a tap (not a swipe) let the link fire
+      if(!isSwiping){
+        currentSpeed=BASE_SPEED;
+        return;
+      }
+      // Gradually decay back to base speed
+      const decay=setInterval(()=>{
+        const diff=currentSpeed-BASE_SPEED;
+        if(Math.abs(diff)<0.05){currentSpeed=BASE_SPEED;clearInterval(decay);}
+        else currentSpeed-=diff*0.08;
+      },16);
+    },{passive:true});
+
+    // Prevent link navigation on swipe
     track.addEventListener("click",e=>{
+      if(isSwiping){e.preventDefault();isSwiping=false;return;}
       const item=e.target.closest(".sale-ticker-item");
       if(!item)return;
       window.dataLayer=window.dataLayer||[];
       window.dataLayer.push({event:"affiliate_click",product_name:"Deals ticker",product_category:"promotion",vendor_name:item.dataset.vendor||"",button_text:"View",button_location:"deals_ticker",affiliate_url:item.href});
     });
 
-    // Start after layout is ready
+    // Animation loop
+    const tick=()=>{
+      if(!paused){
+        if(!halfWidth) halfWidth=track.scrollWidth/2;
+        pos+=currentSpeed;
+        if(pos>=halfWidth) pos=0;
+        track.style.transform=`translateX(${-pos}px)`;
+      }
+      requestAnimationFrame(tick);
+    };
+
     requestAnimationFrame(()=>requestAnimationFrame(tick));
   }
 
