@@ -151,7 +151,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260617-carousel1";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260618-fd-qa3";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -206,48 +206,40 @@
   function setupPromotionRolodex(promotions){
     const saleCard=document.querySelector("[data-sale-card]");
     if(!saleCard) return;
-    const rolodexDeals=promotions.filter(promotion=>promotion.announcement===true);
     const banner=document.querySelector(".sale-banner");
     const saleCount=document.querySelector("[data-sale-count]");
     const headline=document.querySelector(".sale-headline");
     const kicker=document.querySelector(".sale-mobile-kicker span:nth-child(2)");
+    const hint=document.querySelector(".sale-mobile-hint");
     const subline=document.querySelector(".sale-subline");
+    const prev=document.querySelector("[data-sale-prev]");
+    const next=document.querySelector("[data-sale-next]");
     if(headline)headline.textContent="📣 Announcements";
     if(kicker)kicker.textContent="Announcements";
-    if(subline)subline.innerHTML=`<button class="sale-view-all" type="button" data-promotions-open>View all active deals →</button>`;
-    const mobileKicker=document.querySelector(".sale-mobile-kicker");
-    if(mobileKicker&&!mobileKicker.querySelector("[data-promotions-open]")){
-      const mobileButton=document.createElement("button");
-      mobileButton.type="button";
-      mobileButton.className="sale-mobile-view-all";
-      mobileButton.dataset.promotionsOpen="1";
-      mobileButton.textContent="All deals";
-      mobileKicker.insertBefore(mobileButton,saleCount||null);
-    }
-    document.querySelectorAll("[data-promotions-open]").forEach(button=>button.addEventListener("click",openPromotionPanel));
-    if(!rolodexDeals.length){if(banner)banner.hidden=true;return}
-    let saleIndex=0;
-    let saleTimer;
-    const renderSale=()=>{
-      const deal=rolodexDeals[saleIndex];
-      saleCard.href=deal.affiliate_url||"#";
-      saleCard.setAttribute("aria-label",`${deal.display_vendor||deal.vendor} promotion, ${deal.headline}, ${deal.short_detail||""}`);
-      saleCard.dataset.vendor=deal.vendor;
-      // Split "Father's Day: " prefix into its own gold chip if present, or use deal.badge
-      const {badge:fdBadge,text:headline}=splitHeadlineBadge(deal.headline);
-      const badgeText=deal.badge||fdBadge;
-      const badgeHtml=badgeText?`<span class="sale-fd-badge">${escapeHtml(badgeText)}</span>`:"";
-      saleCard.innerHTML=`<span class="sale-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span><span class="sale-pct">${badgeHtml}<strong>${escapeHtml(headline)}</strong> ${escapeHtml(deal.short_detail||"")}</span><span class="sale-cta-chip">${escapeHtml(deal.cta_text||"View deal")}</span>`;
-      if(saleCount)saleCount.textContent=`${saleIndex+1} / ${rolodexDeals.length}`;
-      saleCard.classList.remove("sale-flip-in");
-      requestAnimationFrame(()=>requestAnimationFrame(()=>saleCard.classList.add("sale-flip-in")));
+    if(hint)hint.textContent="Tap to view";
+    if(saleCount)saleCount.textContent="1 / 1";
+    if(prev){prev.hidden=true;prev.setAttribute("aria-hidden","true");}
+    if(next){next.hidden=true;next.setAttribute("aria-hidden","true");}
+    if(subline)subline.innerHTML=`<button class="sale-view-all" type="button" data-fathers-day-scroll>View all Father's Day deals →</button>`;
+    const renderStaticCta=()=>{
+      saleCard.href="#deals";
+      saleCard.removeAttribute("target");
+      saleCard.removeAttribute("rel");
+      saleCard.setAttribute("aria-label","View Father's Day deals");
+      saleCard.dataset.vendor="Father's Day Deals";
+      saleCard.innerHTML=`<span class="sale-vendor">Father's Day Deals</span><span class="sale-pct"><strong>Check out current Father's Day deals</strong> from supported vendors.</span><span class="sale-cta-chip">View deals</span>`;
     };
-    const rotate=direction=>{saleIndex=(saleIndex+direction+rolodexDeals.length)%rolodexDeals.length;renderSale()};
-    const restart=()=>{clearInterval(saleTimer);saleTimer=setInterval(()=>rotate(1),4200)};
-    document.querySelector("[data-sale-prev]")?.addEventListener("click",()=>{rotate(-1);restart()});
-    document.querySelector("[data-sale-next]")?.addEventListener("click",()=>{rotate(1);restart()});
-    saleCard.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Current deals rolodex",product_category:"promotion",lab_result:"tracked_vendor",button_text:"View deal",button_location:"current_deals_rolodex",affiliate_network:"direct_vendor",vendor_name:saleCard.dataset.vendor||"",affiliate_url:saleCard.href})});
-    renderSale();restart();
+    const scrollToDeals=event=>{
+      event.preventDefault();
+      const target=document.querySelector("#deals");
+      if(target) target.scrollIntoView({behavior:"smooth",block:"start"});
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:"promo_section_click",product_name:"Father's Day deals",product_category:"promotion",button_text:"View deals",button_location:"announcement_rolodex"});
+    };
+    renderStaticCta();
+    saleCard.addEventListener("click",scrollToDeals);
+    document.querySelectorAll("[data-fathers-day-scroll]").forEach(button=>button.addEventListener("click",scrollToDeals));
+    if(banner)banner.hidden=false;
   }
 
   function setupDealsStrip(promotions){
@@ -274,26 +266,46 @@
     }));
   }
 
+  const dealLogoPath=vendor=>{
+    const key=String(vendor||"").toLowerCase();
+    const logos={
+      "southern aminos":"/assets/vendor-logos/southern-aminos.webp",
+      "mile high peptides":"/assets/vendor-logos/mile-high-peptides.webp",
+      "mile high compounds":"/assets/vendor-logos/mile-high-peptides.webp",
+      "instant peptides":"/assets/vendor-logos/instant-peptides.webp",
+      "solyn labs":"/assets/vendor-logos/solyn-labs.webp",
+      "solyn compounds":"/assets/vendor-logos/solyn-labs.webp",
+      "glacier aminos":"/assets/vendor-logos/glacier-aminos.webp",
+      "ion peptide":"/assets/vendor-logos/ion-peptide.webp",
+      "glow aminos":"/assets/vendor-logos/glow-aminos.webp",
+      "glow & flawless":"/assets/vendor-logos/glow-aminos.webp",
+      "flawless compounds":"/assets/vendor-logos/flawless-compounds.webp",
+      "labsourced peptides":"/assets/vendor-logos/labsourced-peptides.webp",
+      "labsourced":"/assets/vendor-logos/labsourced-peptides.webp"
+    };
+    return logos[key]||"";
+  };
   function setupDealCarousel(promotions){
     const track=document.querySelector("[data-deal-track]");
     const dotsWrap=document.querySelector("[data-deal-dots]");
     if(!track) return;
-    const deals=promotions.filter(p=>p.show_in_rolodex!==false);
+    const deals=promotions.filter(p=>p.show_in_rolodex===true);
     if(!deals.length){const s=document.querySelector(".deal-carousel");if(s)s.hidden=true;return;}
     const isStackable=deal=>{const h=((deal.short_detail||"")+" "+(deal.full_detail||"")).toLowerCase();return h.includes("stackable")||h.includes("sammyc");};
     let current=0;let autoTimer;
     const render=()=>{
       const deal=deals[current];
-      const{badge:fdBadge,text:headline}=splitHeadlineBadge(deal.headline);
-      const badgeText=deal.badge||fdBadge;
-      const badgeHtml=badgeText?`<span class="dc-badge">${escapeHtml(badgeText)}</span>`:"";
+      const{text:headline}=splitHeadlineBadge(deal.headline);
+      const badgeHtml=`<span class="dc-badge">Father's Day Deal</span>`;
       const stackChip=isStackable(deal)?`<span class="dc-stack">+SAMMYC</span>`:"";
-      track.innerHTML=`<a class="dc-card" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><div class="dc-card-body"><div class="dc-top">${badgeHtml}<span class="dc-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span>${stackChip}</div><strong class="dc-headline">${escapeHtml(headline)}</strong><span class="dc-detail">${escapeHtml(deal.short_detail||"")}</span></div><span class="dc-cta">View Deal ›</span></a>`;
+      const logo=dealLogoPath(deal.display_vendor||deal.vendor);
+      const logoHtml=logo?`<img class="dc-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
+      track.innerHTML=`<a class="dc-card" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><div class="dc-card-body"><div class="dc-top">${badgeHtml}<span class="dc-vendor-wrap">${logoHtml}<span class="dc-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span></span>${stackChip}</div><strong class="dc-headline">${escapeHtml(headline)}</strong><span class="dc-detail">${escapeHtml(deal.short_detail||"")}</span></div><span class="dc-cta">View Deal ›</span></a>`;
       if(dotsWrap){dotsWrap.innerHTML=deals.map((_,i)=>`<button class="dc-dot${i===current?" active":""}" data-dot="${i}" aria-label="Deal ${i+1}"></button>`).join("");dotsWrap.querySelectorAll("[data-dot]").forEach(d=>d.addEventListener("click",()=>goTo(parseInt(d.dataset.dot))));}
       track.querySelector(".dc-card")&&track.querySelector(".dc-card").addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Deal carousel",product_category:"promotion",button_text:"View Deal",button_location:"deal_carousel",vendor_name:deal.vendor,affiliate_url:deal.affiliate_url||""});});
     };
     const goTo=i=>{current=(i+deals.length)%deals.length;render();resetTimer();};
-    const resetTimer=()=>{clearInterval(autoTimer);autoTimer=setInterval(()=>goTo(current+1),4000);};
+    const resetTimer=()=>{clearInterval(autoTimer);if(deals.length>1)autoTimer=setInterval(()=>goTo(current+1),4000);};
     document.querySelector("[data-deal-prev]")&&document.querySelector("[data-deal-prev]").addEventListener("click",()=>goTo(current-1));
     document.querySelector("[data-deal-next]")&&document.querySelector("[data-deal-next]").addEventListener("click",()=>goTo(current+1));
     let tx=0;
