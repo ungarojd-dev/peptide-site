@@ -232,7 +232,13 @@
     const scrollToDeals=event=>{
       event.preventDefault();
       const target=document.querySelector("#deals");
-      if(target) target.scrollIntoView({behavior:"smooth",block:"start"});
+      if(target){
+        const sticky=document.querySelector(".sticky-stack");
+        const stickyHeight=sticky?sticky.getBoundingClientRect().height:0;
+        const extraSpace=window.matchMedia("(max-width: 620px)").matches?14:18;
+        const top=target.getBoundingClientRect().top+window.pageYOffset-stickyHeight-extraSpace;
+        window.scrollTo({top:Math.max(0,top),behavior:"smooth"});
+      }
       window.dataLayer=window.dataLayer||[];
       window.dataLayer.push({event:"promo_section_click",product_name:"Father's Day deals",product_category:"promotion",button_text:"View deals",button_location:"announcement_rolodex"});
     };
