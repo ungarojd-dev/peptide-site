@@ -151,7 +151,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260612-glacier1";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260617-dealsboard1";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -199,10 +199,14 @@
     promoPanelRoot.addEventListener("click",event=>{if(event.target===promoPanelRoot)closePromotionPanel()});
     promoPanelRoot.querySelectorAll("[data-promo-affiliate='1']").forEach(link=>link.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Active deals panel",product_category:"promotion",button_text:"Visit vendor",button_location:"active_deals_panel",affiliate_network:"direct_vendor",vendor_name:link.dataset.promoVendor||"",affiliate_url:link.href})}));
   }
+  const splitHeadlineBadge=headline=>{
+    const fdMatch=String(headline||"").match(/^Father's Day\s*—\s*(.+)$/);
+    return fdMatch?{badge:"Father's Day",text:fdMatch[1]}:{badge:null,text:headline};
+  };
   function setupPromotionRolodex(promotions){
     const saleCard=document.querySelector("[data-sale-card]");
     if(!saleCard) return;
-    const rolodexDeals=promotions.filter(promotion=>promotion.show_in_rolodex!==false);
+    const rolodexDeals=promotions.filter(promotion=>promotion.featured===true);
     const banner=document.querySelector(".sale-banner");
     const saleCount=document.querySelector("[data-sale-count]");
     const headline=document.querySelector(".sale-headline");
@@ -230,13 +234,8 @@
       saleCard.setAttribute("aria-label",`${deal.display_vendor||deal.vendor} promotion, ${deal.headline}, ${deal.short_detail||""}`);
       saleCard.dataset.vendor=deal.vendor;
       // Split "Father's Day — " prefix into its own gold chip if present
-      let headline=deal.headline;
-      let badgeHtml="";
-      const fdMatch=headline.match(/^Father's Day\s*—\s*(.+)$/);
-      if(fdMatch){
-        badgeHtml=`<span class="sale-fd-badge">Father's Day</span>`;
-        headline=fdMatch[1];
-      }
+      const {badge:fdBadge,text:headline}=splitHeadlineBadge(deal.headline);
+      const badgeHtml=fdBadge?`<span class="sale-fd-badge">${escapeHtml(fdBadge)}</span>`:"";
       saleCard.innerHTML=`<span class="sale-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span><span class="sale-pct">${badgeHtml}<strong>${escapeHtml(headline)}</strong> ${escapeHtml(deal.short_detail||"")}</span><span class="sale-cta-chip">View deal</span>`;
       if(saleCount)saleCount.textContent=`${saleIndex+1} / ${rolodexDeals.length}`;
       saleCard.classList.remove("sale-flip-in");
@@ -278,6 +277,25 @@
     }
   }
 
+  function setupDealsBoard(promotions){
+    const grid=document.querySelector("[data-deals-board-grid]");
+    if(!grid) return;
+    const boardDeals=promotions.filter(promotion=>promotion.show_in_rolodex!==false);
+    if(!boardDeals.length){
+      grid.innerHTML=`<p class="deals-board-empty">No active vendor deals right now. Check back soon.</p>`;
+      return;
+    }
+    grid.innerHTML=boardDeals.map(deal=>{
+      const {badge:fdBadge,text:headline}=splitHeadlineBadge(deal.headline);
+      const badgeHtml=fdBadge?`<span class="deal-card-badge">${escapeHtml(fdBadge)}</span>`:"";
+      return `<a class="deal-card" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-deal-card data-vendor="${escapeHtml(deal.vendor)}"><div class="deal-card-top"><span class="deal-card-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span>${badgeHtml}</div><strong class="deal-card-headline">${escapeHtml(headline)}</strong><span class="deal-card-detail">${escapeHtml(deal.short_detail||"")}</span><span class="deal-card-cta">View deal ›</span></a>`;
+    }).join("");
+    grid.querySelectorAll("[data-deal-card]").forEach(card=>card.addEventListener("click",()=>{
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:"affiliate_click",product_name:"Deals board card",product_category:"promotion",button_text:"View deal",button_location:"deals_board_grid",affiliate_network:"direct_vendor",vendor_name:card.dataset.vendor||"",affiliate_url:card.href});
+    }));
+  }
+
   function addVendorDirectoryBadges(promotions){
     document.querySelectorAll(".vendor-card").forEach(card=>{
       const name=card.querySelector("h3")?.textContent.trim();
@@ -298,6 +316,7 @@
       promoState.loaded=true;
       setupPromotionPanel(promoState.active);
       setupPromotionRolodex(promoState.active);
+      setupDealsBoard(promoState.active);
       addVendorDirectoryBadges(promoState.active);
       document.dispatchEvent(new CustomEvent("mpp:promotions-ready"));
       return promoState.active;

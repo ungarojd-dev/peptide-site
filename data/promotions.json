@@ -1,7 +1,7 @@
 {
-  "version": "2026-06-16-fathers-day-v1",
+  "version": "2026-06-17-deals-board-v1",
   "timezone": "America/New_York",
-  "updated_at": "2026-06-16T13:00:00-04:00",
+  "updated_at": "2026-06-17T10:00:00-04:00",
   "promotions": [
     {
       "id": "southern-sitewide-25",
@@ -12,6 +12,7 @@
       "full_detail": "Southern Aminos is offering 25% off sitewide. The sale is stackable with code SAMMYC. Confirm the final discount and checkout terms directly on the vendor website.",
       "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
       "show_in_rolodex": true,
+      "featured": true,
       "show_vendor_badge": true,
       "priority": 120,
       "badge": "Promo: 25% off sitewide"
@@ -57,6 +58,7 @@
       "start_at": "2026-06-08T00:00:00-04:00",
       "end_at": "2026-06-19T23:59:00-06:00",
       "show_in_rolodex": true,
+      "featured": true,
       "show_vendor_badge": true,
       "priority": 110,
       "badge": "Father's Day: SAMMYC boosted to 20%",
@@ -99,8 +101,23 @@
       "start_at": "2026-06-12T00:00:00-04:00",
       "end_at": "2026-06-19T23:59:59-04:00",
       "show_in_rolodex": true,
+      "featured": true,
       "show_vendor_badge": false,
       "priority": 130
+    },
+    {
+      "id": "ion-sitewide-12",
+      "vendor": "Ion Peptide",
+      "display_vendor": "Ion Peptide",
+      "headline": "12% off sitewide",
+      "short_detail": "+ stackable SAMMYC savings",
+      "full_detail": "Ion Peptide is offering 12% off all products sitewide. The discount is stackable with code SAMMYC. Confirm the final discount and checkout terms directly on the vendor website.",
+      "affiliate_url": "https://ionpeptide.com?ref=SammyC",
+      "show_in_rolodex": true,
+      "featured": true,
+      "show_vendor_badge": true,
+      "priority": 115,
+      "badge": "Promo: 12% off sitewide"
     },
     {
       "id": "glow-flawless-30-off-combined",
