@@ -247,52 +247,29 @@
     document.querySelector("[data-sale-next]")?.addEventListener("click",()=>{rotate(1);restart()});
     saleCard.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Current deals rolodex",product_category:"promotion",lab_result:"tracked_vendor",button_text:"View deal",button_location:"current_deals_rolodex",affiliate_network:"direct_vendor",vendor_name:saleCard.dataset.vendor||"",affiliate_url:saleCard.href})});
     renderSale();restart();
-
-    // Teaser row — surface non-rolodex deals (giveaways, bonuses) that are currently active
-    const teaser=document.querySelector("[data-sale-teaser]");
-    const teaserLink=document.querySelector("[data-sale-teaser-link]");
-    const teaserText=document.querySelector("[data-sale-teaser-text]");
-    if(teaser&&teaserLink&&teaserText){
-      const now=new Date();
-      const bonusDeals=promotions.filter(p=>{
-        if(p.show_in_rolodex!==false)return false; // only non-rolodex deals
-        if(!p.start_at||!p.end_at)return true; // no date window = always show
-        const start=new Date(p.start_at);
-        const end=new Date(p.end_at);
-        return now>=start&&now<=end;
-      });
-      if(bonusDeals.length){
-        const deal=bonusDeals[0];
-        teaserLink.href=deal.affiliate_url||"#";
-        teaserText.innerHTML=`Also running — <strong>${escapeHtml(deal.display_vendor||deal.vendor)}:</strong> ${escapeHtml(deal.headline)}${deal.short_detail?" — "+escapeHtml(deal.short_detail):""}`;
-        teaserLink.dataset.vendor=deal.vendor;
-        teaser.hidden=false;
-        teaserLink.addEventListener("click",()=>{
-          window.dataLayer=window.dataLayer||[];
-          window.dataLayer.push({event:"affiliate_click",product_name:"Deals teaser row",product_category:"promotion",vendor_name:deal.vendor,button_text:"View",button_location:"sale_teaser_row",affiliate_url:teaserLink.href});
-        });
-      } else {
-        teaser.hidden=true;
-      }
-    }
   }
 
-  function setupDealsBoard(promotions){
-    const grid=document.querySelector("[data-deals-board-grid]");
-    if(!grid) return;
+  function setupDealsStrip(promotions){
+    const scroll=document.querySelector("[data-deals-strip-scroll]");
+    if(!scroll) return;
     const boardDeals=promotions.filter(promotion=>promotion.show_in_rolodex!==false);
     if(!boardDeals.length){
-      grid.innerHTML=`<p class="deals-board-empty">No active vendor deals right now. Check back soon.</p>`;
+      const section=document.querySelector(".deals-strip");
+      if(section) section.hidden=true;
       return;
     }
-    grid.innerHTML=boardDeals.map(deal=>{
-      const {badge:fdBadge,text:headline}=splitHeadlineBadge(deal.headline);
-      const badgeHtml=fdBadge?`<span class="deal-card-badge">${escapeHtml(fdBadge)}</span>`:"";
-      return `<a class="deal-card" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-deal-card data-vendor="${escapeHtml(deal.vendor)}"><div class="deal-card-top"><span class="deal-card-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span>${badgeHtml}</div><strong class="deal-card-headline">${escapeHtml(headline)}</strong><span class="deal-card-detail">${escapeHtml(deal.short_detail||"")}</span><span class="deal-card-cta">View deal ›</span></a>`;
+    const isStackable=deal=>{
+      const haystack=((deal.short_detail||"")+" "+(deal.full_detail||"")).toLowerCase();
+      return haystack.includes("stackable")||haystack.includes("sammyc");
+    };
+    scroll.innerHTML=boardDeals.map(deal=>{
+      const {text:headline}=splitHeadlineBadge(deal.headline);
+      const stackChip=isStackable(deal)?`<span class="deals-pill-stack">+SAMMYC</span>`:"";
+      return `<a class="deals-pill" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-deal-pill data-vendor="${escapeHtml(deal.vendor)}"><span class="deals-pill-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span><span class="deals-pill-sep">·</span><span class="deals-pill-headline">${escapeHtml(headline)}</span>${stackChip}</a>`;
     }).join("");
-    grid.querySelectorAll("[data-deal-card]").forEach(card=>card.addEventListener("click",()=>{
+    scroll.querySelectorAll("[data-deal-pill]").forEach(pill=>pill.addEventListener("click",()=>{
       window.dataLayer=window.dataLayer||[];
-      window.dataLayer.push({event:"affiliate_click",product_name:"Deals board card",product_category:"promotion",button_text:"View deal",button_location:"deals_board_grid",affiliate_network:"direct_vendor",vendor_name:card.dataset.vendor||"",affiliate_url:card.href});
+      window.dataLayer.push({event:"affiliate_click",product_name:"Deals strip pill",product_category:"promotion",button_text:"View deal",button_location:"deals_strip",affiliate_network:"direct_vendor",vendor_name:pill.dataset.vendor||"",affiliate_url:pill.href});
     }));
   }
 
@@ -316,7 +293,7 @@
       promoState.loaded=true;
       setupPromotionPanel(promoState.active);
       setupPromotionRolodex(promoState.active);
-      setupDealsBoard(promoState.active);
+      setupDealsStrip(promoState.active);
       addVendorDirectoryBadges(promoState.active);
       document.dispatchEvent(new CustomEvent("mpp:promotions-ready"));
       return promoState.active;
