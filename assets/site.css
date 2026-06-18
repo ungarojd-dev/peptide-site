@@ -585,42 +585,45 @@ button, input, select { font: inherit; }
 
 /* ── COMPLIANCE GATE ── */
 body.mpp-compliance-open { overflow: hidden; }
-.mpp-compliance-backdrop { position: fixed; z-index: 4000; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(6,12,10,.84); padding: 14px; backdrop-filter: blur(5px); }
-.mpp-compliance-card, .mpp-full-disclaimer { width: min(680px,100%); max-height: min(860px,calc(100vh - 28px)); overflow: hidden; border: 1px solid rgba(216,199,167,.9); border-radius: 14px; background: var(--cream); box-shadow: 0 25px 70px rgba(0,0,0,.42); }
-.mpp-compliance-header, .mpp-full-disclaimer-header { display: flex; align-items: flex-start; gap: 10px; background: linear-gradient(110deg, var(--forest), var(--forest-2)); padding: 14px 16px; color: #fff; }
-.mpp-compliance-icon { display: flex; width: 28px; height: 28px; flex: 0 0 auto; align-items: center; justify-content: center; border: 1px solid rgba(255,255,255,.22); border-radius: 6px; background: var(--sand); color: var(--forest); font-size: 18px; font-weight: 700; line-height: 1; }
-.mpp-compliance-header h2, .mpp-full-disclaimer-header h2 { margin: 0; font-family: var(--font-body); font-size: 18px; font-weight: 700; line-height: 1.15; }
-.mpp-compliance-header p, .mpp-full-disclaimer-header p { margin: 3px 0 0; color: rgba(255,255,255,.95); font-size: 10.5px; font-weight: 600; line-height: 1.35; }
-.mpp-compliance-content { max-height: calc(100vh - 182px); overflow: auto; padding: 13px 16px; }
-.mpp-compliance-content p, .mpp-compliance-summary { margin: 0 0 9px; color: var(--ink); font-size: 11.5px; line-height: 1.43; }
+.mpp-compliance-backdrop { position: fixed; z-index: 4000; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.78); padding: 14px; backdrop-filter: blur(6px); }
+.mpp-compliance-card, .mpp-full-disclaimer { width: min(680px,100%); max-height: min(860px,calc(100vh - 28px)); overflow: hidden; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; background: var(--cream); box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+.mpp-compliance-header, .mpp-full-disclaimer-header { display: flex; align-items: flex-start; gap: 12px; background: var(--black); padding: 18px 20px; color: #fff; }
+.mpp-compliance-icon { display: flex; width: 32px; height: 32px; flex: 0 0 auto; align-items: center; justify-content: center; border: 1px solid rgba(122,154,106,.4); border-radius: 9px; background: rgba(122,154,106,.16); color: var(--olive-light); font-size: 18px; font-weight: 700; line-height: 1; }
+.mpp-compliance-header h2, .mpp-full-disclaimer-header h2 { margin: 0; font-family: var(--font-display); font-size: 18px; font-weight: 800; line-height: 1.2; }
+.mpp-compliance-header p, .mpp-full-disclaimer-header p { margin: 4px 0 0; color: rgba(255,255,255,.55); font-size: 11px; font-weight: 500; line-height: 1.4; }
+.mpp-compliance-content { max-height: calc(100vh - 222px); overflow: auto; padding: 16px 20px; }
+.mpp-compliance-content p, .mpp-compliance-summary { margin: 0 0 10px; color: var(--ink); font-size: 12px; line-height: 1.5; }
 .mpp-compliance-summary { padding-left: 20px; }
-.mpp-compliance-summary li { margin: 0 0 5px; padding-left: 1px; }
-.mpp-compliance-confirm { margin-top: 8px !important; }
-.mpp-compliance-checks { display: grid; gap: 7px; margin-top: 8px; }
-.mpp-compliance-checks label { display: flex; gap: 8px; align-items: flex-start; border: 1px solid var(--sand); border-radius: 6px; background: var(--paper); padding: 8px; color: var(--ink); font-size: 10.5px; line-height: 1.32; cursor: pointer; }
-.mpp-compliance-checks input { width: 15px; height: 15px; flex: 0 0 auto; margin: 0; accent-color: var(--forest); }
+.mpp-compliance-summary li { margin: 0 0 6px; padding-left: 1px; }
+.mpp-compliance-confirm { margin-top: 10px !important; font-weight: 700; }
+.mpp-compliance-checks { display: grid; gap: 8px; margin-top: 10px; }
+.mpp-compliance-checks label { display: flex; gap: 9px; align-items: flex-start; border: 1px solid rgba(31,58,45,.14); border-radius: 10px; background: var(--paper); padding: 10px; color: var(--ink); font-size: 11.5px; line-height: 1.4; cursor: pointer; transition: border-color .15s; }
+.mpp-compliance-checks label:hover { border-color: rgba(78,93,60,.4); }
+.mpp-compliance-checks input { width: 16px; height: 16px; flex: 0 0 auto; margin: 1px 0 0; accent-color: var(--olive); }
 .mpp-compliance-checks a { color: var(--forest); font-weight: 700; }
-.mpp-compliance-helper { margin: 9px 0 5px !important; color: #75817d !important; font-size: 9.5px !important; line-height: 1.35 !important; }
-.mpp-compliance-link { display: inline-flex; align-items: center; gap: 5px; border: 0; background: transparent; padding: 0; color: var(--olive); font-size: 11px; font-weight: 700; text-decoration: underline; cursor: pointer; }
-.mpp-compliance-footer { display: grid; grid-template-columns: auto 1fr auto; gap: 8px; align-items: center; border-top: 1px solid var(--sand); background: var(--sand-2); padding: 10px 16px; }
-.mpp-compliance-footer button, .mpp-full-disclaimer-footer button { border: 1px solid var(--sand); border-radius: 6px; background: var(--paper); padding: 8px 11px; color: var(--forest); font-size: 10.5px; font-weight: 700; cursor: pointer; }
-.mpp-compliance-secondary { justify-self: start; }
-.mpp-compliance-decline { justify-self: center; border: 0 !important; background: transparent !important; color: #5b6763 !important; }
-.mpp-compliance-primary { border-color: var(--forest) !important; background: var(--forest) !important; color: #fff !important; }
-.mpp-compliance-primary:disabled { border-color: #d5d0c6 !important; background: #e6dfd2 !important; color: #8a877f !important; cursor: not-allowed; }
+.mpp-compliance-helper { margin: 10px 0 4px !important; color: #8a8a8a !important; font-size: 10px !important; line-height: 1.4 !important; }
+.mpp-compliance-link { display: inline-flex; align-items: center; gap: 5px; border: 0; background: transparent; padding: 0; color: var(--olive); font-size: 11.5px; font-weight: 700; text-decoration: underline; cursor: pointer; }
+.mpp-compliance-footer { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; justify-content: space-between; border-top: 1px solid rgba(31,58,45,.1); background: #f0ede4; padding: 14px 20px; }
+.mpp-compliance-footer button, .mpp-full-disclaimer-footer button { border: 1px solid rgba(31,58,45,.16); border-radius: 9px; background: var(--paper); padding: 10px 14px; color: var(--forest); font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background .15s, border-color .15s; }
+.mpp-compliance-footer button:hover { border-color: var(--olive); }
+.mpp-compliance-secondary { order: 2; }
+.mpp-compliance-decline { order: 1; border: 0 !important; background: transparent !important; color: #8a8a8a !important; margin-right: auto; }
+.mpp-compliance-primary { order: 3; border-color: var(--olive) !important; background: var(--olive) !important; color: #fff !important; flex: 1 1 auto; }
+.mpp-compliance-primary:hover { background: var(--forest) !important; }
+.mpp-compliance-primary:disabled { border-color: #d8d4c8 !important; background: #e6e2d4 !important; color: #a3a092 !important; cursor: not-allowed; }
 .mpp-full-disclaimer { display: flex; flex-direction: column; }
 .mpp-full-disclaimer[hidden] { display: none; }
 .mpp-full-disclaimer-header { justify-content: space-between; }
 .mpp-full-disclaimer-header button { border: 0; background: transparent; color: #fff; font-size: 23px; line-height: 1; cursor: pointer; }
-.mpp-full-disclaimer-scroll { overflow: auto; padding: 14px 16px; }
-.mpp-full-disclaimer-scroll h3 { margin: 0 0 4px; color: var(--forest); font-size: 11.5px; font-weight: 700; }
-.mpp-full-disclaimer-scroll p, .mpp-full-disclaimer-scroll li { color: #53645e; font-size: 10px; line-height: 1.42; }
+.mpp-full-disclaimer-scroll { overflow: auto; padding: 16px 20px; }
+.mpp-full-disclaimer-scroll h3 { margin: 0 0 4px; color: var(--forest); font-size: 12px; font-weight: 800; }
+.mpp-full-disclaimer-scroll p, .mpp-full-disclaimer-scroll li { color: #53645e; font-size: 11px; line-height: 1.45; }
 .mpp-full-disclaimer-scroll p { margin: 0 0 10px; }
 .mpp-full-disclaimer-scroll ul { margin: 0 0 11px; padding-left: 18px; }
 .mpp-full-disclaimer-links { display: flex; flex-wrap: wrap; gap: 12px; }
 .mpp-full-disclaimer-links a { color: var(--forest); font-weight: 700; }
-.mpp-full-disclaimer-footer { border-top: 1px solid var(--sand); background: var(--sand-2); padding: 9px 16px; text-align: right; }
-.mpp-full-disclaimer-footer button { background: var(--forest); color: #fff; }
+.mpp-full-disclaimer-footer { border-top: 1px solid rgba(31,58,45,.1); background: #f0ede4; padding: 12px 20px; text-align: right; }
+.mpp-full-disclaimer-footer button { background: var(--olive); color: #fff; }
 
 /* Mobile kicker extras */
 .sale-mobile-view-all { display: none; border: 1px solid rgba(255,255,255,.38); border-radius: 999px; background: transparent; color: #fff; padding: 1px 6px; font-size: 8px; font-weight: 700; line-height: 1.45; cursor: pointer; }
@@ -712,12 +715,14 @@ body.mpp-compliance-open { overflow: hidden; }
   .promo-panel-footer { display: block; }
   .promo-panel-footer button { width: 100%; margin-top: 7px; }
   .mpp-compliance-backdrop { padding: 8px; }
-  .mpp-compliance-card, .mpp-full-disclaimer { max-height: calc(100vh - 16px); border-radius: 11px; }
-  .mpp-compliance-header, .mpp-full-disclaimer-header { padding: 11px 12px; }
-  .mpp-compliance-header h2, .mpp-full-disclaimer-header h2 { font-size: 15px; }
-  .mpp-compliance-content { max-height: calc(100vh - 151px); padding: 10px 12px; }
-  .mpp-compliance-footer { padding: 8px 10px; }
-  .mpp-compliance-footer button { padding: 7px 8px; font-size: 9.5px; }
+  .mpp-compliance-card, .mpp-full-disclaimer { max-height: calc(100vh - 16px); border-radius: 14px; }
+  .mpp-compliance-header, .mpp-full-disclaimer-header { padding: 13px 14px; }
+  .mpp-compliance-header h2, .mpp-full-disclaimer-header h2 { font-size: 15.5px; }
+  .mpp-compliance-content { max-height: calc(100vh - 195px); padding: 12px 14px; }
+  .mpp-compliance-footer { flex-direction: column-reverse; align-items: stretch; gap: 8px; padding: 12px 14px; }
+  .mpp-compliance-footer button { width: 100%; padding: 11px 12px; font-size: 12.5px; margin-right: 0 !important; order: initial; }
+  .mpp-compliance-primary { order: -1; }
+  .mpp-compliance-decline { text-decoration: underline; }
 }
 @media (max-width: 420px) {
   .skool-sticky-text { font-size: 9.5px; }
