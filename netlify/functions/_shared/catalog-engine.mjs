@@ -146,6 +146,11 @@ const HARDCODED_FORCED_ALIASES = {
   "gluthathione": "glutathione", "sl glt1500": "glutathione",
   // Methylene blue typo
   "methyline blue": "methylene-blue", "methyline blue capsules": "methylene-blue",
+  // Bioedge Research Labs branded naming
+  "edge r3": "retatrutide", "edge r 3": "retatrutide",
+  "edge t2": "tirzepatide", "edge t 2": "tirzepatide",
+  // Bioedge Sermorlin typo (missing e)
+  "sermorlin": "sermorelin",
 };
 
 const forcedAliases = Object.entries({ ...(overridePayload.forced_aliases || {}), ...HARDCODED_FORCED_ALIASES })
