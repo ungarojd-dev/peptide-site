@@ -78,6 +78,13 @@
       "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/coffee-and-peppers.webp",
       "use_product_deep_links": false
+    },
+    "Bioedge Research Labs": {
+      "id": "bioedge-research-labs",
+      "discount_percent": 15,
+      "affiliate_url": "https://bioedgeresearchlabs.com/?aff=1005717",
+      "logo": "/assets/vendor-logos/bioedge-research-labs.webp",
+      "use_product_deep_links": false
     }
   }
 }
