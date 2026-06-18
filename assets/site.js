@@ -206,7 +206,7 @@
   function setupPromotionRolodex(promotions){
     const saleCard=document.querySelector("[data-sale-card]");
     if(!saleCard) return;
-    const rolodexDeals=promotions.filter(promotion=>promotion.featured===true);
+    const rolodexDeals=promotions.filter(promotion=>promotion.show_in_rolodex!==false);
     const banner=document.querySelector(".sale-banner");
     const saleCount=document.querySelector("[data-sale-count]");
     const headline=document.querySelector(".sale-headline");
