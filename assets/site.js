@@ -213,7 +213,7 @@
     const kicker=document.querySelector(".sale-mobile-kicker span:nth-child(2)");
     const subline=document.querySelector(".sale-subline");
     if(headline)headline.textContent="🎁 Father's Day Deals";
-    if(kicker)kicker.textContent="Active deals";
+    if(kicker)kicker.textContent="Father's Day";
     if(subline)subline.innerHTML=`Use <strong>SAMMYC</strong> where listed for available extra savings. <button class="sale-view-all" type="button" data-promotions-open>View all active deals</button>`;
     const mobileKicker=document.querySelector(".sale-mobile-kicker");
     if(mobileKicker&&!mobileKicker.querySelector("[data-promotions-open]")){
