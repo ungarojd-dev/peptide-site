@@ -136,9 +136,13 @@
       </header>
       <div class="variant-wrap">
         <span class="variant-label">Compare size or listing</span>
-        <div class="variant-pills">
-          <button type="button" class="variant-button all${isAll?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${ALL_VARIANTS}">All listings${totalListings?` (${esc(totalListings)})`:""}</button>
-          ${(card.variants||[]).map(item=>`<button type="button" class="variant-button${!isAll&&item.id===variant.id?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${attr(item.id)}">${esc(item.label)}${item.all_offer_count?` (${esc(item.all_offer_count)})`:""}</button>`).join("")}
+        <div class="variant-pills-shell" data-variant-shell="${attr(card.id)}">
+          <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="-1" data-card="${attr(card.id)}" aria-label="Scroll sizes left">‹</button>
+          <div class="variant-pills" data-variant-pills="${attr(card.id)}">
+            <button type="button" class="variant-button all${isAll?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${ALL_VARIANTS}">All listings${totalListings?` (${esc(totalListings)})`:""}</button>
+            ${(card.variants||[]).map(item=>`<button type="button" class="variant-button${!isAll&&item.id===variant.id?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${attr(item.id)}">${esc(item.label)}${item.all_offer_count?` (${esc(item.all_offer_count)})`:""}</button>`).join("")}
+          </div>
+          <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="1" data-card="${attr(card.id)}" aria-label="Scroll sizes right">›</button>
         </div>
       </div>
       <div class="supplier-head"><span>Estimated after-code prices</span><span>Low to high</span></div>
@@ -150,7 +154,22 @@
   function bindCardActions(){
     document.querySelectorAll('[data-action="variant"]').forEach(button=>button.onclick=()=>{state.activeVariants[button.dataset.card]=button.dataset.variant;state.expanded[button.dataset.card]=true;renderCards(false);});
     document.querySelectorAll('[data-action="expand"]').forEach(button=>button.onclick=()=>{state.expanded[button.dataset.card]=!state.expanded[button.dataset.card];renderCards(false);});
+    document.querySelectorAll('[data-action="variant-scroll"]').forEach(button=>button.onclick=()=>{
+      const pills=document.querySelector(`[data-variant-pills="${button.dataset.card}"]`);
+      if(pills) pills.scrollBy({left:Number(button.dataset.dir)*140,behavior:"smooth"});
+    });
     document.querySelectorAll('[data-affiliate="1"]').forEach(link=>link.onclick=()=>{global.dataLayer=global.dataLayer||[];global.dataLayer.push({event:"affiliate_click",product_name:link.dataset.product,product_category:link.dataset.category,lab_result:"tracked_vendor",button_text:"View deal",button_location:"comparison_card",affiliate_network:"direct_vendor",vendor_name:link.dataset.vendor,discount_code:link.dataset.code,affiliate_url:link.href});});
+    document.querySelectorAll('[data-variant-shell]').forEach(shell=>{
+      const pills=shell.querySelector('[data-variant-pills]');
+      if(!pills) return;
+      const update=()=>{
+        const overflow=pills.scrollWidth>pills.clientWidth+2;
+        shell.classList.toggle("has-overflow",overflow);
+      };
+      update();
+      pills.addEventListener("scroll",update,{passive:true});
+      if(global.ResizeObserver) new ResizeObserver(update).observe(pills);
+    });
   }
 
   function renderCards(scroll){
@@ -205,8 +224,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=premium-index",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=premium-index",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=premium-index3",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=premium-index3",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

@@ -483,8 +483,13 @@
 .card-view-button:hover { transform: translateY(-1px); filter: brightness(1.05); }
 .variant-wrap { padding: 12px 14px; border-bottom: 1px solid rgba(31,58,45,.08); background: #fbfaf6; }
 .variant-label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 9px; font-weight: 900; letter-spacing: 1.1px; text-transform: uppercase; }
-.variant-pills { display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none; }
+.variant-pills-shell { position: relative; display: flex; align-items: center; gap: 5px; }
+.variant-pills { display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; flex: 1; min-width: 0; }
 .variant-pills::-webkit-scrollbar { display: none; }
+.variant-scroll-btn { display: none; flex: 0 0 auto; align-items: center; justify-content: center; width: 24px; height: 24px; border: 1px solid rgba(31,58,45,.16); border-radius: 50%; background: #fff; color: var(--olive); font-size: 12px; font-weight: 800; cursor: pointer; padding: 0; transition: background .15s, border-color .15s, color .15s; box-shadow: 0 2px 6px rgba(13,13,13,.06); }
+.variant-scroll-btn:hover { background: var(--forest); border-color: var(--forest); color: #fff; }
+.variant-pills-shell.has-overflow .variant-scroll-btn { display: flex; }
+.variant-pills-shell.has-overflow .variant-pills { mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); }
 .variant-button { flex: 0 0 auto; border: 1px solid rgba(31,58,45,.11); border-radius: 999px; background: #fff; color: #4b554f; padding: 7px 10px; font-size: 11px; font-weight: 800; cursor: pointer; }
 .variant-button:hover { border-color: rgba(78,93,60,.4); color: var(--forest); }
 .variant-button.active, .variant-button.all.active { border-color: var(--olive); background: var(--olive); color: #fff; }
@@ -567,6 +572,7 @@
   .vendor-count { font-size: 9px; }
   .card-lowest-price { font-size: 30px; }
   .variant-wrap { padding: 10px 12px; }
+  .variant-scroll-btn { width: 22px; height: 22px; font-size: 11px; }
   .supplier-head { padding: 10px 12px 4px; font-size: 8px; }
   .suppliers { padding: 0 10px 8px; }
   .supplier-row { grid-template-columns: minmax(0,1fr) auto; padding: 10px 6px; gap: 8px; }
