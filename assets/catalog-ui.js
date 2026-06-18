@@ -4,7 +4,7 @@
   const CATEGORY_ORDER=["All","GLP-1 & Incretin","Repair & Recovery","Growth Hormone Research","Cognitive & Nootropic","Longevity & Cellular Health","Metabolic & Mitochondrial","Bioregulators","Skin, Tanning & Sexual Health","Supplies","Other"];
   const FORMAT_ORDER=["All","Vials","Capsules","Dissolvable Strips","Nasal Sprays","Topicals","Liquids","Aminos","Bioregulators","Supplies"];
   const ALL_VARIANTS="__all__";
-  const state={catalog:null,cards:[],query:"",category:"All",format:"All",sort:"price",activeVariants:{},expanded:{},source:"Loading"};
+  const state={catalog:null,cards:[],query:"",category:"All",format:"All",vendor:"All",sort:"price",activeVariants:{},expanded:{},source:"Loading"};
   const $=id=>document.getElementById(id);
   const esc=value=>String(value==null?"":value).replace(/[&<>"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
   const attr=value=>esc(value).replace(/'/g,"&#39;");
@@ -49,10 +49,12 @@
   function selectedVariantId(card){return state.activeVariants[card.id]||ALL_VARIANTS;}
   function activeVariant(card){const selected=selectedVariantId(card);return (card.variants||[]).find(variant=>variant.id===selected)||(card.variants||[])[0]||{id:"",label:"Standard listing",suppliers:[]};}
   function searchText(card){return [card.name,card.category,card.format,...(card.variants||[]).flatMap(variant=>(variant.suppliers||[]).flatMap(supplier=>[supplier.vendor_name,supplier.raw_product,supplier.raw_listing,supplier.sku]))].join(" ").toLowerCase();}
+  function cardVendors(card){return new Set((card.variants||[]).flatMap(variant=>(variant.suppliers||[]).map(supplier=>supplier.vendor_name)).filter(Boolean));}
+  function allVendorNames(){const set=new Set();state.cards.forEach(card=>cardVendors(card).forEach(name=>set.add(name)));return Array.from(set).sort((a,b)=>a.localeCompare(b));}
 
   function cards(){
     const query=state.query.trim().toLowerCase();
-    const filtered=state.cards.filter(card=>(state.category==="All"||card.category===state.category)&&(state.format==="All"||card.format===state.format)&&(!query||searchText(card).includes(query)));
+    const filtered=state.cards.filter(card=>(state.category==="All"||card.category===state.category)&&(state.format==="All"||card.format===state.format)&&(state.vendor==="All"||cardVendors(card).has(state.vendor))&&(!query||searchText(card).includes(query)));
     return filtered.sort((a,b)=>{
       if(state.sort==="vendors") return Number(b.supplier_count||0)-Number(a.supplier_count||0)||String(a.name||"").localeCompare(String(b.name||""));
       if(state.sort==="name") return String(a.name||"").localeCompare(String(b.name||""));
@@ -65,10 +67,13 @@
   function renderFilters(){
     const categories=$("catalogCategories");
     const formats=$("catalogFormats");
+    const vendors=$("catalogVendors");
     if(categories) categories.innerHTML=filterValues(CATEGORY_ORDER,"category").map(label=>chip(label,state.category===label)).join("");
     if(formats) formats.innerHTML=filterValues(FORMAT_ORDER,"format").map(label=>chip(label,state.format===label)).join("");
+    if(vendors) vendors.innerHTML=["All",...allVendorNames()].map(label=>chip(label,state.vendor===label)).join("");
     document.querySelectorAll("#catalogCategories [data-chip]").forEach(button=>button.onclick=()=>{state.category=button.dataset.chip;renderFilters();renderCards(true);});
     document.querySelectorAll("#catalogFormats [data-chip]").forEach(button=>button.onclick=()=>{state.format=button.dataset.chip;renderFilters();renderCards(true);});
+    document.querySelectorAll("#catalogVendors [data-chip]").forEach(button=>button.onclick=()=>{state.vendor=button.dataset.chip;renderFilters();renderCards(true);});
   }
 
   function updateStats(){
@@ -164,6 +169,7 @@
     const params=new URLSearchParams(location.search);
     state.category=params.get("cat")||params.get("category")||document.body.dataset.defaultCategory||"All";
     state.format=params.get("format")||"All";
+    state.vendor=params.get("vendor")||"All";
     state.query=params.get("q")||"";
     state.sort=params.get("sort")||"price";
     const search=$("catalogSearch");
@@ -187,6 +193,7 @@
     state.query="";
     state.category=document.body.dataset.defaultCategory||"All";
     state.format="All";
+    state.vendor="All";
     state.sort="price";
     const search=$("catalogSearch");
     const sort=$("catalogSort");
