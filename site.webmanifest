@@ -1,0 +1,13 @@
+{
+  "name": "MyPeptidePrice.com",
+  "short_name": "MPP",
+  "description": "Research peptide price comparison across trusted vendors.",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#0D0D0D",
+  "theme_color": "#0D0D0D",
+  "icons": [
+    { "src": "/site-icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any maskable" },
+    { "src": "/site-icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}
