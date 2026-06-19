@@ -1,7 +1,7 @@
 {
-  "version": "2026-06-18-fathers-day-qa-v3",
+  "version": "2026-06-19-fathers-day-qa-v4",
   "timezone": "America/New_York",
-  "updated_at": "2026-06-18T11:45:00-04:00",
+  "updated_at": "2026-06-19T10:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -79,12 +79,12 @@
       "discount_override_percent": 20
     },
     {
-      "id": "instant-save15-stackable",
+      "id": "instant-save20-stackable",
       "vendor": "Instant Peptides",
       "display_vendor": "Instant Peptides",
-      "headline": "Father's Day: 15% off with SAVE15",
-      "short_detail": "+ stackable SAMMYC savings",
-      "full_detail": "Use code SAVE15 for 15% off at Instant Peptides. The promotion is stackable with code SAMMYC. Confirm the final discount and checkout terms directly on the vendor website.",
+      "headline": "Father's Day: 20% off sitewide",
+      "short_detail": "+ stackable 15% SAMMYC savings",
+      "full_detail": "Instant Peptides is offering 20% off sitewide for Father's Day. The promotion is stackable with the 15% SAMMYC discount. Confirm the final discount and checkout terms directly on the vendor website.",
       "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
       "show_in_rolodex": true,
       "show_vendor_badge": true,
@@ -95,9 +95,9 @@
       "id": "solyn-first-order-20",
       "vendor": "Solyn Labs",
       "display_vendor": "Solyn Compounds",
-      "headline": "Father's Day: 20% off first order",
-      "short_detail": "+ stackable 10% SAMMYC savings",
-      "full_detail": "New customers receive 20% off their first order. The first-order offer is stackable with the 10% SAMMYC discount. Confirm eligibility and final checkout pricing directly with Solyn Compounds.",
+      "headline": "Father's Day: 20% off first order, plus tiered savings",
+      "short_detail": "New customers get 20% off, stacks with 10% SAMMYC. Tiers up to 35% off + 5% Zelle",
+      "full_detail": "New customers receive 20% off their first order, stackable with the 10% SAMMYC discount. Solyn also runs a tiered volume discount: 10% off when buying 1 compound, 25% off when buying 5 compounds, 30% off when buying 10 compounds, and 35% off when buying 20 compounds. Paying with Zelle adds another 5% off. Code SAMMYC stacks on top of all tiers. Confirm eligibility and final checkout pricing directly with Solyn Compounds.",
       "affiliate_url": "https://partner.solyn.com/?ref=SammyC",
       "show_in_rolodex": true,
       "show_vendor_badge": true,
