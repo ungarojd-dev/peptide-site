@@ -1,5 +1,6 @@
 # Changelog
 
+- Replaced vendor logos with the optimized uploaded WebP logo set and added the VANTYX Supply logo to the homepage banner.
 ## June 2026
 - Corrected the standard Glacier Aminos `SAMMYC` estimate from 5% to 10% across comparison pricing and the vendor directory.
 - Rebuilt the catalog around one stored snapshot instead of visitor-time vendor API fan-out.

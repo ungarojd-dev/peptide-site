@@ -214,3 +214,11 @@ body{
   .dc-label-title{font-size:16px}
   .dc-label-eyebrow{font-size:8.5px}
 }
+
+/* Logo refresh, optimized vendor logo display */
+.vantyx-supply-logo{width:84px;height:34px;object-fit:contain;border:1px solid rgba(31,58,45,.12);border-radius:10px;background:#fff;padding:4px;box-shadow:0 6px 16px rgba(31,58,45,.10);flex:0 0 auto}
+.vantyx-supply-text{min-width:0}
+.vendor-head img{width:82px;height:42px;border-radius:12px;padding:5px;object-fit:contain;flex:0 0 auto}
+.dc-logo{width:62px;height:34px;border-radius:9px;padding:4px}
+@media(max-width:720px){.vantyx-supply-logo{width:68px;height:30px}.vantyx-supply-copy{display:flex;align-items:center;gap:8px}.vantyx-supply-text{min-width:0}.vendor-head img{width:72px;height:38px}}
+@media(max-width:380px){.vantyx-supply-logo{display:none}}
