@@ -1,7 +1,7 @@
 {
-  "version": "2026-06-19-fathers-day-qa-v4",
+  "version": "2026-06-19-fathers-day-glacier-15-qa-v5",
   "timezone": "America/New_York",
-  "updated_at": "2026-06-19T10:00:00-04:00",
+  "updated_at": "2026-06-19T13:45:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -108,9 +108,9 @@
       "id": "glacier-sitewide-zelle-june-12-19",
       "vendor": "Glacier Aminos",
       "display_vendor": "Glacier Aminos",
-      "headline": "Father's Day: 10% off + stackable SAMMYC",
+      "headline": "Father's Day: 15% off + stackable SAMMYC",
       "short_detail": "Pay with Zelle for another stackable 10% off, June 12 to 19",
-      "full_detail": "Glacier Aminos is offering 10% off sitewide from June 12 through June 19. Code SAMMYC adds another stackable 10% off. Paying with Zelle adds another stackable 10% off. Confirm final pricing and payment terms directly with Glacier Aminos.",
+      "full_detail": "Glacier Aminos is offering 15% off sitewide from June 12 through June 19. Code SAMMYC adds another stackable discount. Paying with Zelle adds another stackable 10% off. Confirm final pricing and payment terms directly with Glacier Aminos.",
       "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
       "start_at": "2026-06-12T00:00:00-04:00",
       "end_at": "2026-06-19T23:59:59-04:00",
