@@ -586,12 +586,16 @@ button, input, select { font: inherit; }
 /* ── COMPLIANCE GATE ── */
 body.mpp-compliance-open { overflow: hidden; }
 .mpp-compliance-backdrop { position: fixed; z-index: 4000; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.78); padding: 14px; backdrop-filter: blur(6px); }
-.mpp-compliance-card, .mpp-full-disclaimer { width: min(680px,100%); max-height: min(860px,calc(100vh - 28px)); overflow: hidden; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; background: var(--cream); box-shadow: 0 30px 80px rgba(0,0,0,.5); }
-.mpp-compliance-header, .mpp-full-disclaimer-header { display: flex; align-items: flex-start; gap: 12px; background: var(--black); padding: 18px 20px; color: #fff; }
+.mpp-compliance-card, .mpp-full-disclaimer { display: flex; flex-direction: column; width: min(680px,100%); max-height: min(860px, calc(100vh - 28px)); max-height: min(860px, calc(100dvh - 28px)); overflow: hidden; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; background: var(--cream); box-shadow: 0 30px 80px rgba(0,0,0,.5); }
+.mpp-compliance-header, .mpp-full-disclaimer-header { display: flex; align-items: flex-start; gap: 12px; background: var(--black); padding: 18px 20px; color: #fff; flex: 0 0 auto; }
 .mpp-compliance-icon { display: flex; width: 32px; height: 32px; flex: 0 0 auto; align-items: center; justify-content: center; border: 1px solid rgba(122,154,106,.4); border-radius: 9px; background: rgba(122,154,106,.16); color: var(--olive-light); font-size: 18px; font-weight: 700; line-height: 1; }
 .mpp-compliance-header h2, .mpp-full-disclaimer-header h2 { margin: 0; font-family: var(--font-display); font-size: 18px; font-weight: 800; line-height: 1.2; }
 .mpp-compliance-header p, .mpp-full-disclaimer-header p { margin: 4px 0 0; color: rgba(255,255,255,.55); font-size: 11px; font-weight: 500; line-height: 1.4; }
-.mpp-compliance-content { max-height: calc(100vh - 222px); overflow: auto; padding: 16px 20px; }
+.mpp-compliance-content { flex: 1 1 auto; min-height: 0; overflow: auto; padding: 16px 20px; }
+.mpp-compliance-scroll-hint { display: none; align-items: center; justify-content: center; gap: 6px; flex: 0 0 auto; background: linear-gradient(0deg, #f0ede4 40%, rgba(240,237,228,0)); padding: 6px 20px 4px; color: var(--olive); font-size: 10.5px; font-weight: 700; letter-spacing: .3px; pointer-events: none; }
+.mpp-compliance-scroll-hint.show { display: flex; }
+.mpp-compliance-scroll-hint svg { width: 11px; height: 11px; animation: mppScrollBounce 1.4s ease-in-out infinite; }
+@keyframes mppScrollBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(3px); } }
 .mpp-compliance-content p, .mpp-compliance-summary { margin: 0 0 10px; color: var(--ink); font-size: 12px; line-height: 1.5; }
 .mpp-compliance-summary { padding-left: 20px; }
 .mpp-compliance-summary li { margin: 0 0 6px; padding-left: 1px; }
@@ -603,7 +607,7 @@ body.mpp-compliance-open { overflow: hidden; }
 .mpp-compliance-checks a { color: var(--forest); font-weight: 700; }
 .mpp-compliance-helper { margin: 10px 0 4px !important; color: #8a8a8a !important; font-size: 10px !important; line-height: 1.4 !important; }
 .mpp-compliance-link { display: inline-flex; align-items: center; gap: 5px; border: 0; background: transparent; padding: 0; color: var(--olive); font-size: 11.5px; font-weight: 700; text-decoration: underline; cursor: pointer; }
-.mpp-compliance-footer { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; justify-content: space-between; border-top: 1px solid rgba(31,58,45,.1); background: #f0ede4; padding: 14px 20px; }
+.mpp-compliance-footer { display: flex; flex-wrap: wrap; gap: 9px; align-items: center; justify-content: space-between; border-top: 1px solid rgba(31,58,45,.1); background: #f0ede4; padding: 14px 20px; flex: 0 0 auto; }
 .mpp-compliance-footer button, .mpp-full-disclaimer-footer button { border: 1px solid rgba(31,58,45,.16); border-radius: 9px; background: var(--paper); padding: 10px 14px; color: var(--forest); font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background .15s, border-color .15s; }
 .mpp-compliance-footer button:hover { border-color: var(--olive); }
 .mpp-compliance-secondary { order: 2; }
@@ -715,10 +719,10 @@ body.mpp-compliance-open { overflow: hidden; }
   .promo-panel-footer { display: block; }
   .promo-panel-footer button { width: 100%; margin-top: 7px; }
   .mpp-compliance-backdrop { padding: 8px; }
-  .mpp-compliance-card, .mpp-full-disclaimer { max-height: calc(100vh - 16px); border-radius: 14px; }
+  .mpp-compliance-card, .mpp-full-disclaimer { max-height: calc(100vh - 16px); max-height: calc(100dvh - 16px); border-radius: 14px; }
   .mpp-compliance-header, .mpp-full-disclaimer-header { padding: 13px 14px; }
   .mpp-compliance-header h2, .mpp-full-disclaimer-header h2 { font-size: 15.5px; }
-  .mpp-compliance-content { max-height: calc(100vh - 195px); padding: 12px 14px; }
+  .mpp-compliance-content { padding: 12px 14px; }
   .mpp-compliance-footer { flex-direction: column-reverse; align-items: stretch; gap: 8px; padding: 12px 14px; }
   .mpp-compliance-footer button { width: 100%; padding: 11px 12px; font-size: 12.5px; margin-right: 0 !important; order: initial; }
   .mpp-compliance-primary { order: -1; }
@@ -826,7 +830,7 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
 .premium-metrics .metric-num { color: var(--forest); font-family: var(--font-display); font-size: 24px; font-weight: 800; line-height: 1; }
 .premium-metrics .metric-label { margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 700; }
 .deal-carousel { padding: 0 28px 24px; background: var(--cream); }
-.deal-carousel-wrap { max-width: 1280px; margin: 0 auto; border: 1px solid rgba(31,58,45,.12); border-radius: 24px; background: linear-gradient(135deg, #fff, #fbf8f0); box-shadow: 0 16px 48px rgba(13,13,13,.07); overflow: hidden; }
+.deal-carousel-wrap { max-width: 1224px !important; margin: 0 auto !important; border: 1px solid rgba(31,58,45,.12); border-radius: 24px; background: linear-gradient(135deg, #fff, #fbf8f0); box-shadow: 0 16px 48px rgba(13,13,13,.07); overflow: hidden; }
 .deal-carousel-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; border-bottom: 1px solid rgba(31,58,45,.1); padding: 16px 18px; }
 .dc-label-eyebrow { display: block; color: var(--olive); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; }
 .dc-label-title { display: block; margin-top: 2px; color: var(--ink); font-family: var(--font-display); font-size: 20px; font-weight: 800; }

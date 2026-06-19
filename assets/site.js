@@ -71,6 +71,7 @@
             <p class="mpp-compliance-helper">If you do not agree to these terms, you must exit the website. Access is not permitted without acceptance.</p>
             <button class="mpp-compliance-link" type="button" data-compliance-full-open><span aria-hidden="true">▣</span> View full disclaimers</button>
           </div>
+          <div class="mpp-compliance-scroll-hint" data-compliance-scroll-hint><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2v10M4 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Scroll for required checkboxes</div>
           <footer class="mpp-compliance-footer">
             <button class="mpp-compliance-secondary" type="button" data-compliance-accept-all><span aria-hidden="true">✓</span> Accept all</button>
             <button class="mpp-compliance-decline" type="button" data-compliance-decline>Decline &amp; exit</button>
@@ -132,10 +133,31 @@
     const full=root.querySelector(".mpp-full-disclaimer");
     const checks=[...root.querySelectorAll("[data-compliance-check]")];
     const submit=root.querySelector("[data-compliance-submit]");
+    const content=root.querySelector(".mpp-compliance-content");
+    const scrollHint=root.querySelector("[data-compliance-scroll-hint]");
+    const updateScrollHint=()=>{
+      if(!content||!scrollHint) return;
+      const hasOverflow=content.scrollHeight>content.clientHeight+4;
+      const nearBottom=content.scrollTop+content.clientHeight>=content.scrollHeight-12;
+      scrollHint.classList.toggle("show",hasOverflow&&!nearBottom);
+    };
+    if(content){
+      content.addEventListener("scroll",updateScrollHint,{passive:true});
+      window.addEventListener("resize",updateScrollHint);
+      setTimeout(updateScrollHint,50);
+    }
     const update=()=>{submit.disabled=!checks.every(input=>input.checked)};
     checks.forEach(input=>input.addEventListener("change",update));
-    root.querySelector("[data-compliance-accept-all]").addEventListener("click",()=>{checks.forEach(input=>input.checked=true);update();submit.focus()});
-    root.querySelector("[data-compliance-decline]").addEventListener("click",()=>window.location.replace("about:blank"));
+    root.querySelector("[data-compliance-accept-all]").addEventListener("click",()=>{
+      checks.forEach(input=>input.checked=true);
+      update();
+      saveAcceptance();
+      document.body.classList.remove("mpp-compliance-open");
+      root.remove();
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:"compliance_gate_accepted",gate_version:COMPLIANCE_VERSION,acceptance_scope:"browser_session",accepted_via:"accept_all"});
+    });
+    root.querySelector("[data-compliance-decline]").addEventListener("click",()=>{window.location.href="https://www.google.com"});
     submit.addEventListener("click",()=>{
       if(submit.disabled) return;
       saveAcceptance();
