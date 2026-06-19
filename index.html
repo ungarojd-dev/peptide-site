@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/assets/site.css?v=20260618-premium-index7"/>
-  <link rel="stylesheet" href="/assets/catalog.css?v=20260618-premium-index7"/>
+  <link rel="stylesheet" href="/assets/site.css?v=20260618-premium-index8"/>
+  <link rel="stylesheet" href="/assets/catalog.css?v=20260618-premium-index8"/>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MyPeptidePrice.com","url":"https://mypeptideprice.com/","description":"Independent research peptide price comparison across tracked vendors.","potentialAction":{"@type":"SearchAction","target":"https://mypeptideprice.com/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PDQM5TBB');</script>
@@ -166,16 +166,28 @@
       <div class="catalog-filter-grid">
         <div class="catalog-filter-group catalog-filter-category">
           <div class="catalog-filter-title">Category</div>
-          <div class="catalog-chips" id="catalogCategories"></div>
+          <div class="catalog-chips-shell" data-chips-shell="category">
+            <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="category" data-dir="-1" aria-label="Scroll categories left">‹</button>
+            <div class="catalog-chips" id="catalogCategories"></div>
+            <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="category" data-dir="1" aria-label="Scroll categories right">›</button>
+          </div>
         </div>
         <div class="catalog-filter-group catalog-filter-vendor">
           <div class="catalog-filter-title">Vendor</div>
-          <div class="catalog-chips" id="catalogVendors"></div>
+          <div class="catalog-chips-shell" data-chips-shell="vendor">
+            <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="vendor" data-dir="-1" aria-label="Scroll vendors left">‹</button>
+            <div class="catalog-chips" id="catalogVendors"></div>
+            <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="vendor" data-dir="1" aria-label="Scroll vendors right">›</button>
+          </div>
         </div>
         <div class="catalog-filter-row-2">
           <div class="catalog-filter-group">
             <div class="catalog-filter-title">Format</div>
-            <div class="catalog-chips" id="catalogFormats"></div>
+            <div class="catalog-chips-shell" data-chips-shell="format">
+              <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="format" data-dir="-1" aria-label="Scroll formats left">‹</button>
+              <div class="catalog-chips" id="catalogFormats"></div>
+              <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="format" data-dir="1" aria-label="Scroll formats right">›</button>
+            </div>
           </div>
           <div class="catalog-filter-group catalog-sort-group">
             <div class="catalog-filter-title">Sort</div>
@@ -221,8 +233,8 @@
   <div class="footer-bottom">© <span data-year></span> MyPeptidePrice.com. For research comparison purposes only. Not medical advice.</div>
 </footer>
 
-<script src="/assets/site.js?v=20260618-premium-index7"></script>
-<script src="/assets/catalog-ui.js?v=20260618-premium-index7"></script>
+<script src="/assets/site.js?v=20260618-premium-index8"></script>
+<script src="/assets/catalog-ui.js?v=20260618-premium-index8"></script>
 <script>
 (function(){
   var heroInput=document.getElementById('heroSearch');

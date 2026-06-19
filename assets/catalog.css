@@ -454,6 +454,12 @@
 .catalog-filter-vendor .catalog-chips { max-height: 76px; }
 .catalog-filter-title { margin: 0 0 7px; color: var(--muted); font-size: 10px; font-weight: 900; letter-spacing: 1.2px; text-transform: uppercase; }
 .catalog-chips { display: flex; gap: 7px; overflow-x: auto; padding: 2px 2px 4px; scrollbar-width: none; max-width: 100%; }
+.catalog-chips-shell { position: relative; display: flex; align-items: center; gap: 5px; }
+.catalog-chips-shell .catalog-chips { flex: 1; min-width: 0; scroll-behavior: smooth; }
+.chips-scroll-btn { display: none; flex: 0 0 auto; align-items: center; justify-content: center; width: 26px; height: 26px; border: 1px solid rgba(31,58,45,.16); border-radius: 50%; background: #fff; color: var(--olive); font-size: 13px; font-weight: 800; cursor: pointer; padding: 0; transition: background .15s, border-color .15s, color .15s; box-shadow: 0 2px 6px rgba(13,13,13,.06); }
+.chips-scroll-btn:hover { background: var(--forest); border-color: var(--forest); color: #fff; }
+.catalog-chips-shell.has-overflow .chips-scroll-btn { display: flex; }
+.catalog-chips-shell.has-overflow .catalog-chips { mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); }
 .catalog-chips::-webkit-scrollbar { display: none; }
 .premium-catalog .catalog-chip { border: 1px solid rgba(31,58,45,.12); border-radius: 999px; background: #fff; color: #49534c; padding: 8px 12px; font-size: 12px; font-weight: 800; white-space: nowrap; }
 .premium-catalog .catalog-chip:hover { border-color: rgba(78,93,60,.45); color: var(--forest); transform: translateY(-1px); }

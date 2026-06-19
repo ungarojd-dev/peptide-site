@@ -74,6 +74,39 @@
     document.querySelectorAll("#catalogCategories [data-chip]").forEach(button=>button.onclick=()=>{state.category=button.dataset.chip;renderFilters();renderCards(true);});
     document.querySelectorAll("#catalogFormats [data-chip]").forEach(button=>button.onclick=()=>{state.format=button.dataset.chip;renderFilters();renderCards(true);});
     document.querySelectorAll("#catalogVendors [data-chip]").forEach(button=>button.onclick=()=>{state.vendor=button.dataset.chip;renderFilters();renderCards(true);});
+    bindChipsScroll();
+    updateChipsOverflow();
+  }
+
+  function updateChipsOverflow(){
+    document.querySelectorAll("[data-chips-shell]").forEach(shell=>{
+      const chips=shell.querySelector(".catalog-chips");
+      if(!chips) return;
+      const overflow=chips.scrollWidth>chips.clientWidth+2;
+      shell.classList.toggle("has-overflow",overflow);
+    });
+  }
+
+  function bindChipsScroll(){
+    document.querySelectorAll('[data-action="chips-scroll"]').forEach(button=>{
+      if(button.dataset.bound) return;
+      button.dataset.bound="1";
+      button.addEventListener("click",()=>{
+        const shell=button.closest("[data-chips-shell]");
+        const chips=shell?.querySelector(".catalog-chips");
+        if(chips) chips.scrollBy({left:Number(button.dataset.dir)*160,behavior:"smooth"});
+      });
+    });
+    document.querySelectorAll(".catalog-chips").forEach(chips=>{
+      if(chips.dataset.scrollBound) return;
+      chips.dataset.scrollBound="1";
+      chips.addEventListener("scroll",updateChipsOverflow,{passive:true});
+    });
+    if(global.ResizeObserver&&!global.__mppChipsObserverBound){
+      global.__mppChipsObserverBound=true;
+      const ro=new ResizeObserver(updateChipsOverflow);
+      document.querySelectorAll(".catalog-chips").forEach(el=>ro.observe(el));
+    }
   }
 
   function updateStats(){
@@ -224,8 +257,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=premium-index7",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=premium-index7",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=premium-index8",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=premium-index8",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
@@ -235,6 +268,7 @@
     if(search) search.oninput=event=>{state.query=event.target.value;renderCards(false);};
     if(clearButton) clearButton.onclick=clear;
     if(sort) sort.onchange=event=>{state.sort=event.target.value;renderCards(false);};
+    global.addEventListener("resize",updateChipsOverflow);
   }
 
   global.CatalogUI={boot,state};
