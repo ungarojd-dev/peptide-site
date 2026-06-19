@@ -1,1957 +1,591 @@
-{
-  "version": "3.0.1",
-  "products": [
-    {
-      "id": "5-amino-1mq",
-      "name": "5-Amino-1MQ",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "5-amino-1mq",
-        "5 amino 1mq",
-        "5Amino-1MQ",
-        "5Amino 1MQ"
-      ]
-    },
-    {
-      "id": "acetic-acid",
-      "name": "Acetic Acid",
-      "category": "Supplies",
-      "aliases": [
-        "Acetic Acid",
-        "acetic acid",
-        "acetic acid 0.6%",
-        "acetic acid solution",
-        "glacial acetic acid",
-        "acetic acid 10ml",
-        "0.6% acetic acid"
-      ]
-    },
-    {
-      "id": "acetyl-hexapeptide-8",
-      "name": "Acetyl Hexapeptide-8",
-      "category": "Other",
-      "aliases": [
-        "acetyl hexapeptide-8",
-        "acetyl hexapeptide 8",
-        "argireline"
-      ]
-    },
-    {
-      "id": "adamax",
-      "name": "Adamax",
-      "category": "Other",
-      "aliases": [
-        "adamax",
-        "Adamax",
-        "adamax 10mg",
-        "adx-010"
-      ]
-    },
-    {
-      "id": "adipotide",
-      "name": "Adipotide",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "adipotide"
-      ]
-    },
-    {
-      "id": "ahk-cu",
-      "name": "AHK-Cu",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "ahk-cu",
-        "ahk cu",
-        "ahkcu"
-      ]
-    },
-    {
-      "id": "aicar",
-      "name": "AICAR",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "aicar"
-      ]
-    },
-    {
-      "id": "am-shred",
-      "name": "AM Shred",
-      "category": "Other",
-      "aliases": [
-        "AM Shred"
-      ]
-    },
-    {
-      "id": "aod-9604",
-      "name": "AOD-9604",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "aod-9604",
-        "aod9604"
-      ]
-    },
-    {
-      "id": "aod-9604-and-tesamorelin-blend",
-      "name": "AOD-9604 & Tesamorelin Blend",
-      "category": "Other",
-      "aliases": [
-        "AOD-9604 & Tesamorelin Blend"
-      ]
-    },
-    {
-      "id": "ara-290",
-      "name": "ARA-290",
-      "category": "Repair & Recovery",
-      "aliases": [
-        "ara-290",
-        "ara 290"
-      ]
-    },
-    {
-      "id": "argireline-dnsp-11-vial",
-      "name": "Argireline / DNSP-11 Vial",
-      "category": "Other",
-      "aliases": [
-        "Argireline / DNSP-11 Vial"
-      ]
-    },
-    {
-      "id": "astaxanthin-complex",
-      "name": "Astaxanthin Complex",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "Astaxanthin Complex"
-      ]
-    },
-    {
-      "id": "bacteriostatic-water",
-      "name": "Bacteriostatic Water",
-      "category": "Supplies",
-      "aliases": [
-        "Bacteriostatic Water",
-        "BW",
-        "BW-H Brand",
-        "Benzyl Alcohol Solution",
-        "BAC Water",
-        "Hospira Sodium Benzyl BAC Water",
-        "Hospira SodiumBenzyl BAC Water",
-        "bacteriostatic water 10ml",
-        "bacteriostatic water 30ml",
-        "hospira bac water",
-        "0.9% benzyl alcohol solution",
-        "benzyl alcohol 0.9%",
-        "0.9 benzyl alcohol",
-        "benzyl alcohol solution 10ml",
-        "benzyl alcohol solution 30ml"
-      ]
-    },
-    {
-      "id": "bam-15",
-      "name": "BAM-15",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "BAM-15"
-      ]
-    },
-    {
-      "id": "bonomarlot",
-      "name": "Bonomarlot",
-      "category": "Other",
-      "aliases": [
-        "Bonomarlot"
-      ]
-    },
-    {
-      "id": "bonothyrk",
-      "name": "Bonothyrk",
-      "category": "Other",
-      "aliases": [
-        "Bonothyrk"
-      ]
-    },
-    {
-      "id": "bpc-157",
-      "name": "BPC-157",
-      "category": "Repair & Recovery",
-      "aliases": [
-        "bpc-157",
-        "bpc157",
-        "bpc 157",
-        "body protective compound",
-        "bpc-157 capsules",
-        "bpc 157 capsules"
-      ]
-    },
-    {
-      "id": "bpc-157-and-kpv-blend",
-      "name": "BPC-157 & KPV Blend",
-      "category": "Other",
-      "aliases": [
-        "BPC-157 & KPV Blend"
-      ]
-    },
-    {
-      "id": "bpc-157-and-tb-500-blend",
-      "name": "BPC-157 & TB-500 Blend",
-      "category": "Other",
-      "aliases": [
-        "BPC-157 & TB-500 Blend"
-      ]
-    },
-    {
-      "id": "bpc-157-plus-tb-500-blend",
-      "name": "BPC-157 + TB-500 Blend",
-      "category": "Repair & Recovery",
-      "aliases": [
-        "BPC-157 + TB-500 Blend",
-        "Wolverine",
-        "Wolverine Blend",
-        "BPC/TB",
-        "BPC TB",
-        "bpc tb 500",
-        "bpc157 tb500",
-        "bpc 157 tb 500"
-      ]
-    },
-    {
-      "id": "bpc-157-tb-500-and-cartalax-blend",
-      "name": "BPC-157, TB-500 & Cartalax Blend",
-      "category": "Other",
-      "aliases": [
-        "BPC-157, TB-500 & Cartalax Blend"
-      ]
-    },
-    {
-      "id": "bpc-157-tb-500-and-ghk-cu-blend",
-      "name": "BPC-157, TB-500, & GHK-Cu Blend",
-      "category": "Other",
-      "aliases": [
-        "BPC-157, TB-500, & GHK-Cu Blend"
-      ]
-    },
-    {
-      "id": "bpc-157-tb-500-and-kpv-blend",
-      "name": "BPC-157, TB-500, & KPV Blend",
-      "category": "Other",
-      "aliases": [
-        "BPC-157, TB-500, & KPV Blend"
-      ]
-    },
-    {
-      "id": "bpc-157-tb-500-and-mgf-blend",
-      "name": "BPC-157, TB-500, & MGF Blend",
-      "category": "Other",
-      "aliases": [
-        "BPC-157, TB-500, & MGF Blend"
-      ]
-    },
-    {
-      "id": "bpc-157-tb-500-ghk-basic-and-kpv-blend",
-      "name": "BPC-157, TB-500, GHK Basic, & KPV Blend",
-      "category": "Other",
-      "aliases": [
-        "BPC-157, TB-500, GHK Basic, & KPV Blend"
-      ]
-    },
-    {
-      "id": "bpc-157-tb-500-ghk-cu-and-kpv-blend",
-      "name": "BPC-157, TB-500, GHK-Cu, & KPV Blend",
-      "category": "Other",
-      "aliases": [
-        "BPC-157, TB-500, GHK-Cu, & KPV Blend"
-      ]
-    },
-    {
-      "id": "bpc-157-tb-500-ghk-cu-and-snap-8-blend",
-      "name": "BPC-157, TB-500, GHK-Cu, & SNAP-8 Blend",
-      "category": "Other",
-      "aliases": [
-        "BPC-157, TB-500, GHK-Cu, & SNAP-8 Blend"
-      ]
-    },
-    {
-      "id": "bronchogen",
-      "name": "Bronchogen",
-      "category": "Bioregulators",
-      "aliases": [
-        "bronchogen"
-      ]
-    },
-    {
-      "id": "cagrilintide",
-      "name": "Cagrilintide",
-      "category": "GLP-1 & Incretin",
-      "aliases": [
-        "cagrilintide",
-        "cagrilinitide",
-        "cagri",
-        "pep-cag",
-        "sa-4c",
-        "Cag",
-        "Cargilintide"
-      ]
-    },
-    {
-      "id": "cardiogen",
-      "name": "Cardiogen",
-      "category": "Bioregulators",
-      "aliases": [
-        "cardiogen"
-      ]
-    },
-    {
-      "id": "carfilflex",
-      "name": "CarfilFlex",
-      "category": "Other",
-      "aliases": [
-        "CarfilFlex",
-        "cartiflex",
-        "CartiFlex",
-        "cartiflex 20ml",
-        "CarfilFlex 20mL"
-      ]
-    },
-    {
-      "id": "cartalax",
-      "name": "Cartalax",
-      "category": "Bioregulators",
-      "aliases": [
-        "cartalax",
-        "cardalax"
-      ]
-    },
-    {
-      "id": "cartalax-bpc-157-tb-500-and-kpv-blend",
-      "name": "Cartalax, BPC-157, TB-500 & KPV Blend",
-      "category": "Other",
-      "aliases": [
-        "Cartalax, BPC-157, TB-500 & KPV Blend"
-      ]
-    },
-    {
-      "id": "centella-asiatica-complex",
-      "name": "Centella Asiatica Complex",
-      "category": "Other",
-      "aliases": [
-        "Centella Asiatica Complex"
-      ]
-    },
-    {
-      "id": "cerebro-protein",
-      "name": "Cerebro Protein",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "Cerebro Protein"
-      ]
-    },
-    {
-      "id": "cerebrolysin",
-      "name": "Cerebrolysin",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "cerebrolysin"
-      ]
-    },
-    {
-      "id": "cerluten",
-      "name": "Cerluten",
-      "category": "Other",
-      "aliases": [
-        "Cerluten"
-      ]
-    },
-    {
-      "id": "chelohart",
-      "name": "Chelohart",
-      "category": "Other",
-      "aliases": [
-        "Chelohart"
-      ]
-    },
-    {
-      "id": "chitomur",
-      "name": "Chitomur",
-      "category": "Other",
-      "aliases": [
-        "Chitomur"
-      ]
-    },
-    {
-      "id": "chonluten",
-      "name": "Chonluten",
-      "category": "Other",
-      "aliases": [
-        "Chonluten"
-      ]
-    },
-    {
-      "id": "cjc-1295",
-      "name": "CJC-1295",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "cjc-1295",
-        "cjc 1295",
-        "cjc-1295 no dac",
-        "cjc 1295 no dac",
-        "cjc-1295 without dac",
-        "modified grf 1-29",
-        "mod grf 1-29"
-      ]
-    },
-    {
-      "id": "cjc-1295-and-ipamorelin-blend",
-      "name": "CJC-1295 & Ipamorelin Blend",
-      "category": "Other",
-      "aliases": [
-        "CJC-1295 & Ipamorelin Blend"
-      ]
-    },
-    {
-      "id": "cjc-1295-plus-ipamorelin-blend",
-      "name": "CJC-1295 + Ipamorelin Blend",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "CJC-1295 + Ipamorelin Blend",
-        "CJC/IPA",
-        "CJC IPA",
-        "CJC / IPA",
-        "CJC-1295 + Ipamorelin",
-        "CJC + IPA",
-        "CJC + IPA (NO DAC)",
-        "CJC + IPA NO DAC",
-        "CJC-1295 + Ipamorelin (NO DAC)",
-        "cjc ipa no dac",
-        "cjc ipamorelin",
-        "cjc-1295 no dac ipamorelin"
-      ]
-    },
-    {
-      "id": "cjc-1295-with-dac",
-      "name": "CJC-1295 with DAC",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "CJC-1295 with DAC"
-      ]
-    },
-    {
-      "id": "cjc-1295-without-dac",
-      "name": "CJC-1295 without DAC",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "CJC-1295 without DAC"
-      ]
-    },
-    {
-      "id": "cortagen",
-      "name": "Cortagen",
-      "category": "Other",
-      "aliases": [
-        "Cortagen"
-      ]
-    },
-    {
-      "id": "crystagen",
-      "name": "Crystagen",
-      "category": "Other",
-      "aliases": [
-        "Crystagen"
-      ]
-    },
-    {
-      "id": "dihexa",
-      "name": "Dihexa",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "dihexa"
-      ]
-    },
-    {
-      "id": "dsip",
-      "name": "DSIP",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "dsip",
-        "delta sleep inducing peptide",
-        "delta sleep"
-      ]
-    },
-    {
-      "id": "dsip-and-selank-blend",
-      "name": "DSIP & Selank Blend",
-      "category": "Other",
-      "aliases": [
-        "DSIP & Selank Blend"
-      ]
-    },
-    {
-      "id": "endoluten",
-      "name": "Endoluten",
-      "category": "Other",
-      "aliases": [
-        "Endoluten"
-      ]
-    },
-    {
-      "id": "epitalon",
-      "name": "Epitalon",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "epitalon",
-        "epithalon",
-        "epithalone"
-      ]
-    },
-    {
-      "id": "fgl",
-      "name": "FGL",
-      "category": "Other",
-      "aliases": [
-        "FGL"
-      ]
-    },
-    {
-      "id": "follistatin",
-      "name": "Follistatin",
-      "category": "Other",
-      "aliases": [
-        "Follistatin"
-      ]
-    },
-    {
-      "id": "follistatin-344",
-      "name": "Follistatin-344",
-      "category": "Other",
-      "aliases": [
-        "follistatin-344",
-        "follistatin 344"
-      ]
-    },
-    {
-      "id": "foxo4-dri",
-      "name": "FOXO4-DRI",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "foxo4-dri",
-        "foxo4 dri",
-        "foxo4",
-        "foxo-4",
-        "FOXO4-DRI",
-        "foxo4 dri 10mg",
-        "foxo4 2mg",
-        "foxo 4 dri",
-        "fox04-dri",
-        "fox04 dri",
-        "fox04",
-        "FOX04-DRI",
-        "fox04 dri 10mg"
-      ]
-    },
-    {
-      "id": "gb-115",
-      "name": "GB-115",
-      "category": "Other",
-      "aliases": [
-        "GB-115"
-      ]
-    },
-    {
-      "id": "ghk-basic",
-      "name": "GHK Basic",
-      "category": "Other",
-      "aliases": [
-        "GHK Basic"
-      ]
-    },
-    {
-      "id": "ghk-cu",
-      "name": "GHK-Cu",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "ghk-cu",
-        "ghk cu",
-        "ghkcu",
-        "ghk copper",
-        "copper peptide ghk"
-      ]
-    },
-    {
-      "id": "ghk-cu-and-kpv-blend",
-      "name": "GHK-Cu & KPV Blend",
-      "category": "Other",
-      "aliases": [
-        "GHK-Cu & KPV Blend"
-      ]
-    },
-    {
-      "id": "ghk-cu-plus-kpv-blend",
-      "name": "GHK-Cu + KPV Blend",
-      "category": "Repair & Recovery",
-      "aliases": [
-        "GHK-Cu + KPV Blend",
-        "GHKPV",
-        "GHK-Cu + KPV",
-        "GHK CU KPV",
-        "ghk kpv",
-        "ghkpv blend"
-      ]
-    },
-    {
-      "id": "ghrp-2",
-      "name": "GHRP-2",
-      "category": "Other",
-      "aliases": [
-        "ghrp-2",
-        "ghrp 2"
-      ]
-    },
-    {
-      "id": "ghrp-6",
-      "name": "GHRP-6",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "ghrp-6",
-        "ghrp 6",
-        "GHRP-6",
-        "ghrp6",
-        "ghrp-6 10mg",
-        "ghrp 6 5mg"
-      ]
-    },
-    {
-      "id": "glandokort",
-      "name": "Glandokort",
-      "category": "Other",
-      "aliases": [
-        "Glandokort"
-      ]
-    },
-    {
-      "id": "glow-blend",
-      "name": "GLOW Blend",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "GLOW Blend",
-        "GLOW",
-        "Glow Blend"
-      ]
-    },
-    {
-      "id": "glutathione",
-      "name": "Glutathione",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "glutathione",
-        "l-glutathione",
-        "reduced glutathione",
-        "glutathilone",
-        "Glutathione",
-        "glutathione standard",
-        "glutathione vial",
-        "solyn glutathione",
-        "Gluthathione",
-        "gluthathione"
-      ]
-    },
-    {
-      "id": "gnrh",
-      "name": "GnRH",
-      "category": "Other",
-      "aliases": [
-        "GnRH"
-      ]
-    },
-    {
-      "id": "gonadorelin",
-      "name": "Gonadorelin",
-      "category": "Other",
-      "aliases": [
-        "Gonadorelin"
-      ]
-    },
-    {
-      "id": "gotratix",
-      "name": "Gotratix",
-      "category": "Other",
-      "aliases": [
-        "Gotratix"
-      ]
-    },
-    {
-      "id": "hcg",
-      "name": "HCG",
-      "category": "Other",
-      "aliases": [
-        "HCG"
-      ]
-    },
-    {
-      "id": "hep-1",
-      "name": "HEP-1",
-      "category": "Other",
-      "aliases": [
-        "HEP-1"
-      ]
-    },
-    {
-      "id": "hexarelin",
-      "name": "Hexarelin",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "hexarelin",
-        "hexarelin acetate"
-      ]
-    },
-    {
-      "id": "hexarelin-and-modified-grf-1-29-blend",
-      "name": "Hexarelin & Modified GRF 1-29 Blend",
-      "category": "Other",
-      "aliases": [
-        "Hexarelin & Modified GRF 1-29 Blend"
-      ]
-    },
-    {
-      "id": "hgh-fragment-176-191",
-      "name": "HGH Fragment 176-191",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "hgh fragment 176-191",
-        "hgh frag 176-191",
-        "hgh frag",
-        "fragment 176-191",
-        "176-191"
-      ]
-    },
-    {
-      "id": "hmg",
-      "name": "HMG",
-      "category": "Other",
-      "aliases": [
-        "HMG"
-      ]
-    },
-    {
-      "id": "human-growth-hormone",
-      "name": "Human Growth Hormone",
-      "category": "Other",
-      "aliases": [
-        "Human Growth Hormone"
-      ]
-    },
-    {
-      "id": "humanin",
-      "name": "Humanin",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "humanin"
-      ]
-    },
-    {
-      "id": "hyaluronic-acid-serum",
-      "name": "Hyaluronic Acid Serum",
-      "category": "Skin, Tanning & Sexual Health",
-      "aliases": [
-        "Hyaluronic Acid Serum"
-      ]
-    },
-    {
-      "id": "igf-1-lr3",
-      "name": "IGF-1 LR3",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "igf-1 lr3",
-        "igf 1 lr3",
-        "igf-lr3",
-        "IGF1-LR3",
-        "IGF1 LR3",
-        "igf-1-lr3",
-        "igf lr3",
-        "igf-lr3 1mg",
-        "igf1-lr3 1mg",
-        "igf-lr3",
-        "IGF-LR3"
-      ]
-    },
-    {
-      "id": "insulin-syringes",
-      "name": "Insulin Syringes",
-      "category": "Supplies",
-      "aliases": [
-        "Insulin Syringes"
-      ]
-    },
-    {
-      "id": "ipamorelin",
-      "name": "Ipamorelin",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "ipamorelin",
-        "ipamo",
-        "ipa"
-      ]
-    },
-    {
-      "id": "kisspeptin",
-      "name": "Kisspeptin",
-      "category": "Skin, Tanning & Sexual Health",
-      "aliases": [
-        "kisspeptin",
-        "kisspeptin-10",
-        "kisspeptin 10"
-      ]
-    },
-    {
-      "id": "kisspeptin-10",
-      "name": "Kisspeptin-10",
-      "category": "Other",
-      "aliases": [
-        "Kisspeptin-10"
-      ]
-    },
-    {
-      "id": "klotho",
-      "name": "Klotho",
-      "category": "Other",
-      "aliases": [
-        "klotho"
-      ]
-    },
-    {
-      "id": "klow-blend",
-      "name": "KLOW Blend",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "KLOW Blend",
-        "KLOW",
-        "Klow Blend"
-      ]
-    },
-    {
-      "id": "kpv",
-      "name": "KPV",
-      "category": "Repair & Recovery",
-      "aliases": [
-        "kpv",
-        "kpv capsules",
-        "kpv 250mcg"
-      ]
-    },
-    {
-      "id": "l-carnitine",
-      "name": "L-Carnitine",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "l-carnitine",
-        "l carnitine",
-        "L-Carnitine",
-        "lcarnitine",
-        "l-carnitine 10ml"
-      ]
-    },
-    {
-      "id": "l-glutathione",
-      "name": "L-Glutathione",
-      "category": "Other",
-      "aliases": [
-        "L-Glutathione"
-      ]
-    },
-    {
-      "id": "lemon-bottle",
-      "name": "Lemon Bottle",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "Lemon Bottle"
-      ]
-    },
-    {
-      "id": "lipo-clear",
-      "name": "Lipo Clear",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "Lipo Clear"
-      ]
-    },
-    {
-      "id": "lipo-c",
-      "name": "LIPO-C",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "lipo-c",
-        "lipo c",
-        "lipoc",
-        "lipo c blend"
-      ]
-    },
-    {
-      "id": "lipopeptide",
-      "name": "Lipopeptide",
-      "category": "Other",
-      "aliases": [
-        "Lipopeptide"
-      ]
-    },
-    {
-      "id": "liraglutide",
-      "name": "Liraglutide",
-      "category": "GLP-1 & Incretin",
-      "aliases": [
-        "Liraglutide"
-      ]
-    },
-    {
-      "id": "livagen",
-      "name": "Livagen",
-      "category": "Bioregulators",
-      "aliases": [
-        "livagen"
-      ]
-    },
-    {
-      "id": "ll-37",
-      "name": "LL-37",
-      "category": "Repair & Recovery",
-      "aliases": [
-        "ll-37",
-        "ll37",
-        "ll 37"
-      ]
-    },
-    {
-      "id": "matrixyl",
-      "name": "Matrixyl",
-      "category": "Other",
-      "aliases": [
-        "matrixyl"
-      ]
-    },
-    {
-      "id": "mazdutide",
-      "name": "Mazdutide",
-      "category": "GLP-1 & Incretin",
-      "aliases": [
-        "mazdutide"
-      ]
-    },
-    {
-      "id": "melanotan-i",
-      "name": "Melanotan I",
-      "category": "Skin, Tanning & Sexual Health",
-      "aliases": [
-        "melanotan 1",
-        "melanotan i",
-        "mt-1",
-        "mt1",
-        "MLT I",
-        "MLT-1",
-        "melanotan-i 10mg"
-      ]
-    },
-    {
-      "id": "melanotan-ii",
-      "name": "Melanotan II",
-      "category": "Skin, Tanning & Sexual Health",
-      "aliases": [
-        "melanotan 2",
-        "melanotan ii",
-        "mt-2",
-        "mt2",
-        "MLT II",
-        "MLT-2",
-        "melanotan-ii 10mg"
-      ]
-    },
-    {
-      "id": "metaboflex",
-      "name": "MetaboFlex",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "METABOFLEX"
-      ]
-    },
-    {
-      "id": "methionine-inositol-and-choline-blend",
-      "name": "Methionine, Inositol, & Choline Blend",
-      "category": "Other",
-      "aliases": [
-        "Methionine, Inositol, & Choline Blend"
-      ]
-    },
-    {
-      "id": "methylene-blue",
-      "name": "Methylene Blue",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "Methylene Blue",
-        "Metholine Blue",
-        "Methyline Blue"
-      ]
-    },
-    {
-      "id": "mgf",
-      "name": "MGF",
-      "category": "Other",
-      "aliases": [
-        "mgf"
-      ]
-    },
-    {
-      "id": "mitocore",
-      "name": "MitoCore",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "MitoCore"
-      ]
-    },
-    {
-      "id": "modified-grf-1-29",
-      "name": "Modified GRF 1-29",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "modified grf 1-29",
-        "mod grf 1-29"
-      ]
-    },
-    {
-      "id": "modified-grf-1-29-and-ipamorelin-blend",
-      "name": "Modified GRF 1-29 & Ipamorelin Blend",
-      "category": "Other",
-      "aliases": [
-        "Modified GRF 1-29 & Ipamorelin Blend"
-      ]
-    },
-    {
-      "id": "mots-c",
-      "name": "MOTS-c",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "mots-c",
-        "mots c",
-        "motsc"
-      ]
-    },
-    {
-      "id": "mots-c-ghk-cu-and-kpv-blend",
-      "name": "MOTS-c, GHK-Cu, & KPV Blend",
-      "category": "Other",
-      "aliases": [
-        "MOTS-c, GHK-Cu, & KPV Blend"
-      ]
-    },
-    {
-      "id": "mtp-31",
-      "name": "MTP-31",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "MTP-31",
-        "MTT-31"
-      ]
-    },
-    {
-      "id": "mts-31",
-      "name": "MTS-31",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "MTS-31"
-      ]
-    },
-    {
-      "id": "n-acetyl-semax",
-      "name": "N-Acetyl Semax",
-      "category": "Other",
-      "aliases": [
-        "N-Acetyl Semax"
-      ]
-    },
-    {
-      "id": "na-selank-amidate",
-      "name": "NA-Selank Amidate",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "NA-Selank Amidate"
-      ]
-    },
-    {
-      "id": "na-semax-amidate",
-      "name": "NA-Semax Amidate",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "NA-Semax Amidate"
-      ]
-    },
-    {
-      "id": "nad-plus",
-      "name": "NAD+",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "nad+",
-        "nad plus",
-        "nad",
-        "nad+ buffered",
-        "nad 500mg",
-        "nad buccal",
-        "nad+ buccal strip"
-      ]
-    },
-    {
-      "id": "neuroluxe",
-      "name": "NeuroLuxe",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "NEUROLUXE"
-      ]
-    },
-    {
-      "id": "neuromatrix",
-      "name": "NeuroMatrix",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "NeuroMatrix"
-      ]
-    },
-    {
-      "id": "nolva-100-tablets",
-      "name": "Nolva 100 Tablets",
-      "category": "Other",
-      "aliases": [
-        "Nolva 100 Tablets"
-      ]
-    },
-    {
-      "id": "orforglipron",
-      "name": "Orforglipron",
-      "category": "GLP-1 & Incretin",
-      "aliases": [
-        "orforglipron"
-      ]
-    },
-    {
-      "id": "ovagen",
-      "name": "Ovagen",
-      "category": "Bioregulators",
-      "aliases": [
-        "ovagen"
-      ]
-    },
-    {
-      "id": "oxytocin",
-      "name": "Oxytocin",
-      "category": "Skin, Tanning & Sexual Health",
-      "aliases": [
-        "oxytocin",
-        "Oxytocin",
-        "oxt",
-        "oxytocin 10mg",
-        "oxytocin 5mg",
-        "oxt-10",
-        "oxt 10",
-        "OXYTOCIN"
-      ]
-    },
-    {
-      "id": "p021",
-      "name": "P021",
-      "category": "Other",
-      "aliases": [
-        "P021"
-      ]
-    },
-    {
-      "id": "p21",
-      "name": "P21",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "p21",
-        "p021"
-      ]
-    },
-    {
-      "id": "pal-ghk",
-      "name": "Pal-GHK",
-      "category": "Other",
-      "aliases": [
-        "Pal-GHK"
-      ]
-    },
-    {
-      "id": "pancragen",
-      "name": "Pancragen",
-      "category": "Bioregulators",
-      "aliases": [
-        "pancragen"
-      ]
-    },
-    {
-      "id": "pdrn-collagen-complex",
-      "name": "PDRN Collagen Complex",
-      "category": "Skin, Tanning & Sexual Health",
-      "aliases": [
-        "PDRN Collagen Complex"
-      ]
-    },
-    {
-      "id": "pdrn-pink-cream",
-      "name": "PDRN Pink Cream",
-      "category": "Skin, Tanning & Sexual Health",
-      "aliases": [
-        "PDRN Pink Cream"
-      ]
-    },
-    {
-      "id": "pe-22-28",
-      "name": "PE-22-28",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "pe-22-28",
-        "pe 22 28",
-        "PE-22-28",
-        "pe-22-28 10mg",
-        "pe2228"
-      ]
-    },
-    {
-      "id": "peg-mgf",
-      "name": "PEG-MGF",
-      "category": "Other",
-      "aliases": [
-        "peg-mgf",
-        "peg mgf",
-        "pegmgf",
-        "PEG-MGF",
-        "peg-mgf 2mg"
-      ]
-    },
-    {
-      "id": "pentadeca-arginate-pda",
-      "name": "Pentadeca Arginate (PDA)",
-      "category": "Other",
-      "aliases": [
-        "Pentadeca Arginate (PDA)",
-        "PDA",
-        "pda",
-        "pentadeca arginate",
-        "pentadeca-arginate",
-        "PDA 10mg",
-        "pentadecapeptide"
-      ]
-    },
-    {
-      "id": "peptide-pen-needles",
-      "name": "Peptide Pen Needles",
-      "category": "Supplies",
-      "aliases": [
-        "Pen Needles",
-        "4mm Pen Needles",
-        "32G 4mm Pen Needles"
-      ]
-    },
-    {
-      "id": "phosphate-buffered-saline",
-      "name": "Phosphate Buffered Saline",
-      "category": "Supplies",
-      "aliases": [
-        "Phosphate Buffered Saline"
-      ]
-    },
-    {
-      "id": "pinealon",
-      "name": "Pinealon",
-      "category": "Bioregulators",
-      "aliases": [
-        "pinealon"
-      ]
-    },
-    {
-      "id": "pm-recovery",
-      "name": "PM Recovery",
-      "category": "Repair & Recovery",
-      "aliases": [
-        "PM Recovery"
-      ]
-    },
-    {
-      "id": "pnc-27",
-      "name": "PNC-27",
-      "category": "Other",
-      "aliases": [
-        "pnc-27",
-        "pnc 27",
-        "PNC-27",
-        "pnc-27 5mg",
-        "pnc27"
-      ]
-    },
-    {
-      "id": "prostamax",
-      "name": "ProstaMax",
-      "category": "Other",
-      "aliases": [
-        "ProstaMax"
-      ]
-    },
-    {
-      "id": "protective-travel-case",
-      "name": "Protective Travel Case",
-      "category": "Supplies",
-      "aliases": [
-        "Protective Travel Case",
-        "Black Protective Travel Case",
-        "Black Protective Travel Case for Injection Pens",
-        "Black Protective Travel Case for Injection Pens (Case ONLY)"
-      ]
-    },
-    {
-      "id": "pt-141",
-      "name": "PT-141",
-      "category": "Skin, Tanning & Sexual Health",
-      "aliases": [
-        "pt-141",
-        "pt 141",
-        "bremelanotide"
-      ]
-    },
-    {
-      "id": "pt-141-and-oxytocin-blend",
-      "name": "PT-141 & Oxytocin Blend",
-      "category": "Other",
-      "aliases": [
-        "PT-141 & Oxytocin Blend"
-      ]
-    },
-    {
-      "id": "reconstitution-water",
-      "name": "Reconstitution Water",
-      "category": "Supplies",
-      "aliases": [
-        "reconstitution water",
-        "reconstitution solution",
-        "Reconstitution Water 0.9% Alcohol",
-        "BAC Water 0.9%",
-        "reconstitution water 0.9",
-        "bacteriostatic alcohol solution"
-      ]
-    },
-    {
-      "id": "research-starter-kit",
-      "name": "Research Starter Kit",
-      "category": "Supplies",
-      "aliases": [
-        "Research Starter Kit",
-        "Research Starter Kits"
-      ]
-    },
-    {
-      "id": "retatrutide",
-      "name": "Retatrutide",
-      "category": "GLP-1 & Incretin",
-      "aliases": [
-        "retatrutide",
-        "reta",
-        "pep-rt",
-        "peptide rt",
-        "gla-3 rt",
-        "gla-3",
-        "glp-r3",
-        "glp-3",
-        "ion-3r",
-        "sa-3r",
-        "oc-3rt",
-        "rt",
-        "Peptide-R",
-        "peptide r",
-        "peptide-rt",
-        "gla-3-rt",
-        "glp3-r",
-        "FG3-R",
-        "FG3 R",
-        "peptide-r",
-        "peptide r",
-        "peptide r retatrutide"
-      ]
-    },
-    {
-      "id": "retatrutide-and-cagrilintide-blend",
-      "name": "Retatrutide & Cagrilintide Blend",
-      "category": "Other",
-      "aliases": [
-        "Retatrutide & Cagrilintide Blend"
-      ]
-    },
-    {
-      "id": "retatrutide-and-tirzepatide-blend",
-      "name": "Retatrutide & Tirzepatide Blend",
-      "category": "Other",
-      "aliases": [
-        "Retatrutide & Tirzepatide Blend"
-      ]
-    },
-    {
-      "id": "reusable-peptide-pen",
-      "name": "Reusable Peptide Pen",
-      "category": "Supplies",
-      "aliases": [
-        "Reusable Peptide Pen",
-        "Reusable Peptide Pen With 2 Sterile Cartridges"
-      ]
-    },
-    {
-      "id": "rgd",
-      "name": "RGD",
-      "category": "Other",
-      "aliases": [
-        "RGD"
-      ]
-    },
-    {
-      "id": "selank",
-      "name": "Selank",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "selank",
-        "n-acetyl selank",
-        "na selank",
-        "selank amidate"
-      ]
-    },
-    {
-      "id": "semaglutide",
-      "name": "Semaglutide",
-      "category": "GLP-1 & Incretin",
-      "aliases": [
-        "semaglutide",
-        "sema",
-        "pep-sm",
-        "peptide sm",
-        "gla-1 sm",
-        "gla-1",
-        "glp-1 sm",
-        "ion-1s",
-        "sa-1s",
-        "sm",
-        "peptide-sm",
-        "gla-1-sm",
-        "glp-1-sm",
-        "FG1-S",
-        "FG1 S",
-        "peptide-s",
-        "peptide s",
-        "peptide s semaglutide"
-      ]
-    },
-    {
-      "id": "semaglutide-and-cagrilintide-blend",
-      "name": "Semaglutide & Cagrilintide Blend",
-      "category": "Other",
-      "aliases": [
-        "Semaglutide & Cagrilintide Blend"
-      ]
-    },
-    {
-      "id": "semax",
-      "name": "Semax",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "semax",
-        "n-acetyl semax",
-        "na semax",
-        "semax acetyl",
-        "n acetyl semax",
-        "semax (n-acetyl)",
-        "na-semax"
-      ]
-    },
-    {
-      "id": "semax-and-selank-blend",
-      "name": "Semax & Selank Blend",
-      "category": "Other",
-      "aliases": [
-        "Semax & Selank Blend",
-        "semax selank",
-        "semax/selank",
-        "semax selank blend"
-      ]
-    },
-    {
-      "id": "semax-selank-and-dihexa-blend",
-      "name": "Semax, Selank, & Dihexa Blend",
-      "category": "Other",
-      "aliases": [
-        "Semax, Selank, & Dihexa Blend"
-      ]
-    },
-    {
-      "id": "sermorelin",
-      "name": "Sermorelin",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "sermorelin",
-        "sermo"
-      ]
-    },
-    {
-      "id": "sermorelin-and-ipamorelin-blend",
-      "name": "Sermorelin & Ipamorelin Blend",
-      "category": "Other",
-      "aliases": [
-        "Sermorelin & Ipamorelin Blend"
-      ]
-    },
-    {
-      "id": "sermorelin-ghrp-6-and-ghrp-2-blend",
-      "name": "Sermorelin, GHRP-6, & GHRP-2 Blend",
-      "category": "Other",
-      "aliases": [
-        "Sermorelin, GHRP-6, & GHRP-2 Blend"
-      ]
-    },
-    {
-      "id": "setmelanotide",
-      "name": "Setmelanotide",
-      "category": "Other",
-      "aliases": [
-        "Setmelanotide"
-      ]
-    },
-    {
-      "id": "sigumir",
-      "name": "Sigumir",
-      "category": "Other",
-      "aliases": [
-        "Sigumir"
-      ]
-    },
-    {
-      "id": "slimassist",
-      "name": "SlimAssist",
-      "category": "Other",
-      "aliases": [
-        "SlimAssist"
-      ]
-    },
-    {
-      "id": "slu-pp-332",
-      "name": "SLU-PP-332",
-      "category": "Metabolic & Mitochondrial",
-      "aliases": [
-        "slu-pp-332",
-        "slu pp 332",
-        "slupp332"
-      ]
-    },
-    {
-      "id": "snap-8",
-      "name": "Snap-8",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "snap-8",
-        "snap 8",
-        "snap8",
-        "acetyl octapeptide"
-      ]
-    },
-    {
-      "id": "ss-31",
-      "name": "SS-31",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "ss-31",
-        "ss31",
-        "elamipretide",
-        "s-31",
-        "s31",
-        "ss 31",
-        "\u00a7-31",
-        "\u00a7 31"
-      ]
-    },
-    {
-      "id": "ss-31-tb-500-and-mots-c-blend",
-      "name": "SS-31, TB-500, & MOTS-c Blend",
-      "category": "Other",
-      "aliases": [
-        "SS-31, TB-500, & MOTS-c Blend"
-      ]
-    },
-    {
-      "id": "stamakort",
-      "name": "Stamakort",
-      "category": "Other",
-      "aliases": [
-        "Stamakort"
-      ]
-    },
-    {
-      "id": "sterile-water",
-      "name": "Sterile Water",
-      "category": "Supplies",
-      "aliases": [
-        "sterile water",
-        "STERILE WATER",
-        "sterile water 10ml",
-        "sterile saline"
-      ]
-    },
-    {
-      "id": "suprefort",
-      "name": "Suprefort",
-      "category": "Other",
-      "aliases": [
-        "Suprefort"
-      ]
-    },
-    {
-      "id": "survodutide",
-      "name": "Survodutide",
-      "category": "GLP-1 & Incretin",
-      "aliases": [
-        "survodutide"
-      ]
-    },
-    {
-      "id": "svetinorm",
-      "name": "Svetinorm",
-      "category": "Other",
-      "aliases": [
-        "Svetinorm"
-      ]
-    },
-    {
-      "id": "syn-ake",
-      "name": "Syn-Ake",
-      "category": "Other",
-      "aliases": [
-        "syn-ake",
-        "syn ake"
-      ]
-    },
-    {
-      "id": "t3",
-      "name": "T3",
-      "category": "Other",
-      "aliases": [
-        "T3"
-      ]
-    },
-    {
-      "id": "tadalafil-and-pt-141-blend",
-      "name": "Tadalafil & PT-141 Blend",
-      "category": "Other",
-      "aliases": [
-        "Tadalafil & PT-141 Blend"
-      ]
-    },
-    {
-      "id": "taxorest",
-      "name": "Taxorest",
-      "category": "Other",
-      "aliases": [
-        "Taxorest"
-      ]
-    },
-    {
-      "id": "tb-500",
-      "name": "TB-500",
-      "category": "Repair & Recovery",
-      "aliases": [
-        "tb-500",
-        "tb500",
-        "tb-4",
-        "tb4",
-        "thymosin beta 4",
-        "thymosin beta-4"
-      ]
-    },
-    {
-      "id": "teriparatide",
-      "name": "Teriparatide",
-      "category": "Other",
-      "aliases": [
-        "teriparatide"
-      ]
-    },
-    {
-      "id": "tesamorelin",
-      "name": "Tesamorelin",
-      "category": "Growth Hormone Research",
-      "aliases": [
-        "tesamorelin",
-        "tesa"
-      ]
-    },
-    {
-      "id": "tesamorelin-and-ipamorelin-blend",
-      "name": "Tesamorelin & Ipamorelin Blend",
-      "category": "Other",
-      "aliases": [
-        "Tesamorelin & Ipamorelin Blend"
-      ]
-    },
-    {
-      "id": "tesamorelin-cjc-1295-and-ipamorelin-blend",
-      "name": "Tesamorelin, CJC-1295, & Ipamorelin Blend",
-      "category": "Other",
-      "aliases": [
-        "Tesamorelin, CJC-1295, & Ipamorelin Blend"
-      ]
-    },
-    {
-      "id": "tesofensine",
-      "name": "Tesofensine",
-      "category": "GLP-1 & Incretin",
-      "aliases": [
-        "tesofensine"
-      ]
-    },
-    {
-      "id": "testagen",
-      "name": "Testagen",
-      "category": "Bioregulators",
-      "aliases": [
-        "testagen"
-      ]
-    },
-    {
-      "id": "testoluten",
-      "name": "Testoluten",
-      "category": "Other",
-      "aliases": [
-        "Testoluten"
-      ]
-    },
-    {
-      "id": "thymagen",
-      "name": "Thymagen",
-      "category": "Bioregulators",
-      "aliases": [
-        "thymagen"
-      ]
-    },
-    {
-      "id": "thymalin",
-      "name": "Thymalin",
-      "category": "Bioregulators",
-      "aliases": [
-        "thymalin",
-        "thymulin"
-      ]
-    },
-    {
-      "id": "thymosin-alpha-1",
-      "name": "Thymosin Alpha-1",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "thymosin alpha-1",
-        "thymosin alpha 1",
-        "ta-1",
-        "ta1",
-        "thymosin alpha1"
-      ]
-    },
-    {
-      "id": "thymosin-alpha-1-and-thymulin-blend",
-      "name": "Thymosin Alpha-1 & Thymulin Blend",
-      "category": "Other",
-      "aliases": [
-        "Thymosin Alpha-1 & Thymulin Blend"
-      ]
-    },
-    {
-      "id": "thymosin-alpha-1-tb-500-bpc-157-and-kpv-blend",
-      "name": "Thymosin Alpha-1, TB-500, BPC-157, & KPV Blend",
-      "category": "Other",
-      "aliases": [
-        "Thymosin Alpha-1, TB-500, BPC-157, & KPV Blend"
-      ]
-    },
-    {
-      "id": "thymulin",
-      "name": "Thymulin",
-      "category": "Other",
-      "aliases": [
-        "Thymulin"
-      ]
-    },
-    {
-      "id": "thyreogen",
-      "name": "Thyreogen",
-      "category": "Other",
-      "aliases": [
-        "Thyreogen"
-      ]
-    },
-    {
-      "id": "tirzepatide",
-      "name": "Tirzepatide",
-      "category": "GLP-1 & Incretin",
-      "aliases": [
-        "tirzepatide",
-        "tirz",
-        "pep-trz",
-        "pep-tz",
-        "peptide trz",
-        "peptide tz",
-        "gla-2 trz",
-        "gla-2",
-        "glp-t2",
-        "glp-2",
-        "ion-2t",
-        "sa-2t",
-        "trz",
-        "tz",
-        "Peptide-T",
-        "peptide t",
-        "gla-2.5 trz",
-        "glp2-t",
-        "mhc-2 trz",
-        "FG2-T",
-        "FG2 T",
-        "peptide-t",
-        "peptide t",
-        "peptide t tirzepatide"
-      ]
-    },
-    {
-      "id": "tirzepatide-and-cagrilintide-blend",
-      "name": "Tirzepatide & Cagrilintide Blend",
-      "category": "Other",
-      "aliases": [
-        "Tirzepatide & Cagrilintide Blend"
-      ]
-    },
-    {
-      "id": "vesilute",
-      "name": "Vesilute",
-      "category": "Other",
-      "aliases": [
-        "Vesilute"
-      ]
-    },
-    {
-      "id": "vesugen",
-      "name": "Vesugen",
-      "category": "Bioregulators",
-      "aliases": [
-        "vesugen"
-      ]
-    },
-    {
-      "id": "vial-caps-and-covers",
-      "name": "Vial Caps & Covers",
-      "category": "Supplies",
-      "aliases": [
-        "Vial Caps/Cover",
-        "Vial Caps & Covers",
-        "3ML Vial Caps/Cover",
-        "Aegis Vial Covers",
-        "Aegis Vial Cover",
-        "Aegis Vial Covers",
-        "aegis vial cover",
-        "aegis vial covers",
-        "vial cover blue",
-        "vial cover red",
-        "vial cover white"
-      ]
-    },
-    {
-      "id": "vial-case",
-      "name": "Vial Case",
-      "category": "Supplies",
-      "aliases": [
-        "Vial Case",
-        "9 Vial Case",
-        "9 Vial Case (3ML Slots)",
-        "vial storage",
-        "3ml vial case"
-      ]
-    },
-    {
-      "id": "vial-storage-case",
-      "name": "Vial Storage Case",
-      "category": "Supplies",
-      "aliases": [
-        "Vial Storage Case",
-        "storage case",
-        "50 vial storage",
-        "50 vial storage case",
-        "glacier 50 vial storage case"
-      ]
-    },
-    {
-      "id": "vilon",
-      "name": "Vilon",
-      "category": "Bioregulators",
-      "aliases": [
-        "vilon"
-      ]
-    },
-    {
-      "id": "vip",
-      "name": "VIP",
-      "category": "Cognitive & Nootropic",
-      "aliases": [
-        "vip"
-      ]
-    },
-    {
-      "id": "vitamin-b12",
-      "name": "Vitamin B12",
-      "category": "Other",
-      "aliases": [
-        "Vitamin B12",
-        "Vitamin B12 (Methylcobalamin)",
-        "B12",
-        "B12 (Methylated)",
-        "B12 Buccal Strip",
-        "methylated b12",
-        "b12 methylated"
-      ]
-    },
-    {
-      "id": "vladonix",
-      "name": "Vladonix",
-      "category": "Other",
-      "aliases": [
-        "Vladonix"
-      ]
-    },
-    {
-      "id": "zhenoluten",
-      "name": "Zhenoluten",
-      "category": "Other",
-      "aliases": [
-        "Zhenoluten"
-      ]
-    },
-    {
-      "id": "biotinyl-tripeptide",
-      "name": "Biotinyl Tripeptide-1",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "biotinyl tripeptide",
-        "biotinyl tripeptide-1",
-        "biotinyl tripeptide 1",
-        "biotinyl tripeptide raw"
-      ]
-    },
-    {
-      "id": "ksptn",
-      "name": "KSPTN",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "ksptn",
-        "KSPTN"
-      ]
-    },
-    {
-      "id": "palmitoyl-pentapeptide-4",
-      "name": "Palmitoyl Pentapeptide-4",
-      "category": "Longevity & Cellular Health",
-      "aliases": [
-        "palmitoyl pentapeptide-4",
-        "palmitoyl pentapeptide 4",
-        "palmitoyl pentapeptide-4 raw",
-        "pal-kttks",
-        "matrixyl"
-      ]
+import catalogPayload from "../../../data/catalog-products.json" with { type: "json" };
+import overridePayload from "../../../data/catalog-overrides.json" with { type: "json" };
+import vendorPayload from "../../../data/vendor-config.json" with { type: "json" };
+import promotionPayload from "../../../data/promotions.json" with { type: "json" };
+
+export const ENGINE_VERSION = "1.0.0-clean";
+export const COUPON_CODE = vendorPayload.coupon_code || "SAMMYC";
+export const VENDOR_CONFIG = vendorPayload.vendors || {};
+export const PROMOTIONS = promotionPayload.promotions || [];
+
+const GLP_CATEGORY = "GLP-1 & Incretin";
+const DEFAULT_CATEGORY = "Other";
+const DEFAULT_FORMAT = "Vials";
+const SUPPLY_TERMS = [
+  "bacteriostatic", "bac water", "sterile water", "reconstitution water", "acetic acid",
+  "syringe", "needle", "pen needle", "vial cap", "vial cover", "vial case", "case slots", "storage case", "travel case",
+  "cartridge", "starter kit", "supplies", "supply", "reconstitution solution", "reusable peptide pen"
+];
+const FORMAT_TERMS = {
+  "Dissolvable Strips": ["buccal strip", "dissolvable strip", "oral strip", "lozenge"],
+  "Capsules": ["capsule", "capsules", "tablet", "tablets", "tab", "tabs", "troche", "oral"],
+  "Nasal Sprays": ["nasal spray", "nasal", "intranasal", "spray"],
+  "Topicals": ["topical", "cream", "serum", "lotion", "gel", "mask", "shampoo", "conditioner", "balm"],
+  "Liquids": ["liquid", "drops", "solution", "lemon bottle", "methylene blue", "metholine blue", "lipo-c"],
+  "Aminos": ["amino", "l-carnitine", "carnitine"]
+};
+const CATEGORY_TERMS = [
+  [GLP_CATEGORY, ["glp", "semaglutide", "tirzepatide", "retatrutide", "cagrilintide", "cagri", "mazdutide", "survodutide", "liraglutide", "tesofensine", "orforglipron", "amycretin", "weight loss"]],
+  ["Repair & Recovery", ["bpc", "tb-500", "tb500", "kpv", "ll-37", "ll37", "wolverine", "repair", "recovery", "recover", "healing", "ara-290"]],
+  ["Growth Hormone Research", ["cjc", "ipamorelin", "sermorelin", "tesamorelin", "ghrp", "hexarelin", "igf", "hgh", "growth hormone", "modified grf", "mod grf", "peg-mgf", "mgf"]],
+  ["Cognitive & Nootropic", ["semax", "selank", "dihexa", "cerebrolysin", "vip", "dsip", "nootropic", "cognitive", "adamax", "pe-22", "p21"]],
+  ["Skin, Tanning & Sexual Health", ["pt-141", "pt141", "melanotan", "mt-1", "mt-2", "kisspeptin", "oxytocin", "tanning", "sexual health", "bremelanotide"]],
+  ["Bioregulators", ["pinealon", "vilon", "vesugen", "pancragen", "bronchogen", "cardiogen", "ovagen", "livagen", "thymagen", "thymalin", "thymulin", "cartalax", "bioregulator"]],
+  ["Metabolic & Mitochondrial", ["mots", "ss-31", "s-31-s", "§-31", "5-amino", "aod", "slu-pp", "glutathione", "lipo-c", "aicar", "adipotide", "metabolic", "mitochondrial"]],
+  ["Longevity & Cellular Health", ["nad", "ghk", "ahk", "snap-8", "foxo4", "humanin", "epitalon", "thymosin alpha", "longevity", "cellular", "anti-aging", "anti aging"]]
+];
+const LEGACY_CATEGORIES = {
+  "GLP / Weight Loss": GLP_CATEGORY,
+  "Recovery & Healing": "Repair & Recovery",
+  "Longevity & Anti-Aging": "Longevity & Cellular Health",
+  "Growth Hormone": "Growth Hormone Research",
+  "Sexual Health & Tanning": "Skin, Tanning & Sexual Health",
+  "Metabolic & Energy": "Metabolic & Mitochondrial",
+  "Capsules": "Other",
+  "Other": "Other"
+};
+
+function text(value) {
+  return value == null ? "" : String(value);
+}
+function compact(value) {
+  return text(value).replace(/[\u2013\u2014]/g, "-").replace(/\s+/g, " ").trim();
+}
+function normalized(value) {
+  return compact(value)
+    .toLowerCase()
+    .replace(/&/g, " and ")
+    .replace(/\+/g, " plus ")
+    .replace(/[^a-z0-9§]+/g, " ")
+    .replace(/\s+/g, " ")
+    .trim();
+}
+function slug(value) {
+  return normalized(value).replace(/\s+/g, "-") || "untitled-product";
+}
+function unique(values) {
+  return [...new Set((values || []).filter(Boolean))];
+}
+function includesAny(haystack, needles) {
+  return needles.some(needle => haystack.includes(needle));
+}
+function escapeRegex(value) {
+  return value.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+function phraseRegex(alias) {
+  const norm = normalized(alias);
+  const body = escapeRegex(norm).replace(/\\ /g, "[\\s\\-_/+.]+");
+  return new RegExp(`(?:^|[^a-z0-9])${body}(?:$|[^a-z0-9])`, "i");
+}
+function money(value) {
+  return `$${Number(value).toFixed(2)}`;
+}
+function roundMoney(value) {
+  return Math.round((Number(value) + Number.EPSILON) * 100) / 100;
+}
+function priceNumbers(value) {
+  const raw = compact(value).replace(/,/g, "");
+  if (!raw) return [];
+  const dollarMatches = [...raw.matchAll(/\$(\d+(?:\.\d+)?)/g)].map(match => Number(match[1]));
+  if (dollarMatches.length) return dollarMatches.filter(Number.isFinite);
+  if (/^\d+(?:\.\d+)?$/.test(raw)) return [Number(raw)];
+  return [];
+}
+function formatPriceRange(numbers) {
+  const values = unique((numbers || []).map(number => roundMoney(number))).sort((a, b) => a - b);
+  if (!values.length) return "Contact for price";
+  if (values.length === 1) return money(values[0]);
+  return `${money(values[0])} to ${money(values[values.length - 1])}`;
+}
+
+const recordById = new Map((catalogPayload.products || []).map(record => [record.id, record]));
+const aliasEntries = [];
+for (const record of catalogPayload.products || []) {
+  for (const alias of unique([record.name, ...(record.aliases || [])])) {
+    const norm = normalized(alias);
+    if (!norm) continue;
+    aliasEntries.push({ record, alias, norm, tokens: norm.split(/\s+/).length, length: norm.length, regex: phraseRegex(alias) });
+  }
+}
+aliasEntries.sort((a, b) => b.tokens - a.tokens || b.length - a.length);
+
+// Hardcoded critical aliases , always present regardless of JSON bundle state
+const HARDCODED_FORCED_ALIASES = {
+  // LabSourced Peptide-R/T/S naming
+  "peptide r": "retatrutide", "peptide-r": "retatrutide",
+  "peptide t": "tirzepatide", "peptide-t": "tirzepatide",
+  "peptide s": "semaglutide", "peptide-s": "semaglutide",
+  // Ion shortcodes
+  "tesa": "tesamorelin", "tesa ipamo": "ipamorelin-plus-tesamorelin-blend",
+  "cag": "cagrilintide", "sermo": "sermorelin", "ipamo": "ipamorelin",
+  "bw h brand": "bacteriostatic-water",
+  "mlt i": "melanotan-i", "mlt ii": "melanotan-ii", "mlt 1": "melanotan-i", "mlt 2": "melanotan-ii",
+  "oxt 10": "oxytocin", "oxt10": "oxytocin",
+  // Southern SKU patterns
+  "us hgh176 5": "hgh-fragment-176-191",
+  "us oxy 10": "oxytocin", "oxn 010 mh": "oxytocin",
+  // FOX04 zero typo
+  "fox04 dri": "foxo4-dri", "fox04": "foxo4-dri",
+  // § symbol for SS-31
+  "§ 31": "ss-31",
+  // Glacier patterns
+  "s 31 s": "ss-31", "mtp10ga": "ss-31",
+  "bpc tb 500 wolverine": "bpc-157-plus-tb-500-blend",
+  "gla 1 sm": "semaglutide", "gla 1 sm 15mg": "semaglutide",
+  "gla 2 trz": "tirzepatide", "gla 3 rt": "retatrutide",
+  "gla 2 5 trz rt": "retatrutide-and-tirzepatide-blend",
+  "gla 2.5 trz rt": "retatrutide-and-tirzepatide-blend",
+  "gla 2 5 trz rt 20mg": "retatrutide-and-tirzepatide-blend",
+  "gla 2.5 trz rt 20mg": "retatrutide-and-tirzepatide-blend",
+  "gla 3 rt cagri": "retatrutide-and-cagrilintide-blend",
+  "gla 3 rt cagri 20mg 4mg": "retatrutide-and-cagrilintide-blend",
+  // Cargilintide typo
+  "cargilintide": "cagrilintide", "cargrilintide": "cagrilintide",
+  "cargilintide 10mg": "cagrilintide",
+  // Glutathione typo
+  "gluthathione": "glutathione", "sl glt1500": "glutathione",
+  // Methylene blue typo
+  "methyline blue": "methylene-blue", "methyline blue capsules": "methylene-blue",
+  // Bioedge Research Labs branded naming
+  "edge r3": "retatrutide", "edge r 3": "retatrutide",
+  "edge t2": "tirzepatide", "edge t 2": "tirzepatide",
+  // Bioedge Sermorlin typo (missing e)
+  "sermorlin": "sermorelin",
+};
+
+const forcedAliases = Object.entries({ ...(overridePayload.forced_aliases || {}), ...HARDCODED_FORCED_ALIASES })
+  .map(([alias, id]) => ({ alias, id, norm: normalized(alias), regex: phraseRegex(alias) }))
+  .sort((a, b) => b.norm.split(/\s+/).length - a.norm.split(/\s+/).length || b.norm.length - a.norm.length);
+
+const BLEND_COMPONENTS = [
+  ["Semaglutide", ["semaglutide", "sema", "pep-sm", "peptide sm", "gla-1 sm", "ion-1s", "sa-1s", "fg1-s", "fg1 s"]],
+  ["Tirzepatide", ["tirzepatide", "tirz", "trz", "pep-trz", "pep-tz", "peptide trz", "peptide tz", "gla-2 trz", "gla-2.5 trz", "gla 2 5 trz", "glp-t2", "ion-2t", "sa-2t", "fg2-t", "fg2 t"]],
+  ["Retatrutide", ["retatrutide", "reta", "pep-rt", "peptide rt", "gla-3 rt", "gla-2.5 trz/rt", "gla 2 5 trz rt", "glp-r3", "ion-3r", "sa-3r", "oc-3rt", "fg3-r", "fg3 r"]],
+  ["Cagrilintide", ["cagrilintide", "cagrilinitide", "cagri", "pep-cag", "sa-4c"]],
+  ["BPC-157", ["bpc-157", "bpc157"]],
+  ["TB-500", ["tb-500", "tb500", "tb-4", "tb4"]],
+  ["GHK-Cu", ["ghk-cu", "ghk cu", "ghkcu"]],
+  ["KPV", ["kpv"]],
+  ["CJC-1295", ["cjc-1295", "cjc 1295"]],
+  ["Ipamorelin", ["ipamorelin", "ipamo", "ipa"]],
+  ["Tesamorelin", ["tesamorelin", "tesa"]],
+  ["Semax", ["semax"]],
+  ["Selank", ["selank"]],
+  ["MOTS-c", ["mots-c", "mots c", "motsc"]],
+  ["SS-31", ["ss-31", "s-31-s", "§-31"]]
+];
+
+function detectBlendComponents(value) {
+  const norm = normalized(value);
+  const found = [];
+  for (const [name, aliases] of BLEND_COMPONENTS) {
+    if (aliases.some(alias => phraseRegex(alias).test(norm))) found.push(name);
+  }
+  return unique(found);
+}
+function looksLikeBlend(value, components) {
+  const raw = compact(value).toLowerCase();
+  return components.length > 1 && (/\bblend\b|\bwolverine\b|\+|\/|,|\band\b/.test(raw));
+}
+function blendRecord(value) {
+  const components = detectBlendComponents(value);
+  if (!looksLikeBlend(value, components)) return null;
+  const componentKey = components.map(component => slug(component)).sort().join("+");
+  const knownBlendIds = {
+    "bpc-157+tb-500": "bpc-157-plus-tb-500-blend",
+    "cagrilintide+retatrutide": "retatrutide-and-cagrilintide-blend",
+    "cagrilintide+semaglutide": "semaglutide-and-cagrilintide-blend",
+    "cagrilintide+tirzepatide": "tirzepatide-and-cagrilintide-blend",
+    "retatrutide+tirzepatide": "retatrutide-and-tirzepatide-blend",
+    "ipamorelin+tesamorelin": "ipamorelin-plus-tesamorelin-blend",
+    "semax+selank": "semax-plus-selank-blend",
+    "ghk-cu+kpv": "ghk-cu-plus-kpv-blend"
+  };
+  const knownRecord = recordById.get(knownBlendIds[componentKey]);
+  if (knownRecord) return { ...knownRecord, mapped: true, mapping: `blend-components:${componentKey}` };
+  const name = `${components.join(" + ")} Blend`;
+  const id = slug(name);
+  return { id, name, category: inferCategory(name, {}), aliases: [], dynamic: true };
+}
+
+function dedupeLeadingPhrase(str) {
+  const words = str.split(" ");
+  for (let n = Math.floor(words.length / 2); n >= 1; n--) {
+    const prefix = words.slice(0, n).join(" ");
+    const after = words.slice(n).join(" ");
+    if (after.toLowerCase().startsWith(prefix.toLowerCase())) {
+      return (prefix + " " + after.slice(prefix.length).trim()).replace(/\s+/g, " ").trim();
     }
-  ]
+  }
+  return str;
+}
+
+function cleanFallbackName(value) {
+  let cleaned = compact(value || "Untitled product")
+    .replace(/^(glacier\s+aminos?|ion\s+peptide|southern\s+aminos?|labsourced\s+peptides?|mile\s+high\s+(?:compounds?|peptides?)?|solyn\s+labs?|oneday\s+compounds?|glow\s+aminos?|flawless\s+compounds?|instant\s+peptides?)\s*[-:|]?\s*/i, "")
+    .replace(/\b(?:research\s+)?peptide\s+vial\b/ig, "")
+    .replace(/\b(?:vial|capsules?|tablets?|sprays?|topicals?|liquids?)\b\s*$/ig, "")
+    .replace(/(?:^|\s|[-:,(])\d+(?:\.\d+)?\s*(?:mcg|mg|g|ml|iu|units?|caps?|capsules?|tablets?|vials?|ct|pack)(?:\s*\/\s*\d+(?:\.\d+)?\s*(?:mcg|mg|g|ml|iu|units?))?/gi, " ")
+    .replace(/\(\s*\)/g, "")
+    .replace(/\s+/g, " ")
+    .replace(/\s*[-:/|]\s*$/g, "")
+    .trim();
+  cleaned = dedupeLeadingPhrase(cleaned);
+  cleaned = cleaned
+    .replace(/\s+[A-Z]{2,3}-[A-Z0-9]+-[A-Z0-9]+$/g, "")
+    .replace(/\s+[A-Z]{2,3}-[A-Z]{1,3}\d+\w*$/g, "")
+    .replace(/\s+[a-z]{2,}\d*[a-z]{2,}$/g, "")
+    .replace(/\s+[a-z]{4,}$/g, m => /^(blend|cream|serum|spray|nasal|oral|raw|plus|with|and|for)$/.test(m.trim()) ? m : "")
+    .replace(/\s+/g, " ")
+    .trim();
+  return cleaned || compact(value) || "Untitled product";
+}
+
+function findCanonicalRecord(raw) {
+  const sourceText = [raw.product, raw.listing, raw.sku].filter(Boolean).join(" ");
+  const search = normalized(sourceText);
+  const blend = blendRecord(sourceText);
+  if (blend) return { ...blend, mapped: true, mapping: "blend-components" };
+  for (const forced of forcedAliases) {
+    if (!forced.regex.test(search)) continue;
+    const record = recordById.get(forced.id);
+    if (record) return { ...record, mapped: true, mapping: `forced-alias:${forced.alias}` };
+  }
+  for (const entry of aliasEntries) {
+    if (entry.regex.test(search)) return { ...entry.record, mapped: true, mapping: `catalog-alias:${entry.alias}` };
+  }
+  const name = cleanFallbackName(raw.product || raw.listing || "Untitled product");
+  return { id: slug(name), name, category: inferCategory(name, raw), aliases: [], mapped: false, mapping: "visible-unmapped" };
+}
+
+function inferCategory(family, raw) {
+  const sourceCategory = compact(raw.raw_category || raw.source_category || raw.category || "");
+  const haystack = normalized([family, raw.product, raw.listing, raw.sku, sourceCategory].filter(Boolean).join(" "));
+  if (includesAny(haystack, SUPPLY_TERMS)) return "Supplies";
+  for (const [category, terms] of CATEGORY_TERMS) {
+    if (includesAny(haystack, terms)) return category;
+  }
+  return LEGACY_CATEGORIES[sourceCategory] || sourceCategory || DEFAULT_CATEGORY;
+}
+
+function inferFormat(raw, category, family) {
+  const override = (overridePayload.format_overrides || {})[normalized(family)];
+  if (override) return override;
+  const haystack = normalized([raw.product, raw.listing, raw.sku, raw.format, family].filter(Boolean).join(" "));
+  if (category === "Supplies" || includesAny(haystack, SUPPLY_TERMS)) return "Supplies";
+  for (const [format, terms] of Object.entries(FORMAT_TERMS)) {
+    if (includesAny(haystack, terms)) return format;
+  }
+  if (category === "Bioregulators") return "Bioregulators";
+  return DEFAULT_FORMAT;
+}
+
+function inferQuantity(raw, family, format) {
+  const source = compact([raw.listing, raw.product, raw.sku].filter(Boolean).join(" "));
+  const normalizedFamily = compact(family);
+  let remaining = source;
+  if (normalizedFamily) {
+    const familyRegex = new RegExp(escapeRegex(normalizedFamily).replace(/\\ /g, "\\s+") + "\\s*[-:/|]?\\s*", "ig");
+    remaining = source.replace(familyRegex, " ");
+  }
+  const doseMatches = [...remaining.matchAll(/\d+(?:\.\d+)?\s*(?:mcg|mg|g|ml|iu|units?)/gi)].map(match => compact(match[0]).replace(/\s+/g, ""));
+  const packMatches = [...remaining.matchAll(/\d+\s*(?:pack|pk|vials?|caps?|capsules?|tablets?|tabs?|ct|count)/gi)].map(match => compact(match[0]).replace(/\s+/g, " "));
+  const doses = unique(doseMatches.map(value => value.toLowerCase()));
+  const packs = unique(packMatches.map(value => value.toLowerCase()));
+  const parts = [];
+  if (doses.length) parts.push(doses.join(" / "));
+  if (packs.length) parts.push(packs.join(" / "));
+  let label = parts.length ? parts.join(" / ") : "Standard listing";
+  if (!doses.length && !packs.length && /\bto\b/i.test(compact(raw.price))) label = "Choose size on vendor site";
+  if (!doses.length && !packs.length && format === "Supplies") {
+    const supplyLabel = cleanFallbackName(raw.listing || raw.product || "Standard listing");
+    if (supplyLabel && supplyLabel !== family) label = supplyLabel;
+  }
+  const first = doses[0] || packs[0] || "999999";
+  const number = Number((first.match(/\d+(?:\.\d+)?/) || ["999999"])[0]);
+  const unit = (first.match(/[a-z]+/) || [""])[0];
+  const factor = unit === "mcg" ? 0.001 : unit === "g" ? 1000 : unit === "iu" || unit === "units" ? 100000 : 1;
+  return { id: slug(label), label, sort: Number.isFinite(number) ? number * factor : 999999 };
+}
+
+function isPromotionActive(promotion, when = new Date()) {
+  const now = when instanceof Date ? when.getTime() : new Date(when).getTime();
+  if (!Number.isFinite(now)) return false;
+  const starts = promotion.start_at ? new Date(promotion.start_at).getTime() : Number.NEGATIVE_INFINITY;
+  const ends = promotion.end_at ? new Date(promotion.end_at).getTime() : Number.POSITIVE_INFINITY;
+  return now >= starts && now <= ends;
+}
+
+export function discountPercentForVendor(vendor, when = new Date()) {
+  const standard = Number(VENDOR_CONFIG[vendor]?.discount_percent || 0);
+  const overrides = PROMOTIONS
+    .filter(promotion => promotion.vendor === vendor && promotion.discount_override_percent != null && isPromotionActive(promotion, when))
+    .map(promotion => Number(promotion.discount_override_percent))
+    .filter(Number.isFinite);
+  return overrides.length ? Math.max(standard, ...overrides) : standard;
+}
+
+function vendorMeta(vendor) {
+  const base = VENDOR_CONFIG[vendor] || {
+    id: slug(vendor || "unknown-vendor"),
+    discount_percent: 0,
+    affiliate_url: "#",
+    logo: ""
+  };
+  return { ...base, discount_percent: discountPercentForVendor(vendor) };
+}
+
+function exclusionReason(raw) {
+  const haystack = normalized([raw.product, raw.listing, raw.sku, raw.category, raw.raw_category].filter(Boolean).join(" "));
+  const HARDCODED_EXCLUDES = [
+    "ship safely", "shipping protection", "shipping insurance",
+    "package protection", "route protection", "gift card", "giftcard",
+    "gift certificate", "extend product protection", "extended product protection",
+    "helloextend", "helloextend-product-protection",
+    "limited edition 7x tested 1st anniversary tee", "anniversary tee",
+    "1st anniversary tee", "oversized tee", "tee shirt", "t-shirt",
+    "snapback hat", "mhc-tee",
+  ];
+  const allExcludes = [...(overridePayload.exclude_terms || []), ...HARDCODED_EXCLUDES];
+  const matched = allExcludes.find(term => haystack.includes(normalized(term)));
+  return matched ? `exclude-term:${matched}` : "";
+}
+
+function isExcluded(raw) {
+  return Boolean(exclusionReason(raw));
+}
+
+export function normalizeOffer(raw = {}, options = {}) {
+  if (isExcluded(raw)) return null;
+  const source = { ...raw };
+  const vendor = compact(source.company || source.vendor || "Unknown vendor");
+  const meta = vendorMeta(vendor);
+  const canonical = findCanonicalRecord(source);
+  const category = canonical.category && canonical.category !== DEFAULT_CATEGORY ? canonical.category : inferCategory(canonical.name, source);
+  const format = inferFormat(source, category, canonical.name);
+  const quantity = inferQuantity(source, canonical.name, format);
+  const listedPrices = priceNumbers(source.sale_price || source.price);
+  const discount = Number(meta.discount_percent || 0);
+  const effectivePrices = listedPrices.map(value => value * (1 - discount / 100));
+  const listedMin = listedPrices.length ? Math.min(...listedPrices) : Number.POSITIVE_INFINITY;
+  const effectiveMin = effectivePrices.length ? Math.min(...effectivePrices) : listedMin;
+  const sourceLayer = compact(options.source_layer || source.source_layer || source.source || "unknown-source");
+  return {
+    vendor_id: meta.id,
+    vendor_name: vendor,
+    vendor_logo: meta.logo || "",
+    product_id: canonical.id,
+    product_name: canonical.name,
+    category,
+    format,
+    quantity_id: quantity.id,
+    quantity_label: quantity.label,
+    quantity_sort: quantity.sort,
+    regular_price_label: formatPriceRange(listedPrices),
+    effective_price_label: discount > 0 && listedPrices.length ? formatPriceRange(effectivePrices) : formatPriceRange(listedPrices),
+    regular_price_min: Number.isFinite(listedMin) ? roundMoney(listedMin) : null,
+    effective_price_min: Number.isFinite(effectiveMin) ? roundMoney(effectiveMin) : null,
+    discount_percent: discount,
+    coupon_code: discount > 0 ? COUPON_CODE : "",
+    in_stock: source.in_stock !== false,
+    affiliate_url: compact((meta.use_product_deep_links === true ? source.url : meta.affiliate_url) || meta.affiliate_url || "#"),
+    raw_product: compact(source.raw_product || source.product || source.name || source.title || source.listing || "Untitled product"),
+    raw_listing: compact(source.raw_listing || source.listing || source.product || source.name || source.title || "Untitled product"),
+    sku: compact(source.sku || ""),
+    source_layer: sourceLayer,
+    mapped: canonical.mapped !== false,
+    mapping: canonical.mapping,
+    source_product_id: compact(source.source_product_id || ""),
+    source_variation_id: compact(source.source_variation_id || ""),
+    ingestion_warning: compact(source.ingestion_warning || "")
+  };
+}
+
+function rawOfferKey(offer) {
+  return normalized([
+    offer.vendor_name, offer.product_id, offer.format, offer.quantity_id, offer.raw_listing,
+    offer.sku, offer.regular_price_label, offer.affiliate_url
+  ].join(" || "));
+}
+function bestOffer(existing, candidate) {
+  if (!existing) return candidate;
+  const a = existing.effective_price_min == null ? Number.POSITIVE_INFINITY : existing.effective_price_min;
+  const b = candidate.effective_price_min == null ? Number.POSITIVE_INFINITY : candidate.effective_price_min;
+  if (b < a) return { ...candidate, alternate_offer_count: Number(existing.alternate_offer_count || 0) + 1 };
+  return { ...existing, alternate_offer_count: Number(existing.alternate_offer_count || 0) + 1 };
+}
+
+function stripInternalOffer(offer) {
+  return { ...offer };
+}
+
+export function buildCatalog(rawRows = [], options = {}) {
+  const normalizedRows = [];
+  const seen = new Set();
+  const excludedRows = [];
+  for (const row of rawRows || []) {
+    const offer = normalizeOffer(row, { source_layer: row.source_layer || options.source_layer });
+    if (!offer) {
+      excludedRows.push({
+        vendor: compact(row.company || row.vendor || "Unknown vendor"),
+        raw_product: compact(row.raw_product || row.product || row.name || row.title || row.listing || "Untitled product"),
+        raw_listing: compact(row.raw_listing || row.listing || row.product || row.name || row.title || "Untitled product"),
+        sku: compact(row.sku || ""),
+        reason: exclusionReason(row) || "explicit exclusion"
+      });
+      continue;
+    }
+    const key = rawOfferKey(offer);
+    if (seen.has(key)) continue;
+    seen.add(key);
+    normalizedRows.push(offer);
+  }
+
+  const cards = new Map();
+  for (const offer of normalizedRows) {
+    const cardKey = `${offer.product_id}::${slug(offer.format)}`;
+    if (!cards.has(cardKey)) {
+      cards.set(cardKey, {
+        id: cardKey,
+        product_id: offer.product_id,
+        name: offer.product_name,
+        category: offer.category,
+        format: offer.format,
+        mapped: true,
+        variants: new Map(),
+        vendorNames: new Set(),
+        offer_count: 0
+      });
+    }
+    const card = cards.get(cardKey);
+    card.offer_count += 1;
+    card.vendorNames.add(offer.vendor_name);
+    if (!offer.mapped) card.mapped = false;
+    if (card.category === DEFAULT_CATEGORY && offer.category !== DEFAULT_CATEGORY) card.category = offer.category;
+    if (!card.variants.has(offer.quantity_id)) {
+      card.variants.set(offer.quantity_id, {
+        id: offer.quantity_id,
+        label: offer.quantity_label,
+        sort: offer.quantity_sort,
+        suppliers: new Map(),
+        all_offer_count: 0
+      });
+    }
+    const variant = card.variants.get(offer.quantity_id);
+    variant.all_offer_count += 1;
+    const supplierKey = normalized([
+      offer.vendor_id,
+      offer.source_product_id,
+      offer.source_variation_id,
+      offer.raw_listing,
+      offer.sku,
+      offer.regular_price_label
+    ].join(" || "));
+    variant.suppliers.set(supplierKey, bestOffer(variant.suppliers.get(supplierKey), stripInternalOffer(offer)));
+  }
+
+  const productCards = [...cards.values()].map(card => {
+    const variants = [...card.variants.values()].map(variant => {
+      const suppliers = [...variant.suppliers.values()].sort((a, b) => {
+        const pa = a.effective_price_min == null ? Number.POSITIVE_INFINITY : a.effective_price_min;
+        const pb = b.effective_price_min == null ? Number.POSITIVE_INFINITY : b.effective_price_min;
+        return pa - pb || a.vendor_name.localeCompare(b.vendor_name);
+      });
+      return {
+        id: variant.id,
+        label: variant.label,
+        sort: variant.sort,
+        supplier_count: suppliers.length,
+        all_offer_count: variant.all_offer_count,
+        suppliers
+      };
+    }).sort((a, b) => b.supplier_count - a.supplier_count || a.sort - b.sort || a.label.localeCompare(b.label));
+    const allSuppliers = variants.flatMap(variant => variant.suppliers);
+    const priced = allSuppliers.map(offer => offer.effective_price_min).filter(value => value != null);
+    return {
+      id: card.id,
+      product_id: card.product_id,
+      name: card.name,
+      category: card.category,
+      format: card.format,
+      mapped: card.mapped,
+      supplier_count: card.vendorNames.size,
+      offer_count: card.offer_count,
+      lowest_effective_price: priced.length ? Math.min(...priced) : null,
+      variants
+    };
+  }).sort((a, b) => a.name.localeCompare(b.name) || a.format.localeCompare(b.format));
+
+  const unmapped = normalizedRows.filter(offer => !offer.mapped).map(offer => ({
+    vendor: offer.vendor_name,
+    raw_product: offer.raw_product,
+    raw_listing: offer.raw_listing,
+    sku: offer.sku,
+    grouped_as: offer.product_name,
+    category: offer.category,
+    format: offer.format,
+    quantity: offer.quantity_label
+  })).sort((a, b) => a.vendor.localeCompare(b.vendor) || a.raw_product.localeCompare(b.raw_product));
+
+  const vendors = {};
+  const layers = {};
+  const categories = {};
+  const formats = {};
+  for (const offer of normalizedRows) {
+    vendors[offer.vendor_name] = (vendors[offer.vendor_name] || 0) + 1;
+    layers[offer.source_layer] = (layers[offer.source_layer] || 0) + 1;
+    categories[offer.category] = (categories[offer.category] || 0) + 1;
+    formats[offer.format] = (formats[offer.format] || 0) + 1;
+  }
+  const mappedOfferCount = normalizedRows.filter(offer => offer.mapped).length;
+  const supplyOfferCount = normalizedRows.filter(offer => offer.category === "Supplies" || offer.format === "Supplies").length;
+  const reviewOfferCount = unmapped.length;
+  const mappedCardCount = productCards.filter(card => card.mapped).length;
+  const reviewCardCount = productCards.length - mappedCardCount;
+
+  return {
+    schema_version: "catalog-v1",
+    engine_version: ENGINE_VERSION,
+    generated_at: new Date().toISOString(),
+    coupon_code: COUPON_CODE,
+    product_card_count: productCards.length,
+    normalized_offer_count: normalizedRows.length,
+    visible_unmapped_count: unmapped.length,
+    mapped_offer_count: mappedOfferCount,
+    supply_offer_count: supplyOfferCount,
+    review_offer_count: reviewOfferCount,
+    mapped_card_count: mappedCardCount,
+    review_card_count: reviewCardCount,
+    excluded_count: excludedRows.length,
+    silent_drop_count: 0,
+    vendors_loaded: Object.keys(vendors).length,
+    products: productCards,
+    diagnostics: {
+      engine_version: ENGINE_VERSION,
+      generated_at: new Date().toISOString(),
+      product_card_count: productCards.length,
+      normalized_offer_count: normalizedRows.length,
+      visible_unmapped_count: unmapped.length,
+      mapped_offer_count: mappedOfferCount,
+      supply_offer_count: supplyOfferCount,
+      review_offer_count: reviewOfferCount,
+      mapped_card_count: mappedCardCount,
+      review_card_count: reviewCardCount,
+      excluded_count: excludedRows.length,
+      silent_drop_count: 0,
+      vendors,
+      layers,
+      categories,
+      formats,
+      vendor_status: options.vendor_status || {},
+      unmapped_products: unmapped,
+      excluded_products: excludedRows,
+      warnings: options.warnings || []
+    }
+  };
+}
+
+export function publicSnapshot(snapshot = {}) {
+  const { raw_offers_by_vendor, ...publicData } = snapshot || {};
+  return publicData;
 }

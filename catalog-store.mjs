@@ -1,27 +1,167 @@
-import fallbackSnapshot from "../../data/catalog-fallback-snapshot.json" with { type: "json" };
-import { readPublicSnapshot } from "./_shared/catalog-store.mjs";
-
-function response(body, source = "blob") {
-  return new Response(JSON.stringify(body), {
-    status: 200,
-    headers: {
-      "Access-Control-Allow-Origin": "https://mypeptideprice.com",
-      "Access-Control-Allow-Methods": "GET, OPTIONS",
-      "Content-Type": "application/json; charset=utf-8",
-      "Cache-Control": "public, max-age=300, stale-while-revalidate=21600",
-      "Netlify-CDN-Cache-Control": "public, durable, max-age=300, stale-while-revalidate=21600",
-      "X-MPP-Catalog-Source": source
+{
+  "version": "2026-06-19-fathers-day-glacier-15-qa-v5",
+  "timezone": "America/New_York",
+  "updated_at": "2026-06-19T13:45:00-04:00",
+  "promotions": [
+    {
+      "id": "skool-launch-announcement",
+      "vendor": "SammyC's Skool",
+      "display_vendor": "SammyC's Skool",
+      "headline": "SammyC's Skool is Live",
+      "short_detail": "Research modules, vendor intel & direct access to Sam.",
+      "full_detail": "SammyC's Skool community is now live. Get direct access to Sam, research peptide modules, vendor intel, and community discussion.",
+      "affiliate_url": "https://www.skool.com/sammycs-skool/about",
+      "badge": "\u26a1 NOW LIVE",
+      "cta_text": "Join Now",
+      "announcement": true,
+      "show_in_rolodex": false,
+      "priority": 999
+    },
+    {
+      "id": "southern-sitewide-25",
+      "vendor": "Southern Aminos",
+      "display_vendor": "Southern Aminos",
+      "headline": "Father's Day: 25% off sitewide",
+      "short_detail": "+ stackable SAMMYC savings",
+      "full_detail": "Southern Aminos is offering 25% off sitewide. The sale is stackable with code SAMMYC. Confirm the final discount and checkout terms directly on the vendor website.",
+      "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
+      "show_in_rolodex": true,
+      "featured": true,
+      "show_vendor_badge": true,
+      "priority": 120,
+      "badge": "Father's Day Deal"
+    },
+    {
+      "id": "southern-giveaway-june-8-12",
+      "vendor": "Southern Aminos",
+      "display_vendor": "Southern Aminos",
+      "headline": "$75+ giveaway, 3 winners",
+      "short_detail": "June 8 to 12, each winner gets $300 store credit and a white 10-slot vial case",
+      "full_detail": "Orders of $75 or more placed from June 8 through June 12 are automatically entered into a drawing. There will be three winners. Each winner will receive $300 in Southern Aminos store credit and one white 10-slot vial case. Confirm official giveaway terms directly with Southern Aminos.",
+      "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
+      "start_at": "2026-06-08T00:00:00-04:00",
+      "end_at": "2026-06-12T23:59:59-04:00",
+      "show_in_rolodex": false,
+      "show_vendor_badge": true,
+      "priority": 140,
+      "badge": "Giveaway: $75+ orders, 3 winners"
+    },
+    {
+      "id": "southern-giveaway-june-15-19",
+      "vendor": "Southern Aminos",
+      "display_vendor": "Southern Aminos",
+      "headline": "$75+ giveaway, 3 winners",
+      "short_detail": "June 15 to 19, each winner gets $300 store credit and a white 10-slot vial case",
+      "full_detail": "Orders of $75 or more placed from June 15 through June 19 are automatically entered into a drawing. There will be three winners. Each winner will receive $300 in Southern Aminos store credit and one white 10-slot vial case. Confirm official giveaway terms directly with Southern Aminos.",
+      "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
+      "start_at": "2026-06-15T00:00:00-04:00",
+      "end_at": "2026-06-19T23:59:59-04:00",
+      "show_in_rolodex": false,
+      "show_vendor_badge": true,
+      "priority": 140,
+      "badge": "Giveaway: $75+ orders, 3 winners"
+    },
+    {
+      "id": "mile-high-fathers-day-sammyc-20",
+      "vendor": "Mile High Peptides",
+      "display_vendor": "Mile High Compounds",
+      "headline": "Father's Day: SAMMYC boosted to 20% off",
+      "short_detail": "Through June 19",
+      "full_detail": "Mile High Compounds is running a Father's Day sale. Code SAMMYC is temporarily boosted to 20% off through June 19. The comparison table reflects the boosted SAMMYC rate while this promotion is active.",
+      "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
+      "start_at": "2026-06-08T00:00:00-04:00",
+      "end_at": "2026-06-19T23:59:00-06:00",
+      "show_in_rolodex": true,
+      "featured": true,
+      "show_vendor_badge": true,
+      "priority": 110,
+      "badge": "Father's Day Deal",
+      "discount_override_percent": 20
+    },
+    {
+      "id": "instant-save20-stackable",
+      "vendor": "Instant Peptides",
+      "display_vendor": "Instant Peptides",
+      "headline": "Father's Day: 20% off sitewide",
+      "short_detail": "+ stackable 15% SAMMYC savings",
+      "full_detail": "Instant Peptides is offering 20% off sitewide for Father's Day. The promotion is stackable with the 15% SAMMYC discount. Confirm the final discount and checkout terms directly on the vendor website.",
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 100,
+      "badge": "Father's Day Deal"
+    },
+    {
+      "id": "solyn-first-order-20",
+      "vendor": "Solyn Labs",
+      "display_vendor": "Solyn Compounds",
+      "headline": "Father's Day: 20% off first order, plus tiered savings",
+      "short_detail": "New customers get 20% off, stacks with 10% SAMMYC. Tiers up to 35% off + 5% Zelle",
+      "full_detail": "New customers receive 20% off their first order, stackable with the 10% SAMMYC discount. Solyn also runs a tiered volume discount: 10% off when buying 1 compound, 25% off when buying 5 compounds, 30% off when buying 10 compounds, and 35% off when buying 20 compounds. Paying with Zelle adds another 5% off. Code SAMMYC stacks on top of all tiers. Confirm eligibility and final checkout pricing directly with Solyn Compounds.",
+      "affiliate_url": "https://partner.solyn.com/?ref=SammyC",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 85,
+      "badge": "Father's Day Deal"
+    },
+    {
+      "id": "glacier-sitewide-zelle-june-12-19",
+      "vendor": "Glacier Aminos",
+      "display_vendor": "Glacier Aminos",
+      "headline": "Father's Day: 15% off + stackable SAMMYC",
+      "short_detail": "Pay with Zelle for another stackable 10% off, June 12 to 19",
+      "full_detail": "Glacier Aminos is offering 15% off sitewide from June 12 through June 19. Code SAMMYC adds another stackable discount. Paying with Zelle adds another stackable 10% off. Confirm final pricing and payment terms directly with Glacier Aminos.",
+      "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
+      "start_at": "2026-06-12T00:00:00-04:00",
+      "end_at": "2026-06-19T23:59:59-04:00",
+      "show_in_rolodex": true,
+      "featured": true,
+      "show_vendor_badge": false,
+      "priority": 130,
+      "badge": "Father's Day Deal"
+    },
+    {
+      "id": "ion-sitewide-12",
+      "vendor": "Ion Peptide",
+      "display_vendor": "Ion Peptide",
+      "headline": "12% off sitewide",
+      "short_detail": "+ stackable SAMMYC savings",
+      "full_detail": "Ion Peptide is offering 12% off all products sitewide. The discount is stackable with code SAMMYC. Confirm the final discount and checkout terms directly on the vendor website.",
+      "affiliate_url": "https://ionpeptide.com?ref=SammyC",
+      "show_in_rolodex": true,
+      "featured": true,
+      "show_vendor_badge": true,
+      "priority": 115,
+      "badge": "Father's Day Deal"
+    },
+    {
+      "id": "glow-flawless-30-off-combined",
+      "vendor": "Glow Aminos",
+      "display_vendor": "Glow & Flawless",
+      "headline": "Father's Day: 30% off + pack savings",
+      "short_detail": "Stackable with SAMMYC , 3/5/10/20 packs get extra 5/10/15/20% off",
+      "full_detail": "Glow Aminos and Flawless Compounds (same company) are offering 30% off sitewide, stackable with SAMMYC. Pack savings: 3-pack +5%, 5-pack +10%, 10-pack +15%, 20-pack +20% , all stackable.",
+      "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 95,
+      "badge": "Father's Day Deal",
+      "discount_override_percent": 30
+    },
+    {
+      "id": "labsourced-fathers-day-sammyc-25",
+      "vendor": "LabSourced Peptides",
+      "display_vendor": "LabSourced",
+      "headline": "SAMMYC boosted to 25% off",
+      "short_detail": "Ends Sunday at midnight",
+      "full_detail": "LabSourced is running a Father's Day sale. Code SAMMYC is temporarily boosted to 25% off through Sunday at midnight. Confirm final checkout pricing and eligibility directly with LabSourced.",
+      "affiliate_url": "https://labsourcedpeptides.com/?coupon-code=sammyc",
+      "show_in_rolodex": true,
+      "featured": true,
+      "show_vendor_badge": true,
+      "priority": 125,
+      "badge": "Father's Day Deal",
+      "discount_override_percent": 25
     }
-  });
+  ]
 }
-
-export default async request => {
-  if (request.method === "OPTIONS") return response({}, "preflight");
-  try {
-    const snapshot = await readPublicSnapshot();
-    if (snapshot?.products?.length) return response(snapshot, "blob");
-  } catch (error) {
-    console.warn("Catalog Blob unavailable:", error.message);
-  }
-  return response(fallbackSnapshot, "bundled-fallback");
-};
