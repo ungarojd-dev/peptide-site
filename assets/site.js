@@ -308,6 +308,11 @@
       "glow aminos":"/assets/vendor-logos/glow-aminos.webp",
       "glow & flawless":"/assets/vendor-logos/glow-aminos.webp",
       "flawless compounds":"/assets/vendor-logos/flawless-compounds.webp",
+      "oneday compounds":"/assets/vendor-logos/oneday-compounds.webp",
+      "one day compounds":"/assets/vendor-logos/oneday-compounds.webp",
+      "coffee & peppers":"/assets/vendor-logos/coffee-and-peppers.webp",
+      "coffee and peppers":"/assets/vendor-logos/coffee-and-peppers.webp",
+      "bioedge research labs":"/assets/vendor-logos/bioedge-research-labs.webp",
       "labsourced peptides":"/assets/vendor-logos/labsourced-peptides.webp",
       "labsourced":"/assets/vendor-logos/labsourced-peptides.webp"
     };
