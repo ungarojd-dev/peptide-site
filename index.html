@@ -16,8 +16,8 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/assets/site.css?v=20260618-premium-index8"/>
-  <link rel="stylesheet" href="/assets/catalog.css?v=20260618-premium-index8"/>
+  <link rel="stylesheet" href="/assets/site.css?v=20260619-filter-dropdown-fix"/>
+  <link rel="stylesheet" href="/assets/catalog.css?v=20260619-filter-dropdown-fix"/>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MyPeptidePrice.com","url":"https://mypeptideprice.com/","description":"Independent research peptide price comparison across tracked vendors.","potentialAction":{"@type":"SearchAction","target":"https://mypeptideprice.com/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
   <!-- Google Tag Manager -->
   <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PDQM5TBB');</script>
@@ -166,15 +166,15 @@
       <div class="catalog-filter-grid catalog-select-grid" aria-label="Catalog filters">
         <div class="catalog-filter-group catalog-filter-category">
           <label class="catalog-filter-title" for="catalogCategorySelect">Category</label>
-          <select class="catalog-select" id="catalogCategorySelect" aria-label="Filter by category"></select>
+          <select class="catalog-select" id="catalogCategorySelect" aria-label="Filter by category"><option value="All">All categories</option></select>
         </div>
         <div class="catalog-filter-group catalog-filter-vendor">
           <label class="catalog-filter-title" for="catalogVendorSelect">Company</label>
-          <select class="catalog-select" id="catalogVendorSelect" aria-label="Filter by company"></select>
+          <select class="catalog-select" id="catalogVendorSelect" aria-label="Filter by company"><option value="All">All companies</option></select>
         </div>
         <div class="catalog-filter-group catalog-filter-format">
           <label class="catalog-filter-title" for="catalogFormatSelect">Format</label>
-          <select class="catalog-select" id="catalogFormatSelect" aria-label="Filter by format"></select>
+          <select class="catalog-select" id="catalogFormatSelect" aria-label="Filter by format"><option value="All">All formats</option></select>
         </div>
         <div class="catalog-filter-group catalog-sort-group">
           <label class="catalog-filter-title" for="catalogSort">Sort</label>
@@ -219,8 +219,8 @@
   <div class="footer-bottom">© <span data-year></span> MyPeptidePrice.com. For research comparison purposes only. Not medical advice.</div>
 </footer>
 
-<script src="/assets/site.js?v=20260618-premium-index8"></script>
-<script src="/assets/catalog-ui.js?v=20260618-premium-index8"></script>
+<script src="/assets/site.js?v=20260619-filter-dropdown-fix"></script>
+<script src="/assets/catalog-ui.js?v=20260619-filter-dropdown-fix"></script>
 <script>
 (function(){
   var heroInput=document.getElementById('heroSearch');
