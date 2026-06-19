@@ -761,3 +761,79 @@ select.catalog-sort {
     line-height: 44px !important;
   }
 }
+
+/* ============================================================
+   Mobile filter density pass
+   Keeps the dropdown controls usable while reducing vertical space
+   ============================================================ */
+@media (max-width: 520px) {
+  .premium-catalog .catalog-controls {
+    border-radius: 16px !important;
+  }
+  .premium-catalog .catalog-control-inner {
+    padding: 8px !important;
+  }
+  .catalog-search-row,
+  .premium-catalog .catalog-search-row {
+    grid-template-columns: minmax(0, 1fr) 62px !important;
+    gap: 6px !important;
+    align-items: stretch !important;
+  }
+  .catalog-search-shell {
+    min-height: 40px !important;
+    border-radius: 13px !important;
+    padding: 0 10px !important;
+  }
+  .catalog-search-shell svg {
+    width: 17px !important;
+    height: 17px !important;
+    margin-right: 8px !important;
+  }
+  .premium-catalog .catalog-search {
+    font-size: 12.5px !important;
+  }
+  .premium-catalog .catalog-clear {
+    min-width: 0 !important;
+    min-height: 40px !important;
+    border-radius: 13px !important;
+    padding: 0 10px !important;
+    font-size: 11px !important;
+  }
+  .premium-catalog .catalog-select-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 6px 7px !important;
+    margin-top: 8px !important;
+  }
+  .premium-catalog .catalog-select-grid .catalog-filter-group {
+    gap: 3px !important;
+  }
+  .premium-catalog .catalog-filter-title {
+    font-size: 8px !important;
+    letter-spacing: .95px !important;
+    line-height: 1 !important;
+  }
+  .premium-catalog select.catalog-select,
+  .premium-catalog select.catalog-sort {
+    height: 38px !important;
+    min-height: 38px !important;
+    border-radius: 13px !important;
+    padding: 0 32px 0 10px !important;
+    font-size: 11.5px !important;
+    line-height: 38px !important;
+    background-position:
+      calc(100% - 16px) 17px,
+      calc(100% - 11px) 17px !important;
+    box-shadow: 0 4px 12px rgba(13,13,13,.025) !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .premium-catalog .catalog-select-grid {
+    gap: 6px !important;
+  }
+  .premium-catalog select.catalog-select,
+  .premium-catalog select.catalog-sort {
+    font-size: 11px !important;
+    padding-left: 9px !important;
+  }
+}
