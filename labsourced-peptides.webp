@@ -1,0 +1,301 @@
+{
+  "flawless": {
+    "vendor": "Flawless Compounds",
+    "source": "/mnt/data/Flawless-Logo.png",
+    "output": "assets/vendor-logos/flawless-compounds.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      388,
+      83
+    ]
+  },
+  "glacier": {
+    "vendor": "Glacier Aminos",
+    "source": "/mnt/data/glacier aminos logo.png",
+    "output": "assets/vendor-logos/glacier-aminos.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      127,
+      132
+    ]
+  },
+  "glow": {
+    "vendor": "Glow Aminos",
+    "source": "/mnt/data/glow logo.png",
+    "output": "assets/vendor-logos/glow-aminos.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      130,
+      132
+    ]
+  },
+  "instant": {
+    "vendor": "Instant Peptides",
+    "source": "/mnt/data/instant peptides logo.png",
+    "output": "assets/vendor-logos/instant-peptides.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      140,
+      132
+    ]
+  },
+  "ion": {
+    "vendor": "Ion Peptide",
+    "source": "/mnt/data/ion peptide logo.jpg",
+    "output": "assets/vendor-logos/ion-peptide.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      311,
+      132
+    ]
+  },
+  "labsourced": {
+    "vendor": "LabSourced Peptides",
+    "source": "/mnt/data/lab sourced logo.png",
+    "output": "assets/vendor-logos/labsourced-peptides.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      365,
+      132
+    ]
+  },
+  "milehigh": {
+    "vendor": "Mile High Peptides",
+    "source": "/mnt/data/mile high compounds logo.jpg",
+    "output": "assets/vendor-logos/mile-high-peptides.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      94,
+      132
+    ]
+  },
+  "oneday": {
+    "vendor": "Oneday Compounds",
+    "source": "/mnt/data/Oneday compounds logo.png",
+    "output": "assets/vendor-logos/oneday-compounds.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      388,
+      91
+    ]
+  },
+  "solyn": {
+    "vendor": "Solyn Labs",
+    "source": "/mnt/data/Solyn logo.jpg",
+    "output": "assets/vendor-logos/solyn-labs.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      133,
+      132
+    ]
+  },
+  "southern": {
+    "vendor": "Southern Aminos",
+    "source": "/mnt/data/southern aminos logo.png",
+    "output": "assets/vendor-logos/southern-aminos.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      176,
+      132
+    ]
+  },
+  "coffee-and-peppers": {
+    "vendor": "Coffee and Peppers",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/coffee-and-peppers.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      385,
+      115
+    ]
+  },
+  "bioedge-research-labs": {
+    "vendor": "Bioedge Research Labs",
+    "source": "uploaded logo",
+    "output": "assets/vendor-logos/bioedge-research-labs.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      132,
+      132
+    ]
+  },
+  "flawless-compounds": {
+    "vendor": "Flawless Compounds",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/flawless-compounds.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      386,
+      82
+    ]
+  },
+  "glacier-aminos": {
+    "vendor": "Glacier Aminos",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/glacier-aminos.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      132,
+      136
+    ]
+  },
+  "glow-aminos": {
+    "vendor": "Glow Aminos",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/glow-aminos.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      134,
+      136
+    ]
+  },
+  "instant-peptides": {
+    "vendor": "Instant Peptides",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/instant-peptides.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      351,
+      136
+    ]
+  },
+  "ion-peptide": {
+    "vendor": "Ion Peptide",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/ion-peptide.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      345,
+      132
+    ]
+  },
+  "labsourced-peptides": {
+    "vendor": "LabSourced Peptides",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/labsourced-peptides.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      326,
+      132
+    ]
+  },
+  "mile-high-peptides": {
+    "vendor": "Mile High Peptides",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/mile-high-peptides.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      341,
+      136
+    ]
+  },
+  "oneday-compounds": {
+    "vendor": "Oneday Compounds",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/oneday-compounds.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      386,
+      88
+    ]
+  },
+  "solyn-labs": {
+    "vendor": "Solyn Labs",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/solyn-labs.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      118,
+      131
+    ]
+  },
+  "southern-aminos": {
+    "vendor": "Southern Aminos",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/southern-aminos.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      385,
+      58
+    ]
+  },
+  "vantyx-supply": {
+    "vendor": "VANTYX Supply",
+    "source": "uploaded optimized logo set",
+    "output": "assets/vendor-logos/vantyx-supply.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      116,
+      136
+    ]
+  }
+}

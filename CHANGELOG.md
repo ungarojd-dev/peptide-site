@@ -1,5 +1,12 @@
 # Changelog
 
+## 2026-06-19, Glacier Father's Day promo update
+
+- Updated Glacier Aminos Father's Day promotion from 10% off sitewide to 15% off sitewide.
+- Kept the SAMMYC stackable discount language and the additional Zelle stackable 10% off note.
+- Bumped promotion cache buster so the updated deal copy loads after deployment.
+
+
 - Replaced vendor logos with the optimized uploaded WebP logo set and added the VANTYX Supply logo to the homepage banner.
 ## June 2026
 - Corrected the standard Glacier Aminos `SAMMYC` estimate from 5% to 10% across comparison pricing and the vendor directory.
