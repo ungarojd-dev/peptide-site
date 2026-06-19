@@ -599,3 +599,74 @@
   .supplier-row { grid-template-columns: 1fr; }
   .supplier-price-wrap { display: flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left; padding-left: 40px; }
 }
+
+/* ============================================================
+   Compact dropdown filters, replaces long chip rows on index
+   ============================================================ */
+.catalog-select-grid {
+  display: grid;
+  grid-template-columns: minmax(160px, 1fr) minmax(160px, 1fr) minmax(140px, .9fr) minmax(140px, .9fr);
+  gap: 10px;
+  margin-top: 12px;
+  align-items: end;
+}
+.catalog-select-grid .catalog-filter-group {
+  min-width: 0;
+}
+.catalog-select,
+.premium-catalog .catalog-select,
+.premium-catalog .catalog-sort {
+  width: 100%;
+  min-height: 44px;
+  border: 1px solid rgba(31,58,45,.14);
+  border-radius: 14px;
+  background: #fff;
+  color: var(--ink);
+  padding: 0 38px 0 12px;
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.2;
+  outline: 0;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--olive) 50%),
+    linear-gradient(135deg, var(--olive) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) 19px,
+    calc(100% - 13px) 19px;
+  background-size: 5px 5px, 5px 5px;
+  background-repeat: no-repeat;
+  transition: border-color .18s ease, box-shadow .18s ease, transform .18s ease;
+}
+.catalog-select:hover,
+.premium-catalog .catalog-select:hover,
+.premium-catalog .catalog-sort:hover {
+  border-color: rgba(78,93,60,.42);
+}
+.catalog-select:focus,
+.premium-catalog .catalog-select:focus,
+.premium-catalog .catalog-sort:focus {
+  border-color: rgba(78,93,60,.55);
+  box-shadow: 0 0 0 4px rgba(78,93,60,.08);
+}
+.catalog-filter-vendor .catalog-select {
+  color: var(--forest);
+}
+@media (max-width: 860px) {
+  .catalog-select-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+@media (max-width: 520px) {
+  .catalog-select-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
+  }
+  .catalog-select,
+  .premium-catalog .catalog-select,
+  .premium-catalog .catalog-sort {
+    min-height: 42px;
+    font-size: 12px;
+  }
+}

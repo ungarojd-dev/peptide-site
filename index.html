@@ -163,40 +163,26 @@
         </label>
         <button class="catalog-clear" id="catalogClear" type="button">Clear</button>
       </div>
-      <div class="catalog-filter-grid">
+      <div class="catalog-filter-grid catalog-select-grid" aria-label="Catalog filters">
         <div class="catalog-filter-group catalog-filter-category">
-          <div class="catalog-filter-title">Category</div>
-          <div class="catalog-chips-shell" data-chips-shell="category">
-            <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="category" data-dir="-1" aria-label="Scroll categories left">‹</button>
-            <div class="catalog-chips" id="catalogCategories"></div>
-            <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="category" data-dir="1" aria-label="Scroll categories right">›</button>
-          </div>
+          <label class="catalog-filter-title" for="catalogCategorySelect">Category</label>
+          <select class="catalog-select" id="catalogCategorySelect" aria-label="Filter by category"></select>
         </div>
         <div class="catalog-filter-group catalog-filter-vendor">
-          <div class="catalog-filter-title">Vendor</div>
-          <div class="catalog-chips-shell" data-chips-shell="vendor">
-            <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="vendor" data-dir="-1" aria-label="Scroll vendors left">‹</button>
-            <div class="catalog-chips" id="catalogVendors"></div>
-            <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="vendor" data-dir="1" aria-label="Scroll vendors right">›</button>
-          </div>
+          <label class="catalog-filter-title" for="catalogVendorSelect">Company</label>
+          <select class="catalog-select" id="catalogVendorSelect" aria-label="Filter by company"></select>
         </div>
-        <div class="catalog-filter-row-2">
-          <div class="catalog-filter-group">
-            <div class="catalog-filter-title">Format</div>
-            <div class="catalog-chips-shell" data-chips-shell="format">
-              <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="format" data-dir="-1" aria-label="Scroll formats left">‹</button>
-              <div class="catalog-chips" id="catalogFormats"></div>
-              <button type="button" class="chips-scroll-btn" data-action="chips-scroll" data-target="format" data-dir="1" aria-label="Scroll formats right">›</button>
-            </div>
-          </div>
-          <div class="catalog-filter-group catalog-sort-group">
-            <div class="catalog-filter-title">Sort</div>
-            <select class="catalog-sort" id="catalogSort" aria-label="Sort catalog">
-              <option value="price">Lowest price</option>
-              <option value="vendors">Most vendors</option>
-              <option value="name">Product name</option>
-            </select>
-          </div>
+        <div class="catalog-filter-group catalog-filter-format">
+          <label class="catalog-filter-title" for="catalogFormatSelect">Format</label>
+          <select class="catalog-select" id="catalogFormatSelect" aria-label="Filter by format"></select>
+        </div>
+        <div class="catalog-filter-group catalog-sort-group">
+          <label class="catalog-filter-title" for="catalogSort">Sort</label>
+          <select class="catalog-select catalog-sort" id="catalogSort" aria-label="Sort catalog">
+            <option value="price">Lowest price</option>
+            <option value="vendors">Most vendors</option>
+            <option value="name">Product name</option>
+          </select>
         </div>
       </div>
     </div>
