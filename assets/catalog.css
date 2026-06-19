@@ -4,3 +4,29 @@
 
 /* Vendor-row promotion badges */
 .supplier-promos{display:flex;gap:3px;flex-wrap:wrap;margin-top:4px}.supplier-promo-badge,.supplier-promo-more{display:inline-flex;border:1px solid #dfcc9d;border-radius:999px;background:#fff6df;color:#705a25;padding:2px 5px;font-size:8px;font-weight:900;line-height:1.25}.supplier-promo-more{border-color:#d9e4df;background:#eef4f1;color:#547067}
+
+/* 2026-06-19 cosmetic refresh: catalog polish */
+.catalog-shell{background:linear-gradient(180deg,#fbf8f0 0%,#f4eddf 100%)}.catalog-controls{
+  border-bottom:1px solid rgba(31,58,45,.12);
+  background:rgba(255,253,248,.88);
+  box-shadow:0 16px 34px rgba(31,58,45,.09);
+  backdrop-filter:blur(18px);
+}.catalog-control-inner{padding-top:12px;padding-bottom:12px}.catalog-search{
+  border-color:#d8ccba;
+  border-radius:16px;
+  background:#fffdf8;
+  padding:13px 16px;
+  box-shadow:0 8px 22px rgba(31,58,45,.055),inset 0 1px 0 rgba(255,255,255,.9);
+}.catalog-search:focus{border-color:#789487;box-shadow:0 0 0 4px rgba(78,93,60,.13),0 10px 24px rgba(31,58,45,.08)}.catalog-clear{padding:11px 15px;box-shadow:0 8px 18px rgba(31,58,45,.16);transition:transform .15s ease,box-shadow .15s ease}.catalog-clear:hover{transform:translateY(-1px);box-shadow:0 12px 24px rgba(31,58,45,.20)}.catalog-filter-title{color:#687870}.catalog-chip,.variant-button{
+  border-color:#d9cebd;
+  background:#fffdf8;
+  box-shadow:0 3px 10px rgba(31,58,45,.045);
+  transition:background .14s ease,border-color .14s ease,color .14s ease,transform .14s ease;
+}.catalog-chip:hover,.variant-button:hover{transform:translateY(-1px);border-color:#bcae94}.catalog-chip.active,.variant-button.active{box-shadow:0 8px 18px rgba(31,58,45,.14)}.catalog-main{padding-top:16px}.catalog-grid{gap:15px}.product-card{
+  border-color:#ddd2c1;
+  border-radius:20px;
+  background:linear-gradient(180deg,#fffdf8 0%,#fbf7ef 100%);
+  box-shadow:0 14px 36px rgba(31,58,45,.08);
+  transition:transform .16s ease,box-shadow .16s ease,border-color .16s ease;
+}.product-card:hover{transform:translateY(-2px);border-color:#c9b994;box-shadow:0 20px 48px rgba(31,58,45,.13)}.product-card-head{padding:13px 13px 10px;background:linear-gradient(180deg,rgba(255,255,255,.72),rgba(255,255,255,0));border-bottom-color:#e8dece}.product-title{letter-spacing:-.3px}.vendor-count{background:#f1eadc;color:#536b61}.variant-wrap{padding:10px 12px 9px;border-bottom-color:#e8dece}.supplier-head{padding:8px 12px 6px}.suppliers{padding:0 11px 2px}.supplier-row{padding:8px 0;border-top-color:#eee3d4;border-radius:10px}.supplier-row:hover{background:#fff8eb}.supplier-logo,.supplier-initials{width:23px;height:23px}.supplier-price{font-size:13px;color:#17603f}.expand-button{background:linear-gradient(180deg,#fffaf1 0%,#f5ecda 100%);padding:10px;border-top-color:#e3d8c8}.catalog-empty{border-radius:18px;background:#fffdf8;box-shadow:0 14px 36px rgba(31,58,45,.08)}
+@media(max-width:620px){.catalog-control-inner{padding:9px 10px}.catalog-search{border-radius:14px;padding:11px 13px}.catalog-main{padding:10px 10px 0}.catalog-grid{gap:10px}.product-card{border-radius:18px}.product-card:hover{transform:none}.product-card-head{padding:11px 11px 8px}.variant-wrap{padding:8px 10px 7px}.supplier-row{padding:7px 0}.catalog-chip:hover,.variant-button:hover{transform:none}}
