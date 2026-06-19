@@ -313,6 +313,8 @@
       "coffee & peppers":"/assets/vendor-logos/coffee-and-peppers.webp",
       "coffee and peppers":"/assets/vendor-logos/coffee-and-peppers.webp",
       "bioedge research labs":"/assets/vendor-logos/bioedge-research-labs.webp",
+      "vantyx supply":"/assets/vendor-logos/vantyx-supply.webp",
+      "vantyx":"/assets/vendor-logos/vantyx-supply.webp",
       "labsourced peptides":"/assets/vendor-logos/labsourced-peptides.webp",
       "labsourced":"/assets/vendor-logos/labsourced-peptides.webp"
     };
