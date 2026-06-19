@@ -942,3 +942,38 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
   .article, .content-card { margin: 20px 12px; padding: 22px; border-radius: 18px; }
   .article h1, .content-card h1 { font-size: 32px; }
 }
+
+/* Hotfix: keep current vendor deal cards readable on hover and tap states. */
+.deal-carousel .dc-card,
+.deal-carousel .dc-card:visited {
+  color: #fff;
+}
+
+.deal-carousel .dc-card:hover,
+.deal-carousel .dc-card:focus,
+.deal-carousel .dc-card:focus-visible,
+.deal-carousel .dc-card:active {
+  background: linear-gradient(135deg, #0d0d0d, #17251b) !important;
+  color: #fff !important;
+  border-color: rgba(216,199,167,.68);
+  box-shadow: inset 0 1px 0 rgba(216,199,167,.14), 0 16px 36px rgba(13,13,13,.14);
+  outline: none;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .deal-carousel .dc-card:hover {
+    transform: translateY(-1px);
+  }
+}
+
+.deal-carousel .dc-card:hover .dc-headline,
+.deal-carousel .dc-card:hover .dc-detail,
+.deal-carousel .dc-card:hover .dc-vendor-wrap,
+.deal-carousel .dc-card:focus .dc-headline,
+.deal-carousel .dc-card:focus .dc-detail,
+.deal-carousel .dc-card:focus .dc-vendor-wrap,
+.deal-carousel .dc-card:active .dc-headline,
+.deal-carousel .dc-card:active .dc-detail,
+.deal-carousel .dc-card:active .dc-vendor-wrap {
+  color: inherit !important;
+}
