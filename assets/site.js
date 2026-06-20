@@ -151,7 +151,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260619-fd-glacier15-qa5";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260619-fd-coffeepeppers-v6";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{

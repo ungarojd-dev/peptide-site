@@ -1,5 +1,5 @@
 {
-  "version": "2026-06-19-fathers-day-glacier-15-qa-v5",
+  "version": "2026-06-19-fathers-day-coffeepeppers-v6",
   "timezone": "America/New_York",
   "updated_at": "2026-06-19T13:45:00-04:00",
   "promotions": [
@@ -147,6 +147,20 @@
       "priority": 95,
       "badge": "Father's Day Deal",
       "discount_override_percent": 30
+    },
+    {
+      "id": "coffeepeppers-fathers-day-10-sammyc-15",
+      "vendor": "Coffee and Peppers",
+      "display_vendor": "Coffee and Peppers",
+      "headline": "Father's Day: 10% off sitewide + stackable SAMMYC",
+      "short_detail": "Stacks with 15% SAMMYC, free bac water $250+, free shipping $350+",
+      "full_detail": "Coffee and Peppers is offering 10% off sitewide for Father's Day. The discount stacks with the 15% SAMMYC code. Orders over $250 get free bac water, and orders over $350 ship free. Confirm final discount and checkout terms directly on the vendor website.",
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "show_in_rolodex": true,
+      "featured": true,
+      "show_vendor_badge": true,
+      "priority": 105,
+      "badge": "Father's Day Deal"
     },
     {
       "id": "labsourced-fathers-day-sammyc-25",
