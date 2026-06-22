@@ -151,7 +151,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260622-cp-newpartner-v9";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260622-cp-rolodex-v10";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -217,18 +217,7 @@
     if(headline)headline.textContent="📣 Announcements";
     if(kicker)kicker.textContent="Announcements";
     if(hint)hint.textContent="Tap to view";
-    if(saleCount)saleCount.textContent="1 / 1";
-    if(prev){prev.hidden=true;prev.setAttribute("aria-hidden","true");}
-    if(next){next.hidden=true;next.setAttribute("aria-hidden","true");}
     if(subline)subline.innerHTML=`<button class="sale-view-all" type="button" data-fathers-day-scroll>View all Father's Day deals →</button>`;
-    const renderStaticCta=()=>{
-      saleCard.href="#deals";
-      saleCard.removeAttribute("target");
-      saleCard.removeAttribute("rel");
-      saleCard.setAttribute("aria-label","View Father's Day deals");
-      saleCard.dataset.vendor="Father's Day Deals";
-      saleCard.innerHTML=`<span class="sale-vendor">Father's Day Deals</span><span class="sale-pct"><strong>Check out current Father's Day deals</strong> from supported vendors.</span><span class="sale-cta-chip">View deals</span>`;
-    };
     const scrollToDeals=event=>{
       event.preventDefault();
       const target=document.querySelector("#deals");
@@ -242,9 +231,53 @@
       window.dataLayer=window.dataLayer||[];
       window.dataLayer.push({event:"promo_section_click",product_name:"Father's Day deals",product_category:"promotion",button_text:"View deals",button_location:"announcement_rolodex"});
     };
-    renderStaticCta();
-    saleCard.addEventListener("click",scrollToDeals);
+    const announcementPromos=promotions.filter(p=>p.show_in_announcement_rolodex===true).sort((a,b)=>Number(b.priority||0)-Number(a.priority||0));
+    const slides=[{static:true},...announcementPromos];
+    let current=0;let autoTimer;
+    const render=()=>{
+      const slide=slides[current];
+      saleCard.classList.toggle("sale-deal-card--promo",!slide.static);
+      if(slide.static){
+        saleCard.href="#deals";
+        saleCard.removeAttribute("target");
+        saleCard.removeAttribute("rel");
+        saleCard.removeAttribute("data-vendor");
+        saleCard.setAttribute("aria-label","View Father's Day deals");
+        saleCard.innerHTML=`<span class="sale-vendor">Father's Day Deals</span><span class="sale-pct"><strong>Check out current Father's Day deals</strong> from supported vendors.</span><span class="sale-cta-chip">View deals</span>`;
+      }else{
+        const logo=dealLogoPath(slide.display_vendor||slide.vendor);
+        const logoHtml=logo?`<img class="sale-vendor-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
+        const kickerText=slide.rolodex_kicker||"";
+        saleCard.href=slide.affiliate_url||"#";
+        saleCard.target="_blank";
+        saleCard.rel="nofollow sponsored noopener";
+        saleCard.dataset.vendor=slide.vendor||"";
+        saleCard.setAttribute("aria-label",slide.headline||slide.vendor||"View promotion");
+        saleCard.innerHTML=`<span class="sale-vendor-wrap">${logoHtml}<span class="sale-vendor">${escapeHtml(slide.display_vendor||slide.vendor)}</span></span><span class="sale-pct">${kickerText?`<strong>${escapeHtml(kickerText)}</strong> `:""}${escapeHtml(slide.short_detail||"")}</span><span class="sale-cta-chip">${escapeHtml(slide.cta_text||"View deal")}</span>`;
+      }
+      if(saleCount)saleCount.textContent=`${current+1} / ${slides.length}`;
+    };
+    const goTo=i=>{current=(i+slides.length)%slides.length;render();resetTimer();};
+    const resetTimer=()=>{clearInterval(autoTimer);if(slides.length>1)autoTimer=setInterval(()=>goTo(current+1),6000);};
+    if(prev){
+      const hide=slides.length<2;
+      prev.hidden=hide;prev.setAttribute("aria-hidden",String(hide));
+      prev.addEventListener("click",()=>goTo(current-1));
+    }
+    if(next){
+      const hide=slides.length<2;
+      next.hidden=hide;next.setAttribute("aria-hidden",String(hide));
+      next.addEventListener("click",()=>goTo(current+1));
+    }
+    saleCard.addEventListener("click",event=>{
+      const slide=slides[current];
+      if(slide.static){scrollToDeals(event);return;}
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:"affiliate_click",product_name:slide.headline||slide.vendor,product_category:"promotion",button_text:slide.cta_text||"View deal",button_location:"announcement_rolodex",vendor_name:slide.vendor||"",affiliate_url:slide.affiliate_url||""});
+    });
     document.querySelectorAll("[data-fathers-day-scroll]").forEach(button=>button.addEventListener("click",scrollToDeals));
+    render();
+    resetTimer();
     if(banner)banner.hidden=false;
   }
 
