@@ -151,7 +151,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260622-fd-cleanup-v8";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260622-cp-newpartner-v9";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -287,7 +287,9 @@
       "glow & flawless":"/assets/vendor-logos/glow-aminos.webp",
       "flawless compounds":"/assets/vendor-logos/flawless-compounds.webp",
       "labsourced peptides":"/assets/vendor-logos/labsourced-peptides.webp",
-      "labsourced":"/assets/vendor-logos/labsourced-peptides.webp"
+      "labsourced":"/assets/vendor-logos/labsourced-peptides.webp",
+      "coffee and peppers":"/assets/vendor-logos/coffee-and-peppers.webp",
+      "coffee & peppers":"/assets/vendor-logos/coffee-and-peppers.webp"
     };
     return logos[key]||"";
   };
@@ -302,7 +304,7 @@
     const render=()=>{
       const deal=deals[current];
       const{text:headline}=splitHeadlineBadge(deal.headline);
-      const badgeHtml=`<span class="dc-badge">Father's Day Deal</span>`;
+      const badgeHtml=`<span class="dc-badge">${escapeHtml(deal.badge||"Father's Day Deal")}</span>`;
       const stackChip=isStackable(deal)?`<span class="dc-stack">+SAMMYC</span>`:"";
       const logo=dealLogoPath(deal.display_vendor||deal.vendor);
       const logoHtml=logo?`<img class="dc-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";

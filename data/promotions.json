@@ -1,7 +1,7 @@
 {
-  "version": "2026-06-22-fathers-day-cleanup-v8",
+  "version": "2026-06-22-coffeepeppers-new-partner-v9",
   "timezone": "America/New_York",
-  "updated_at": "2026-06-22T12:30:00-04:00",
+  "updated_at": "2026-06-22T14:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -30,6 +30,19 @@
       "show_vendor_badge": true,
       "priority": 120,
       "badge": "Father's Day Deal"
+    },
+    {
+      "id": "coffeepeppers-new-partner",
+      "vendor": "Coffee and Peppers",
+      "display_vendor": "Coffee & Peppers",
+      "headline": "New Partner: Coffee & Peppers",
+      "short_detail": "Save 15% with code SAMMYC",
+      "full_detail": "Coffee and Peppers is now a tracked partner on MyPeptidePrice.com. Use code SAMMYC at checkout to save 15% on their full catalog. Confirm final pricing and checkout terms directly on the vendor website.",
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 110,
+      "badge": "\ud83e\udd1d New Partner"
     },
     {
       "id": "solyn-first-order-20",
