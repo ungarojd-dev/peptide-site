@@ -151,7 +151,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260622-cp-rolodex-v10";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260623-summer-sale-v11";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -199,10 +199,7 @@
     promoPanelRoot.addEventListener("click",event=>{if(event.target===promoPanelRoot)closePromotionPanel()});
     promoPanelRoot.querySelectorAll("[data-promo-affiliate='1']").forEach(link=>link.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Active deals panel",product_category:"promotion",button_text:"Visit vendor",button_location:"active_deals_panel",affiliate_network:"direct_vendor",vendor_name:link.dataset.promoVendor||"",affiliate_url:link.href})}));
   }
-  const splitHeadlineBadge=headline=>{
-    const fdMatch=String(headline||"").match(/^Father's Day:\s*(.+)$/);
-    return fdMatch?{badge:"Father's Day",text:fdMatch[1]}:{badge:null,text:headline};
-  };
+  const splitHeadlineBadge=headline=>({badge:null,text:headline});
   function setupPromotionRolodex(promotions){
     const saleCard=document.querySelector("[data-sale-card]");
     if(!saleCard) return;
@@ -217,7 +214,7 @@
     if(headline)headline.textContent="📣 Announcements";
     if(kicker)kicker.textContent="Announcements";
     if(hint)hint.textContent="Tap to view";
-    if(subline)subline.innerHTML=`<button class="sale-view-all" type="button" data-fathers-day-scroll>View all Father's Day deals →</button>`;
+    if(subline)subline.innerHTML=`<button class="sale-view-all" type="button" data-deals-scroll>View all deals →</button>`;
     const scrollToDeals=event=>{
       event.preventDefault();
       const target=document.querySelector("#deals");
@@ -229,7 +226,7 @@
         window.scrollTo({top:Math.max(0,top),behavior:"smooth"});
       }
       window.dataLayer=window.dataLayer||[];
-      window.dataLayer.push({event:"promo_section_click",product_name:"Father's Day deals",product_category:"promotion",button_text:"View deals",button_location:"announcement_rolodex"});
+      window.dataLayer.push({event:"promo_section_click",product_name:"Limited Time Deals",product_category:"promotion",button_text:"View deals",button_location:"announcement_rolodex"});
     };
     const announcementPromos=promotions.filter(p=>p.show_in_announcement_rolodex===true).sort((a,b)=>Number(b.priority||0)-Number(a.priority||0));
     const slides=[{static:true},...announcementPromos];
@@ -242,8 +239,8 @@
         saleCard.removeAttribute("target");
         saleCard.removeAttribute("rel");
         saleCard.removeAttribute("data-vendor");
-        saleCard.setAttribute("aria-label","View Father's Day deals");
-        saleCard.innerHTML=`<span class="sale-vendor">Father's Day Deals</span><span class="sale-pct"><strong>Check out current Father's Day deals</strong> from supported vendors.</span><span class="sale-cta-chip">View deals</span>`;
+        saleCard.setAttribute("aria-label","View current deals");
+        saleCard.innerHTML=`<span class="sale-vendor">Limited Time Deals</span><span class="sale-pct"><strong>Check out current deals</strong> from supported vendors.</span><span class="sale-cta-chip">View deals</span>`;
       }else{
         const logo=dealLogoPath(slide.display_vendor||slide.vendor);
         const logoHtml=logo?`<img class="sale-vendor-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
@@ -275,7 +272,7 @@
       window.dataLayer=window.dataLayer||[];
       window.dataLayer.push({event:"affiliate_click",product_name:slide.headline||slide.vendor,product_category:"promotion",button_text:slide.cta_text||"View deal",button_location:"announcement_rolodex",vendor_name:slide.vendor||"",affiliate_url:slide.affiliate_url||""});
     });
-    document.querySelectorAll("[data-fathers-day-scroll]").forEach(button=>button.addEventListener("click",scrollToDeals));
+    document.querySelectorAll("[data-deals-scroll]").forEach(button=>button.addEventListener("click",scrollToDeals));
     render();
     resetTimer();
     if(banner)banner.hidden=false;
@@ -337,7 +334,7 @@
     const render=()=>{
       const deal=deals[current];
       const{text:headline}=splitHeadlineBadge(deal.headline);
-      const badgeHtml=`<span class="dc-badge">${escapeHtml(deal.badge||"Father's Day Deal")}</span>`;
+      const badgeHtml=`<span class="dc-badge">${escapeHtml(deal.badge||"Limited Time Deal")}</span>`;
       const stackChip=isStackable(deal)?`<span class="dc-stack">+SAMMYC</span>`:"";
       const logo=dealLogoPath(deal.display_vendor||deal.vendor);
       const logoHtml=logo?`<img class="dc-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
