@@ -326,33 +326,30 @@
   function setupDealCarousel(promotions){
     const track=document.querySelector("[data-deal-track]");
     const dotsWrap=document.querySelector("[data-deal-dots]");
-    const nav=document.querySelector(".deal-carousel-nav");
-    const header=document.querySelector(".deal-carousel-header");
     if(!track) return;
-    const deals=promotions.filter(p=>p.show_in_rolodex===true).sort((a,b)=>Number(b.priority||0)-Number(a.priority||0));
+    const deals=promotions.filter(p=>p.show_in_rolodex===true);
     if(!deals.length){const s=document.querySelector(".deal-carousel");if(s)s.hidden=true;return;}
-    if(nav) nav.hidden=true;
-    if(dotsWrap) dotsWrap.innerHTML="";
-    if(header){
-      header.innerHTML=`<span class="dc-label-eyebrow">Early access</span><span class="dc-label-title">Early July 4th Savings Stack</span><span class="dc-label-note">Text and logo only, research use comparison.</span>`;
-    }
-    const isStackable=deal=>{
-      const h=((deal.short_detail||"")+" "+(deal.full_detail||"")).toLowerCase();
-      return h.includes("stackable")||h.includes("sammyc");
-    };
-    const rowMarkup=(deal,index)=>{
-      const {text:headline}=splitHeadlineBadge(deal.headline);
+    const isStackable=deal=>{const h=((deal.short_detail||"")+" "+(deal.full_detail||"")).toLowerCase();return h.includes("stackable")||h.includes("sammyc");};
+    let current=0;let autoTimer;
+    const render=()=>{
+      const deal=deals[current];
+      const{text:headline}=splitHeadlineBadge(deal.headline);
+      const badgeHtml=`<span class="dc-badge">${escapeHtml(deal.badge||"Limited Time Deal")}</span>`;
+      const stackChip=isStackable(deal)?`<span class="dc-stack">+SAMMYC</span>`:"";
       const logo=dealLogoPath(deal.display_vendor||deal.vendor);
-      const logoHtml=logo?`<img class="dc-row-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:`<span class="dc-row-logo-fallback">${escapeHtml((deal.display_vendor||deal.vendor||"D").slice(0,1))}</span>`;
-      const stackChip=isStackable(deal)?`<span class="dc-row-chip">Stacks with SAMMYC</span>`:`<span class="dc-row-chip muted">Deal live</span>`;
-      const cta=deal.cta_text||"View Deal";
-      return `<a class="dc-july-row" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-july-deal-row data-vendor="${escapeHtml(deal.vendor)}"><span class="dc-row-number">${String(index+1).padStart(2,"0")}</span><span class="dc-row-brand">${logoHtml}<span class="dc-row-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span></span><span class="dc-row-copy"><strong>${escapeHtml(headline)}</strong><small>${escapeHtml(deal.short_detail||"Confirm final checkout terms directly with the vendor.")}</small></span><span class="dc-row-action">${escapeHtml(cta)} <span aria-hidden="true">›</span></span><span class="dc-row-dots" aria-hidden="true"></span>${stackChip}</a>`;
+      const logoHtml=logo?`<img class="dc-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
+      track.innerHTML=`<a class="dc-card" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><span class="dc-rank" aria-hidden="true">${String(current+1).padStart(2,"0")}</span><div class="dc-card-body"><div class="dc-top">${badgeHtml}<span class="dc-vendor-wrap">${logoHtml}<span class="dc-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span></span>${stackChip}</div><strong class="dc-headline">${escapeHtml(headline)}</strong><span class="dc-detail">${escapeHtml(deal.short_detail||"")}</span></div><span class="dc-cta">View Deal ›</span></a>`;
+      if(dotsWrap){dotsWrap.innerHTML=deals.map((_,i)=>`<button class="dc-dot${i===current?" active":""}" data-dot="${i}" aria-label="Deal ${i+1}"></button>`).join("");dotsWrap.querySelectorAll("[data-dot]").forEach(d=>d.addEventListener("click",()=>goTo(parseInt(d.dataset.dot))));}
+      track.querySelector(".dc-card")&&track.querySelector(".dc-card").addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Deal carousel",product_category:"promotion",button_text:"View Deal",button_location:"deal_carousel",vendor_name:deal.vendor,affiliate_url:deal.affiliate_url||""});});
     };
-    track.innerHTML=`<div class="dc-july-board"><div class="dc-july-list">${deals.map(rowMarkup).join("")}</div><div class="dc-stack-ticket"><span class="dc-ticket-kicker">Stack code</span><strong>SAMMYC</strong><span class="dc-ticket-sub">For up to 45% off where eligible</span></div><div class="dc-proof-row"><span><strong>Live pricing</strong><small>Compare current vendor listings</small></span><span><strong>7/7 tested</strong><small>Quality signals in one place</small></span><span><strong>Compare &amp; save</strong><small>No rankings, no recommendations</small></span></div><p class="dc-july-disclaimer">Promos can change or end without notice. Confirm eligibility, stacking rules, and final checkout pricing directly with each vendor.</p></div>`;
-    track.querySelectorAll("[data-july-deal-row]").forEach(row=>row.addEventListener("click",()=>{
-      window.dataLayer=window.dataLayer||[];
-      window.dataLayer.push({event:"affiliate_click",product_name:"July 4th savings stack",product_category:"promotion",button_text:"View Deal",button_location:"deal_carousel",vendor_name:row.dataset.vendor||"",affiliate_url:row.href});
-    }));
+    const goTo=i=>{current=(i+deals.length)%deals.length;render();resetTimer();};
+    const resetTimer=()=>{clearInterval(autoTimer);if(deals.length>1)autoTimer=setInterval(()=>goTo(current+1),4000);};
+    document.querySelector("[data-deal-prev]")&&document.querySelector("[data-deal-prev]").addEventListener("click",()=>goTo(current-1));
+    document.querySelector("[data-deal-next]")&&document.querySelector("[data-deal-next]").addEventListener("click",()=>goTo(current+1));
+    let tx=0;
+    track.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;},{passive:true});
+    track.addEventListener("touchend",e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>40)goTo(current+(d>0?1:-1));},{passive:true});
+    render();resetTimer();
   }
 
   function addVendorDirectoryBadges(promotions){
