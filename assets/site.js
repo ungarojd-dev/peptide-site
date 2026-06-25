@@ -151,7 +151,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260623-summer-sale-v11";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260624-flawless-glow-stack-v13";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
