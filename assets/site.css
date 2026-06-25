@@ -142,25 +142,27 @@ body{
 @media(max-width:620px){.top-inner{padding:11px 12px}.coupon-strip{font-size:10.5px;padding:6px 10px}.hero-inner{padding:42px 14px 38px;gap:24px}.hero h1{letter-spacing:-.8px}.hero-actions{gap:7px}.hero-actions .button{width:100%;padding:11px 14px}.hero-stats{border-radius:18px;padding:13px 15px}.deal-carousel-wrap{padding:13px 10px 11px}.dc-card{border-radius:16px}.skool-sticky-bar{padding:6px 10px}.sale-deal-card{border-radius:12px}}
 
 /* 2026-06-19 adjustment: make limited-time deals stand out while staying premium */
+/* 4th of July Limited Time Deals theme, red white and blue */
 .deal-carousel{
   position:relative;
   overflow:hidden;
   background:
-    radial-gradient(circle at 16% 14%, rgba(255,221,118,.62), transparent 28%),
-    radial-gradient(circle at 92% 0%, rgba(232,65,42,.38), transparent 34%),
-    radial-gradient(circle at 50% 100%, rgba(255,255,255,.16), transparent 40%),
-    linear-gradient(135deg,#3b1021 0%,#722d12 42%,#d49a1e 100%);
-  border-top:3px solid #f2c451;
-  border-bottom:3px solid #f2c451;
-  box-shadow:0 12px 34px rgba(77,32,9,.22),inset 0 1px 0 rgba(255,255,255,.18);
+    radial-gradient(circle at 14% 12%, rgba(255,255,255,.18), transparent 30%),
+    radial-gradient(circle at 90% 6%, rgba(200,16,46,.42), transparent 38%),
+    radial-gradient(circle at 50% 108%, rgba(255,255,255,.14), transparent 42%),
+    linear-gradient(135deg,#0a1f44 0%,#10295a 46%,#0a1f44 100%);
+  border-top:3px solid #c8102e;
+  border-bottom:3px solid #c8102e;
+  box-shadow:0 12px 34px rgba(8,20,46,.28),inset 0 1px 0 rgba(255,255,255,.16);
 }
 .deal-carousel::before{
   content:"";
   position:absolute;
   inset:0;
   background:
-    linear-gradient(115deg,rgba(255,255,255,.16),transparent 28%,transparent 70%,rgba(255,255,255,.10)),
-    repeating-linear-gradient(135deg,rgba(255,255,255,.045) 0,rgba(255,255,255,.045) 1px,transparent 1px,transparent 18px);
+    radial-gradient(rgba(255,255,255,.16) 1.3px, transparent 1.6px) 0 0/26px 26px,
+    repeating-linear-gradient(180deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 2px,transparent 2px,transparent 22px);
+  opacity:.55;
   pointer-events:none;
 }
 .deal-carousel::after{
@@ -170,7 +172,7 @@ body{
   top:-80%;
   width:36%;
   height:240%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.20),transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);
   transform:rotate(18deg);
   animation:dealSpotlightSweep 6s ease-in-out infinite;
   pointer-events:none;
@@ -183,49 +185,49 @@ body{
 .deal-carousel-wrap{position:relative;z-index:1;max-width:960px;padding:18px 14px 16px}
 .deal-carousel-header{margin-bottom:13px}
 .dc-label-eyebrow{
-  background:#ffe07a;
-  border-color:rgba(59,16,33,.24);
-  color:#3b1021;
-  box-shadow:0 8px 18px rgba(0,0,0,.18),0 0 0 3px rgba(255,224,122,.14);
+  background:#c8102e;
+  border-color:rgba(255,255,255,.32);
+  color:#fff;
+  box-shadow:0 8px 18px rgba(200,16,46,.32),0 0 0 3px rgba(255,255,255,.12);
   animation:limitedOfferPulse 2.2s ease-in-out infinite;
 }
 @keyframes limitedOfferPulse{
-  0%,100%{transform:translateY(0);box-shadow:0 8px 18px rgba(0,0,0,.18),0 0 0 0 rgba(255,224,122,.28)}
-  50%{transform:translateY(-1px);box-shadow:0 10px 22px rgba(0,0,0,.22),0 0 0 5px rgba(255,224,122,.08)}
+  0%,100%{transform:translateY(0);box-shadow:0 8px 18px rgba(200,16,46,.32),0 0 0 0 rgba(255,255,255,.26)}
+  50%{transform:translateY(-1px);box-shadow:0 10px 22px rgba(200,16,46,.4),0 0 0 5px rgba(255,255,255,.07)}
 }
-.dc-label-title{color:#fffdf8;text-shadow:0 2px 12px rgba(0,0,0,.28)}
+.dc-label-title{color:#fffdf8;text-shadow:0 2px 12px rgba(0,0,0,.3)}
 .dc-label-stache{color:rgba(255,255,255,.58)}
 .dc-card{
-  border:1px solid rgba(255,224,122,.72);
-  background:linear-gradient(180deg,#fff9e9 0%,#f8ecd0 100%);
-  box-shadow:0 18px 40px rgba(58,16,5,.28),inset 0 1px 0 rgba(255,255,255,.86);
+  border:1px solid rgba(255,255,255,.55);
+  background:linear-gradient(180deg,#ffffff 0%,#f3f6fc 100%);
+  box-shadow:0 18px 40px rgba(8,20,46,.3),inset 0 1px 0 rgba(255,255,255,.92);
   backdrop-filter:none;
 }
 .dc-card:hover{
-  background:linear-gradient(180deg,#fffdf4 0%,#faefd5 100%);
+  background:linear-gradient(180deg,#ffffff 0%,#eef3fb 100%);
   transform:translateY(-2px);
-  box-shadow:0 22px 48px rgba(58,16,5,.34),inset 0 1px 0 rgba(255,255,255,.92);
+  box-shadow:0 22px 48px rgba(8,20,46,.36),inset 0 1px 0 rgba(255,255,255,.96);
 }
 .dc-badge{
-  background:#e8412a;
+  background:#c8102e;
   color:#fff;
-  box-shadow:0 6px 14px rgba(232,65,42,.24);
+  box-shadow:0 6px 14px rgba(200,16,46,.28);
 }
-.dc-vendor{color:#1f3a2d}.dc-headline{color:#2b1b0d}.dc-detail{color:#71522d}.dc-stack{background:rgba(31,58,45,.10);border-color:rgba(31,58,45,.24);color:#1f7a45}.dc-cta{
-  background:linear-gradient(135deg,#1f3a2d,#2e5a43);
+.dc-vendor{color:#0a2a5e}.dc-headline{color:#0a1f44}.dc-detail{color:#4a5b7a}.dc-stack{background:rgba(200,16,46,.1);border-color:rgba(200,16,46,.28);color:#b00d27}.dc-cta{
+  background:linear-gradient(135deg,#0a2a5e,#14418c);
   color:#fff;
-  box-shadow:0 8px 18px rgba(31,58,45,.22);
+  box-shadow:0 8px 18px rgba(10,42,94,.26);
 }
-.dc-cta:hover{background:linear-gradient(135deg,#263f31,#376a50)}
+.dc-cta:hover{background:linear-gradient(135deg,#0c326e,#1a4ea3)}
 .dc-nav-btn{
-  background:rgba(59,16,33,.34);
-  border-color:rgba(255,224,122,.42);
-  color:#fff8dc;
+  background:rgba(255,255,255,.12);
+  border-color:rgba(255,255,255,.4);
+  color:#fff;
 }
-.dc-nav-btn:hover{background:rgba(59,16,33,.52);border-color:rgba(255,224,122,.72);color:#fff}.dc-dot{background:rgba(59,16,33,.34)}.dc-dot.active{background:#ffe07a;box-shadow:0 0 0 3px rgba(255,224,122,.18)}
+.dc-nav-btn:hover{background:rgba(200,16,46,.55);border-color:rgba(255,255,255,.7);color:#fff}.dc-dot{background:rgba(255,255,255,.32)}.dc-dot.active{background:#c8102e;box-shadow:0 0 0 3px rgba(255,255,255,.22)}
 @media(max-width:620px){
   .deal-carousel-wrap{padding:14px 10px 12px}
-  .dc-card{border-radius:16px;box-shadow:0 14px 30px rgba(58,16,5,.24),inset 0 1px 0 rgba(255,255,255,.86)}
+  .dc-card{border-radius:16px;box-shadow:0 14px 30px rgba(8,20,46,.26),inset 0 1px 0 rgba(255,255,255,.92)}
   .dc-label-title{font-size:16px}
   .dc-label-eyebrow{font-size:8.5px}
 }
@@ -237,110 +239,3 @@ body{
 .dc-logo{width:62px;height:34px;border-radius:9px;padding:4px}
 @media(max-width:720px){.vantyx-supply-logo{width:68px;height:30px}.vantyx-supply-copy{display:flex;align-items:center;gap:8px}.vantyx-supply-text{min-width:0}.vendor-head img{width:72px;height:38px}}
 @media(max-width:380px){.vantyx-supply-logo{display:none}}
-
-/* July 4th seasonal theme for Limited Time Deals carousel. Remove the july4-theme class from .deal-carousel in index.html to revert. */
-.dc-rank{display:none}
-.deal-carousel.july4-theme{
-  position:relative;
-  overflow:hidden;
-  background:
-    radial-gradient(circle at 12% 18%, rgba(255,255,255,.08), transparent 30%),
-    radial-gradient(circle at 88% 8%, rgba(178,34,52,.30), transparent 38%),
-    linear-gradient(135deg,#0a1830 0%,#0d2348 45%,#0a1830 100%);
-  border-top:3px solid #b22234;
-  border-bottom:3px solid #b22234;
-  box-shadow:0 12px 30px rgba(5,12,26,.30),inset 0 1px 0 rgba(255,255,255,.08);
-}
-.deal-carousel.july4-theme::before{
-  content:"";
-  position:absolute;
-  inset:0;
-  background-image:radial-gradient(rgba(255,255,255,.55) 1px, transparent 1.6px);
-  background-size:26px 26px;
-  opacity:.16;
-  pointer-events:none;
-}
-.deal-carousel.july4-theme::after{
-  content:"";
-  position:absolute;
-  left:0;right:0;bottom:0;
-  height:6px;
-  background:repeating-linear-gradient(90deg,#b22234 0 18px,#fffdf8 18px 36px);
-  opacity:.85;
-  pointer-events:none;
-}
-.deal-carousel.july4-theme .deal-carousel-wrap{position:relative;z-index:1}
-.deal-carousel.july4-theme .dc-stars{position:absolute;top:10px;right:14px;display:flex;gap:6px;color:#ffe07a;opacity:.7;width:60px;height:14px;z-index:1}
-.deal-carousel.july4-theme .dc-stars svg{width:13px;height:13px}
-.deal-carousel.july4-theme .deal-carousel-header{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
-.deal-carousel.july4-theme .dc-label-eyebrow{
-  background:#b22234;
-  border-color:rgba(255,255,255,.4);
-  color:#fff;
-  box-shadow:0 6px 14px rgba(178,34,52,.35);
-  animation:none;
-}
-.deal-carousel.july4-theme .dc-label-title{color:#fffdf8;text-shadow:0 2px 10px rgba(0,0,0,.4);font-weight:900;letter-spacing:.2px}
-.deal-carousel.july4-theme .dc-stack-code{
-  display:inline-flex;
-  align-items:center;
-  gap:4px;
-  margin-left:auto;
-  border-radius:999px;
-  background:#fffdf8;
-  border:1px solid rgba(10,24,48,.18);
-  padding:4px 11px 4px 9px;
-  color:#0a1830;
-  font-size:10px;
-  font-weight:800;
-  letter-spacing:.3px;
-}
-.deal-carousel.july4-theme .dc-stack-code strong{color:#b22234;letter-spacing:.4px}
-.deal-carousel.july4-theme .dc-card{
-  position:relative;
-  border:1px solid rgba(255,255,255,.18);
-  border-radius:14px;
-  background:linear-gradient(180deg,#0f2a52 0%,#0a1d3d 100%);
-  box-shadow:0 14px 30px rgba(4,10,24,.4),inset 0 1px 0 rgba(255,255,255,.06);
-  backdrop-filter:none;
-  overflow:visible;
-}
-.deal-carousel.july4-theme .dc-card:hover{
-  background:linear-gradient(180deg,#123257 0%,#0c2245 100%);
-  transform:translateY(-2px);
-}
-.deal-carousel.july4-theme .dc-rank{
-  display:flex;
-  align-items:center;
-  justify-content:center;
-  position:absolute;
-  left:-10px;
-  top:-10px;
-  width:30px;
-  height:30px;
-  border-radius:8px;
-  background:#b22234;
-  color:#fff;
-  font-family:var(--font-display);
-  font-size:13px;
-  font-weight:800;
-  box-shadow:0 6px 14px rgba(178,34,52,.45),0 0 0 2px rgba(255,255,255,.5);
-  transform:rotate(-8deg);
-  z-index:2;
-}
-.deal-carousel.july4-theme .dc-badge{background:#ffe07a;color:#0a1830;box-shadow:0 6px 14px rgba(0,0,0,.2)}
-.deal-carousel.july4-theme .dc-vendor{color:#fffdf8}
-.deal-carousel.july4-theme .dc-headline{color:#ffe07a;font-weight:800}
-.deal-carousel.july4-theme .dc-detail{color:rgba(255,255,255,.72)}
-.deal-carousel.july4-theme .dc-stack{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.32);color:#fffdf8}
-.deal-carousel.july4-theme .dc-cta{background:#b22234;color:#fff;box-shadow:0 8px 18px rgba(178,34,52,.4)}
-.deal-carousel.july4-theme .dc-cta:hover{background:#921b29}
-.deal-carousel.july4-theme .dc-nav-btn{background:rgba(255,255,255,.10);border-color:rgba(255,255,255,.28);color:#fff}
-.deal-carousel.july4-theme .dc-nav-btn:hover{background:rgba(178,34,52,.4);border-color:rgba(255,255,255,.5)}
-.deal-carousel.july4-theme .dc-dot{background:rgba(255,255,255,.28)}
-.deal-carousel.july4-theme .dc-dot.active{background:#b22234;box-shadow:0 0 0 3px rgba(178,34,52,.22)}
-@media(max-width:620px){
-  .deal-carousel.july4-theme .dc-stack-code{margin-left:0;font-size:9px}
-  .deal-carousel.july4-theme .dc-stars{display:none}
-  .deal-carousel.july4-theme .dc-rank{width:26px;height:26px;font-size:11px;left:-8px;top:-8px}
-}
