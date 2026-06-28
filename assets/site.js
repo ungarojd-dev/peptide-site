@@ -151,7 +151,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260628-july4-promo-refresh-v14";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260628-july4-promo-refresh-v15";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
