@@ -214,7 +214,8 @@ function instantAdapter() {
       for (const product of data.products || []) {
         for (const variant of product.variants || []) {
           const quantity = Number(variant.pack_qty || 1);
-          const pack = quantity > 1 ? ` (${quantity} vials)` : "";
+          const unitWord = compact(variant.form).toLowerCase() === "capsule" ? "capsules" : "vials";
+          const pack = quantity > 1 ? ` (${quantity} ${unitWord})` : "";
           products.push({
             company: vendor,
             product: compact(product.name),
