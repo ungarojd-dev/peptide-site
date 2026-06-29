@@ -53,7 +53,7 @@
     const visible=expanded?suppliers:suppliers.slice(0,isAll?6:3);const hidden=Math.max(0,suppliers.length-visible.length);
     const supplierHtml=visible.length?visible.map(row=>supplierRow(row.supplier,card,isAll?row.variant.label:"" )).join(""):`<div class="supplier-row"><span>No supplier offers for this listing.</span></div>`;
     const totalListings=isAll?suppliers.length:(variant.suppliers||[]).length;
-    return `<article class="product-card"><header class="product-card-head"><div class="product-card-meta">${esc(card.category)} · ${esc(card.format)}</div><div class="product-title-row"><h2 class="product-title">${esc(card.name)}</h2><span class="vendor-count">${esc(card.supplier_count)} vendor${card.supplier_count===1?"":"s"}</span></div></header><div class="variant-wrap"><span class="variant-label">SELECT SIZE OR LISTING</span><div class="variant-pills"><button type="button" class="variant-button all${isAll?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${ALL_VARIANTS}">All listings${totalListings?` (${esc(totalListings)})`:""}</button>${(card.variants||[]).map(item=>`<button type="button" class="variant-button${!isAll&&item.id===variant.id?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${attr(item.id)}">${esc(item.label)}${item.all_offer_count?` (${esc(item.all_offer_count)})`:""}</button>`).join("")}</div></div><div class="supplier-head"><span>Use <span class="code-pill">${esc(state.catalog?.coupon_code||"SAMMYC")}</span> for prices below</span><span>${isAll?"All sizes, low to high":"Low to high"}</span></div><div class="suppliers">${supplierHtml}</div>${hidden?`<button type="button" class="expand-button" data-action="expand" data-card="${attr(card.id)}">${expanded?"Show fewer listings":`Show ${hidden} more listing${hidden===1?"":"s"}`}</button>`:""}</article>`;
+    return `<article class="product-card"><header class="product-card-head"><div class="product-card-meta">${esc(card.category)} · ${esc(card.format)}</div><div class="product-title-row"><h2 class="product-title">${esc(card.name)}</h2><span class="vendor-count">${esc(card.supplier_count)} vendor${card.supplier_count===1?"":"s"}</span></div></header><div class="variant-wrap"><span class="variant-label">SELECT SIZE OR LISTING</span><div class="pill-row"><button type="button" class="pill-nav-btn prev" data-pill-nav="prev" aria-label="Scroll sizes left">&#8249;</button><div class="variant-pills"><button type="button" class="variant-button all${isAll?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${ALL_VARIANTS}">All listings${totalListings?` (${esc(totalListings)})`:""}</button>${(card.variants||[]).map(item=>`<button type="button" class="variant-button${!isAll&&item.id===variant.id?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${attr(item.id)}">${esc(item.label)}${item.all_offer_count?` (${esc(item.all_offer_count)})`:""}</button>`).join("")}</div><button type="button" class="pill-nav-btn next" data-pill-nav="next" aria-label="Scroll sizes right">&#8250;</button></div></div><div class="supplier-head"><span>Use <span class="code-pill">${esc(state.catalog?.coupon_code||"SAMMYC")}</span> for prices below</span><span>${isAll?"All sizes, low to high":"Low to high"}</span></div><div class="suppliers">${supplierHtml}</div>${hidden?`<button type="button" class="expand-button" data-action="expand" data-card="${attr(card.id)}">${expanded?"Show fewer listings":`Show ${hidden} more listing${hidden===1?"":"s"}`}</button>`:""}</article>`;
   }
   function bindCardActions(){
     document.querySelectorAll('[data-action="variant"]').forEach(button=>button.onclick=()=>{state.activeVariants[button.dataset.card]=button.dataset.variant;state.expanded[button.dataset.card]=false;renderCards(false)});
@@ -64,7 +64,26 @@
   function applyInitialFilters(){const params=new URLSearchParams(location.search);state.category=params.get("cat")||params.get("category")||document.body.dataset.defaultCategory||"All";state.format=params.get("format")||"All";state.query=params.get("q")||"";$("catalogSearch").value=state.query;}
   function applyCatalog(catalog,source){if(!catalog?.products?.length)return;state.catalog=catalog;state.cards=catalog.products;state.source=source;updateStats();renderFilters();renderCards(false);}
   function clear(){state.query="";state.category=document.body.dataset.defaultCategory||"All";state.format="All";$("catalogSearch").value="";renderFilters();renderCards(true);}
+  function pillRowOf(node){return node?.parentElement?.querySelector?.(".catalog-chips, .variant-pills")||null;}
+  function bindPillNav(){
+    document.addEventListener("click",event=>{
+      const button=event.target.closest("[data-pill-nav]");
+      if(!button)return;
+      const row=pillRowOf(button);
+      if(!row)return;
+      const amount=Math.max(120,Math.round(row.clientWidth*0.6));
+      row.scrollBy({left:button.dataset.pillNav==="prev"?-amount:amount,behavior:"smooth"});
+    });
+    document.addEventListener("wheel",event=>{
+      const row=event.target.closest(".catalog-chips, .variant-pills");
+      if(!row||row.scrollWidth<=row.clientWidth)return;
+      if(Math.abs(event.deltaX)>=Math.abs(event.deltaY))return;
+      event.preventDefault();
+      row.scrollLeft+=event.deltaY;
+    },{passive:false});
+  }
   async function boot(){
+    bindPillNav();
     try{await global.MPPPromotions?.ready}catch(error){console.warn("Promotion badges unavailable",error.message)}
     const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=variation-visibility-20260616a",7000);
     const latestPromise=json("/.netlify/functions/catalog-snapshot?v=variation-visibility-20260616a",10000);
