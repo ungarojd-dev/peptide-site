@@ -151,7 +151,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260630-july4-promo-refresh-v16";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260630-rolodex-text-fix-v19";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -240,7 +240,7 @@
         saleCard.removeAttribute("rel");
         saleCard.removeAttribute("data-vendor");
         saleCard.setAttribute("aria-label","View current deals");
-        saleCard.innerHTML=`<span class="sale-vendor">Limited Time Deals</span><span class="sale-pct"><strong>Check out current deals</strong> from supported vendors.</span><span class="sale-cta-chip">View deals</span>`;
+        saleCard.innerHTML=`<span class="sale-vendor">Limited Time Deals</span><span class="sale-pct"><strong>LIMITED TIME VENDOR DEALS</strong> Save up to 55% off</span><span class="sale-cta-chip">View deals</span>`;
       }else{
         const logo=dealLogoPath(slide.display_vendor||slide.vendor);
         const logoHtml=logo?`<img class="sale-vendor-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";

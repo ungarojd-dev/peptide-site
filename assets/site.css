@@ -243,7 +243,8 @@ body{
 .sale-banner::after{background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.1)50%,transparent 60%)}
 .sale-headline{color:#fff}
 .sale-subline{color:rgba(255,255,255,.85)}
-.sale-subline strong,.sale-pct strong{color:#fff}
+.sale-subline strong{color:#fff}
+.sale-pct strong{color:#0a2a5e}
 .sale-view-all{color:#fff}
 .sale-live-dot{background:#c8102e;animation:salePulseRWB 1.8s ease-in-out infinite}
 @keyframes salePulseRWB{0%,100%{transform:scale(1);opacity:1;box-shadow:0 0 0 0 rgba(200,16,46,.5)}50%{transform:scale(.82);opacity:.82;box-shadow:0 0 0 5px rgba(200,16,46,0)}}

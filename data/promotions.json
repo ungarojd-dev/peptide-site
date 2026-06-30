@@ -1,7 +1,7 @@
 {
-  "version": "2026-06-30-july4-promo-refresh-v16",
+  "version": "2026-06-30-rolodex-text-fix-v19",
   "timezone": "America/New_York",
-  "updated_at": "2026-06-30T12:00:00-04:00",
+  "updated_at": "2026-06-30T16:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -15,7 +15,9 @@
       "cta_text": "Join Now",
       "announcement": true,
       "show_in_rolodex": false,
-      "priority": 999
+      "priority": 500,
+      "show_in_announcement_rolodex": true,
+      "rolodex_kicker": ""
     },
     {
       "id": "southern-july4-55-stack",
@@ -28,8 +30,6 @@
       "start_at": "2026-06-29T08:00:00-04:00",
       "end_at": "2026-07-04T23:59:59-04:00",
       "show_in_rolodex": true,
-      "show_in_announcement_rolodex": true,
-      "rolodex_kicker": "July 4th Sale",
       "featured": true,
       "show_vendor_badge": true,
       "priority": 200,
@@ -46,8 +46,6 @@
       "start_at": "2026-06-29T08:00:00-04:00",
       "end_at": "2026-07-06T23:59:59-04:00",
       "show_in_rolodex": true,
-      "show_in_announcement_rolodex": true,
-      "rolodex_kicker": "Code Boosted",
       "show_vendor_badge": true,
       "priority": 160,
       "badge": "July 4th Sale"
