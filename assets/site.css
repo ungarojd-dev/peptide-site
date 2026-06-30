@@ -54,16 +54,6 @@ body{
 .sale-vendor-wrap .sale-vendor{border-right:0;padding-right:0}
 .sale-vendor-logo{width:24px;height:16px;border-radius:4px;background:#fff;object-fit:contain;padding:2px;flex:0 0 auto}
 @media(max-width:620px){.sale-deal-card--promo{grid-template-columns:auto minmax(0,1fr)}.sale-vendor-logo{width:22px;height:15px}}
-.sale-deal-card[data-vendor="Coffee and Peppers"]{
-  border-color:rgba(217,123,46,.55);
-  background:linear-gradient(135deg,#3a2418 0%,#5a3420 100%);
-}
-.sale-deal-card[data-vendor="Coffee and Peppers"]:hover{background:linear-gradient(135deg,#42291b 0%,#643a24 100%)}
-.sale-deal-card[data-vendor="Coffee and Peppers"] .sale-vendor{color:#f0c98a}
-.sale-deal-card[data-vendor="Coffee and Peppers"] .sale-pct{color:rgba(255,243,228,.86)}
-.sale-deal-card[data-vendor="Coffee and Peppers"] .sale-pct strong{color:#ffb27a}
-.sale-deal-card[data-vendor="Coffee and Peppers"] .sale-cta-chip{background:#d97142;color:#2b1408}
-.sale-deal-card[data-vendor="Coffee and Peppers"] .sale-vendor-wrap{border-right-color:rgba(217,123,46,.4)}
 .skool-sticky-bar{
   background:linear-gradient(90deg,#fff8eb 0%,#fffdf8 56%,#fff1dc 100%);
   border-bottom:1px solid #ecd7b4;
@@ -239,3 +229,34 @@ body{
 .dc-logo{width:62px;height:34px;border-radius:9px;padding:4px}
 @media(max-width:720px){.vantyx-supply-logo{width:68px;height:30px}.vantyx-supply-copy{display:flex;align-items:center;gap:8px}.vantyx-supply-text{min-width:0}.vendor-head img{width:72px;height:38px}}
 @media(max-width:380px){.vantyx-supply-logo{display:none}}
+
+/* 2026-06-30: Announcements rolodex restyled to match the July 4th Limited Time Deals theme for the holiday week. REVERT after July 4th by deleting this block. */
+.sale-banner{
+  background:
+    radial-gradient(circle at 14% 12%, rgba(255,255,255,.16), transparent 30%),
+    radial-gradient(circle at 90% 6%, rgba(200,16,46,.4), transparent 38%),
+    linear-gradient(135deg,#0a1f44 0%,#10295a 46%,#0a1f44 100%);
+  border-bottom:3px solid #c8102e;
+  box-shadow:0 6px 18px rgba(8,20,46,.3);
+}
+.sale-banner::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),#c8102e,rgba(255,255,255,.7),transparent)}
+.sale-banner::after{background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.1)50%,transparent 60%)}
+.sale-headline{color:#fff}
+.sale-subline{color:rgba(255,255,255,.85)}
+.sale-subline strong,.sale-pct strong{color:#fff}
+.sale-view-all{color:#fff}
+.sale-live-dot{background:#c8102e;animation:salePulseRWB 1.8s ease-in-out infinite}
+@keyframes salePulseRWB{0%,100%{transform:scale(1);opacity:1;box-shadow:0 0 0 0 rgba(200,16,46,.5)}50%{transform:scale(.82);opacity:.82;box-shadow:0 0 0 5px rgba(200,16,46,0)}}
+.sale-deal-card{
+  border-color:rgba(255,255,255,.55);
+  background:linear-gradient(180deg,#ffffff 0%,#f3f6fc 100%);
+  box-shadow:0 8px 20px rgba(8,20,46,.24),inset 0 1px 0 rgba(255,255,255,.92);
+}
+.sale-deal-card:hover{background:linear-gradient(180deg,#ffffff 0%,#eef3fb 100%)}
+.sale-vendor{border-right-color:rgba(10,42,94,.18);color:#0a2a5e}
+.sale-vendor-wrap{border-right-color:rgba(10,42,94,.18)}
+.sale-pct{color:#4a5b7a}
+.sale-cta-chip{background:linear-gradient(135deg,#0a2a5e,#14418c);color:#fff}
+.sale-nav-btn{border-color:rgba(255,255,255,.42);background:rgba(255,255,255,.12);color:#fff}
+.sale-nav-btn:hover{background:rgba(200,16,46,.55);border-color:rgba(255,255,255,.7);color:#fff}
+.sale-mobile-view-all{border-color:rgba(255,255,255,.5);color:#fff}
