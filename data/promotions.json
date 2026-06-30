@@ -1,7 +1,7 @@
 {
-  "version": "2026-06-30-all-10-deals-live-v20",
+  "version": "2026-06-30-high-tide-rolodex-announcement-v22",
   "timezone": "America/New_York",
-  "updated_at": "2026-06-30T17:00:00-04:00",
+  "updated_at": "2026-06-30T19:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -164,6 +164,23 @@
       "priority": 100,
       "badge": "Limited Time Deal",
       "cta_text": "Shop Now"
+    },
+    {
+      "id": "hightide-july4-40-stack",
+      "vendor": "High Tide Compounds",
+      "display_vendor": "High Tide Compounds",
+      "headline": "40% off sitewide, stacks with SAMMYC",
+      "short_detail": "July 3 through July 5, stackable 10% off code",
+      "full_detail": "High Tide Compounds is running 40% off sitewide from July 3 through July 5, stackable with the 10% SAMMYC discount. Confirm the final discount and checkout terms directly on the vendor website.",
+      "affiliate_url": "https://hightidecompounds.com/?aff=44",
+      "start_at": "2026-06-30T00:00:00-04:00",
+      "end_at": "2026-07-05T23:59:59-04:00",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 600,
+      "badge": "July 4th Sale",
+      "show_in_announcement_rolodex": true,
+      "rolodex_kicker": "New Partner"
     }
   ]
 }

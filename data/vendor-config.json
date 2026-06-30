@@ -85,6 +85,13 @@
       "affiliate_url": "https://bioedgeresearchlabs.com/?aff=1005717",
       "logo": "/assets/vendor-logos/bioedge-research-labs.webp",
       "use_product_deep_links": false
+    },
+    "High Tide Compounds": {
+      "id": "high-tide-compounds",
+      "discount_percent": 10,
+      "affiliate_url": "https://hightidecompounds.com/?aff=44",
+      "logo": "/assets/vendor-logos/high-tide-compounds.webp",
+      "use_product_deep_links": false
     }
   }
 }
