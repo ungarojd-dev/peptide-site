@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-01-glacier-flawless-glow-refresh-v23",
+  "version": "2026-07-01-solyn-full-tiers-v24",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-01T12:00:00-04:00",
+  "updated_at": "2026-07-01T13:15:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -143,7 +143,7 @@
       "vendor": "Solyn Labs",
       "display_vendor": "Solyn Compounds",
       "headline": "20% off first order, plus tiered savings",
-      "short_detail": "New customers get 20% off, stacks with 10% SAMMYC. Tiers up to 35% off + 5% Zelle",
+      "short_detail": "New customers get 20% off, stacks with 10% SAMMYC. Tiers: 10% off 1 compound, 25% off 5, 30% off 10, 35% off 20, plus 5% off with Zelle",
       "full_detail": "New customers receive 20% off their first order, stackable with the 10% SAMMYC discount. Solyn also runs a tiered volume discount: 10% off when buying 1 compound, 25% off when buying 5 compounds, 30% off when buying 10 compounds, and 35% off when buying 20 compounds. Paying with Zelle adds another 5% off. Code SAMMYC stacks on top of all tiers. Confirm eligibility and final checkout pricing directly with Solyn Compounds.",
       "affiliate_url": "https://partner.solyn.com/?ref=SammyC",
       "show_in_rolodex": true,
