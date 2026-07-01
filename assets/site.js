@@ -151,7 +151,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260630-high-tide-rolodex-announcement-v22";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260701-glacier-flawless-glow-refresh-v23";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
