@@ -121,7 +121,10 @@
   function initComplianceGate(){
     if(EXEMPT_PATHS.has(window.location.pathname)||window.location.pathname.startsWith("/admin/")) return;
     clearLegacyAcceptance();
-    if(hasAcceptedCompliance()) return;
+    if(hasAcceptedCompliance()){
+      document.dispatchEvent(new CustomEvent("mpp:compliance-accepted"));
+      return;
+    }
     const root=document.createElement("div");
     root.className="mpp-compliance-root";
     root.innerHTML=complianceMarkup();
@@ -143,6 +146,7 @@
       root.remove();
       window.dataLayer=window.dataLayer||[];
       window.dataLayer.push({event:"compliance_gate_accepted",gate_version:COMPLIANCE_VERSION,acceptance_scope:"browser_session"});
+      document.dispatchEvent(new CustomEvent("mpp:compliance-accepted"));
     });
     const openFull=()=>{card.hidden=true;full.hidden=false;full.querySelector("[data-compliance-full-close]")?.focus()};
     const closeFull=()=>{full.hidden=true;card.hidden=false;root.querySelector("[data-compliance-full-open]")?.focus()};
@@ -151,7 +155,51 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260702-solyn-affiliate-fix-v25";
+  const FLASH_POPUP_KEY="mpp_southern_finalday_popup_v1";
+  const FLASH_POPUP_PATHS=new Set(["/","/index.html"]);
+  function flashPopupMarkup(){
+    return `
+      <div class="mpp-flash-backdrop" data-flash-backdrop>
+        <section class="mpp-flash-card" role="dialog" aria-modal="true" aria-labelledby="mpp-flash-title">
+          <button class="mpp-flash-close" type="button" data-flash-close aria-label="Close">&times;</button>
+          <span class="mpp-flash-eyebrow">&#9889; Final Day Price Drop</span>
+          <h2 id="mpp-flash-title">Southern Aminos just dropped prices another 5%</h2>
+          <p class="mpp-flash-lead">That is up to <strong>45% off sitewide</strong>, stackable up to <strong>60% off</strong>, for the final day of their sale.</p>
+          <div class="mpp-flash-stats">
+            <div><strong>45%</strong><span>Off sitewide</span></div>
+            <div><strong>60%</strong><span>Stacked max</span></div>
+          </div>
+          <p class="mpp-flash-fine">Ends July 5. Confirm the final discount, stacking, and giveaway terms directly on the vendor website.</p>
+          <a class="button mpp-flash-cta" data-flash-cta href="https://southernaminos.com/?coupon=sammyc" target="_blank" rel="nofollow sponsored noopener">Shop the deal &#8250;</a>
+        </section>
+      </div>`;
+  }
+  function initFlashPopup(){
+    if(!FLASH_POPUP_PATHS.has(window.location.pathname)) return;
+    try{
+      if(sessionStorage.getItem(FLASH_POPUP_KEY)) return;
+    }catch(error){
+      // If storage is unavailable, fall through and show once for this page view only.
+    }
+    const show=()=>{
+      try{ sessionStorage.setItem(FLASH_POPUP_KEY,"1"); }catch(error){ /* best effort only */ }
+      const root=document.createElement("div");
+      root.className="mpp-flash-root";
+      root.innerHTML=flashPopupMarkup();
+      document.body.appendChild(root);
+      document.body.classList.add("mpp-flash-open");
+      const close=()=>{document.body.classList.remove("mpp-flash-open");root.remove()};
+      root.querySelector("[data-flash-close]").addEventListener("click",close);
+      root.querySelector("[data-flash-backdrop]").addEventListener("click",e=>{if(e.target===e.currentTarget)close()});
+      root.querySelector("[data-flash-cta]").addEventListener("click",()=>{
+        window.dataLayer=window.dataLayer||[];
+        window.dataLayer.push({event:"affiliate_click",product_name:"Southern Aminos final day price drop",button_text:"Shop the deal",button_location:"flash_popup",affiliate_network:"direct_vendor",vendor_name:"Southern Aminos",discount_code:"SAMMYC"});
+      });
+    };
+    document.addEventListener("mpp:compliance-accepted",show,{once:true});
+  }
+
+  const PROMOTIONS_URL="/data/promotions.json?v=20260704-southern-finalday-popup-v27";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -389,4 +437,5 @@
   window.MPPPromotions={ready:promotionsReady,active:activePromotions,forOffer:offerPromotions,openPanel:openPromotionPanel};
 
   initComplianceGate();
+  initFlashPopup();
 })();

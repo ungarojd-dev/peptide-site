@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-02-solyn-affiliate-fix-v25",
+  "version": "2026-07-04-southern-finalday-popup-v27",
   "timezone": "America/New_York",
   "updated_at": "2026-07-01T13:15:00-04:00",
   "promotions": [
@@ -34,20 +34,20 @@
       "cta_text": "Shop Now"
     },
     {
-      "id": "southern-july4-55-stack",
+      "id": "southern-finalday-45-stack",
       "vendor": "Southern Aminos",
       "display_vendor": "Southern Aminos",
-      "headline": "40% off sitewide, stacks to 55% off",
-      "short_detail": "Plus free patriotic vial covers, daily winners & a $500 grand prize",
-      "full_detail": "Southern Aminos is running a Fourth of July sale with 40% off sitewide, stackable up to 55% off. Every order gets a free patriotic vial cover, with daily winners, five free Adamax 10-vial giveaways, and a $500 grand prize. Runs June 29 through July 4. Confirm the final discount, stacking, and giveaway terms directly on the vendor website.",
+      "headline": "45% off sitewide, stacks to 60% off",
+      "short_detail": "Final day price drop, plus daily winners & a $500 grand prize",
+      "full_detail": "Southern Aminos dropped prices another 5% for the final day of their sale, now 45% off sitewide, stackable up to 60% off. Daily winners, five free Adamax 10-vial giveaways, and a $500 grand prize. Runs June 29 through July 5. Confirm the final discount, stacking, and giveaway terms directly on the vendor website.",
       "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
       "start_at": "2026-06-29T08:00:00-04:00",
-      "end_at": "2026-07-04T23:59:59-04:00",
+      "end_at": "2026-07-05T23:59:59-04:00",
       "show_in_rolodex": true,
       "featured": true,
       "show_vendor_badge": true,
       "priority": 200,
-      "badge": "July 4th Sale"
+      "badge": "Final Day Price Drop"
     },
     {
       "id": "labsourced-july4-25-stack",
