@@ -162,12 +162,13 @@
       <div class="mpp-flash-backdrop" data-flash-backdrop>
         <section class="mpp-flash-card" role="dialog" aria-modal="true" aria-labelledby="mpp-flash-title">
           <button class="mpp-flash-close" type="button" data-flash-close aria-label="Close">&times;</button>
-          <span class="mpp-flash-eyebrow">&#9889; Final Day Price Drop</span>
+          <span class="mpp-flash-eyebrow">&#127881; 4th of July Final Day Price Drop</span>
           <h2 id="mpp-flash-title">Southern Aminos just dropped prices another 5%</h2>
-          <p class="mpp-flash-lead">That is up to <strong>45% off sitewide</strong>, stackable up to <strong>60% off</strong>, for the final day of their sale.</p>
+          <p class="mpp-flash-lead">That is <strong>45% off sitewide</strong>. Stack code <strong>SAMMYC</strong> to get to <strong>60% off</strong>, for the final day of their sale.</p>
           <div class="mpp-flash-stats">
             <div><strong>45%</strong><span>Off sitewide</span></div>
-            <div><strong>60%</strong><span>Stacked max</span></div>
+            <div class="mpp-flash-stat-code"><strong>SAMMYC</strong><span>Stack this code</span></div>
+            <div><strong>60%</strong><span>Total with code</span></div>
           </div>
           <p class="mpp-flash-fine">Ends July 5. Confirm the final discount, stacking, and giveaway terms directly on the vendor website.</p>
           <a class="button mpp-flash-cta" data-flash-cta href="https://southernaminos.com/?coupon=sammyc" target="_blank" rel="nofollow sponsored noopener">Shop the deal &#8250;</a>
@@ -199,7 +200,7 @@
     document.addEventListener("mpp:compliance-accepted",show,{once:true});
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260704-southern-finalday-popup-v27";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260704-southern-patriotic-popup-v28";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
