@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-04-southern-patriotic-popup-v28",
+  "version": "2026-07-05-flawless-schedule-v31",
   "timezone": "America/New_York",
   "updated_at": "2026-07-01T13:15:00-04:00",
   "promotions": [
@@ -32,22 +32,6 @@
       "priority": 150,
       "badge": "Limited Time Deal",
       "cta_text": "Shop Now"
-    },
-    {
-      "id": "southern-finalday-45-stack",
-      "vendor": "Southern Aminos",
-      "display_vendor": "Southern Aminos",
-      "headline": "45% off sitewide, stacks to 60% off",
-      "short_detail": "Final day price drop, plus daily winners & a $500 grand prize",
-      "full_detail": "Southern Aminos dropped prices another 5% for the final day of their sale, now 45% off sitewide, stackable up to 60% off. Daily winners, five free Adamax 10-vial giveaways, and a $500 grand prize. Runs June 29 through July 5. Confirm the final discount, stacking, and giveaway terms directly on the vendor website.",
-      "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
-      "start_at": "2026-06-29T08:00:00-04:00",
-      "end_at": "2026-07-05T23:59:59-04:00",
-      "show_in_rolodex": true,
-      "featured": true,
-      "show_vendor_badge": true,
-      "priority": 200,
-      "badge": "Final Day Price Drop"
     },
     {
       "id": "labsourced-july4-25-stack",
@@ -152,13 +136,14 @@
       "badge": "Limited Time Deal"
     },
     {
-      "id": "flawless-summer-sale-bonus",
+      "id": "flawless-40-extended",
       "vendor": "Flawless Compounds",
       "display_vendor": "Flawless Compounds",
       "headline": "40% off sitewide",
-      "short_detail": "Stacks with 15% off code SAMMYC, running through end of month",
-      "full_detail": "Flawless Compounds is running 40% off sitewide through the end of the month. Code SAMMYC adds an additional 15% off, stackable on top. Every new batch is now 7X tested, including endotoxins, heavy metals, and sterility. Promotions apply automatically where eligible. Confirm final eligibility and stacking details directly on the vendor website.",
+      "short_detail": "Extended through Sunday night, stacks with 15% off code SAMMYC",
+      "full_detail": "Flawless Compounds extended their 40% off sitewide sale through Sunday at 11:59 PM. Code SAMMYC adds an additional 15% off, stackable on top. Every new batch is now 7X tested, including endotoxins, heavy metals, and sterility. Confirm final eligibility and stacking details directly on the vendor website.",
       "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
+      "end_at": "2026-07-05T23:59:59-04:00",
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 100,
@@ -166,17 +151,48 @@
       "cta_text": "Shop Now"
     },
     {
-      "id": "glow-aminos-summer-sale",
+      "id": "flawless-summer-sale-30",
+      "vendor": "Flawless Compounds",
+      "display_vendor": "Flawless Compounds",
+      "headline": "30% off sitewide, Summer Sale",
+      "short_detail": "Free 10ml BAC water on orders over $100, while supplies last",
+      "full_detail": "Starting Monday, Flawless Compounds switches to their Summer Sale, 30% off all products. Orders over $100 also get a free 10ml BAC water while supplies last. Every new batch is 7X tested, including endotoxins, heavy metals, and sterility. Confirm final eligibility and stacking details directly on the vendor website.",
+      "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
+      "start_at": "2026-07-06T00:00:00-04:00",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 100,
+      "badge": "Summer Sale",
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "glow-aminos-40-extended",
       "vendor": "Glow Aminos",
       "display_vendor": "Glow Aminos",
       "headline": "40% off sitewide",
-      "short_detail": "Stacks with 15% off code SAMMYC, running through end of month",
-      "full_detail": "Glow Aminos is running 40% off sitewide through the end of the month. Code SAMMYC adds an additional 15% off, stackable on top. Confirm final eligibility and stacking details directly on the vendor website.",
+      "short_detail": "Extended through Sunday night, stacks with 15% off code SAMMYC",
+      "full_detail": "Glow Aminos extended their 40% off sitewide sale through Sunday at 11:59 PM. Code SAMMYC adds an additional 15% off, stackable on top. Confirm final eligibility and stacking details directly on the vendor website.",
       "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
+      "end_at": "2026-07-05T23:59:59-04:00",
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 100,
       "badge": "Limited Time Deal",
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "glow-aminos-summer-sale-30",
+      "vendor": "Glow Aminos",
+      "display_vendor": "Glow Aminos",
+      "headline": "30% off sitewide, Summer Sale",
+      "short_detail": "Free 10ml BAC water on orders over $100, while supplies last",
+      "full_detail": "Starting Monday, Glow Aminos switches to their Summer Sale, 30% off all products. Orders over $100 also get a free 10ml BAC water while supplies last. Confirm final eligibility and stacking details directly on the vendor website.",
+      "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
+      "start_at": "2026-07-06T00:00:00-04:00",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 100,
+      "badge": "Summer Sale",
       "cta_text": "Shop Now"
     },
     {
