@@ -155,7 +155,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260705-brand-refresh-v32";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260705-brand-wordmark-v33";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{

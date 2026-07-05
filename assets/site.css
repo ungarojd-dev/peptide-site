@@ -261,3 +261,4 @@ body{
 .sale-nav-btn{border-color:rgba(255,255,255,.42);background:rgba(255,255,255,.12);color:#fff}
 .sale-nav-btn:hover{background:rgba(200,16,46,.55);border-color:rgba(255,255,255,.7);color:#fff}
 .sale-mobile-view-all{border-color:rgba(255,255,255,.5);color:#fff}
+.brand-wordmark{height:20px;width:auto;object-fit:contain;display:block}.footer-brand-wordmark{height:18px;width:auto;object-fit:contain;display:block}@media(max-width:620px){.brand-wordmark{height:17px}}
