@@ -131,28 +131,27 @@ body{
 @media(max-width:920px){.hero-inner{grid-template-columns:1fr;padding:48px 18px 44px}.hero-stats{max-width:420px;width:100%}}
 @media(max-width:620px){.top-inner{padding:11px 12px}.coupon-strip{font-size:10.5px;padding:6px 10px}.hero-inner{padding:42px 14px 38px;gap:24px}.hero h1{letter-spacing:-.8px}.hero-actions{gap:7px}.hero-actions .button{width:100%;padding:11px 14px}.hero-stats{border-radius:18px;padding:13px 15px}.deal-carousel-wrap{padding:13px 10px 11px}.dc-card{border-radius:16px}.skool-sticky-bar{padding:6px 10px}.sale-deal-card{border-radius:12px}}
 
-/* 2026-06-19 adjustment: make limited-time deals stand out while staying premium */
-/* 4th of July Limited Time Deals theme, red white and blue */
+/* 2026-07-06: LTO theme reverted from July 4th patriotic to brand black/olive after holiday */
 .deal-carousel{
   position:relative;
   overflow:hidden;
   background:
-    radial-gradient(circle at 14% 12%, rgba(255,255,255,.18), transparent 30%),
-    radial-gradient(circle at 90% 6%, rgba(200,16,46,.42), transparent 38%),
-    radial-gradient(circle at 50% 108%, rgba(255,255,255,.14), transparent 42%),
-    linear-gradient(135deg,#0a1f44 0%,#10295a 46%,#0a1f44 100%);
-  border-top:3px solid #c8102e;
-  border-bottom:3px solid #c8102e;
-  box-shadow:0 12px 34px rgba(8,20,46,.28),inset 0 1px 0 rgba(255,255,255,.16);
+    radial-gradient(circle at 14% 12%, rgba(255,255,255,.10), transparent 30%),
+    radial-gradient(circle at 90% 6%, rgba(106,120,41,.38), transparent 40%),
+    radial-gradient(circle at 50% 108%, rgba(255,255,255,.06), transparent 42%),
+    linear-gradient(135deg,#0a0d0b 0%,#141a15 48%,#0a0d0b 100%);
+  border-top:3px solid var(--olive);
+  border-bottom:3px solid var(--olive);
+  box-shadow:0 12px 34px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);
 }
 .deal-carousel::before{
   content:"";
   position:absolute;
   inset:0;
   background:
-    radial-gradient(rgba(255,255,255,.16) 1.3px, transparent 1.6px) 0 0/26px 26px,
-    repeating-linear-gradient(180deg,rgba(255,255,255,.05) 0,rgba(255,255,255,.05) 2px,transparent 2px,transparent 22px);
-  opacity:.55;
+    radial-gradient(rgba(255,255,255,.12) 1.3px, transparent 1.6px) 0 0/26px 26px,
+    repeating-linear-gradient(180deg,rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 2px,transparent 2px,transparent 22px);
+  opacity:.5;
   pointer-events:none;
 }
 .deal-carousel::after{
@@ -162,7 +161,7 @@ body{
   top:-80%;
   width:36%;
   height:240%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.22),transparent);
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);
   transform:rotate(18deg);
   animation:dealSpotlightSweep 6s ease-in-out infinite;
   pointer-events:none;
@@ -175,49 +174,44 @@ body{
 .deal-carousel-wrap{position:relative;z-index:1;max-width:960px;padding:18px 14px 16px}
 .deal-carousel-header{margin-bottom:13px}
 .dc-label-eyebrow{
-  background:#c8102e;
-  border-color:rgba(255,255,255,.32);
+  background:var(--olive);
+  border-color:rgba(255,255,255,.24);
   color:#fff;
-  box-shadow:0 8px 18px rgba(200,16,46,.32),0 0 0 3px rgba(255,255,255,.12);
-  animation:limitedOfferPulse 2.2s ease-in-out infinite;
+  box-shadow:0 8px 18px rgba(0,0,0,.32),0 0 0 3px rgba(255,255,255,.06);
 }
-@keyframes limitedOfferPulse{
-  0%,100%{transform:translateY(0);box-shadow:0 8px 18px rgba(200,16,46,.32),0 0 0 0 rgba(255,255,255,.26)}
-  50%{transform:translateY(-1px);box-shadow:0 10px 22px rgba(200,16,46,.4),0 0 0 5px rgba(255,255,255,.07)}
-}
-.dc-label-title{color:#fffdf8;text-shadow:0 2px 12px rgba(0,0,0,.3)}
-.dc-label-stache{color:rgba(255,255,255,.58)}
+.dc-label-title{color:#fffdf8;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.dc-label-stache{color:rgba(255,255,255,.5)}
 .dc-card{
-  border:1px solid rgba(255,255,255,.55);
-  background:linear-gradient(180deg,#ffffff 0%,#f3f6fc 100%);
-  box-shadow:0 18px 40px rgba(8,20,46,.3),inset 0 1px 0 rgba(255,255,255,.92);
-  backdrop-filter:none;
+  border:1px solid rgba(255,255,255,.14);
+  background:rgba(255,255,255,.05);
+  box-shadow:0 18px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);
+  backdrop-filter:blur(10px);
 }
 .dc-card:hover{
-  background:linear-gradient(180deg,#ffffff 0%,#eef3fb 100%);
+  background:rgba(255,255,255,.08);
   transform:translateY(-2px);
-  box-shadow:0 22px 48px rgba(8,20,46,.36),inset 0 1px 0 rgba(255,255,255,.96);
+  box-shadow:0 22px 48px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.1);
 }
 .dc-badge{
-  background:#c8102e;
+  background:var(--olive);
   color:#fff;
-  box-shadow:0 6px 14px rgba(200,16,46,.28);
+  box-shadow:0 6px 14px rgba(0,0,0,.3);
 }
-.dc-vendor{color:#0a2a5e}.dc-headline{color:#0a1f44}.dc-detail{color:#4a5b7a}.dc-stack{background:rgba(200,16,46,.1);border-color:rgba(200,16,46,.28);color:#b00d27}.dc-cta{
-  background:linear-gradient(135deg,#0a2a5e,#14418c);
+.dc-vendor{color:#e2e8e3}.dc-headline{color:#fff}.dc-detail{color:rgba(255,255,255,.62)}.dc-stack{background:rgba(106,120,41,.18);border-color:rgba(106,120,41,.4);color:#b7c76a}.dc-cta{
+  background:var(--olive);
   color:#fff;
-  box-shadow:0 8px 18px rgba(10,42,94,.26);
+  box-shadow:0 8px 18px rgba(0,0,0,.3);
 }
-.dc-cta:hover{background:linear-gradient(135deg,#0c326e,#1a4ea3)}
+.dc-cta:hover{background:var(--olive-2)}
 .dc-nav-btn{
-  background:rgba(255,255,255,.12);
-  border-color:rgba(255,255,255,.4);
+  background:rgba(255,255,255,.08);
+  border-color:rgba(255,255,255,.2);
   color:#fff;
 }
-.dc-nav-btn:hover{background:rgba(200,16,46,.55);border-color:rgba(255,255,255,.7);color:#fff}.dc-dot{background:rgba(255,255,255,.32)}.dc-dot.active{background:#c8102e;box-shadow:0 0 0 3px rgba(255,255,255,.22)}
+.dc-nav-btn:hover{background:var(--olive);border-color:rgba(255,255,255,.3);color:#fff}.dc-dot{background:rgba(255,255,255,.24)}.dc-dot.active{background:var(--olive);box-shadow:0 0 0 3px rgba(255,255,255,.14)}
 @media(max-width:620px){
   .deal-carousel-wrap{padding:14px 10px 12px}
-  .dc-card{border-radius:16px;box-shadow:0 14px 30px rgba(8,20,46,.26),inset 0 1px 0 rgba(255,255,255,.92)}
+  .dc-card{border-radius:16px;box-shadow:0 14px 30px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.08)}
   .dc-label-title{font-size:16px}
   .dc-label-eyebrow{font-size:8.5px}
 }
@@ -230,35 +224,34 @@ body{
 @media(max-width:720px){.vantyx-supply-logo{width:68px;height:30px}.vantyx-supply-copy{display:flex;align-items:center;gap:8px}.vantyx-supply-text{min-width:0}.vendor-head img{width:72px;height:38px}}
 @media(max-width:380px){.vantyx-supply-logo{display:none}}
 
-/* 2026-06-30: Announcements rolodex restyled to match the July 4th Limited Time Deals theme for the holiday week. REVERT after July 4th by deleting this block. */
+/* 2026-07-06: Announcements rolodex reverted from July 4th patriotic theme to brand black/olive */
 .sale-banner{
   background:
-    radial-gradient(circle at 14% 12%, rgba(255,255,255,.16), transparent 30%),
-    radial-gradient(circle at 90% 6%, rgba(200,16,46,.4), transparent 38%),
-    linear-gradient(135deg,#0a1f44 0%,#10295a 46%,#0a1f44 100%);
-  border-bottom:3px solid #c8102e;
-  box-shadow:0 6px 18px rgba(8,20,46,.3);
+    radial-gradient(circle at 14% 12%, rgba(255,255,255,.08), transparent 30%),
+    radial-gradient(circle at 90% 6%, rgba(106,120,41,.32), transparent 38%),
+    linear-gradient(135deg,#0a0d0b 0%,#141a15 46%,#0a0d0b 100%);
+  border-bottom:3px solid var(--olive);
+  box-shadow:0 6px 18px rgba(0,0,0,.35);
 }
-.sale-banner::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.7),#c8102e,rgba(255,255,255,.7),transparent)}
-.sale-banner::after{background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.1)50%,transparent 60%)}
+.sale-banner::before{background:linear-gradient(90deg,transparent,rgba(255,255,255,.5),var(--olive),rgba(255,255,255,.5),transparent)}
+.sale-banner::after{background:linear-gradient(110deg,transparent 40%,rgba(255,255,255,.08)50%,transparent 60%)}
 .sale-headline{color:#fff}
-.sale-subline{color:rgba(255,255,255,.85)}
+.sale-subline{color:rgba(255,255,255,.8)}
 .sale-subline strong{color:#fff}
-.sale-pct strong{color:#0a2a5e}
+.sale-pct strong{color:var(--sand)}
 .sale-view-all{color:#fff}
-.sale-live-dot{background:#c8102e;animation:salePulseRWB 1.8s ease-in-out infinite}
-@keyframes salePulseRWB{0%,100%{transform:scale(1);opacity:1;box-shadow:0 0 0 0 rgba(200,16,46,.5)}50%{transform:scale(.82);opacity:.82;box-shadow:0 0 0 5px rgba(200,16,46,0)}}
+.sale-live-dot{background:var(--olive);animation:salePulse 1.8s ease-in-out infinite}
 .sale-deal-card{
-  border-color:rgba(255,255,255,.55);
-  background:linear-gradient(180deg,#ffffff 0%,#f3f6fc 100%);
-  box-shadow:0 8px 20px rgba(8,20,46,.24),inset 0 1px 0 rgba(255,255,255,.92);
+  border-color:rgba(255,255,255,.16);
+  background:rgba(255,255,255,.05);
+  box-shadow:0 8px 20px rgba(0,0,0,.3),inset 0 1px 0 rgba(255,255,255,.06);
 }
-.sale-deal-card:hover{background:linear-gradient(180deg,#ffffff 0%,#eef3fb 100%)}
-.sale-vendor{border-right-color:rgba(10,42,94,.18);color:#0a2a5e}
-.sale-vendor-wrap{border-right-color:rgba(10,42,94,.18)}
-.sale-pct{color:#4a5b7a}
-.sale-cta-chip{background:linear-gradient(135deg,#0a2a5e,#14418c);color:#fff}
-.sale-nav-btn{border-color:rgba(255,255,255,.42);background:rgba(255,255,255,.12);color:#fff}
-.sale-nav-btn:hover{background:rgba(200,16,46,.55);border-color:rgba(255,255,255,.7);color:#fff}
-.sale-mobile-view-all{border-color:rgba(255,255,255,.5);color:#fff}
+.sale-deal-card:hover{background:rgba(255,255,255,.09)}
+.sale-vendor{border-right-color:rgba(255,255,255,.2);color:var(--sand)}
+.sale-vendor-wrap{border-right-color:rgba(255,255,255,.2)}
+.sale-pct{color:rgba(255,255,255,.7)}
+.sale-cta-chip{background:var(--olive);color:#fff}
+.sale-nav-btn{border-color:rgba(255,255,255,.3);background:rgba(255,255,255,.08);color:#fff}
+.sale-nav-btn:hover{background:var(--olive);border-color:rgba(255,255,255,.4);color:#fff}
+.sale-mobile-view-all{border-color:rgba(255,255,255,.4);color:#fff}
 .brand-wordmark{height:20px;width:auto;object-fit:contain;display:block}.footer-brand-wordmark{height:18px;width:auto;object-fit:contain;display:block}@media(max-width:620px){.brand-wordmark{height:17px}}
