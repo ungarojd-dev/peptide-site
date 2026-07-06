@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-06-brand-refresh-v36",
+  "version": "2026-07-06-brand-refresh-v37",
   "timezone": "America/New_York",
   "updated_at": "2026-07-01T13:15:00-04:00",
   "promotions": [
@@ -46,7 +46,7 @@
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 160,
-      "badge": "July 4th Sale"
+      "badge": "Limited Time Deal"
     },
     {
       "id": "ion-july4-stack",
@@ -61,7 +61,7 @@
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 140,
-      "badge": "July 4th Sale"
+      "badge": "Limited Time Deal"
     },
     {
       "id": "milehigh-july4-20-sammyc",
@@ -76,7 +76,7 @@
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 120,
-      "badge": "July 4th Sale"
+      "badge": "Limited Time Deal"
     },
     {
       "id": "instant-july4-25-stack",
@@ -91,7 +91,7 @@
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 115,
-      "badge": "July 4th Sale"
+      "badge": "Limited Time Deal"
     },
     {
       "id": "oneday-july4-30-stack",
@@ -105,7 +105,7 @@
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 112,
-      "badge": "July 4th Sale"
+      "badge": "Limited Time Deal"
     },
     {
       "id": "coffeepeppers-july4-stack",
@@ -120,7 +120,7 @@
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 108,
-      "badge": "July 4th Sale"
+      "badge": "Limited Time Deal"
     },
     {
       "id": "solyn-first-order-20",
@@ -208,7 +208,7 @@
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 600,
-      "badge": "July 4th Sale",
+      "badge": "Limited Time Deal",
       "show_in_announcement_rolodex": true,
       "rolodex_kicker": "New Partner"
     }
