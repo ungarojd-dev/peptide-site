@@ -1,7 +1,8 @@
 (function(global){
   "use strict";
 
-  const CATEGORY_ORDER=["All","GLP-1 & Incretin","Repair & Recovery","Growth Hormone Research","Cognitive & Nootropic","Longevity & Cellular Health","Metabolic & Mitochondrial","Bioregulators","Skin, Tanning & Sexual Health","Supplies","Other"];
+  const CATEGORY_ORDER=["All","Peptides","GLP-1 & Incretin","Repair & Recovery","Growth Hormone Research","Cognitive & Nootropic","Longevity & Cellular Health","Metabolic & Mitochondrial","Bioregulators","Skin, Tanning & Sexual Health","Supplies","Other"];
+  const NON_PEPTIDE_CATEGORIES=["Supplies","Other"];
   const FORMAT_ORDER=["All","Vials","Capsules","Dissolvable Strips","Nasal Sprays","Topicals","Liquids","Aminos","Bioregulators","Supplies"];
   const ALL_VARIANTS="__all__";
   const state={catalog:null,cards:[],query:"",category:"All",format:"All",vendor:"All",sort:"price",activeVariants:{},expanded:{},source:"Loading"};
@@ -25,7 +26,7 @@
   function money(value){return value!=null&&Number.isFinite(Number(value))?`$${Number(value).toFixed(2)}`:null;}
   function filterValues(order,property){
     const found=new Set(state.cards.map(card=>card[property]).filter(Boolean));
-    const ordered=order.filter(item=>item==="All"||Array.from(found).some(value=>matchesFilterValue(value,item)));
+    const ordered=order.filter(item=>item==="All"||item==="Peptides"||Array.from(found).some(value=>matchesFilterValue(value,item)));
     const extras=Array.from(found).filter(value=>!ordered.some(item=>matchesFilterValue(item,value))).sort((a,b)=>String(a).localeCompare(String(b)));
     return [...ordered,...extras];
   }
@@ -69,9 +70,14 @@
   function offersForCard(card){return allOffers(card).filter(offerMatchesVendor);}
   function allVendorNames(){const set=new Map();state.cards.forEach(card=>cardVendors(card).forEach(name=>set.set(normalizeFilterValue(name),name)));return Array.from(set.values()).sort((a,b)=>a.localeCompare(b));}
 
+  function categoryMatches(card){
+    if(state.category==="All") return true;
+    if(state.category==="Peptides") return !NON_PEPTIDE_CATEGORIES.some(excluded=>matchesFilterValue(card.category,excluded));
+    return matchesFilterValue(card.category,state.category);
+  }
   function cards(){
     const query=state.query.trim().toLowerCase();
-    const filtered=state.cards.filter(card=>(state.category==="All"||matchesFilterValue(card.category,state.category))&&(state.format==="All"||matchesFilterValue(card.format,state.format))&&cardHasVendor(card,state.vendor)&&(!query||searchText(card).includes(query)));
+    const filtered=state.cards.filter(card=>categoryMatches(card)&&(state.format==="All"||matchesFilterValue(card.format,state.format))&&cardHasVendor(card,state.vendor)&&(!query||searchText(card).includes(query)));
     return filtered.sort((a,b)=>{
       if(state.sort==="vendors") return Number(b.supplier_count||0)-Number(a.supplier_count||0)||String(a.name||"").localeCompare(String(b.name||""));
       if(state.sort==="name") return String(a.name||"").localeCompare(String(b.name||""));
