@@ -852,7 +852,19 @@ body.theme-dark .premium-catalog .catalog-controls { background: rgba(255,255,25
 body.theme-dark .catalog-search-shell { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); }
 body.theme-dark .premium-catalog .catalog-search { color: #fff; }
 body.theme-dark .premium-catalog .catalog-search::placeholder { color: rgba(255,255,255,.4); }
-body.theme-dark .catalog-select { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.12); color: #fff; }
+body.theme-dark select.catalog-select,
+body.theme-dark select.catalog-sort {
+  background-color: rgba(255,255,255,.06) !important;
+  border-color: rgba(255,255,255,.14) !important;
+  color: #fff !important;
+  box-shadow: none !important;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--olive-soft) 50%),
+    linear-gradient(135deg, var(--olive-soft) 50%, transparent 50%) !important;
+}
+body.theme-dark select.catalog-select option,
+body.theme-dark select.catalog-sort option { background-color: #1a1a1a; color: #fff; }
+body.theme-dark .product-card-head { background: radial-gradient(circle at 0 0, rgba(140,154,97,.14), transparent 32%), linear-gradient(180deg, rgba(255,255,255,.03), rgba(255,255,255,0)); border-bottom-color: rgba(255,255,255,.08); }
 body.theme-dark .catalog-filter-title { color: rgba(255,255,255,.5); }
 body.theme-dark .premium-catalog .catalog-chip { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.7); }
 body.theme-dark .premium-catalog .catalog-chip.active { background: var(--olive); border-color: var(--olive); color: #fff; }
