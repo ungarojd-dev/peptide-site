@@ -265,6 +265,25 @@ function configUrl(vendor) {
   return VENDOR_CONFIG[vendor]?.affiliate_url || "#";
 }
 
+// WooCommerce-only vendor list (excludes Instant Peptides and LabSourced Peptides,
+// which run custom JSON APIs and have no payment_gateways endpoint).
+// Reused by scripts/refresh-payment-methods.mjs.
+export const WOO_VENDOR_API_CONFIG = [
+  { vendor: "Glacier Aminos", base: "https://glacieraminos.shop/wp-json/wc/v3", ckEnv: "GLACIER_CK", csEnv: "GLACIER_CS" },
+  { vendor: "Ion Peptide", base: "https://ionpeptide.com/wp-json/wc/v3", ckEnv: "ION_CK", csEnv: "ION_CS" },
+  { vendor: "Southern Aminos", base: "https://southernaminos.com/wp-json/wc/v3", ckEnv: "SOUTHERN_CK", csEnv: "SOUTHERN_CS" },
+  { vendor: "Flawless Compounds", base: "https://flawlesscompounds.com/wp-json/wc/v3", ckEnv: "FLAWLESS_CK", csEnv: "FLAWLESS_CS" },
+  { vendor: "Glow Aminos", base: "https://glowaminos.com/wp-json/wc/v3", ckEnv: "GLOW_CK", csEnv: "GLOW_CS" },
+  { vendor: "Mile High Peptides", base: "https://milehighcompounds.is/wp-json/wc/v3", ckEnv: "MILEHIGH_CK", csEnv: "MILEHIGH_CS" },
+  { vendor: "Solyn Labs", base: "https://solyn.com/wp-json/wc/v3", ckEnv: "SOLYN_CK", csEnv: "SOLYN_CS" },
+  { vendor: "Oneday Compounds", base: `${(process.env.ONEDAY_BASE_URL || "https://onedaycompounds.net").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "ONEDAY_CK", csEnv: "ONEDAY_CS" },
+  { vendor: "Coffee and Peppers", base: "https://coffeeandpeppers.com/wp-json/wc/v3", ckEnv: "COFFEEANDPEPPERS_CK", csEnv: "COFFEEANDPEPPERS_CS" },
+  { vendor: "Bioedge Research Labs", base: "https://bioedgeresearchlabs.com/wp-json/wc/v3", ckEnv: "BIOEDGE_CK", csEnv: "BIOEDGE_CS" },
+  { vendor: "High Tide Compounds", base: "https://hightidecompounds.com/wp-json/wc/v3", ckEnv: "HIGHTIDE_CK", csEnv: "HIGHTIDE_CS" }
+];
+
+export { wooAuth, wooParams, fetchJson };
+
 export const VENDOR_ADAPTERS = [
   wooAdapter({ vendor: "Glacier Aminos", base: "https://glacieraminos.shop/wp-json/wc/v3", ckEnv: "GLACIER_CK", csEnv: "GLACIER_CS", affiliateUrl: configUrl("Glacier Aminos"), affiliateParams: { ref: "SammyC", coupon: "SammyC" } }),
   wooAdapter({ vendor: "Ion Peptide", base: "https://ionpeptide.com/wp-json/wc/v3", ckEnv: "ION_CK", csEnv: "ION_CS", affiliateUrl: configUrl("Ion Peptide"), affiliateParams: { ref: "SammyC" }, timeoutMs: 25000 }),

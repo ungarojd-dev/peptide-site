@@ -555,7 +555,7 @@
   .catalog-hero-row h2 { font-size: 34px; letter-spacing: -1px; }
   .catalog-hero-row p { font-size: 13px; margin-top: 9px; }
   .catalog-code-card { display: none; }
-  .premium-catalog .catalog-controls { top: 64px; border-radius: 18px; }
+  .premium-catalog .catalog-controls { position: static; top: auto; border-radius: 18px; }
   .premium-catalog .catalog-control-inner { padding: 10px; }
   .catalog-search-row { grid-template-columns: 1fr auto; gap: 8px; }
   .catalog-search-shell { min-height: 46px; border-radius: 14px; padding: 0 10px; }
@@ -848,7 +848,7 @@ body.theme-dark .catalog-kicker { color: var(--olive-soft); }
 body.theme-dark .catalog-hero-row h2 { color: #fff; }
 body.theme-dark .catalog-hero-row p { color: rgba(255,255,255,.65); }
 body.theme-dark .catalog-code-card { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); color: #fff; }
-body.theme-dark .premium-catalog .catalog-controls { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); }
+body.theme-dark .premium-catalog .catalog-controls { background: rgba(20,20,20,.97); border-color: rgba(255,255,255,.1); backdrop-filter: blur(18px) saturate(1.1); }
 body.theme-dark .catalog-search-shell { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); }
 body.theme-dark .premium-catalog .catalog-search { color: #fff; }
 body.theme-dark .premium-catalog .catalog-search::placeholder { color: rgba(255,255,255,.4); }
@@ -869,3 +869,11 @@ body.theme-dark .catalog-filter-title { color: rgba(255,255,255,.5); }
 body.theme-dark .premium-catalog .catalog-chip { background: rgba(255,255,255,.05); border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.7); }
 body.theme-dark .premium-catalog .catalog-chip.active { background: var(--olive); border-color: var(--olive); color: #fff; }
 body.theme-dark .catalog-empty, body.theme-dark .catalog-loading, body.theme-dark #catalogSource { color: rgba(255,255,255,.5); }
+
+/* ============================================================
+   Payment method icons — vendor-level, rendered in supplier row
+   Populate vendor-config.json "payment_methods" per vendor to activate.
+   ============================================================ */
+.supplier-payment-icons { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0; }
+.payment-icon { display: inline-flex; align-items: center; border: 1px solid rgba(31,58,45,.14); border-radius: 999px; background: #fff; color: #4b554f; padding: 2px 7px; font-size: 9px; font-weight: 800; letter-spacing: .2px; text-transform: uppercase; }
+body.theme-dark .payment-icon { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.14); color: rgba(255,255,255,.7); }
