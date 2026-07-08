@@ -9,7 +9,6 @@
   const nav=document.querySelector("[data-site-nav]");
   if(toggle&&nav) toggle.addEventListener("click",()=>nav.classList.toggle("show"));
   document.querySelectorAll("[data-year]").forEach(node=>node.textContent=String(new Date().getFullYear()));
-  document.querySelectorAll("[data-vantyx-supply-link]").forEach(link=>link.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"VANTYX Supply homepage banner",product_category:"lab_supplies",button_text:"Shop VANTYX Supply",button_location:"homepage_supply_banner",affiliate_network:"direct_vendor",vendor_name:"VANTYX Supply",affiliate_url:link.href,discount_code:"SAMMYC",discount_percent:10})}));
 
   const escapeHtml=value=>String(value).replace(/[&<>\"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;","'":"&#039;"}[char]));
 
@@ -122,7 +121,10 @@
   function initComplianceGate(){
     if(EXEMPT_PATHS.has(window.location.pathname)||window.location.pathname.startsWith("/admin/")) return;
     clearLegacyAcceptance();
-    if(hasAcceptedCompliance()) return;
+    if(hasAcceptedCompliance()){
+      document.dispatchEvent(new CustomEvent("mpp:compliance-accepted"));
+      return;
+    }
     const root=document.createElement("div");
     root.className="mpp-compliance-root";
     root.innerHTML=complianceMarkup();
@@ -148,16 +150,8 @@
     }
     const update=()=>{submit.disabled=!checks.every(input=>input.checked)};
     checks.forEach(input=>input.addEventListener("change",update));
-    root.querySelector("[data-compliance-accept-all]").addEventListener("click",()=>{
-      checks.forEach(input=>input.checked=true);
-      update();
-      saveAcceptance();
-      document.body.classList.remove("mpp-compliance-open");
-      root.remove();
-      window.dataLayer=window.dataLayer||[];
-      window.dataLayer.push({event:"compliance_gate_accepted",gate_version:COMPLIANCE_VERSION,acceptance_scope:"browser_session",accepted_via:"accept_all"});
-    });
-    root.querySelector("[data-compliance-decline]").addEventListener("click",()=>{window.location.href="https://www.google.com"});
+    root.querySelector("[data-compliance-accept-all]").addEventListener("click",()=>{checks.forEach(input=>input.checked=true);update();submit.focus()});
+    root.querySelector("[data-compliance-decline]").addEventListener("click",()=>window.location.replace("about:blank"));
     submit.addEventListener("click",()=>{
       if(submit.disabled) return;
       saveAcceptance();
@@ -165,6 +159,7 @@
       root.remove();
       window.dataLayer=window.dataLayer||[];
       window.dataLayer.push({event:"compliance_gate_accepted",gate_version:COMPLIANCE_VERSION,acceptance_scope:"browser_session"});
+      document.dispatchEvent(new CustomEvent("mpp:compliance-accepted"));
     });
     const openFull=()=>{card.hidden=true;full.hidden=false;full.querySelector("[data-compliance-full-close]")?.focus()};
     const closeFull=()=>{full.hidden=true;card.hidden=false;root.querySelector("[data-compliance-full-open]")?.focus()};
@@ -173,7 +168,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260618-fd-qa3";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260708-v3-functional-merge-v1";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -221,10 +216,7 @@
     promoPanelRoot.addEventListener("click",event=>{if(event.target===promoPanelRoot)closePromotionPanel()});
     promoPanelRoot.querySelectorAll("[data-promo-affiliate='1']").forEach(link=>link.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Active deals panel",product_category:"promotion",button_text:"Visit vendor",button_location:"active_deals_panel",affiliate_network:"direct_vendor",vendor_name:link.dataset.promoVendor||"",affiliate_url:link.href})}));
   }
-  const splitHeadlineBadge=headline=>{
-    const fdMatch=String(headline||"").match(/^Father's Day:\s*(.+)$/);
-    return fdMatch?{badge:"Father's Day",text:fdMatch[1]}:{badge:null,text:headline};
-  };
+  const splitHeadlineBadge=headline=>({badge:null,text:headline});
   function setupPromotionRolodex(promotions){
     const saleCard=document.querySelector("[data-sale-card]");
     if(!saleCard) return;
@@ -239,18 +231,7 @@
     if(headline)headline.textContent="📣 Announcements";
     if(kicker)kicker.textContent="Announcements";
     if(hint)hint.textContent="Tap to view";
-    if(saleCount)saleCount.textContent="1 / 1";
-    if(prev){prev.hidden=true;prev.setAttribute("aria-hidden","true");}
-    if(next){next.hidden=true;next.setAttribute("aria-hidden","true");}
-    if(subline)subline.innerHTML=`<button class="sale-view-all" type="button" data-fathers-day-scroll>View all Father's Day deals →</button>`;
-    const renderStaticCta=()=>{
-      saleCard.href="#deals";
-      saleCard.removeAttribute("target");
-      saleCard.removeAttribute("rel");
-      saleCard.setAttribute("aria-label","View Father's Day deals");
-      saleCard.dataset.vendor="Father's Day Deals";
-      saleCard.innerHTML=`<span class="sale-vendor">Father's Day Deals</span><span class="sale-pct"><strong>Check out current Father's Day deals</strong> from supported vendors.</span><span class="sale-cta-chip">View deals</span>`;
-    };
+    if(subline)subline.innerHTML=`<button class="sale-view-all" type="button" data-deals-scroll>View all deals →</button>`;
     const scrollToDeals=event=>{
       event.preventDefault();
       const target=document.querySelector("#deals");
@@ -262,11 +243,55 @@
         window.scrollTo({top:Math.max(0,top),behavior:"smooth"});
       }
       window.dataLayer=window.dataLayer||[];
-      window.dataLayer.push({event:"promo_section_click",product_name:"Father's Day deals",product_category:"promotion",button_text:"View deals",button_location:"announcement_rolodex"});
+      window.dataLayer.push({event:"promo_section_click",product_name:"Limited Time Deals",product_category:"promotion",button_text:"View deals",button_location:"announcement_rolodex"});
     };
-    renderStaticCta();
-    saleCard.addEventListener("click",scrollToDeals);
-    document.querySelectorAll("[data-fathers-day-scroll]").forEach(button=>button.addEventListener("click",scrollToDeals));
+    const announcementPromos=promotions.filter(p=>p.show_in_announcement_rolodex===true).sort((a,b)=>Number(b.priority||0)-Number(a.priority||0));
+    const slides=[{static:true},...announcementPromos];
+    let current=0;let autoTimer;
+    const render=()=>{
+      const slide=slides[current];
+      saleCard.classList.toggle("sale-deal-card--promo",!slide.static);
+      if(slide.static){
+        saleCard.href="#deals";
+        saleCard.removeAttribute("target");
+        saleCard.removeAttribute("rel");
+        saleCard.removeAttribute("data-vendor");
+        saleCard.setAttribute("aria-label","View current deals");
+        saleCard.innerHTML=`<span class="sale-vendor">Limited Time Deals</span><span class="sale-pct"><strong>LIMITED TIME VENDOR DEALS</strong> Save up to 55% off</span><span class="sale-cta-chip">View deals</span>`;
+      }else{
+        const logo=dealLogoPath(slide.display_vendor||slide.vendor);
+        const logoHtml=logo?`<img class="sale-vendor-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
+        const kickerText=slide.rolodex_kicker||"";
+        saleCard.href=slide.affiliate_url||"#";
+        saleCard.target="_blank";
+        saleCard.rel="nofollow sponsored noopener";
+        saleCard.dataset.vendor=slide.vendor||"";
+        saleCard.setAttribute("aria-label",slide.headline||slide.vendor||"View promotion");
+        saleCard.innerHTML=`<span class="sale-vendor-wrap">${logoHtml}<span class="sale-vendor">${escapeHtml(slide.display_vendor||slide.vendor)}</span></span><span class="sale-pct">${kickerText?`<strong>${escapeHtml(kickerText)}</strong> `:""}${escapeHtml(slide.short_detail||"")}</span><span class="sale-cta-chip">${escapeHtml(slide.cta_text||"View deal")}</span>`;
+      }
+      if(saleCount)saleCount.textContent=`${current+1} / ${slides.length}`;
+    };
+    const goTo=i=>{current=(i+slides.length)%slides.length;render();resetTimer();};
+    const resetTimer=()=>{clearInterval(autoTimer);if(slides.length>1)autoTimer=setInterval(()=>goTo(current+1),6000);};
+    if(prev){
+      const hide=slides.length<2;
+      prev.hidden=hide;prev.setAttribute("aria-hidden",String(hide));
+      prev.addEventListener("click",()=>goTo(current-1));
+    }
+    if(next){
+      const hide=slides.length<2;
+      next.hidden=hide;next.setAttribute("aria-hidden",String(hide));
+      next.addEventListener("click",()=>goTo(current+1));
+    }
+    saleCard.addEventListener("click",event=>{
+      const slide=slides[current];
+      if(slide.static){scrollToDeals(event);return;}
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:"affiliate_click",product_name:slide.headline||slide.vendor,product_category:"promotion",button_text:slide.cta_text||"View deal",button_location:"announcement_rolodex",vendor_name:slide.vendor||"",affiliate_url:slide.affiliate_url||""});
+    });
+    document.querySelectorAll("[data-deals-scroll]").forEach(button=>button.addEventListener("click",scrollToDeals));
+    render();
+    resetTimer();
     if(banner)banner.hidden=false;
   }
 
@@ -308,15 +333,12 @@
       "glow aminos":"/assets/vendor-logos/glow-aminos.webp",
       "glow & flawless":"/assets/vendor-logos/glow-aminos.webp",
       "flawless compounds":"/assets/vendor-logos/flawless-compounds.webp",
-      "oneday compounds":"/assets/vendor-logos/oneday-compounds.webp",
-      "one day compounds":"/assets/vendor-logos/oneday-compounds.webp",
-      "coffee & peppers":"/assets/vendor-logos/coffee-and-peppers.webp",
-      "coffee and peppers":"/assets/vendor-logos/coffee-and-peppers.webp",
-      "bioedge research labs":"/assets/vendor-logos/bioedge-research-labs.webp",
-      "vantyx supply":"/assets/vendor-logos/vantyx-supply.webp",
-      "vantyx":"/assets/vendor-logos/vantyx-supply.webp",
       "labsourced peptides":"/assets/vendor-logos/labsourced-peptides.webp",
-      "labsourced":"/assets/vendor-logos/labsourced-peptides.webp"
+      "labsourced":"/assets/vendor-logos/labsourced-peptides.webp",
+      "coffee and peppers":"/assets/vendor-logos/coffee-and-peppers.webp",
+      "coffee & peppers":"/assets/vendor-logos/coffee-and-peppers.webp",
+      "oneday compounds":"/assets/vendor-logos/oneday-compounds.webp",
+      "high tide compounds":"/assets/vendor-logos/high-tide-compounds.webp"
     };
     return logos[key]||"";
   };
@@ -331,7 +353,7 @@
     const render=()=>{
       const deal=deals[current];
       const{text:headline}=splitHeadlineBadge(deal.headline);
-      const badgeHtml=`<span class="dc-badge">Father's Day Deal</span>`;
+      const badgeHtml=`<span class="dc-badge">${escapeHtml(deal.badge||"Limited Time Deal")}</span>`;
       const stackChip=isStackable(deal)?`<span class="dc-stack">+SAMMYC</span>`:"";
       const logo=dealLogoPath(deal.display_vendor||deal.vendor);
       const logoHtml=logo?`<img class="dc-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";

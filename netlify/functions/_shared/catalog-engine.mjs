@@ -56,7 +56,7 @@ function normalized(value) {
     .toLowerCase()
     .replace(/&/g, " and ")
     .replace(/\+/g, " plus ")
-    .replace(/[^a-z0-9§]+/g, " ")
+    .replace(/[^a-z0-9§$]+/g, " ")
     .replace(/\s+/g, " ")
     .trim();
 }
@@ -151,6 +151,16 @@ const HARDCODED_FORCED_ALIASES = {
   "edge t2": "tirzepatide", "edge t 2": "tirzepatide",
   // Bioedge Sermorlin typo (missing e)
   "sermorlin": "sermorelin",
+  // Live-diagnostics audit fixes (2026-06-29)
+  // Coffee and Peppers uses $$ in place of SS for SS-31
+  "$$-31": "ss-31",
+  // Coffee and Peppers omits the 1MQ suffix on 5-Amino-1MQ
+  "5-amino": "5-amino-1mq",
+  // Coffee and Peppers lists AOD-9604 as plain AOD
+  "aod": "aod-9604",
+  // Solyn Labs storefront typos
+  "selenk": "selank",
+  "semex": "semax",
 };
 
 const forcedAliases = Object.entries({ ...(overridePayload.forced_aliases || {}), ...HARDCODED_FORCED_ALIASES })
@@ -160,8 +170,8 @@ const forcedAliases = Object.entries({ ...(overridePayload.forced_aliases || {})
 const BLEND_COMPONENTS = [
   ["Semaglutide", ["semaglutide", "sema", "pep-sm", "peptide sm", "gla-1 sm", "ion-1s", "sa-1s", "fg1-s", "fg1 s"]],
   ["Tirzepatide", ["tirzepatide", "tirz", "trz", "pep-trz", "pep-tz", "peptide trz", "peptide tz", "gla-2 trz", "gla-2.5 trz", "gla 2 5 trz", "glp-t2", "ion-2t", "sa-2t", "fg2-t", "fg2 t"]],
-  ["Retatrutide", ["retatrutide", "reta", "pep-rt", "peptide rt", "gla-3 rt", "gla-2.5 trz/rt", "gla 2 5 trz rt", "glp-r3", "ion-3r", "sa-3r", "oc-3rt", "fg3-r", "fg3 r"]],
-  ["Cagrilintide", ["cagrilintide", "cagrilinitide", "cagri", "pep-cag", "sa-4c"]],
+  ["Retatrutide", ["retatrutide", "reta", "pep-rt", "peptide rt", "gla-3 rt", "gla-2.5 trz/rt", "gla 2 5 trz rt", "glp-r3", "ion-3r", "sa-3r", "oc-3rt", "fg3-r", "fg3 r", "glp-3 rt", "glp-3rt"]],
+  ["Cagrilintide", ["cagrilintide", "cagrilinitide", "cagri", "pep-cag", "sa-4c", "cag"]],
   ["BPC-157", ["bpc-157", "bpc157"]],
   ["TB-500", ["tb-500", "tb500", "tb-4", "tb4"]],
   ["GHK-Cu", ["ghk-cu", "ghk cu", "ghkcu"]],
@@ -225,7 +235,7 @@ function cleanFallbackName(value) {
     .replace(/^(glacier\s+aminos?|ion\s+peptide|southern\s+aminos?|labsourced\s+peptides?|mile\s+high\s+(?:compounds?|peptides?)?|solyn\s+labs?|oneday\s+compounds?|glow\s+aminos?|flawless\s+compounds?|instant\s+peptides?)\s*[-:|]?\s*/i, "")
     .replace(/\b(?:research\s+)?peptide\s+vial\b/ig, "")
     .replace(/\b(?:vial|capsules?|tablets?|sprays?|topicals?|liquids?)\b\s*$/ig, "")
-    .replace(/(?:^|\s|[-:,(])\d+(?:\.\d+)?\s*(?:mcg|mg|g|ml|iu|units?|caps?|capsules?|tablets?|vials?|ct|pack)(?:\s*\/\s*\d+(?:\.\d+)?\s*(?:mcg|mg|g|ml|iu|units?))?/gi, " ")
+    .replace(/(?:^|\s|[-:,(])\d+(?:\.\d+)?\s*(?:mcg|mg|g|ml|iu|units?|caps?|capsules?|tablets?|vials?|ct|pack)\.?\)?(?:\s*\/\s*\d+(?:\.\d+)?\s*(?:mcg|mg|g|ml|iu|units?))?/gi, " ")
     .replace(/\(\s*\)/g, "")
     .replace(/\s+/g, " ")
     .replace(/\s*[-:/|]\s*$/g, "")
@@ -345,6 +355,7 @@ function exclusionReason(raw) {
     "limited edition 7x tested 1st anniversary tee", "anniversary tee",
     "1st anniversary tee", "oversized tee", "tee shirt", "t-shirt",
     "snapback hat", "mhc-tee",
+    "qa test product", "internal use only",
   ];
   const allExcludes = [...(overridePayload.exclude_terms || []), ...HARDCODED_EXCLUDES];
   const matched = allExcludes.find(term => haystack.includes(normalized(term)));
