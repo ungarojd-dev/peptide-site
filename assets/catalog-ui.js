@@ -188,7 +188,7 @@
     const lowestLabel=state.vendor==="All"?"Lowest tracked price":`Lowest ${esc(state.vendor)} price`;
     const supplierHtml=visible.length?visible.map((row,index)=>supplierRow(row.supplier,card,isAll?row.variant.label:"",index===0&&row.supplier.effective_price_min!=null)).join(""):`<div class="supplier-row supplier-empty-row"><span>No listings available for this vendor.</span></div>`;
 
-    return `<article class="product-card ${tone}">
+    return `<article class="product-card ${tone}" data-card-id="${attr(card.id)}">
       <header class="product-card-head">
         <div class="product-card-top">
           ${moleculeIcon()}
@@ -227,7 +227,23 @@
 
   function bindCardActions(){
     document.querySelectorAll('[data-action="variant"]').forEach(button=>button.onclick=()=>{state.activeVariants[button.dataset.card]=button.dataset.variant;state.expanded[button.dataset.card]=true;renderCards(false);});
-    document.querySelectorAll('[data-action="expand"]').forEach(button=>button.onclick=()=>{state.expanded[button.dataset.card]=!state.expanded[button.dataset.card];renderCards(false);});
+    document.querySelectorAll('[data-action="expand"]').forEach(button=>button.onclick=()=>{
+      const cardId=button.dataset.card;
+      const wasExpanding=!state.expanded[cardId];
+      state.expanded[cardId]=wasExpanding;
+      renderCards(false);
+      if(wasExpanding){
+        const cardEl=document.querySelector(`[data-card-id="${CSS.escape(cardId)}"]`);
+        if(cardEl){
+          const stickyHeader=document.querySelector(".site-top");
+          const stickyControls=document.querySelector(".premium-catalog .catalog-controls");
+          const isStickyControls=stickyControls&&getComputedStyle(stickyControls).position==="sticky";
+          const headerOffset=(stickyHeader?stickyHeader.getBoundingClientRect().height:0)+(isStickyControls?stickyControls.getBoundingClientRect().height:0)+16;
+          const top=cardEl.getBoundingClientRect().top+window.pageYOffset-headerOffset;
+          window.scrollTo({top:Math.max(0,top),behavior:"smooth"});
+        }
+      }
+    });
     document.querySelectorAll('[data-action="variant-scroll"]').forEach(button=>button.onclick=()=>{
       const pills=document.querySelector(`[data-variant-pills="${button.dataset.card}"]`);
       if(pills) pills.scrollBy({left:Number(button.dataset.dir)*140,behavior:"smooth"});

@@ -555,7 +555,7 @@
   .catalog-hero-row h2 { font-size: 34px; letter-spacing: -1px; }
   .catalog-hero-row p { font-size: 13px; margin-top: 9px; }
   .catalog-code-card { display: none; }
-  .premium-catalog .catalog-controls { position: static; top: auto; border-radius: 18px; }
+  .premium-catalog .catalog-controls { position: sticky; top: 64px; border-radius: 18px; }
   .premium-catalog .catalog-control-inner { padding: 10px; }
   .catalog-search-row { grid-template-columns: 1fr auto; gap: 8px; }
   .catalog-search-shell { min-height: 46px; border-radius: 14px; padding: 0 10px; }

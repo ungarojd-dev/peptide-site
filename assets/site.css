@@ -841,16 +841,16 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
 .dc-label-eyebrow { display: block; color: var(--olive); font-size: 10px; font-weight: 800; letter-spacing: 1.4px; text-transform: uppercase; }
 .dc-label-title { display: block; margin-top: 2px; color: var(--ink); font-family: var(--font-display); font-size: 20px; font-weight: 800; }
 .dc-view-all { border: 1px solid rgba(31,58,45,.18); border-radius: 999px; background: #fff; color: var(--forest); padding: 8px 13px; font-size: 12px; font-weight: 800; cursor: pointer; }
-.deal-carousel-track { padding: 14px 18px; }
-.dc-card { display: flex; align-items: center; justify-content: space-between; gap: 18px; border: 1px solid rgba(216,199,167,.55); border-radius: 18px; background: linear-gradient(135deg, #0d0d0d, #17251b); color: #fff; padding: 18px; text-decoration: none; }
+.deal-carousel-track { padding: 14px 18px; min-height: 118px; box-sizing: border-box; display: flex; align-items: center; }
+.dc-card { display: flex; align-items: center; justify-content: space-between; gap: 18px; border: 1px solid rgba(216,199,167,.55); border-radius: 18px; background: linear-gradient(135deg, #0d0d0d, #17251b); color: #fff; padding: 18px; text-decoration: none; width: 100%; box-sizing: border-box; }
 .dc-top { display: flex; align-items: center; gap: 9px; flex-wrap: wrap; }
 .dc-badge, .dc-stack { border-radius: 999px; padding: 4px 8px; font-size: 9px; font-weight: 800; letter-spacing: .8px; text-transform: uppercase; }
 .dc-badge { background: rgba(216,199,167,.16); color: var(--sand); }
 .dc-stack { background: rgba(140,154,97,.18); color: #dbe6c2; }
 .dc-vendor-wrap { display: inline-flex; align-items: center; gap: 8px; color: #fff; font-size: 13px; font-weight: 800; }
 .dc-logo { width: 72px; height: 38px; border-radius: 10px; background: #fff; object-fit: contain; padding: 5px 6px; box-shadow: inset 0 0 0 1px rgba(31,58,45,.08); }
-.dc-headline { display: block; margin: 9px 0 4px; color: #fff; font-family: var(--font-display); font-size: 20px; line-height: 1.15; }
-.dc-detail { display: block; color: rgba(255,255,255,.72); font-size: 12px; }
+.dc-headline { display: -webkit-box; margin: 9px 0 4px; color: #fff; font-family: var(--font-display); font-size: 20px; line-height: 1.15; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+.dc-detail { display: -webkit-box; color: rgba(255,255,255,.72); font-size: 12px; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
 .dc-cta { flex: none; border-radius: 999px; background: var(--sand); color: var(--black); padding: 10px 14px; font-size: 12px; font-weight: 900; }
 .deal-carousel-nav { display: flex; align-items: center; justify-content: center; gap: 10px; padding: 0 18px 16px; }
 .dc-nav-btn { display: grid; width: 32px; height: 32px; place-items: center; border: 1px solid rgba(31,58,45,.15); border-radius: 999px; background: #fff; color: var(--forest); cursor: pointer; font-size: 20px; }
@@ -945,7 +945,7 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
   .deal-carousel-wrap { border-radius: 18px; }
   .deal-carousel-header { padding: 13px; }
   .dc-label-title { font-size: 17px; }
-  .deal-carousel-track { padding: 12px; }
+  .deal-carousel-track { padding: 12px; min-height: 258px; align-items: stretch; overflow: hidden; }
   .dc-card { display: block; padding: 14px; border-radius: 15px; }
   .dc-cta { display: inline-flex; margin-top: 12px; }
   .dc-headline { font-size: 17px; }
