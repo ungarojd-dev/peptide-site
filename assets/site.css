@@ -991,3 +991,24 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
 .deal-carousel .dc-card:active .dc-vendor-wrap {
   color: inherit !important;
 }
+
+/* ============================================================
+   Dark theme rollout preview — v1 brand system (Jet Black / Olive / Cream)
+   Scoped to body.theme-dark so legacy pages are untouched.
+   ============================================================ */
+body.theme-dark { background: var(--black); color: rgba(255,255,255,.86); }
+body.theme-dark .coupon-strip { background: rgba(78,93,60,.2); border-bottom: 1px solid rgba(255,255,255,.08); color: var(--sand); }
+body.theme-dark .premium-metrics { background: var(--black); border-top: 1px solid rgba(255,255,255,.06); border-bottom: 1px solid rgba(255,255,255,.06); }
+body.theme-dark .premium-metrics .metric-item { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.08); box-shadow: none; }
+body.theme-dark .metric-icon { background: rgba(140,154,97,.16); color: var(--olive-soft); }
+body.theme-dark .premium-metrics .metric-num { color: #fff; }
+body.theme-dark .premium-metrics .metric-label { color: rgba(255,255,255,.55); }
+body.theme-dark .deal-carousel { background: var(--black); }
+body.theme-dark .deal-carousel-wrap { border-color: rgba(255,255,255,.1); background: linear-gradient(135deg, #141414, #1a1a1a); box-shadow: none; }
+body.theme-dark .deal-carousel-header { border-bottom-color: rgba(255,255,255,.08); }
+body.theme-dark .dc-label-title { color: #fff; }
+body.theme-dark .dc-view-all { border-color: rgba(255,255,255,.18); background: transparent; color: #fff; }
+body.theme-dark .dc-nav-btn { border-color: rgba(255,255,255,.15); background: rgba(255,255,255,.05); color: #fff; }
+body.theme-dark .dc-dot { background: rgba(255,255,255,.2); }
+body.theme-dark .notice { background: rgba(255,255,255,.04); border-color: rgba(255,255,255,.1); color: rgba(255,255,255,.65); box-shadow: none; }
+body.theme-dark .notice strong { color: var(--olive-soft); }
