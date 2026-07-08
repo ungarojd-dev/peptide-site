@@ -1,5 +1,10 @@
 # Changelog
 
+## 2026-07-07, Removed VANTYX Supply partner banner
+
+- Removed the VANTYX Supply homepage banner section, its click-tracking handler, and all related CSS.
+- VANTYX Supply is no longer promoted anywhere on the site.
+
 ## 2026-06-19, Glacier Father's Day promo QA fix
 
 - Corrected the live promotions data file for Glacier Aminos from 10% off to 15% off.
