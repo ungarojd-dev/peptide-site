@@ -154,7 +154,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260710-deals-update-v43";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260710-deals-update-v45";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -234,6 +234,37 @@
     const announcementPromos=promotions.filter(p=>p.show_in_announcement_rolodex===true).sort((a,b)=>Number(b.priority||0)-Number(a.priority||0));
     const slides=[{static:true},...announcementPromos];
     let current=0;let autoTimer;
+    const slideHtml=slide=>{
+      if(slide.static){
+        return `<span class="sale-vendor">Limited Time Deals</span><span class="sale-pct"><strong>LIMITED TIME VENDOR DEALS</strong> Save up to 55% off</span><span class="sale-cta-chip">View deals</span>`;
+      }
+      const logo=dealLogoPath(slide.display_vendor||slide.vendor);
+      const logoHtml=logo?`<img class="sale-vendor-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
+      const kickerText=slide.rolodex_kicker||"";
+      return `<span class="sale-vendor-wrap">${logoHtml}<span class="sale-vendor">${escapeHtml(slide.display_vendor||slide.vendor)}</span></span><span class="sale-pct">${kickerText?`<strong>${escapeHtml(kickerText)}</strong> `:""}${escapeHtml(slide.short_detail||"")}</span><span class="sale-cta-chip">${escapeHtml(slide.cta_text||"View deal")}</span>`;
+    };
+    // Lock the rolodex card to the tallest slide so rotating announcements never shift the sticky bar (prevents page jump).
+    let rolodexMeasurer=null;
+    const lockRolodexHeight=()=>{
+      const width=saleCard.getBoundingClientRect().width;
+      if(!width||!saleCard.parentNode)return;
+      if(!rolodexMeasurer){
+        rolodexMeasurer=saleCard.cloneNode(false);
+        rolodexMeasurer.removeAttribute("id");
+        rolodexMeasurer.setAttribute("aria-hidden","true");
+        rolodexMeasurer.style.cssText="position:absolute;left:-99999px;top:0;visibility:hidden;pointer-events:none";
+        saleCard.parentNode.appendChild(rolodexMeasurer);
+      }
+      rolodexMeasurer.style.width=width+"px";
+      let max=0;
+      slides.forEach(slide=>{
+        rolodexMeasurer.classList.toggle("sale-deal-card--promo",!slide.static);
+        rolodexMeasurer.innerHTML=slideHtml(slide);
+        const h=rolodexMeasurer.getBoundingClientRect().height;
+        if(h>max)max=h;
+      });
+      if(max>0)saleCard.style.minHeight=Math.ceil(max)+"px";
+    };
     const render=()=>{
       const slide=slides[current];
       saleCard.classList.toggle("sale-deal-card--promo",!slide.static);
@@ -243,18 +274,14 @@
         saleCard.removeAttribute("rel");
         saleCard.removeAttribute("data-vendor");
         saleCard.setAttribute("aria-label","View current deals");
-        saleCard.innerHTML=`<span class="sale-vendor">Limited Time Deals</span><span class="sale-pct"><strong>LIMITED TIME VENDOR DEALS</strong> Save up to 55% off</span><span class="sale-cta-chip">View deals</span>`;
       }else{
-        const logo=dealLogoPath(slide.display_vendor||slide.vendor);
-        const logoHtml=logo?`<img class="sale-vendor-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
-        const kickerText=slide.rolodex_kicker||"";
         saleCard.href=slide.affiliate_url||"#";
         saleCard.target="_blank";
         saleCard.rel="nofollow sponsored noopener";
         saleCard.dataset.vendor=slide.vendor||"";
         saleCard.setAttribute("aria-label",slide.headline||slide.vendor||"View promotion");
-        saleCard.innerHTML=`<span class="sale-vendor-wrap">${logoHtml}<span class="sale-vendor">${escapeHtml(slide.display_vendor||slide.vendor)}</span></span><span class="sale-pct">${kickerText?`<strong>${escapeHtml(kickerText)}</strong> `:""}${escapeHtml(slide.short_detail||"")}</span><span class="sale-cta-chip">${escapeHtml(slide.cta_text||"View deal")}</span>`;
       }
+      saleCard.innerHTML=slideHtml(slide);
       if(saleCount)saleCount.textContent=`${current+1} / ${slides.length}`;
     };
     const goTo=i=>{current=(i+slides.length)%slides.length;render();resetTimer();};
@@ -279,6 +306,9 @@
     render();
     resetTimer();
     if(banner)banner.hidden=false;
+    lockRolodexHeight();
+    if(document.fonts&&document.fonts.ready){document.fonts.ready.then(lockRolodexHeight);}
+    let rolodexRz;window.addEventListener("resize",()=>{clearTimeout(rolodexRz);rolodexRz=setTimeout(lockRolodexHeight,150);});
   }
 
   function setupDealsStrip(promotions){
@@ -335,17 +365,44 @@
     const deals=promotions.filter(p=>p.show_in_rolodex===true);
     if(!deals.length){const s=document.querySelector(".deal-carousel");if(s)s.hidden=true;return;}
     const isStackable=deal=>{const h=((deal.short_detail||"")+" "+(deal.full_detail||"")).toLowerCase();return h.includes("stackable")||h.includes("sammyc");};
-    let current=0;let autoTimer;
-    const render=()=>{
-      const deal=deals[current];
+    const cardHtml=deal=>{
       const{text:headline}=splitHeadlineBadge(deal.headline);
       const badgeHtml=`<span class="dc-badge">${escapeHtml(deal.badge||"Limited Time Deal")}</span>`;
       const stackChip=isStackable(deal)?`<span class="dc-stack">+SAMMYC</span>`:"";
       const logo=dealLogoPath(deal.display_vendor||deal.vendor);
       const logoHtml=logo?`<img class="dc-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
-      track.innerHTML=`<a class="dc-card" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><div class="dc-card-body"><div class="dc-top">${badgeHtml}<span class="dc-vendor-wrap">${logoHtml}<span class="dc-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span></span>${stackChip}</div><strong class="dc-headline">${escapeHtml(headline)}</strong><span class="dc-detail">${escapeHtml(deal.short_detail||"")}</span></div><span class="dc-cta">View Deal ›</span></a>`;
+      return `<a class="dc-card" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><div class="dc-card-body"><div class="dc-top">${badgeHtml}<span class="dc-vendor-wrap">${logoHtml}<span class="dc-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span></span>${stackChip}</div><strong class="dc-headline">${escapeHtml(headline)}</strong><span class="dc-detail">${escapeHtml(deal.short_detail||"")}</span></div><span class="dc-cta">View Deal ›</span></a>`;
+    };
+    // Lock the track to the tallest card so rotating deals never shift the page (prevents mobile layout jump).
+    track.style.display="flex";track.style.flexDirection="column";track.style.justifyContent="center";
+    let dealMeasurer=null;
+    const lockHeight=()=>{
+      const width=track.getBoundingClientRect().width;
+      if(!width)return;
+      if(!dealMeasurer){
+        dealMeasurer=document.createElement("div");
+        dealMeasurer.setAttribute("aria-hidden","true");
+        dealMeasurer.style.cssText="position:absolute;left:-99999px;top:0;visibility:hidden;pointer-events:none";
+        (track.parentNode||document.body).appendChild(dealMeasurer);
+      }
+      dealMeasurer.style.width=width+"px";
+      let max=0;
+      deals.forEach(deal=>{
+        dealMeasurer.innerHTML=cardHtml(deal);
+        const el=dealMeasurer.firstElementChild;
+        const h=el?el.getBoundingClientRect().height:0;
+        if(h>max)max=h;
+      });
+      dealMeasurer.innerHTML="";
+      if(max>0)track.style.minHeight=Math.ceil(max)+"px";
+    };
+    let current=0;let autoTimer;
+    const render=()=>{
+      const deal=deals[current];
+      track.innerHTML=cardHtml(deal);
       if(dotsWrap){dotsWrap.innerHTML=deals.map((_,i)=>`<button class="dc-dot${i===current?" active":""}" data-dot="${i}" aria-label="Deal ${i+1}"></button>`).join("");dotsWrap.querySelectorAll("[data-dot]").forEach(d=>d.addEventListener("click",()=>goTo(parseInt(d.dataset.dot))));}
-      track.querySelector(".dc-card")&&track.querySelector(".dc-card").addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Deal carousel",product_category:"promotion",button_text:"View Deal",button_location:"deal_carousel",vendor_name:deal.vendor,affiliate_url:deal.affiliate_url||""});});
+      const card=track.querySelector(".dc-card");
+      if(card)card.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Deal carousel",product_category:"promotion",button_text:"View Deal",button_location:"deal_carousel",vendor_name:deal.vendor,affiliate_url:deal.affiliate_url||""});});
     };
     const goTo=i=>{current=(i+deals.length)%deals.length;render();resetTimer();};
     const resetTimer=()=>{clearInterval(autoTimer);if(deals.length>1)autoTimer=setInterval(()=>goTo(current+1),4000);};
@@ -354,7 +411,11 @@
     let tx=0;
     track.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;},{passive:true});
     track.addEventListener("touchend",e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>40)goTo(current+(d>0?1:-1));},{passive:true});
-    render();resetTimer();
+    render();
+    lockHeight();
+    resetTimer();
+    if(document.fonts&&document.fonts.ready){document.fonts.ready.then(lockHeight);}
+    let dealRz;window.addEventListener("resize",()=>{clearTimeout(dealRz);dealRz=setTimeout(lockHeight,150);});
   }
 
   function addVendorDirectoryBadges(promotions){

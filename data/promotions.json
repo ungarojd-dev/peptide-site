@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-10-deals-refresh-v40",
+  "version": "2026-07-10-deals-refresh-v41",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-10T09:00:00-04:00",
+  "updated_at": "2026-07-10T16:15:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -88,6 +88,39 @@
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 120,
+      "badge": "Limited Time Deal",
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "mile-high-sammyc-boost-30",
+      "vendor": "Mile High Peptides",
+      "display_vendor": "Mile High Compounds",
+      "headline": "SAMMYC boosted to 30% off",
+      "short_detail": "Code SAMMYC is boosted to 30% off through July 18",
+      "full_detail": "Mile High Compounds has boosted the SAMMYC code to 30% off through July 18, 2026 at 12:00pm MST. Confirm final eligibility and checkout pricing directly on the vendor website.",
+      "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
+      "discount_override_percent": 30,
+      "start_at": "2026-07-10T00:00:00-04:00",
+      "end_at": "2026-07-18T12:00:00-06:00",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 125,
+      "badge": "Limited Time Deal",
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "oneday-30-sitewide-plus-sammyc",
+      "vendor": "Oneday Compounds",
+      "display_vendor": "Oneday Compounds",
+      "headline": "30% off sitewide, stacks with SAMMYC",
+      "short_detail": "30% off sitewide, plus code SAMMYC adds another 10% off",
+      "full_detail": "Oneday Compounds is running 30% off sitewide, and code SAMMYC stacks another 10% off on top. Ends Sunday, July 12, 2026 at 11:59pm EST. Confirm final eligibility and stacking details directly on the vendor website.",
+      "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
+      "start_at": "2026-07-10T00:00:00-04:00",
+      "end_at": "2026-07-12T23:59:00-04:00",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 125,
       "badge": "Limited Time Deal",
       "cta_text": "Shop Now"
     }
