@@ -130,27 +130,29 @@ body{
 @media(max-width:920px){.hero-inner{grid-template-columns:1fr;padding:48px 18px 44px}.hero-stats{max-width:420px;width:100%}}
 @media(max-width:620px){.top-inner{padding:11px 12px}.coupon-strip{font-size:10.5px;padding:6px 10px}.hero-inner{padding:42px 14px 38px;gap:24px}.hero h1{letter-spacing:-.8px}.hero-actions{gap:7px}.hero-actions .button{width:100%;padding:11px 14px}.hero-stats{border-radius:18px;padding:13px 15px}.deal-carousel-wrap{padding:13px 10px 11px}.dc-card{border-radius:16px}.skool-sticky-bar{padding:6px 10px}.sale-deal-card{border-radius:12px}}
 
-/* 2026-07-06: LTO theme reverted from July 4th patriotic to brand black/olive after holiday */
+/* 2026-07-10: Limited Time Deals restyled as glowing neon-sign treatment (brand olive/gold on black) */
 .deal-carousel{
   position:relative;
   overflow:hidden;
   background:
-    radial-gradient(circle at 14% 12%, rgba(255,255,255,.10), transparent 30%),
-    radial-gradient(circle at 90% 6%, rgba(106,120,41,.38), transparent 40%),
-    radial-gradient(circle at 50% 108%, rgba(255,255,255,.06), transparent 42%),
-    linear-gradient(135deg,#0a0d0b 0%,#141a15 48%,#0a0d0b 100%);
-  border-top:3px solid var(--olive);
-  border-bottom:3px solid var(--olive);
-  box-shadow:0 12px 34px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);
+    radial-gradient(circle at 12% 0%, rgba(169,209,58,.20), transparent 42%),
+    radial-gradient(circle at 92% 120%, rgba(224,180,67,.18), transparent 46%),
+    linear-gradient(135deg,#05070a 0%,#0b0f0c 50%,#05070a 100%);
+  border-top:2px solid rgba(169,209,58,.55);
+  border-bottom:2px solid rgba(169,209,58,.55);
+  box-shadow:
+    0 12px 34px rgba(0,0,0,.55),
+    inset 0 0 42px rgba(169,209,58,.10),
+    inset 0 1px 0 rgba(255,255,255,.06);
 }
 .deal-carousel::before{
   content:"";
   position:absolute;
   inset:0;
   background:
-    radial-gradient(rgba(255,255,255,.12) 1.3px, transparent 1.6px) 0 0/26px 26px,
-    repeating-linear-gradient(180deg,rgba(255,255,255,.04) 0,rgba(255,255,255,.04) 2px,transparent 2px,transparent 22px);
-  opacity:.5;
+    radial-gradient(rgba(255,255,255,.10) 1.2px, transparent 1.5px) 0 0/24px 24px,
+    repeating-linear-gradient(180deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 2px,transparent 2px,transparent 22px);
+  opacity:.45;
   pointer-events:none;
 }
 .deal-carousel::after{
@@ -158,9 +160,9 @@ body{
   position:absolute;
   left:-18%;
   top:-80%;
-  width:36%;
+  width:34%;
   height:240%;
-  background:linear-gradient(90deg,transparent,rgba(255,255,255,.14),transparent);
+  background:linear-gradient(90deg,transparent,rgba(169,209,58,.16),transparent);
   transform:rotate(18deg);
   animation:dealSpotlightSweep 6s ease-in-out infinite;
   pointer-events:none;
@@ -173,44 +175,102 @@ body{
 .deal-carousel-wrap{position:relative;z-index:1;max-width:960px;padding:18px 14px 16px}
 .deal-carousel-header{margin-bottom:13px}
 .dc-label-eyebrow{
-  background:var(--olive);
-  border-color:rgba(255,255,255,.24);
-  color:#fff;
-  box-shadow:0 8px 18px rgba(0,0,0,.32),0 0 0 3px rgba(255,255,255,.06);
+  background:transparent;
+  border:1.5px solid rgba(169,209,58,.9);
+  color:#d3f26a;
+  text-shadow:0 0 8px rgba(169,209,58,.9);
+  box-shadow:0 0 10px rgba(169,209,58,.55),inset 0 0 8px rgba(169,209,58,.28);
+  animation:neonFlicker 4.4s steps(1) infinite;
 }
-.dc-label-title{color:#fffdf8;text-shadow:0 2px 12px rgba(0,0,0,.4)}
+.dc-label-title{
+  color:#fffdf8;
+  text-shadow:
+    0 0 6px rgba(255,253,248,.55),
+    0 0 16px rgba(224,180,67,.65),
+    0 0 30px rgba(224,180,67,.45);
+}
 .dc-label-stache{color:rgba(255,255,255,.5)}
 .dc-card{
-  border:1px solid rgba(255,255,255,.14);
-  background:rgba(255,255,255,.05);
-  box-shadow:0 18px 40px rgba(0,0,0,.4),inset 0 1px 0 rgba(255,255,255,.08);
+  border:1.5px solid rgba(169,209,58,.75);
+  background:linear-gradient(160deg,rgba(255,255,255,.06),rgba(255,255,255,.02));
+  box-shadow:
+    0 0 0 1px rgba(169,209,58,.28),
+    0 0 16px rgba(169,209,58,.45),
+    0 0 34px rgba(169,209,58,.22),
+    0 18px 40px rgba(0,0,0,.5),
+    inset 0 0 22px rgba(169,209,58,.08);
   backdrop-filter:blur(10px);
+  animation:neonCardPulse 3.2s ease-in-out infinite;
 }
 .dc-card:hover{
-  background:rgba(255,255,255,.08);
+  border-color:rgba(191,224,86,1);
+  background:linear-gradient(160deg,rgba(255,255,255,.09),rgba(255,255,255,.03));
   transform:translateY(-2px);
-  box-shadow:0 22px 48px rgba(0,0,0,.46),inset 0 1px 0 rgba(255,255,255,.1);
+  box-shadow:
+    0 0 0 1px rgba(169,209,58,.5),
+    0 0 22px rgba(169,209,58,.7),
+    0 0 48px rgba(169,209,58,.4),
+    0 22px 52px rgba(0,0,0,.55),
+    inset 0 0 26px rgba(169,209,58,.12);
+  animation:none;
 }
 .dc-badge{
-  background:var(--olive);
-  color:#fff;
-  box-shadow:0 6px 14px rgba(0,0,0,.3);
+  background:linear-gradient(180deg,#c2ee52,#9fd825);
+  color:#0a1206;
+  box-shadow:0 0 10px rgba(169,209,58,.7),0 6px 14px rgba(0,0,0,.4);
 }
-.dc-vendor{color:#e2e8e3}.dc-headline{color:#fff}.dc-detail{color:rgba(255,255,255,.62)}.dc-stack{background:rgba(106,120,41,.18);border-color:rgba(106,120,41,.4);color:#b7c76a}.dc-cta{
-  background:var(--olive);
-  color:#fff;
-  box-shadow:0 8px 18px rgba(0,0,0,.3);
+.dc-vendor{color:#e8f2cf;text-shadow:0 0 8px rgba(169,209,58,.35)}
+.dc-headline{color:#fff;text-shadow:0 0 10px rgba(255,255,255,.25)}
+.dc-detail{color:rgba(255,255,255,.66)}
+.dc-stack{
+  background:rgba(169,209,58,.12);
+  border-color:rgba(169,209,58,.85);
+  color:#d3f26a;
+  text-shadow:0 0 6px rgba(169,209,58,.75);
+  box-shadow:0 0 8px rgba(169,209,58,.4),inset 0 0 6px rgba(169,209,58,.2);
 }
-.dc-cta:hover{background:var(--olive-2)}
+.dc-cta{
+  background:linear-gradient(180deg,#f0d271,#e0b443);
+  color:#20160a;
+  box-shadow:0 0 14px rgba(224,180,67,.65),0 0 28px rgba(224,180,67,.35),0 8px 18px rgba(0,0,0,.35);
+}
+.dc-cta:hover{
+  background:linear-gradient(180deg,#f6dd88,#e8bf50);
+  box-shadow:0 0 20px rgba(224,180,67,.85),0 0 40px rgba(224,180,67,.5),0 8px 20px rgba(0,0,0,.4);
+}
 .dc-nav-btn{
-  background:rgba(255,255,255,.08);
-  border-color:rgba(255,255,255,.2);
-  color:#fff;
+  background:rgba(169,209,58,.06);
+  border-color:rgba(169,209,58,.5);
+  color:#d3f26a;
 }
-.dc-nav-btn:hover{background:var(--olive);border-color:rgba(255,255,255,.3);color:#fff}.dc-dot{background:rgba(255,255,255,.24)}.dc-dot.active{background:var(--olive);box-shadow:0 0 0 3px rgba(255,255,255,.14)}
+.dc-nav-btn:hover{
+  background:rgba(169,209,58,.2);
+  border-color:rgba(169,209,58,.9);
+  color:#eaffb0;
+  box-shadow:0 0 12px rgba(169,209,58,.6)}
+.dc-dot{background:rgba(255,255,255,.24)}
+.dc-dot.active{background:#a9d13a;box-shadow:0 0 0 3px rgba(169,209,58,.22),0 0 10px rgba(169,209,58,.85)}
+@keyframes neonCardPulse{
+  0%,100%{box-shadow:0 0 0 1px rgba(169,209,58,.28),0 0 14px rgba(169,209,58,.38),0 0 30px rgba(169,209,58,.18),0 18px 40px rgba(0,0,0,.5),inset 0 0 22px rgba(169,209,58,.08)}
+  50%{box-shadow:0 0 0 1px rgba(169,209,58,.42),0 0 22px rgba(169,209,58,.62),0 0 44px rgba(169,209,58,.34),0 18px 40px rgba(0,0,0,.5),inset 0 0 26px rgba(169,209,58,.13)}
+}
+@keyframes neonFlicker{
+  0%,18%,22%,25%,53%,57%,100%{opacity:1}
+  20%,24%,55%{opacity:.55}
+}
+@media(prefers-reduced-motion:reduce){
+  .deal-carousel::after,.dc-card,.dc-label-eyebrow{animation:none}
+}
 @media(max-width:620px){
   .deal-carousel-wrap{padding:14px 10px 12px}
-  .dc-card{border-radius:16px;box-shadow:0 14px 30px rgba(0,0,0,.36),inset 0 1px 0 rgba(255,255,255,.08)}
+  .dc-card{
+    border-radius:16px;
+    box-shadow:
+      0 0 0 1px rgba(169,209,58,.3),
+      0 0 14px rgba(169,209,58,.42),
+      0 14px 30px rgba(0,0,0,.5),
+      inset 0 0 18px rgba(169,209,58,.08);
+  }
   .dc-label-title{font-size:16px}
   .dc-label-eyebrow{font-size:8.5px}
 }

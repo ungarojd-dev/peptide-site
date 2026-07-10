@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-09-deals-refresh-v39",
+  "version": "2026-07-10-deals-refresh-v40",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-09T09:00:00-04:00",
+  "updated_at": "2026-07-10T09:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -60,6 +60,34 @@
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 130,
+      "badge": "Limited Time Deal",
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "instant-peptides-b2g1-free",
+      "vendor": "Instant Peptides",
+      "display_vendor": "Instant Peptides",
+      "headline": "Buy 2 Get 1 Free, stacks with SAMMYC",
+      "short_detail": "Buy 2 get 1 free, plus code SAMMYC stacks another 15% off",
+      "full_detail": "Instant Peptides is running a Buy 2 Get 1 Free promotion, and code SAMMYC stacks an extra 15% off on top. Confirm final eligibility and stacking details directly on the vendor website.",
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 120,
+      "badge": "Limited Time Deal",
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "glacier-aminos-b2g1-free",
+      "vendor": "Glacier Aminos",
+      "display_vendor": "Glacier Aminos",
+      "headline": "Buy 2 Get 1 Free, stacks with SAMMYC",
+      "short_detail": "Buy 2 get 1 free, plus code SAMMYC stacks another 10% off",
+      "full_detail": "Glacier Aminos is running a Buy 2 Get 1 Free promotion, and code SAMMYC stacks an extra 10% off on top. Confirm final eligibility and stacking details directly on the vendor website.",
+      "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 120,
       "badge": "Limited Time Deal",
       "cta_text": "Shop Now"
     }
