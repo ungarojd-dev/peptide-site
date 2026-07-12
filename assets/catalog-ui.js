@@ -2,6 +2,8 @@
   "use strict";
   const CATEGORY_ORDER=["All","GLP-1 & Incretin","Repair & Recovery","Growth Hormone Research","Cognitive & Nootropic","Longevity & Cellular Health","Metabolic & Mitochondrial","Bioregulators","Skin, Tanning & Sexual Health","Supplies","Other"];
   const FORMAT_ORDER=["All","Vials","Capsules","Dissolvable Strips","Nasal Sprays","Topicals","Liquids","Aminos","Bioregulators","Supplies"];
+  const VENDOR_DISPLAY_NAMES={"mile high peptides":"Mile High Compounds"};
+  const vendorDisplay=supplier=>supplier&&(supplier.vendor_display||VENDOR_DISPLAY_NAMES[String(supplier.vendor_name||"").toLowerCase()]||supplier.vendor_name||"");
   const state={catalog:null,cards:[],query:"",category:"All",format:"All",activeVariants:{},expanded:{},source:"Loading"};
   const $=id=>document.getElementById(id);
   const esc=value=>String(value==null?"":value).replace(/[&<>\"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
@@ -22,7 +24,7 @@
     const set=(id,value)=>{const node=$(id);if(node)node.textContent=String(value)};
     set("statCards",catalog.product_card_count||0);set("statOffers",catalog.normalized_offer_count||0);set("statVendors",catalog.vendors_loaded||0);
   }
-  function searchText(card){return [card.name,card.category,card.format,...(card.variants||[]).flatMap(variant=>(variant.suppliers||[]).flatMap(supplier=>[supplier.vendor_name,supplier.raw_product,supplier.raw_listing,supplier.sku]))].join(" ").toLowerCase();}
+  function searchText(card){return [card.name,card.category,card.format,...(card.variants||[]).flatMap(variant=>(variant.suppliers||[]).flatMap(supplier=>[supplier.vendor_name,vendorDisplay(supplier),supplier.raw_product,supplier.raw_listing,supplier.sku]))].join(" ").toLowerCase();}
   function cards(){const query=state.query.trim().toLowerCase();return state.cards.filter(card=>(state.category==="All"||card.category===state.category)&&(state.format==="All"||card.format===state.format)&&(!query||searchText(card).includes(query)));}
   const ALL_VARIANTS="__all__";
   function selectedVariantId(card){return state.activeVariants[card.id]||ALL_VARIANTS;}
@@ -35,7 +37,8 @@
     });
   }
   function supplierRow(supplier,card,variantLabel=""){
-    const logo=supplier.vendor_logo?`<img class="supplier-logo" src="${attr(supplier.vendor_logo)}" alt="${attr(supplier.vendor_name)} logo" loading="lazy" width="42" height="24"/>`:`<span class="supplier-initials">${esc(initials(supplier.vendor_name))}</span>`;
+    const vendorLabel=vendorDisplay(supplier);
+    const logo=supplier.vendor_logo?`<img class="supplier-logo" src="${attr(supplier.vendor_logo)}" alt="${attr(vendorLabel)} logo" loading="lazy" width="42" height="24"/>`:`<span class="supplier-initials">${esc(initials(vendorLabel))}</span>`;
     const regular=supplier.discount_percent>0&&supplier.regular_price_label!==supplier.effective_price_label?`<div class="supplier-regular">${esc(supplier.regular_price_label)}</div>`:"";
     const stock=supplier.in_stock===false?`<span class="supplier-oos">Out of stock</span>`:`<span>Listed</span>`;
     const alternate=supplier.alternate_offer_count?`<span>${esc(Number(supplier.alternate_offer_count)+1)} listings</span>`:"";
@@ -44,7 +47,7 @@
     const variantLine=variantLabel&&variantLabel!=="Standard listing"?`<div class="supplier-variant-line"><span>Size/listing</span> ${esc(variantLabel)}</div>`:"";
     const promotions=global.MPPPromotions?.forOffer?.(supplier,card)||[];
     const promoBadges=promotions.length?`<div class="supplier-promos">${promotions.slice(0,2).map(promotion=>`<span class="supplier-promo-badge">${esc(promotion.badge||promotion.headline)}</span>`).join("")}${promotions.length>2?`<span class="supplier-promo-more">+${promotions.length-2} more</span>`:""}</div>`:"";
-    return `<a class="supplier-row" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div style="min-width:0"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${variantLine}${productListing}<div class="supplier-sub">${stock}${supplier.discount_percent?`<span class="supplier-discount">${esc(supplier.discount_percent)}% off with ${esc(supplier.coupon_code)}</span>`:""}${alternate}</div>${promoBadges}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div><div class="supplier-go">Visit vendor ›</div></div></a>`;
+    return `<a class="supplier-row" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div style="min-width:0"><div class="supplier-name">${esc(vendorLabel)}</div>${variantLine}${productListing}<div class="supplier-sub">${stock}${supplier.discount_percent?`<span class="supplier-discount">${esc(supplier.discount_percent)}% off with ${esc(supplier.coupon_code)}</span>`:""}${alternate}</div>${promoBadges}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div><div class="supplier-go">Visit vendor ›</div></div></a>`;
   }
   function cardHtml(card){
     const selected=selectedVariantId(card);const isAll=selected===ALL_VARIANTS;const variant=activeVariant(card);const expanded=!!state.expanded[card.id];

@@ -384,6 +384,7 @@ export function normalizeOffer(raw = {}, options = {}) {
   return {
     vendor_id: meta.id,
     vendor_name: vendor,
+    vendor_display: compact(meta.display_name || vendor),
     vendor_logo: meta.logo || "",
     product_id: canonical.id,
     product_name: canonical.name,
