@@ -1,5 +1,51 @@
 # Changelog
 
+## 2026-07-14, v3 rebrand, full sitewide presentation rebuild
+
+Dark theme, mobile-first, on the v3 brand system.
+
+**Approach.** Rebuilt on top of `main`, not on the `v3-rebrand` branch. Main's catalog
+behavior is proven in production, so `site.js` and `catalog-ui.js` are untouched and only
+the presentation layer changed. All of main's current data and business decisions carry
+over unchanged (VANTYX removal, current promotions, complete redirects and sitemap, Mile
+High display name). The v3 branch's catalog JS/CSS rewrite was discarded; its brand assets
+were kept.
+
+**Brand.**
+- Tokens rewritten to the exact guideline values. Every color on the v3 branch was
+  off-spec (olive was `#4E5D3C`, should be `#6A7929`) and has been corrected.
+  Jet Black `#0D0F0C`, Olive `#6A7929`, Cream White `#F4F1E8`, Graphite Olive `#2E3320`,
+  Sand Olive `#8C9271`, Forest Green `#1D3A2B`.
+- Typography moved from Playfair Display + Nunito to Manrope (display) + Inter (body).
+- Real logo assets now in use. The header previously faked the wordmark with styled text
+  spans; it now uses `logo-symbol.png` and `logo-wordmark.png`.
+- Favicons, `site.webmanifest`, and OG image replaced with the rebrand set.
+- `theme-color` meta added sitewide so mobile browser chrome renders dark.
+
+**Accessibility.**
+- Olive on Jet Black measures about 4.0:1, which fails WCAG AA for body text. Olive is
+  therefore accent-only: borders, large headings, active states, price emphasis. Secondary
+  text uses Sand Olive, about 5.9:1, which passes AA.
+- 44px minimum tap targets. Visible keyboard focus. Reduced motion respected.
+
+**Fixes made during the rebuild.**
+- Out-of-stock leading offer: `catalog-ui.js` sorts suppliers purely on price and does not
+  push out-of-stock rows to the bottom, so the cheapest row can be unbuyable. The "Lowest"
+  treatment is now withheld when the top row is out of stock or has no price. CSS-only, no
+  JS change.
+- The vendor logo on `vendors.html` had no size constraint and was pushing card content
+  off-screen at mobile widths.
+- Vendor names in the comparison ladder no longer truncate.
+- The four price-comparison pages each embedded an identical copy of a light-theme
+  `<style>` block referencing tokens that no longer exist. Removed and consolidated into
+  `site.css`.
+
+**Note.** `[hidden] { display: none !important; }` in `site.css` is load-bearing. `site.js`
+toggles the compliance gate, disclaimer, and promo panel via the native `hidden` attribute.
+Layout rules out-specify it and force those modals permanently open without this guard.
+
+Verified: 17/17 pages render with zero horizontal overflow at 390px.
+
 ## 2026-07-07, Removed VANTYX Supply partner banner
 
 - Removed the VANTYX Supply homepage banner section, its click-tracking handler, and all related CSS.
