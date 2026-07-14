@@ -933,40 +933,6 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
   .article h1, .content-card h1 { font-size: 32px; }
 }
 
-/* Hotfix: keep current vendor deal cards readable on hover and tap states. */
-.deal-carousel .dc-card,
-.deal-carousel .dc-card:visited {
-  color: #fff;
-}
-
-.deal-carousel .dc-card:hover,
-.deal-carousel .dc-card:focus,
-.deal-carousel .dc-card:focus-visible,
-.deal-carousel .dc-card:active {
-  background: linear-gradient(135deg, #0d0d0d, #17251b) !important;
-  color: #fff !important;
-  border-color: rgba(216,199,167,.68);
-  box-shadow: inset 0 1px 0 rgba(216,199,167,.14), 0 16px 36px rgba(13,13,13,.14);
-  outline: none;
-}
-
-@media (hover: hover) and (pointer: fine) {
-  .deal-carousel .dc-card:hover {
-    transform: translateY(-1px);
-  }
-}
-
-.deal-carousel .dc-card:hover .dc-headline,
-.deal-carousel .dc-card:hover .dc-detail,
-.deal-carousel .dc-card:hover .dc-vendor-wrap,
-.deal-carousel .dc-card:focus .dc-headline,
-.deal-carousel .dc-card:focus .dc-detail,
-.deal-carousel .dc-card:focus .dc-vendor-wrap,
-.deal-carousel .dc-card:active .dc-headline,
-.deal-carousel .dc-card:active .dc-detail,
-.deal-carousel .dc-card:active .dc-vendor-wrap {
-  color: inherit !important;
-}
 
 /* ============================================================
    Dark theme rollout preview — v1 brand system (Jet Black / Olive / Cream)
@@ -1184,3 +1150,51 @@ body.theme-dark .dc-card {
 .deal-carousel .dc-vendor-wrap span,
 body.theme-dark .deal-carousel .dc-vendor,
 body.theme-dark .deal-carousel .dc-vendor-wrap span { color: #17130a !important; }
+
+/* ── DEAL CARD TEXT IS ALWAYS DARK INK ──
+   Replaces the obsolete white-text hotfix that was written for the old dark
+   card. That rule forced the card dark with white text on :hover/:focus/:active,
+   so tapping it on a phone made the text flash white. On the gold slab every
+   state stays dark ink. */
+.deal-carousel .dc-card,
+.deal-carousel .dc-card:link,
+.deal-carousel .dc-card:visited,
+.deal-carousel .dc-card:hover,
+.deal-carousel .dc-card:focus,
+.deal-carousel .dc-card:focus-visible,
+.deal-carousel .dc-card:active,
+body.theme-dark .deal-carousel .dc-card,
+body.theme-dark .deal-carousel .dc-card:hover,
+body.theme-dark .deal-carousel .dc-card:focus,
+body.theme-dark .deal-carousel .dc-card:active { color: #17130a !important; }
+
+.deal-carousel .dc-card:hover .dc-headline,
+.deal-carousel .dc-card:focus .dc-headline,
+.deal-carousel .dc-card:active .dc-headline,
+.deal-carousel .dc-card:hover .dc-vendor-wrap,
+.deal-carousel .dc-card:focus .dc-vendor-wrap,
+.deal-carousel .dc-card:active .dc-vendor-wrap,
+.deal-carousel .dc-card:hover .dc-vendor,
+.deal-carousel .dc-card:focus .dc-vendor,
+.deal-carousel .dc-card:active .dc-vendor,
+.deal-carousel .dc-card:hover .dc-vendor-wrap span,
+.deal-carousel .dc-card:focus .dc-vendor-wrap span,
+.deal-carousel .dc-card:active .dc-vendor-wrap span { color: #17130a !important; }
+
+.deal-carousel .dc-card:hover .dc-detail,
+.deal-carousel .dc-card:focus .dc-detail,
+.deal-carousel .dc-card:active .dc-detail { color: rgba(23,19,10,.66) !important; }
+
+/* Keep the gold background on every state, never revert to the dark gradient. */
+.deal-carousel .dc-card:hover,
+.deal-carousel .dc-card:focus,
+.deal-carousel .dc-card:focus-visible,
+.deal-carousel .dc-card:active,
+body.theme-dark .deal-carousel .dc-card:hover,
+body.theme-dark .deal-carousel .dc-card:focus,
+body.theme-dark .deal-carousel .dc-card:active {
+  background: rgba(255,255,255,.62) !important;
+  border-color: rgba(23,19,10,.42) !important;
+  box-shadow: 0 8px 22px rgba(74,54,14,.22), 0 0 0 1px rgba(255,255,255,.55) inset !important;
+  outline: none;
+}
