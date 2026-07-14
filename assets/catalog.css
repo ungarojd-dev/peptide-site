@@ -877,3 +877,42 @@ body.theme-dark .catalog-empty, body.theme-dark .catalog-loading, body.theme-dar
 .supplier-payment-icons { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0; }
 .payment-icon { display: inline-flex; align-items: center; border: 1px solid rgba(31,58,45,.14); border-radius: 999px; background: #fff; color: #4b554f; padding: 2px 7px; font-size: 9px; font-weight: 800; letter-spacing: .2px; text-transform: uppercase; }
 body.theme-dark .payment-icon { background: rgba(255,255,255,.06); border-color: rgba(255,255,255,.14); color: rgba(255,255,255,.7); }
+
+/* ============================================================
+   COMPACT SUPPLIER ROWS
+   Tighter than the legacy layout so more vendors fit per screen.
+   Appended last so it wins on specificity order.
+   ============================================================ */
+.supplier-row { padding: 5px 6px; gap: 8px; }
+.supplier-left { gap: 8px; }
+.supplier-logo { width: 36px; height: 36px; flex: 0 0 36px; border-radius: 8px; padding: 3px; }
+.supplier-initials { width: 36px; height: 36px; flex-basis: 36px; border-radius: 8px; }
+.supplier-name { font-size: 12.5px; }
+.supplier-meta-line { margin-top: 1px; font-size: 9.5px; }
+.supplier-listing { margin-top: 1px; font-size: 9px; }
+.supplier-sub { margin-top: 1px; font-size: 9.5px; }
+.supplier-price { font-size: 15px; }
+.supplier-go { margin-top: 2px; padding: 3px 7px; font-size: 8px; }
+.supplier-payment-icons { margin: 2px 0 0; gap: 3px; }
+
+@media (max-width: 640px) {
+  .suppliers { padding: 0 8px 6px; }
+  .supplier-row { grid-template-columns: minmax(0,1fr) auto; padding: 5px 4px; gap: 8px; }
+  .supplier-logo { width: 32px; height: 32px; flex-basis: 32px; border-radius: 7px; }
+  .supplier-initials { width: 32px; height: 32px; flex-basis: 32px; border-radius: 7px; }
+  .supplier-name { font-size: 12px; }
+  .supplier-meta-line, .supplier-sub { font-size: 9px; }
+  .supplier-listing { font-size: 8.5px; }
+  .supplier-price { font-size: 14px; }
+  .supplier-go { margin-top: 2px; padding: 3px 6px; font-size: 7.5px; }
+}
+
+/* Never stack price under the vendor on narrow phones, it doubles row height */
+@media (max-width: 420px) {
+  .supplier-row { grid-template-columns: minmax(0,1fr) auto; }
+  .supplier-price-wrap { display: block; text-align: right; padding-left: 0; }
+}
+
+/* ── PAYMENT METHOD ICONS ── */
+.payment-icon { gap: 4px; padding: 2px 6px; font-size: 8.5px; }
+.payment-icon-img { width: 13px; height: 13px; display: block; flex: none; }

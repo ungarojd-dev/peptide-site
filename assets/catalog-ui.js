@@ -155,6 +155,20 @@
     set("statVendors",catalog.vendors_loaded||0);
   }
 
+  const PAYMENT_GLYPHS={
+    visa:"card",mastercard:"card",amex:"card","american-express":"card",discover:"card",
+    "credit-card":"card",card:"card","debit-card":"card","credit-debit":"card",
+    zelle:"bank",ach:"bank","bank-transfer":"bank",wire:"bank","wire-transfer":"bank",
+    check:"check","e-check":"check",echeck:"check",
+    bitcoin:"crypto",btc:"crypto",ethereum:"crypto",eth:"crypto",crypto:"crypto",
+    usdt:"crypto",usdc:"crypto",litecoin:"crypto","coinbase-commerce":"crypto",
+    cashapp:"mobile-pay","cash-app":"mobile-pay",venmo:"mobile-pay",
+    "apple-pay":"mobile-pay","google-pay":"mobile-pay",
+    paypal:"wallet",wise:"wallet"
+  };
+  const paymentSlug=value=>String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+  const paymentGlyph=slug=>PAYMENT_GLYPHS[slug]||"card";
+
   function supplierRow(supplier,card,variantLabel="",isBest=false){
     const logo=supplier.vendor_logo?`<img class="supplier-logo" src="${attr(supplier.vendor_logo)}" alt="${attr(supplier.vendor_name)} logo" loading="lazy" width="34" height="34"/>`:`<span class="supplier-initials">${esc(initials(supplier.vendor_name))}</span>`;
     const regular=supplier.discount_percent>0&&supplier.regular_price_label!==supplier.effective_price_label?`<div class="supplier-regular">${esc(supplier.regular_price_label)}</div>`:"";
@@ -165,7 +179,7 @@
     const variantLine=variantLabel&&variantLabel!=="Standard listing"?`<span class="supplier-variant-line"><span>Size</span> ${esc(variantLabel)}</span>`:"";
     const discount=supplier.discount_percent?`<span class="supplier-discount">${esc(supplier.discount_percent)}% off with ${esc(supplier.coupon_code||"SAMMYC")}</span>`:`<span class="supplier-discount">Code details on vendor site</span>`;
     const bestBadge=isBest?`<span class="supplier-best">Lowest</span>`:"";
-    const paymentIcons=(supplier.vendor_payment_methods||[]).length?`<div class="supplier-payment-icons" aria-label="Accepted payment methods">${supplier.vendor_payment_methods.map(method=>`<span class="payment-icon payment-icon-${attr(String(method).toLowerCase().replace(/[^a-z0-9]/g,"-"))}" title="${attr(method)}">${esc(method)}</span>`).join("")}</div>`:"";
+    const paymentIcons=(supplier.vendor_payment_methods||[]).length?`<div class="supplier-payment-icons" aria-label="Accepted payment methods">${supplier.vendor_payment_methods.map(method=>{const slug=paymentSlug(method);return `<span class="payment-icon payment-icon-${attr(slug)}" title="${attr(method)}"><img class="payment-icon-img" src="/assets/payment-icons/${attr(slug)}.svg" data-fallback="/assets/payment-icons/${attr(paymentGlyph(slug))}.svg" alt="" loading="lazy"/>${esc(method)}</span>`;}).join("")}</div>`:"";
     const promotions=global.MPPPromotions?.forOffer?.(supplier,card)||[];
     const promoBadges=promotions.length?`<div class="supplier-promos">${promotions.slice(0,2).map(promotion=>`<span class="supplier-promo-badge">${esc(promotion.badge||promotion.headline)}</span>`).join("")}${promotions.length>2?`<span class="supplier-promo-more">+${promotions.length-2} more</span>`:""}</div>`:"";
     return `<a class="supplier-row${isBest?" is-best":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}</div>${paymentIcons}<div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadges}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div><div class="supplier-go">View deal</div></div></a>`;
@@ -177,7 +191,7 @@
     const variant=activeVariant(card);
     const expanded=!!state.expanded[card.id];
     const rows=(isAll?allOffers(card):(variant.suppliers||[]).map(supplier=>({supplier,variant})).sort((a,b)=>(a.supplier.effective_price_min??Number.POSITIVE_INFINITY)-(b.supplier.effective_price_min??Number.POSITIVE_INFINITY))).filter(offerMatchesVendor);
-    const visible=expanded?rows:rows.slice(0,isAll?4:3);
+    const visible=expanded?rows:rows.slice(0,isAll?7:6);
     const hidden=Math.max(0,rows.length-visible.length);
     const best=bestOffer(card);
     const lowestPrice=best?money(best.supplier.effective_price_min):null;
@@ -330,3 +344,15 @@
 
   global.CatalogUI={boot,state};
 })(window);
+
+// Payment icon fallback: if an official brand SVG is not present in /assets/payment-icons/,
+// swap to the generic glyph. If that is missing too, drop the image and keep the text label.
+(function paymentIconFallback(){
+  document.addEventListener("error",event=>{
+    const img=event.target;
+    if(!img||!img.classList||!img.classList.contains("payment-icon-img")) return;
+    const fallback=img.getAttribute("data-fallback");
+    if(fallback&&img.getAttribute("src")!==fallback){ img.setAttribute("src",fallback); return; }
+    img.remove();
+  },true);
+})();

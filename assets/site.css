@@ -1024,3 +1024,8 @@ body.theme-dark .notice strong { color: var(--olive-soft); }
   .nav-dd-menu { position: static; min-width: 0; border: none; border-radius: 0; background: none; box-shadow: none; padding: 0 0 4px 10px; }
   .premium-top .nav-dd-menu a { padding: 10px 12px; font-size: 12px; color: rgba(255,255,255,.62); }
 }
+
+/* ── HERO: comparison preview is desktop only ── */
+@media (max-width: 900px) {
+  .premium-hero .hero-visual { display: none; }
+}
