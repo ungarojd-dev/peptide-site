@@ -221,23 +221,22 @@
 
     return `<article class="product-card ${tone}" data-card-id="${attr(card.id)}">
       <header class="product-card-head">
-        <div class="product-card-top">
-          ${moleculeIcon()}
-          <span class="product-category-badge">${esc(card.category||"Product")}</span>
-        </div>
         <div class="product-title-row">
-          <div>
+          ${moleculeIcon()}
+          <div class="product-title-copy">
             <h2 class="product-title">${esc(card.name)}</h2>
-            <div class="product-subtitle">${esc(card.format||"Research product")}</div>
+            <div class="product-subtitle">${esc(card.format||"Research product")}<span class="product-cat-inline">${esc(card.category||"Product")}</span></div>
           </div>
           <span class="vendor-count">${vendorLabel}</span>
         </div>
-        <div class="card-lowest-block">
-          <div class="card-lowest-label">${lowestLabel}</div>
-          <div class="card-lowest-price">${lowestPrice?esc(lowestPrice):"Not listed"}</div>
-          <div class="card-lowest-vendor">${lowestVendor?`from ${esc(lowestVendor)}`:"Check vendor listings"}</div>
+        <div class="card-lowest-row">
+          <div class="card-lowest-block">
+            <span class="card-lowest-label">${lowestLabel}</span>
+            <span class="card-lowest-price">${lowestPrice?esc(lowestPrice):"Not listed"}</span>
+            <span class="card-lowest-vendor">${lowestVendor?`from ${esc(lowestVendor)}`:"Check listings"}</span>
+          </div>
+          <button type="button" class="card-view-button" data-action="expand" data-card="${attr(card.id)}">${expanded?"Hide":"View prices"}</button>
         </div>
-        <div class="card-action-row"><button type="button" class="card-view-button" data-action="expand" data-card="${attr(card.id)}">${expanded?"Hide prices":"View prices"}</button></div>
       </header>
       <div class="variant-wrap">
         <span class="variant-label">Compare size or listing</span>
