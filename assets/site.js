@@ -8,6 +8,19 @@
   const toggle=document.querySelector("[data-nav-toggle]");
   const nav=document.querySelector("[data-site-nav]");
   if(toggle&&nav) toggle.addEventListener("click",()=>nav.classList.toggle("show"));
+  const navDd=document.querySelector("[data-nav-dd]");
+  if(navDd){
+    const ddToggle=navDd.querySelector("[data-nav-dd-toggle]");
+    const closeDd=()=>{navDd.classList.remove("open");ddToggle.setAttribute("aria-expanded","false");};
+    ddToggle.addEventListener("click",event=>{
+      event.stopPropagation();
+      const open=!navDd.classList.contains("open");
+      navDd.classList.toggle("open",open);
+      ddToggle.setAttribute("aria-expanded",open?"true":"false");
+    });
+    document.addEventListener("click",event=>{ if(!navDd.contains(event.target)) closeDd(); });
+    document.addEventListener("keydown",event=>{ if(event.key==="Escape") closeDd(); });
+  }
   document.querySelectorAll("[data-year]").forEach(node=>node.textContent=String(new Date().getFullYear()));
 
   const escapeHtml=value=>String(value).replace(/[&<>\"']/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'\"':"&quot;","'":"&#039;"}[char]));
