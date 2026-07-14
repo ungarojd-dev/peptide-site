@@ -385,6 +385,7 @@ export function normalizeOffer(raw = {}, options = {}) {
     vendor_id: meta.id,
     vendor_name: vendor,
     vendor_logo: meta.logo || "",
+    vendor_display: compact(meta.display_name || vendor),
     vendor_payment_methods: Array.isArray(meta.payment_methods) ? meta.payment_methods : [],
     product_id: canonical.id,
     product_name: canonical.name,

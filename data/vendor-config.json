@@ -32,7 +32,8 @@
       "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
       "logo": "/assets/vendor-logos/mile-high-peptides.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "display_name": "Mile High Compounds"
     },
     "Southern Aminos": {
       "id": "southern-aminos",
