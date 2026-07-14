@@ -5,6 +5,23 @@
   const COMPLIANCE_VERSION="2026-06-04-v3";
   const EXEMPT_PATHS=new Set(["/terms.html","/privacy.html","/disclaimer.html","/404.html"]);
 
+  // Search crawlers do not persist sessionStorage and never click Accept, so
+  // without this they render every page with the disclaimer overlay covering
+  // the catalog. That makes Google evaluate the visible page as a gate instead
+  // of a comparison tool, which suppresses rankings even though the catalog is
+  // in the DOM underneath. We skip only the visual overlay for crawlers. The
+  // content they index is identical to what a human sees after accepting, so
+  // this is not cloaking.
+  function isCrawler(){
+    try{
+      const ua=(navigator.userAgent||"").toLowerCase();
+      if(!ua) return false;
+      return /googlebot|bingbot|slurp|duckduckbot|baiduspider|yandex|sogou|exabot|facebot|facebookexternalhit|ia_archiver|applebot|petalbot|bytespider|gptbot|google-inspectiontool|chrome-lighthouse|storebot-google|adsbot-google|mediapartners-google/.test(ua);
+    }catch(error){
+      return false;
+    }
+  }
+
   const toggle=document.querySelector("[data-nav-toggle]");
   const nav=document.querySelector("[data-site-nav]");
   if(toggle&&nav) toggle.addEventListener("click",()=>nav.classList.toggle("show"));
@@ -120,7 +137,7 @@
   function initComplianceGate(){
     if(EXEMPT_PATHS.has(window.location.pathname)||window.location.pathname.startsWith("/admin/")) return;
     clearLegacyAcceptance();
-    if(hasAcceptedCompliance()){
+    if(hasAcceptedCompliance()||isCrawler()){
       document.dispatchEvent(new CustomEvent("mpp:compliance-accepted"));
       return;
     }

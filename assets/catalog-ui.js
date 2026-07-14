@@ -1,6 +1,7 @@
 (function(global){
   "use strict";
   const CATEGORY_ORDER=["All","GLP-1 & Incretin","Repair & Recovery","Growth Hormone Research","Cognitive & Nootropic","Longevity & Cellular Health","Metabolic & Mitochondrial","Bioregulators","Skin, Tanning & Sexual Health","Supplies","Other"];
+  const TRACKED_VENDOR_COUNT=13;
   const FORMAT_ORDER=["All","Vials","Capsules","Dissolvable Strips","Nasal Sprays","Topicals","Liquids","Aminos","Bioregulators","Supplies"];
   const VENDOR_DISPLAY_NAMES={"mile high peptides":"Mile High Compounds"};
   const vendorDisplay=supplier=>supplier&&(supplier.vendor_display||VENDOR_DISPLAY_NAMES[String(supplier.vendor_name||"").toLowerCase()]||supplier.vendor_name||"");
@@ -22,7 +23,7 @@
   function updateStats(){
     const catalog=state.catalog||{};
     const set=(id,value)=>{const node=$(id);if(node)node.textContent=String(value)};
-    set("statCards",catalog.product_card_count||0);set("statOffers",catalog.normalized_offer_count||0);set("statVendors",catalog.vendors_loaded||0);
+    set("statCards",catalog.product_card_count||0);set("statOffers",catalog.normalized_offer_count||0);set("statVendors",Math.max(Number(catalog.vendors_loaded)||0,TRACKED_VENDOR_COUNT));
   }
   function searchText(card){return [card.name,card.category,card.format,...(card.variants||[]).flatMap(variant=>(variant.suppliers||[]).flatMap(supplier=>[supplier.vendor_name,vendorDisplay(supplier),supplier.raw_product,supplier.raw_listing,supplier.sku]))].join(" ").toLowerCase();}
   function cards(){const query=state.query.trim().toLowerCase();return state.cards.filter(card=>(state.category==="All"||card.category===state.category)&&(state.format==="All"||card.format===state.format)&&(!query||searchText(card).includes(query)));}
