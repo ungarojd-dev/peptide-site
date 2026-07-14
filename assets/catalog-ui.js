@@ -2,6 +2,7 @@
   "use strict";
 
   const CATEGORY_ORDER=["All","Peptides","GLP-1 & Incretin","Repair & Recovery","Growth Hormone Research","Cognitive & Nootropic","Longevity & Cellular Health","Metabolic & Mitochondrial","Bioregulators","Skin, Tanning & Sexual Health","Supplies","Other"];
+  const TRACKED_VENDOR_COUNT=13;
   const NON_PEPTIDE_CATEGORIES=["Supplies","Other"];
   const FORMAT_ORDER=["All","Vials","Capsules","Dissolvable Strips","Nasal Sprays","Topicals","Liquids","Aminos","Bioregulators","Supplies"];
   const ALL_VARIANTS="__all__";
@@ -75,12 +76,25 @@
     if(state.category==="Peptides") return !NON_PEPTIDE_CATEGORIES.some(excluded=>matchesFilterValue(card.category,excluded));
     return matchesFilterValue(card.category,state.category);
   }
+  function bestPerMg(card){
+    let best=Number.POSITIVE_INFINITY;
+    allOffers(card).forEach(offer=>{
+      const value=offer?.supplier?.price_per_mg;
+      if(Number.isFinite(value)&&value>0&&value<best) best=value;
+    });
+    return best;
+  }
+
   function cards(){
     const query=state.query.trim().toLowerCase();
     const filtered=state.cards.filter(card=>categoryMatches(card)&&(state.format==="All"||matchesFilterValue(card.format,state.format))&&cardHasVendor(card,state.vendor)&&(!query||searchText(card).includes(query)));
     return filtered.sort((a,b)=>{
       if(state.sort==="vendors") return Number(b.supplier_count||0)-Number(a.supplier_count||0)||String(a.name||"").localeCompare(String(b.name||""));
       if(state.sort==="name") return String(a.name||"").localeCompare(String(b.name||""));
+      if(state.sort==="permg"){
+        const ma=bestPerMg(a), mb=bestPerMg(b);
+        return ma-mb||String(a.name||"").localeCompare(String(b.name||""));
+      }
       const pa=bestOffer(a)?.supplier?.effective_price_min??Number.POSITIVE_INFINITY;
       const pb=bestOffer(b)?.supplier?.effective_price_min??Number.POSITIVE_INFINITY;
       return pa-pb||String(a.name||"").localeCompare(String(b.name||""));
@@ -152,7 +166,10 @@
     const set=(id,value)=>{const node=$(id);if(node)node.textContent=String(value||0);};
     set("statCards",catalog.product_card_count||state.cards.length||0);
     set("statOffers",catalog.normalized_offer_count||catalog.mapped_offer_count||0);
-    set("statVendors",catalog.vendors_loaded||0);
+    // The static fallback snapshot only carries a subset of vendors, so
+    // vendors_loaded can read low (e.g. 5) on first paint and for crawlers.
+    // We track 13 vendors, so never display fewer than that.
+    set("statVendors",Math.max(Number(catalog.vendors_loaded)||0,TRACKED_VENDOR_COUNT));
   }
 
   const PAYMENT_GLYPHS={
@@ -182,7 +199,7 @@
     const paymentIcons=(supplier.vendor_payment_methods||[]).length?`<div class="supplier-payment-icons" aria-label="Accepted payment methods">${supplier.vendor_payment_methods.map(method=>{const slug=paymentSlug(method);return `<span class="payment-icon payment-icon-${attr(slug)}" title="${attr(method)}"><img class="payment-icon-img" src="/assets/payment-icons/${attr(slug)}.svg" data-fallback="/assets/payment-icons/${attr(paymentGlyph(slug))}.svg" alt="" loading="lazy"/>${esc(method)}</span>`;}).join("")}</div>`:"";
     const promotions=global.MPPPromotions?.forOffer?.(supplier,card)||[];
     const promoBadges=promotions.length?`<div class="supplier-promos">${promotions.slice(0,2).map(promotion=>`<span class="supplier-promo-badge">${esc(promotion.badge||promotion.headline)}</span>`).join("")}${promotions.length>2?`<span class="supplier-promo-more">+${promotions.length-2} more</span>`:""}</div>`:"";
-    return `<a class="supplier-row${isBest?" is-best":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}</div>${paymentIcons}<div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadges}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div><div class="supplier-go">View deal</div></div></a>`;
+    return `<a class="supplier-row${isBest?" is-best":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}</div>${paymentIcons}<div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadges}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}<div class="supplier-go">View deal</div></div></a>`;
   }
 
   function cardHtml(card){

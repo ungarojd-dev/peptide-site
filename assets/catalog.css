@@ -840,7 +840,7 @@ select.catalog-sort {
 }
 
 /* ============================================================
-   Dark theme rollout preview — v1 brand system (Jet Black / Olive / Cream)
+   Dark theme rollout preview, v1 brand system (Jet Black / Olive / Cream)
    Scoped to body.theme-dark so legacy pages are untouched.
    ============================================================ */
 body.theme-dark .premium-catalog { background: linear-gradient(180deg, var(--black) 0%, #121212 100%); }
@@ -871,7 +871,7 @@ body.theme-dark .premium-catalog .catalog-chip.active { background: var(--olive)
 body.theme-dark .catalog-empty, body.theme-dark .catalog-loading, body.theme-dark #catalogSource { color: rgba(255,255,255,.5); }
 
 /* ============================================================
-   Payment method icons — vendor-level, rendered in supplier row
+   Payment method icons, vendor-level, rendered in supplier row
    Populate vendor-config.json "payment_methods" per vendor to activate.
    ============================================================ */
 .supplier-payment-icons { display: flex; flex-wrap: wrap; gap: 4px; margin: 2px 0; }
@@ -916,3 +916,17 @@ body.theme-dark .payment-icon { background: rgba(255,255,255,.06); border-color:
 /* ── PAYMENT METHOD ICONS ── */
 .payment-icon { gap: 4px; padding: 2px 6px; font-size: 8.5px; }
 .payment-icon-img { width: 13px; height: 13px; display: block; flex: none; }
+
+/* Price per mg. This is the metric the whole category competes on, so it gets
+   real visual weight rather than being buried in the meta line. */
+.supplier-permg {
+  margin-top: 2px;
+  color: var(--olive-2, #6A7D52);
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  white-space: nowrap;
+}
+@media (max-width: 640px) {
+  .supplier-permg { font-size: 9px; }
+}

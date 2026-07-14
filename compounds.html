@@ -1,0 +1,189 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>All Peptide Compounds | Price Comparison by $/mg</title>
+<meta name="description" content="Browse every research peptide tracked on MyPeptidePrice.com. Compare prices and cost per mg across 60 compounds and 13 vendors. Research use only."/>
+<link rel="canonical" href="https://mypeptideprice.com/compounds.html"/>
+<meta property="og:title" content="All Peptide Compounds | Price Comparison by $/mg"/>
+<meta property="og:description" content="Browse every research peptide tracked on MyPeptidePrice.com. Compare prices and cost per mg across 60 compounds and 13 vendors. Research use only."/>
+<meta property="og:url" content="https://mypeptideprice.com/compounds.html"/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="https://mypeptideprice.com/og-image-2026-rebrand.png"/>
+<link rel="icon" href="/favicon.png?v=20260714-v3-seo-permg-v2"/>
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260714-v3-seo-permg-v2"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260714-v3-seo-permg-v2"/>
+<link rel="manifest" href="/site.webmanifest"/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/assets/site.css?v=20260714-v3-seo-permg-v2"/>
+<style>
+.crumbs{max-width:1120px;margin:0 auto;padding:14px 20px 0;font-size:.82rem;color:var(--muted)}
+.crumbs a{color:var(--olive-2);text-decoration:none}.crumbs a:hover{text-decoration:underline}.crumbs span{color:var(--muted);margin:0 6px}
+.answer-box{max-width:1120px;margin:18px auto 0;padding:0 20px}
+.answer-box .inner{background:var(--soft);border-left:4px solid var(--olive);border-radius:0 12px 12px 0;padding:14px 18px}
+.answer-box .inner p{margin:0;font-size:1rem;line-height:1.6;color:var(--ink)}
+.answer-box .inner strong{color:var(--forest)}
+.snap-wrap{max-width:1120px;margin:0 auto;padding:8px 20px 0}
+.snap-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:12px}
+.snap-head h2{font-family:var(--font-display);color:var(--forest);margin:0;font-size:1.5rem}
+.snap-meta{font-size:.8rem;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.snap-meta .dot{width:8px;height:8px;border-radius:50%;background:var(--olive);display:inline-block}
+.price-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.price-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;text-decoration:none;color:inherit;border-bottom:1px solid var(--line);transition:background .15s ease}
+.price-row:last-child{border-bottom:0}
+.price-row:hover{background:var(--soft)}
+.price-size{min-width:0;display:block}
+.price-size .size{display:block;font-weight:900;color:var(--ink);font-size:1.02rem}
+.price-size .vendor{display:block;font-size:.83rem;color:var(--muted);margin-top:3px}
+.price-size .disc{display:block;font-size:.77rem;color:var(--olive-2);font-weight:700;margin-top:3px}
+.price-amount{text-align:right;white-space:nowrap}
+.price-amount .from{display:block;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.price-amount .amt{display:block;font-family:var(--font-body);font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest);font-size:1.3rem;margin-top:2px}
+.price-amount .permg{display:block;font-size:.72rem;color:var(--olive-2);font-weight:800;margin-top:2px}
+.price-amount .go{display:block;font-size:.77rem;color:var(--olive-2);font-weight:700;margin-top:3px}
+.snap-note{font-size:.78rem;color:var(--muted);margin-top:12px;line-height:1.5}
+.snap-cta{margin-top:14px}
+.copy{max-width:1120px;margin:0 auto;padding:0 20px}
+.copy h2{font-family:var(--font-display);color:var(--forest);margin-bottom:6px}
+.copy h3{font-family:var(--font-display);color:var(--forest);font-size:1.2rem;margin:22px 0 6px}
+.copy p{color:var(--ink);line-height:1.7}
+.research-tag{display:inline-block;background:var(--soft);color:var(--forest-2);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.75rem;font-weight:800;letter-spacing:.03em;margin-bottom:10px}
+.xlink-wrap{max-width:1120px;margin:0 auto;padding:8px 20px}
+.xlink-wrap h2{font-family:var(--font-display);color:var(--forest);font-size:1.2rem;margin:0 0 10px}
+.xlink-grid{display:flex;flex-wrap:wrap;gap:8px}
+.xlink-grid a{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.82rem;font-weight:700;color:var(--forest);text-decoration:none}
+.xlink-grid a:hover{background:var(--paper);border-color:var(--olive)}
+.hub-grid{max-width:1120px;margin:0 auto;padding:8px 20px 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hub-card{display:block;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .15s,background .15s}
+.hub-card:hover{border-color:var(--olive);background:var(--soft)}
+.hub-card .hc-name{font-weight:900;color:var(--ink);font-size:1rem}
+.hub-card .hc-cat{font-size:.76rem;color:var(--muted);margin-top:2px}
+.hub-card .hc-price{font-size:.86rem;color:var(--forest);font-weight:800;margin-top:8px}
+.hub-card .hc-price span{color:var(--muted);font-weight:600}
+.hub-section-title{max-width:1120px;margin:22px auto 0;padding:0 20px;font-family:var(--font-display);color:var(--forest);font-size:1.15rem}
+@media(max-width:520px){.snap-head h2{font-size:1.3rem}.answer-box .inner p{font-size:.95rem}
+.price-row{flex-direction:column;align-items:flex-start;gap:10px}
+.price-amount{text-align:left;width:100%}.price-amount .amt{font-size:1.4rem}}
+</style>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PDQM5TBB');</script>
+<!-- Meta Pixel -->
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2737586326608423');fbq('track','PageView');</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mypeptideprice.com/"},{"@type":"ListItem","position":2,"name":"Compounds","item":"https://mypeptideprice.com/compounds.html"}]},{"@type":"CollectionPage","name":"All Peptide Compounds","description":"Browse every research peptide tracked on MyPeptidePrice.com. Compare prices and cost per mg across 60 compounds and 13 vendors. Research use only.","url":"https://mypeptideprice.com/compounds.html"}]}
+</script>
+</head>
+<body>
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDQM5TBB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1" alt=""/></noscript>
+<header class="site-top premium-top">
+  <div class="top-inner">
+    <a class="brand premium-brand" href="/" aria-label="MyPeptidePrice home">
+      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260714-v3-seo-permg-v2" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+      <span class="brand-copy"><span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span><span class="brand-tagline">Research. Compare. Save.</span></span>
+    </a>
+    <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open navigation"><span></span><span></span><span></span></button>
+    <nav class="site-nav" data-site-nav>
+      <a href="/#compare">Prices</a>
+      <a href="/vendors.html">Vendors</a>
+      <div class="nav-dd" data-nav-dd>
+        <button class="nav-dd-toggle" type="button" data-nav-dd-toggle aria-expanded="false" aria-haspopup="true">Compounds<span class="nav-dd-caret" aria-hidden="true"></span></button>
+        <div class="nav-dd-menu" data-nav-dd-menu>
+          <a href="/semaglutide-price-comparison.html">Semaglutide</a>
+          <a href="/tirzepatide-price-comparison.html">Tirzepatide</a>
+          <a href="/retatrutide-price-comparison.html">Retatrutide</a>
+          <a href="/bpc-157-price-comparison.html">BPC-157</a>
+          <a href="/compounds.html">All compounds</a>
+        </div>
+      </div>
+      <a href="/faq.html">FAQ</a>
+      <a href="/blog/">Research</a>
+      <a class="nav-code-pill" href="/#compare">Use SAMMYC</a>
+    </nav>
+  </div>
+</header>
+<div class="coupon-strip">Use <span class="code-pill">SAMMYC</span> at supported vendors for available discounts. Prices below reflect the known code where applicable.</div>
+<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span>Compounds</nav>
+<section class="hero"><div class="hero-inner"><div><span class="eyebrow">Compound directory</span><h1>All tracked peptide compounds.</h1><p>Browse every research compound compared on MyPeptidePrice.com, grouped by category. Each page ranks vendors by price and cost per mg.</p><div class="hero-actions"><a class="button" href="/#compare" data-cta="hero">Open the live comparison</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Compounds</span><strong>60</strong></div><div class="hero-stat"><span>Vendors</span><strong>13</strong></div><div class="hero-stat"><span>Discount code</span><strong>SAMMYC</strong></div></div></div></section>
+<div class="hub-section-title">Bioregulators</div><div class="hub-grid"><a class="hub-card" href="/compounds/cartalax.html"><div class="hc-name">Cartalax</div><div class="hc-cat">2 vendors</div><div class="hc-price">$61.19 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/pinealon.html"><div class="hc-name">Pinealon</div><div class="hc-cat">2 vendors</div><div class="hc-price">$38.25 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/thymalin.html"><div class="hc-name">Thymalin</div><div class="hc-cat">4 vendors</div><div class="hc-price">$13.00 <span>lowest after code</span></div></a></div>
+<div class="hub-section-title">Cognitive &amp; Nootropic</div><div class="hub-grid"><a class="hub-card" href="/compounds/adamax.html"><div class="hc-name">Adamax</div><div class="hc-cat">3 vendors</div><div class="hc-price">$58.65 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/dsip.html"><div class="hc-name">DSIP</div><div class="hc-cat">5 vendors</div><div class="hc-price">$19.50 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/selank.html"><div class="hc-name">Selank</div><div class="hc-cat">5 vendors</div><div class="hc-price">$13.00 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/semax.html"><div class="hc-name">Semax</div><div class="hc-cat">5 vendors</div><div class="hc-price">$22.75 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/semax-selank-blend.html"><div class="hc-name">Semax + Selank Blend</div><div class="hc-cat">3 vendors</div><div class="hc-price">$45.50 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/vip.html"><div class="hc-name">VIP</div><div class="hc-cat">4 vendors</div><div class="hc-price">$29.25 <span>lowest after code</span></div></a></div>
+<div class="hub-section-title">GLP-1 &amp; Incretin</div><div class="hub-grid"><a class="hub-card" href="/compounds/cagrilintide.html"><div class="hc-name">Cagrilintide</div><div class="hc-cat">5 vendors</div><div class="hc-price">$35.75 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/retatrutide-price-comparison.html"><div class="hc-name">Retatrutide</div><div class="hc-cat">5 vendors</div><div class="hc-price">$33.15 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/retatrutide-and-cagrilintide-blend.html"><div class="hc-name">Retatrutide &amp; Cagrilintide Blend</div><div class="hc-cat">3 vendors</div><div class="hc-price">$78.00 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/retatrutide-and-tirzepatide-blend.html"><div class="hc-name">Retatrutide &amp; Tirzepatide Blend</div><div class="hc-cat">3 vendors</div><div class="hc-price">$98.99 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/semaglutide-price-comparison.html"><div class="hc-name">Semaglutide</div><div class="hc-cat">2 vendors</div><div class="hc-price">$33.15 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/tesofensine.html"><div class="hc-name">Tesofensine</div><div class="hc-cat">2 vendors</div><div class="hc-price">$103.49 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/tirzepatide-price-comparison.html"><div class="hc-name">Tirzepatide</div><div class="hc-cat">5 vendors</div><div class="hc-price">$32.50 <span>lowest after code</span></div></a></div>
+<div class="hub-section-title">Growth Hormone Research</div><div class="hub-grid"><a class="hub-card" href="/compounds/cjc-1295.html"><div class="hc-name">CJC-1295</div><div class="hc-cat">2 vendors</div><div class="hc-price">$24.65 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/cjc-1295-ipamorelin-blend.html"><div class="hc-name">CJC-1295 + Ipamorelin Blend</div><div class="hc-cat">5 vendors</div><div class="hc-price">$35.06 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/cjc-1295-with-dac.html"><div class="hc-name">CJC-1295 with DAC</div><div class="hc-cat">2 vendors</div><div class="hc-price">$46.79 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/ghrp-6.html"><div class="hc-name">GHRP-6</div><div class="hc-cat">2 vendors</div><div class="hc-price">$19.50 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/igf-1-lr3.html"><div class="hc-name">IGF-1 LR3</div><div class="hc-cat">4 vendors</div><div class="hc-price">$32.50 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/ipamorelin.html"><div class="hc-name">Ipamorelin</div><div class="hc-cat">5 vendors</div><div class="hc-price">$19.50 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/ipamorelin-tesamorelin-blend.html"><div class="hc-name">Ipamorelin + Tesamorelin Blend</div><div class="hc-cat">4 vendors</div><div class="hc-price">$58.50 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/peg-mgf.html"><div class="hc-name">PEG-MGF</div><div class="hc-cat">2 vendors</div><div class="hc-price">$33.15 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/sermorelin.html"><div class="hc-name">Sermorelin</div><div class="hc-cat">5 vendors</div><div class="hc-price">$32.50 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/tesamorelin.html"><div class="hc-name">Tesamorelin</div><div class="hc-cat">5 vendors</div><div class="hc-price">$35.75 <span>lowest after code</span></div></a></div>
+<div class="hub-section-title">Longevity &amp; Cellular Health</div><div class="hub-grid"><a class="hub-card" href="/compounds/ahk-cu.html"><div class="hc-name">AHK-Cu</div><div class="hc-cat">3 vendors</div><div class="hc-price">$19.50 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/epitalon.html"><div class="hc-name">Epitalon</div><div class="hc-cat">5 vendors</div><div class="hc-price">$22.75 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/foxo4-dri.html"><div class="hc-name">FOXO4-DRI</div><div class="hc-cat">4 vendors</div><div class="hc-price">$101.15 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/ghk-cu.html"><div class="hc-name">GHK-Cu</div><div class="hc-cat">5 vendors</div><div class="hc-price">$19.50 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/nad.html"><div class="hc-name">NAD+</div><div class="hc-cat">5 vendors</div><div class="hc-price">$35.75 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/pnc-27.html"><div class="hc-name">PNC-27</div><div class="hc-cat">2 vendors</div><div class="hc-price">$50.15 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/snap-8.html"><div class="hc-name">Snap-8</div><div class="hc-cat">4 vendors</div><div class="hc-price">$18.20 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/ss-31.html"><div class="hc-name">SS-31</div><div class="hc-cat">3 vendors</div><div class="hc-price">$29.25 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/thymosin-alpha-1.html"><div class="hc-name">Thymosin Alpha-1</div><div class="hc-cat">5 vendors</div><div class="hc-price">$29.25 <span>lowest after code</span></div></a></div>
+<div class="hub-section-title">Metabolic &amp; Mitochondrial</div><div class="hub-grid"><a class="hub-card" href="/compounds/5-amino-1mq.html"><div class="hc-name">5-Amino-1MQ</div><div class="hc-cat">5 vendors</div><div class="hc-price">$26.00 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/5-amino-1mq.html"><div class="hc-name">5-Amino-1MQ</div><div class="hc-cat">3 vendors</div><div class="hc-price">$77.35 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/aod-9604.html"><div class="hc-name">AOD-9604</div><div class="hc-cat">5 vendors</div><div class="hc-price">$22.75 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/glow-blend.html"><div class="hc-name">GLOW Blend</div><div class="hc-cat">5 vendors</div><div class="hc-price">$50.36 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/glutathione.html"><div class="hc-name">Glutathione</div><div class="hc-cat">5 vendors</div><div class="hc-price">$12.75 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/klow-blend.html"><div class="hc-name">KLOW Blend</div><div class="hc-cat">5 vendors</div><div class="hc-price">$69.49 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/methylene-blue.html"><div class="hc-name">Methylene Blue</div><div class="hc-cat">2 vendors</div><div class="hc-price">$20.40 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/mots-c.html"><div class="hc-name">MOTS-c</div><div class="hc-cat">5 vendors</div><div class="hc-price">$22.75 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/mtp-31.html"><div class="hc-name">MTP-31</div><div class="hc-cat">2 vendors</div><div class="hc-price">$43.99 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/slu-pp-332.html"><div class="hc-name">SLU-PP-332</div><div class="hc-cat">2 vendors</div><div class="hc-price">$96.85 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/slu-pp-332.html"><div class="hc-name">SLU-PP-332</div><div class="hc-cat">4 vendors</div><div class="hc-price">$33.15 <span>lowest after code</span></div></a></div>
+<div class="hub-section-title">Repair &amp; Recovery</div><div class="hub-grid"><a class="hub-card" href="/compounds/ara-290.html"><div class="hc-name">ARA-290</div><div class="hc-cat">3 vendors</div><div class="hc-price">$37.61 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/bpc-157-price-comparison.html"><div class="hc-name">BPC-157</div><div class="hc-cat">2 vendors</div><div class="hc-price">$89.99 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/bpc-157-price-comparison.html"><div class="hc-name">BPC-157</div><div class="hc-cat">5 vendors</div><div class="hc-price">$19.50 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/bpc-157-tb-500-blend.html"><div class="hc-name">BPC-157 + TB-500 Blend</div><div class="hc-cat">5 vendors</div><div class="hc-price">$40.80 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/ghk-cu-kpv-blend.html"><div class="hc-name">GHK-Cu + KPV Blend</div><div class="hc-cat">2 vendors</div><div class="hc-price">$50.15 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/kpv.html"><div class="hc-name">KPV</div><div class="hc-cat">5 vendors</div><div class="hc-price">$31.24 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/ll-37.html"><div class="hc-name">LL-37</div><div class="hc-cat">4 vendors</div><div class="hc-price">$24.38 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/tb-500.html"><div class="hc-name">TB-500</div><div class="hc-cat">5 vendors</div><div class="hc-price">$24.65 <span>lowest after code</span></div></a></div>
+<div class="hub-section-title">Skin, Tanning &amp; Sexual Health</div><div class="hub-grid"><a class="hub-card" href="/compounds/kisspeptin.html"><div class="hc-name">Kisspeptin</div><div class="hc-cat">3 vendors</div><div class="hc-price">$29.25 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/melanotan-i.html"><div class="hc-name">Melanotan I</div><div class="hc-cat">4 vendors</div><div class="hc-price">$16.15 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/melanotan-ii.html"><div class="hc-name">Melanotan II</div><div class="hc-cat">4 vendors</div><div class="hc-price">$29.75 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/oxytocin.html"><div class="hc-name">Oxytocin</div><div class="hc-cat">3 vendors</div><div class="hc-price">$33.15 <span>lowest after code</span></div></a>
+<a class="hub-card" href="/compounds/pt-141.html"><div class="hc-name">PT-141</div><div class="hc-cat">5 vendors</div><div class="hc-price">$22.75 <span>lowest after code</span></div></a></div>
+<div class="hub-section-title">Supplies</div><div class="hub-grid"><a class="hub-card" href="/compounds/vial-caps-and-covers.html"><div class="hc-name">Vial Caps &amp; Covers</div><div class="hc-cat">2 vendors</div><div class="hc-price">$2.55 <span>lowest after code</span></div></a></div>
+<section class="section compact" style="margin-top:22px"><div class="container"><div class="notice">Use <span class="code-pill">SAMMYC</span> at supported vendor checkouts where listed. MyPeptidePrice.com is an independent comparison resource. For research use only. Prices last verified July 2026.</div></div></section>
+<footer class="site-footer premium-footer">
+  <div class="footer-inner">
+    <div class="footer-col footer-col-brand">
+      <div class="footer-brand premium-footer-brand">
+        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260714-v3-seo-permg-v2" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+        <div><div class="footer-wordmark"><span class="footer-brand-my">my</span><span class="footer-brand-peptide">peptide</span><span class="footer-brand-price">price</span><span class="footer-brand-dot">.com</span></div><div class="footer-tagline">Research. Compare. Save.</div></div>
+      </div>
+      <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
+    </div>
+    <div class="footer-col"><div class="footer-title">Compounds</div><div class="footer-links"><a href="/semaglutide-price-comparison.html">Semaglutide</a><a href="/tirzepatide-price-comparison.html">Tirzepatide</a><a href="/retatrutide-price-comparison.html">Retatrutide</a><a href="/bpc-157-price-comparison.html">BPC-157</a><a href="/compounds.html">All compounds</a></div></div>
+    <div class="footer-col"><div class="footer-title">Site</div><div class="footer-links"><a href="/#compare">Compare prices</a><a href="/vendors.html">Vendors</a><a href="/faq.html">FAQ</a><a href="/blog/">Research</a></div></div>
+    <div class="footer-col"><div class="footer-title">Legal</div><div class="footer-links"><a href="/disclaimer.html">Disclaimer</a><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a></div></div>
+  </div>
+  <div class="footer-base"><span>&copy; 2026 MyPeptidePrice.com. Independent price comparison. For research use only.</span></div>
+</footer>
+<script src="/assets/site.js?v=20260714-v3-seo-permg-v2"></script>
+</body>
+</html>
