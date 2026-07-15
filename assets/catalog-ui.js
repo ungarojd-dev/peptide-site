@@ -222,7 +222,6 @@
     return `<article class="product-card ${tone}" data-card-id="${attr(card.id)}">
       <header class="product-card-head">
         <div class="product-title-row">
-          ${moleculeIcon()}
           <div class="product-title-copy">
             <h2 class="product-title">${esc(card.name)}</h2>
             <div class="product-subtitle">${esc(card.format||"Research product")}<span class="product-cat-inline">${esc(card.category||"Product")}</span></div>
@@ -355,6 +354,18 @@
     if(search) search.oninput=event=>{state.query=event.target.value;renderCards(false);};
     if(clearButton) clearButton.onclick=clear;
     if(sort) sort.onchange=event=>{state.sort=event.target.value;renderCards(false);};
+    // Hero "Jump to" chips: fill the catalog search and scroll to the compare grid.
+    document.querySelectorAll("[data-chip-query]").forEach(btn=>{
+      btn.addEventListener("click",()=>{
+        const q=btn.getAttribute("data-chip-query")||"";
+        state.query=q;
+        const s=$("catalogSearch");
+        if(s) s.value=q;
+        renderCards(false);
+        const target=document.getElementById("compare")||s;
+        if(target) target.scrollIntoView({behavior:"smooth",block:"start"});
+      });
+    });
     global.addEventListener("resize",updateChipsOverflow);
   }
 

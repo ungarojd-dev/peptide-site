@@ -595,7 +595,6 @@
   .catalog-search-row { grid-template-columns: 1fr; }
   .premium-catalog .catalog-clear { min-height: 40px; }
   .product-title-row { flex-wrap: wrap; }
-  .vendor-count { margin-left: 48px; }
   .supplier-row { grid-template-columns: 1fr; }
   .supplier-price-wrap { display: flex; align-items: center; justify-content: space-between; gap: 10px; text-align: left; padding-left: 40px; }
 }
