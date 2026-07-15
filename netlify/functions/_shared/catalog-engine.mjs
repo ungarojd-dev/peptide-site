@@ -268,8 +268,22 @@ function findCanonicalRecord(raw) {
   return { id: slug(name), name, category: inferCategory(name, raw), aliases: [], mapped: false, mapping: "visible-unmapped" };
 }
 
+// Some vendors mislabel real research peptides as "Supplies" (e.g. a 1g raw of a
+// cosmetic peptide). These name-based overrides win over the vendor's category so
+// the compound lands in the right place. Keyed by a lowercase substring of the name.
+const FORCED_CATEGORY = [
+  ["acetyl hexapeptide", "Skin, Tanning & Sexual Health"],
+  ["argireline", "Skin, Tanning & Sexual Health"],
+  ["syn-ake", "Skin, Tanning & Sexual Health"],
+  ["syn ake", "Skin, Tanning & Sexual Health"],
+];
+
 function inferCategory(family, raw) {
   const sourceCategory = compact(raw.raw_category || raw.source_category || raw.category || "");
+  const nameHay = normalized([family, raw.product, raw.listing, raw.sku].filter(Boolean).join(" "));
+  for (const [term, category] of FORCED_CATEGORY) {
+    if (nameHay.includes(term)) return category;
+  }
   const haystack = normalized([family, raw.product, raw.listing, raw.sku, sourceCategory].filter(Boolean).join(" "));
   if (includesAny(haystack, SUPPLY_TERMS)) return "Supplies";
   for (const [category, terms] of CATEGORY_TERMS) {
