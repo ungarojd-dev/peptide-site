@@ -171,7 +171,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260715-deals-update-v47";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260715-deals-update-v48";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{

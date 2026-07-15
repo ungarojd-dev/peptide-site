@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-15-birthday-lto-v1",
+  "version": "2026-07-15-birthday-lto-v2",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-15T12:00:00-04:00",
+  "updated_at": "2026-07-15T14:30:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -52,18 +52,19 @@
       "cta_text": "Shop Now"
     },
     {
-      "id": "labsourced-lto-40",
+      "id": "labsourced-lto-25",
       "vendor": "LabSourced Peptides",
       "display_vendor": "LabSourced Peptides",
-      "headline": "Up to 40% off, stacks with SAMMYC",
-      "short_detail": "10% off sitewide, stack SAMMYC, extra 5% on Zelle, plus tiered bulk pricing",
-      "full_detail": "LabSourced Peptides is running 10% off sitewide, stackable with the SAMMYC code, with an additional 5% off when paying by Zelle and tiered bulk discount options that can reach up to 40% off. Confirm final eligibility, stacking rules, and checkout pricing directly on the vendor website.",
+      "headline": "10% off sitewide, SAMMYC boosted to 25%",
+      "short_detail": "10% off sitewide, plus the SAMMYC code boosted to 25% off",
+      "full_detail": "LabSourced Peptides is running 10% off sitewide, with the SAMMYC code boosted to 25% off. Confirm final eligibility, stacking rules, and checkout pricing directly on the vendor website.",
       "affiliate_url": "https://labsourced.com/?ref=SammyC",
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 135,
       "badge": "Limited Time Deal",
-      "cta_text": "Shop Now"
+      "cta_text": "Shop Now",
+      "discount_override_percent": 25
     },
     {
       "id": "southern-aminos-25-stack",
