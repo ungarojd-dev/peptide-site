@@ -219,7 +219,7 @@
     const lowestLabel=state.vendor==="All"?"Lowest tracked price":`Lowest ${esc(state.vendor)} price`;
     const supplierHtml=visible.length?visible.map((row,index)=>supplierRow(row.supplier,card,isAll?row.variant.label:"",index===0&&row.supplier.effective_price_min!=null)).join(""):`<div class="supplier-row supplier-empty-row"><span>No listings available for this vendor.</span></div>`;
 
-    return `<article class="product-card ${tone}" data-card-id="${attr(card.id)}">
+    return `<article class="product-card ${tone}${expanded?" is-expanded":""}" data-card-id="${attr(card.id)}">
       <header class="product-card-head">
         <div class="product-title-row">
           <div class="product-title-copy">

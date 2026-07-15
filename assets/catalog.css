@@ -471,7 +471,7 @@
 .catalog-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
 .product-card { overflow: hidden; border: 1px solid rgba(31,58,45,.1); border-radius: 18px; background: rgba(255,255,255,.92); box-shadow: 0 12px 32px rgba(13,13,13,.06); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
 .product-card:hover { transform: translateY(-4px); border-color: rgba(78,93,60,.25); box-shadow: 0 28px 70px rgba(13,13,13,.13); }
-.product-card-head { padding: 12px 13px 11px; border-bottom: 1px solid rgba(31,58,45,.08); background: radial-gradient(circle at 0 0, rgba(140,154,97,.13), transparent 32%), linear-gradient(180deg, #fff, #fdfbf6); }
+.product-card-head { padding: 10px 12px 9px; border-bottom: 1px solid rgba(31,58,45,.08); background: radial-gradient(circle at 0 0, rgba(140,154,97,.13), transparent 32%), linear-gradient(180deg, #fff, #fdfbf6); }
 .product-molecule { position: relative; display: block; width: 38px; height: 38px; flex: 0 0 38px; border-radius: 12px; background: var(--tone-soft, #edf1e8); box-shadow: inset 0 0 0 1px rgba(31,58,45,.08); }
 .product-molecule::before { content: ""; position: absolute; left: 16px; top: 16px; width: 6px; height: 6px; border-radius: 50%; background: var(--tone-main, var(--olive)); box-shadow: -9px -8px 0 -1.5px var(--tone-main, var(--olive)), 10px -8px 0 -1.5px var(--tone-main, var(--olive)), -8px 10px 0 -1.5px var(--tone-main, var(--olive)), 11px 9px 0 -1.5px var(--tone-main, var(--olive)); }
 .product-molecule::after { content: ""; position: absolute; inset: 11px; border: 1.5px solid var(--tone-line, rgba(78,93,60,.45)); border-radius: 999px; transform: rotate(28deg); }
@@ -483,23 +483,31 @@
 .product-cat-inline { color: var(--tone-dark, var(--forest)); font-weight: 800; position: relative; padding-left: 8px; }
 .product-cat-inline::before { content: ""; position: absolute; left: 0; top: 50%; width: 3px; height: 3px; border-radius: 50%; background: currentColor; transform: translateY(-50%); opacity: .55; }
 .vendor-count { flex: 0 0 auto; align-self: flex-start; border: 1px solid rgba(31,58,45,.1); border-radius: 999px; background: #fff; color: var(--olive); padding: 4px 8px; font-size: 10px; font-weight: 900; white-space: nowrap; }
-.card-lowest-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 11px; padding-top: 10px; border-top: 1px solid rgba(31,58,45,.08); }
-.card-lowest-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 4px 8px; min-width: 0; }
-.card-lowest-label { color: var(--muted); font-size: 9px; font-weight: 900; letter-spacing: .6px; text-transform: uppercase; width: 100%; }
-.card-lowest-price { color: var(--forest); font-family: var(--font-display); font-size: 22px; font-weight: 900; letter-spacing: -.6px; line-height: 1; }
+.card-lowest-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(31,58,45,.08); }
+.card-lowest-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 7px; min-width: 0; }
+.card-lowest-label { color: var(--muted); font-size: 8.5px; font-weight: 900; letter-spacing: .5px; text-transform: uppercase; width: 100%; }
+.card-lowest-price { color: var(--forest); font-family: var(--font-display); font-size: 18px; font-weight: 900; letter-spacing: -.5px; line-height: 1; }
 .card-lowest-vendor { color: var(--muted); font-size: 11px; font-weight: 700; }
 .card-view-button { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 11px; background: linear-gradient(135deg, var(--forest), var(--olive)); color: #fff; padding: 9px 16px; font-size: 12px; font-weight: 900; cursor: pointer; box-shadow: 0 8px 18px rgba(31,58,45,.18); transition: transform .16s ease, filter .16s ease; }
 .card-view-button:hover { transform: translateY(-1px); filter: brightness(1.05); }
-.variant-wrap { padding: 12px 16px; border-bottom: 1px solid rgba(31,58,45,.08); background: #fbfaf6; }
-.variant-label { display: block; margin-bottom: 8px; color: var(--muted); font-size: 9px; font-weight: 900; letter-spacing: 1.1px; text-transform: uppercase; }
+/* When the card is open, the listings below already show every price including
+   the lowest, so the big lowest-price block is redundant. Collapse it to a thin
+   row with just the Hide button to reclaim vertical space (matches the denser
+   feel of the old catalog). */
+.product-card.is-expanded .card-lowest-row { margin-top: 8px; padding-top: 8px; }
+.product-card.is-expanded .card-lowest-price { font-size: 15px; }
+.product-card.is-expanded .card-lowest-label { width: auto; }
+.product-card.is-expanded .card-lowest-vendor { display: none; }
+.variant-wrap { padding: 8px 12px; border-bottom: 1px solid rgba(31,58,45,.08); background: #fbfaf6; }
+.variant-label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 8.5px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
 .variant-pills-shell { position: relative; display: flex; align-items: center; gap: 5px; }
-.variant-pills { display: flex; gap: 7px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; flex: 1; min-width: 0; }
+.variant-pills { display: flex; gap: 5px; overflow-x: auto; scrollbar-width: none; scroll-behavior: smooth; flex: 1; min-width: 0; }
 .variant-pills::-webkit-scrollbar { display: none; }
 .variant-scroll-btn { display: none; flex: 0 0 auto; align-items: center; justify-content: center; width: 24px; height: 24px; border: 1px solid rgba(31,58,45,.16); border-radius: 50%; background: #fff; color: var(--olive); font-size: 12px; font-weight: 800; cursor: pointer; padding: 0; transition: background .15s, border-color .15s, color .15s; box-shadow: 0 2px 6px rgba(13,13,13,.06); }
 .variant-scroll-btn:hover { background: var(--forest); border-color: var(--forest); color: #fff; }
 .variant-pills-shell.has-overflow .variant-scroll-btn { display: flex; }
 .variant-pills-shell.has-overflow .variant-pills { mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); -webkit-mask-image: linear-gradient(90deg, transparent 0, #000 14px, #000 calc(100% - 14px), transparent 100%); }
-.variant-button { flex: 0 0 auto; border: 1px solid rgba(31,58,45,.11); border-radius: 999px; background: #fff; color: #4b554f; padding: 7px 10px; font-size: 11px; font-weight: 800; cursor: pointer; }
+.variant-button { flex: 0 0 auto; border: 1px solid rgba(31,58,45,.11); border-radius: 999px; background: #fff; color: #4b554f; padding: 5px 9px; font-size: 10.5px; font-weight: 800; white-space: nowrap; cursor: pointer; }
 .variant-button:hover { border-color: rgba(78,93,60,.4); color: var(--forest); }
 .variant-button.active, .variant-button.all.active { border-color: var(--olive); background: var(--olive); color: #fff; }
 .variant-button.all { background: #fffaf0; border-color: rgba(216,199,167,.6); color: #66583c; }
@@ -577,7 +585,7 @@
   .product-molecule::after { inset: 10px; }
   .product-title { font-size: 17px; }
   .vendor-count { font-size: 9px; }
-  .card-lowest-price { font-size: 21px; }
+  .card-lowest-price { font-size: 17px; }
   .variant-wrap { padding: 10px 12px; }
   .variant-scroll-btn { width: 22px; height: 22px; font-size: 11px; }
   .supplier-head { padding: 10px 12px 4px; font-size: 8px; }
