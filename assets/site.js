@@ -171,7 +171,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260710-deals-update-v46";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260715-deals-update-v47";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -388,7 +388,8 @@
       const stackChip=isStackable(deal)?`<span class="dc-stack">+SAMMYC</span>`:"";
       const logo=dealLogoPath(deal.display_vendor||deal.vendor);
       const logoHtml=logo?`<img class="dc-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
-      return `<a class="dc-card" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><div class="dc-card-body"><div class="dc-top">${badgeHtml}<span class="dc-vendor-wrap">${logoHtml}<span class="dc-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span></span>${stackChip}</div><strong class="dc-headline">${escapeHtml(headline)}</strong><span class="dc-detail">${escapeHtml(deal.short_detail||"")}</span></div><span class="dc-cta">View Deal ›</span></a>`;
+      const themeAttr=deal.theme?` data-theme="${escapeHtml(deal.theme)}"`:"";
+      return `<a class="dc-card" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"${themeAttr}><div class="dc-card-body"><div class="dc-top">${badgeHtml}<span class="dc-vendor-wrap">${logoHtml}<span class="dc-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span></span>${stackChip}</div><strong class="dc-headline">${escapeHtml(headline)}</strong><span class="dc-detail">${escapeHtml(deal.short_detail||"")}</span></div><span class="dc-cta">View Deal ›</span></a>`;
     };
     // Lock the track to the tallest card so rotating deals never shift the page (prevents mobile layout jump).
     track.style.display="flex";track.style.flexDirection="column";track.style.justifyContent="center";

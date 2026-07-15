@@ -280,6 +280,35 @@ body{
 .dc-logo{width:62px;height:34px;border-radius:9px;padding:4px}
 @media(max-width:720px){.vendor-head img{width:72px;height:38px}}
 
+/* 2026-07-15: Birthday LTO theme (Glow & Flawless), floating balloons on deal card */
+.dc-card[data-theme="birthday"]{position:relative;overflow:visible}
+.dc-card[data-theme="birthday"]::before,
+.dc-card[data-theme="birthday"]::after{
+  content:"🎈";
+  position:absolute;
+  line-height:1;
+  pointer-events:none;
+  filter:drop-shadow(0 4px 6px rgba(0,0,0,.45));
+  animation:dcBalloonBob 3.4s ease-in-out infinite;
+  z-index:3;
+}
+.dc-card[data-theme="birthday"]::before{top:-13px;left:14px;font-size:24px}
+.dc-card[data-theme="birthday"]::after{top:-8px;right:16px;font-size:19px;animation-delay:.75s}
+.dc-card[data-theme="birthday"] .dc-badge{
+  background:linear-gradient(180deg,#ff98cb,#e061a4);
+  color:#2a0716;
+  box-shadow:0 0 10px rgba(224,97,164,.6),0 6px 14px rgba(0,0,0,.4);
+}
+@keyframes dcBalloonBob{0%,100%{transform:translateY(0)}50%{transform:translateY(-6px)}}
+@media(max-width:620px){
+  .dc-card[data-theme="birthday"]::before{top:-11px;left:11px;font-size:21px}
+  .dc-card[data-theme="birthday"]::after{top:-7px;right:12px;font-size:17px}
+}
+@media(prefers-reduced-motion:reduce){
+  .dc-card[data-theme="birthday"]::before,
+  .dc-card[data-theme="birthday"]::after{animation:none}
+}
+
 /* 2026-07-06: Announcements rolodex reverted from July 4th patriotic theme to brand black/olive */
 .sale-banner{
   background:
