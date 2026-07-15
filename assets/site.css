@@ -935,7 +935,7 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
 
 
 /* ============================================================
-   Dark theme rollout preview — v1 brand system (Jet Black / Olive / Cream)
+   Dark theme rollout preview, v1 brand system (Jet Black / Olive / Cream)
    Scoped to body.theme-dark so legacy pages are untouched.
    ============================================================ */
 body.theme-dark { background: var(--black); color: rgba(255,255,255,.86); }

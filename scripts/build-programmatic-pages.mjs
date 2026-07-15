@@ -113,7 +113,7 @@ function header() {
     </nav>
   </div>
 </header>
-<div class="coupon-strip">Use <span class="code-pill">SAMMYC</span> at supported vendors for available discounts. Prices below reflect the known code where applicable.</div>`;
+<div class="coupon-strip">Independent research peptide price reference. Prices reflect the <span class="code-pill">SAMMYC</span> code where a vendor supports it. For laboratory research use only.</div>`;
 }
 
 function footer() {
@@ -224,10 +224,12 @@ for (const c of compoundPages) {
   const path = `/compounds/${sg}.html`;
   const canonical = `${BASE}${path}`;
   const lowLabel = c.lo != null ? money(c.lo) : null;
-  const title = `${c.name} Price Comparison | Compare $/mg Across Vendors`;
-  const desc = `Compare ${c.name} research vial prices and cost per mg across ${c.vendors.length} tracked vendors${lowLabel ? `, from ${lowLabel} after the SAMMYC code` : ""}. Live pricing, updated continuously. Research use only.`;
+  const hiLabel = c.hi != null ? money(c.hi) : null;
+  const title = `${c.name} Price Comparison | ${c.vendors.length} Vendors, Cost Per mg`;
+  const desc = `${c.name} listed prices and cost per mg compared across ${c.vendors.length} research vendors${lowLabel ? `, ${lowLabel} to ${hiLabel}` : ""}. Independent price reference. For laboratory research use only, not for human use.`;
 
-  // price rows: dedupe identical (vendor,size,price)
+  // price rows: dedupe identical (vendor,size,price). Neutral presentation, no
+  // "lowest" hype, no urgency; the code is stated as a plain fact where it applies.
   const seen = new Set();
   const rows = [];
   for (const o of c.priced.concat(c.offers.filter(o => !Number.isFinite(o.price)))) {
@@ -237,33 +239,34 @@ for (const c of compoundPages) {
     rows.push(o);
     if (rows.length >= 14) break;
   }
-  const rowsHtml = rows.map((o, i) => {
-    const disc = o.discount > 0 && o.code ? `${o.discount}% off with ${esc(o.code)}` : (o.regularLabel && o.regularLabel !== o.priceLabel ? `Regular ${esc(o.regularLabel)}` : "Vendor offer tracked");
-    return `<a class="price-row" href="${esc(o.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(c.name)}" data-category="${esc(c.category)}" data-vendor="${esc(o.vendorKey)}" data-code="${esc(o.code || "")}"><span class="price-size"><span class="size">${esc(c.name)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}</span><span class="vendor">${esc(o.vendor)}${/choose/i.test(o.size || "") ? ", size selected on vendor site" : ""}</span><span class="disc">${disc}</span></span><span class="price-amount"><span class="from">${i === 0 ? "Lowest" : "From"}</span><span class="amt">${esc(o.priceLabel || "Contact vendor")}</span>${o.permg ? `<span class="permg">${esc(o.permg)}</span>` : ""}<span class="go">Visit vendor &#8250;</span></span></a>`;
+  const rowsHtml = rows.map((o) => {
+    const note = o.discount > 0 && o.code ? `Code ${esc(o.code)} applies (${o.discount}% off)` : (o.regularLabel && o.regularLabel !== o.priceLabel ? `Listed ${esc(o.regularLabel)}` : "Listed price");
+    return `<a class="price-row" href="${esc(o.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(c.name)}" data-category="${esc(c.category)}" data-vendor="${esc(o.vendorKey)}" data-code="${esc(o.code || "")}"><span class="price-size"><span class="size">${esc(c.name)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}</span><span class="vendor">${esc(o.vendor)}${/choose/i.test(o.size || "") ? ", size selected on vendor site" : ""}</span><span class="disc">${note}</span></span><span class="price-amount"><span class="amt">${esc(o.priceLabel || "See vendor")}</span>${o.permg ? `<span class="permg">${esc(o.permg)}</span>` : ""}<span class="go">View listing &#8250;</span></span></a>`;
   }).join("\n");
 
   // related compounds in same category
   const related = compounds.filter(x => x.category === c.category && x.name !== c.name).slice(0, 8);
   const relatedHtml = related.length ? `<div class="xlink-wrap"><h2>Other ${esc(c.category)} compounds</h2><div class="xlink-grid">${related.map(r => `<a href="${HAND_BUILT.get(slug(r.name)) || "/compounds/" + slug(r.name) + ".html"}">${esc(r.name)}</a>`).join("")}</div></div>` : "";
 
-  const bestVendor = c.priced.length ? (c.priced[0].vendor) : null;
-  const answer = lowLabel
-    ? `As of ${TODAY}, ${c.name} research vials are listed as low as ${lowLabel} after the SAMMYC code across ${c.vendors.length} tracked vendors${bestVendor ? `, currently lowest at ${esc(bestVendor)}` : ""}. For research use only, confirm pricing on the vendor website.`
-    : `${c.name} is tracked across ${c.vendors.length} vendors. Compare current listings in the live comparison and confirm pricing on the vendor website. For research use only.`;
-
   const permgLine = (() => {
     const withMg = c.priced.filter(o => o.permgVal);
     if (!withMg.length) return "";
     withMg.sort((a, b) => a.permgVal - b.permgVal);
-    return ` The lowest tracked cost per mg is ${esc(withMg[0].permg)}.`;
+    return ` Cost per mg ranges from ${esc(withMg[0].permg)} to ${esc(withMg[withMg.length - 1].permg)}.`;
   })();
 
+  // Factual featured answer. States what it is and the observed price range, no
+  // sell language, no health claim, no human-use implication.
+  const answer = lowLabel
+    ? `${c.name} is listed by ${c.vendors.length} research vendors tracked here, with prices from ${lowLabel} to ${hiLabel} per listing depending on size and vendor.${permgLine} MyPeptidePrice.com is an independent price reference and does not sell it. Sold by third parties for laboratory research use only, not for human use.`
+    : `${c.name} is listed by ${c.vendors.length} research vendors tracked here. MyPeptidePrice.com is an independent price reference and does not sell it. Sold by third parties for laboratory research use only, not for human use.`;
+
   const faq = [
-    [`How much does ${c.name} cost?`, `${lowLabel ? `As of ${TODAY}, ${c.name} research vials are listed as low as ${lowLabel} after the SAMMYC code.` : `${c.name} pricing varies by size and vendor.`}${permgLine} Exact pricing depends on size, format, and vendor. Compare current listings in the live comparison and confirm the total on the vendor website before ordering.`],
-    [`Which vendor has the cheapest ${c.name}?`, `The lowest estimated after-code price is ranked first in the live comparison on MyPeptidePrice.com${bestVendor ? `, currently ${bestVendor}` : ""}. Rankings change between refreshes because vendor pricing, stock, and discounts update over time.`],
-    [`What does the SAMMYC code do for ${c.name} pricing?`, `When a tracked vendor supports the SAMMYC code, the comparison estimates the price after that known discount, commonly 10 to 15 percent. Confirm the code applies and review the final total on the vendor website.`],
-    [`Is ${c.name} on this page for human use?`, `No. Every listing compared here is sold by third-party vendors for laboratory and research use only. MyPeptidePrice.com does not sell products and does not provide medical, dosing, or usage guidance.`],
-    [`What is the 7/7 testing standard?`, `It refers to seven testing categories: Net Purity, Net Content, Heavy Metals, Endotoxins, Identification, Sterility, and Conformity. Review current certificates and product documentation directly with each vendor.`],
+    [`What is ${c.name}?`, `${c.name} is a research compound catalogued under the ${c.category} category on MyPeptidePrice.com. It is supplied by third-party vendors as a research material for laboratory use only. This page reports listed prices and does not describe effects, uses, or handling.`],
+    [`What does ${c.name} cost across vendors?`, `${lowLabel ? `Listed prices range from ${lowLabel} to ${hiLabel} per listing across ${c.vendors.length} tracked vendors, depending on size and format.` : `${c.name} pricing varies by size, format, and vendor.`}${permgLine} Prices shown are drawn from vendor listings and change over time; confirm the current price on the vendor site.`],
+    [`What does price per mg mean?`, `Price per mg divides a listing's price by its milligram amount, so listings of different sizes can be compared on the same basis. A lower price per mg means more material for the money at that listing size.`],
+    [`Is ${c.name} sold for human use?`, `No. Every listing referenced here is sold by third-party vendors for laboratory and research use only and is not for human consumption. MyPeptidePrice.com does not sell products and provides no medical, dosing, or usage guidance.`],
+    [`Does MyPeptidePrice.com sell ${c.name}?`, `No. MyPeptidePrice.com is an independent price comparison reference. Purchases, shipping, testing documentation, and terms are handled entirely by the third-party vendors linked on this page.`],
   ];
 
   const offerCount = c.priced.length || c.offers.length;
@@ -275,29 +278,29 @@ for (const c of compoundPages) {
         { "@type": "ListItem", position: 2, name: "Compounds", item: `${BASE}/compounds.html` },
         { "@type": "ListItem", position: 3, name: c.name, item: canonical },
       ]},
-      { "@type": "Product", name: `${c.name} Research Vial`, category: `${c.category} research peptide`,
-        description: `${c.name} research vials compared across tracked vendors for laboratory and research use only. Not for human consumption.`,
+      { "@type": "Product", name: `${c.name} (Research Material)`, category: `${c.category} research compound`,
+        description: `${c.name} listed by third-party vendors for laboratory research use only. Not for human consumption. This page is an independent price reference.`,
         ...(c.lo != null ? { offers: { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: c.lo.toFixed(2), highPrice: (c.hi ?? c.lo).toFixed(2), priceValidUntil: VALID_UNTIL, availability: "https://schema.org/InStock", offerCount: String(offerCount) } } : {}) },
       { "@type": "FAQPage", mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
     ],
   }, null, 0).replace(/&/g, "&amp;");
 
+  const priceRangeLabel = lowLabel ? (hiLabel && hiLabel !== lowLabel ? `${lowLabel} to ${hiLabel}` : lowLabel) : "See listings";
   const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/compounds.html">Compounds</a><span>/</span>${esc(c.name)}</nav>
-<section class="hero"><div class="hero-inner"><div><span class="eyebrow">${esc(c.name)} price comparison</span><h1>${esc(c.name)} price comparison.</h1><p>Find the lowest listed ${esc(c.name)} research vial price across ${c.vendors.length} tracked vendors${lowLabel ? `, as low as ${lowLabel} after the SAMMYC code` : ""}.</p><div class="hero-actions"><a class="button" href="/?q=${encodeURIComponent(c.name)}#compare" data-cta="hero">Compare live prices</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Lowest listed</span><strong>${lowLabel || "See vendors"}</strong></div><div class="hero-stat"><span>Tracked vendors</span><strong>${c.vendors.length}</strong></div><div class="hero-stat"><span>Discount code</span><strong>SAMMYC</strong></div></div></div></section>
-<div class="answer-box"><div class="inner"><p><strong>${esc(answer)}</strong></p></div></div>
-<section class="section compact"><div class="snap-wrap"><div class="snap-head"><h2>How much does ${esc(c.name)} cost?</h2><span class="snap-meta"><span class="dot"></span>Updated ${TODAY}</span></div>
+<section class="hero"><div class="hero-inner"><div><span class="eyebrow">${esc(c.category)}</span><h1>${esc(c.name)} price comparison.</h1><p>Listed prices and cost per mg for ${esc(c.name)} across ${c.vendors.length} research vendors tracked on MyPeptidePrice.com. An independent price reference, for laboratory research use only.</p><div class="hero-actions"><a class="button" href="/?q=${encodeURIComponent(c.name)}#compare" data-cta="hero">View current listings</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Listed price range</span><strong>${priceRangeLabel}</strong></div><div class="hero-stat"><span>Vendors listing it</span><strong>${c.vendors.length}</strong></div><div class="hero-stat"><span>Use</span><strong>Research only</strong></div></div></div></section>
+<div class="answer-box"><div class="inner"><p>${esc(answer)}</p></div></div>
+<section class="section compact"><div class="snap-wrap"><div class="snap-head"><h2>${esc(c.name)} prices by vendor</h2><span class="snap-meta"><span class="dot"></span>Updated ${TODAY}</span></div>
 <div class="price-card">
 ${rowsHtml}
 </div>
-<p class="snap-note">Estimates reflect the known SAMMYC discount where supported. Confirm final price, exact size, and stock status on the vendor website before ordering. For research use only.</p>
-<div class="snap-cta"><a class="button" href="/?q=${encodeURIComponent(c.name)}#compare" data-cta="snapshot">See all ${esc(c.name)} vendors ranked by price</a></div>
+<p class="snap-note">Prices are drawn from third-party vendor listings and reflect a known discount code where one applies. They change over time; confirm the current price, size, and stock on the vendor site. MyPeptidePrice.com does not sell these materials. For laboratory research use only.</p>
 </div></section>
-<section class="section compact"><div class="copy"><span class="research-tag">Research context</span><h2>What is ${esc(c.name)}?</h2><p>${esc(c.name)} is a research compound listed in the MyPeptidePrice.com catalog under the ${esc(c.category)} category. Tracked vendors most often supply it as lyophilized research vials, with reconstitution and handling determined entirely by the purchasing laboratory.</p><p>Every listing referenced on this page is sold by independent third-party vendors for research use only and is not for human consumption. MyPeptidePrice.com is an independent price comparison resource. We do not sell products, ship orders, or provide medical, dosing, or usage guidance of any kind.</p></div></section>
+<section class="section compact"><div class="copy"><span class="research-tag">What this page is</span><h2>About ${esc(c.name)} on this page</h2><p>${esc(c.name)} is catalogued under the ${esc(c.category)} category. Vendors tracked here list it as a research material, typically as lyophilized powder in a vial. This page reports the prices those vendors list and the resulting cost per mg. It does not describe what ${esc(c.name)} does, how it is used, or how it is handled.</p><p>Every listing referenced here is sold by independent third-party vendors for laboratory research use only and is not for human consumption. MyPeptidePrice.com is an independent price comparison reference. It does not sell products, ship orders, or provide medical, dosing, or usage guidance of any kind.</p></div></section>
 ${relatedHtml}
-<section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">${esc(c.name)} FAQ</span><h2>${esc(c.name)} pricing FAQ</h2><div class="faq-list">
+<section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">${esc(c.name)} FAQ</span><h2>${esc(c.name)} questions</h2><div class="faq-list">
 ${faq.map(([q, a]) => `<article class="faq-item"><h3>${esc(q)}</h3><p>${esc(a)}</p></article>`).join("\n")}
 </div></div></section>
-<section class="section compact"><div class="container"><div class="notice">Use <span class="code-pill">SAMMYC</span> at supported vendor checkouts where listed. Confirm the final price and product details directly on the vendor website. For research comparison purposes only. Prices last verified ${TODAY}.</div></div></section>`;
+<section class="section compact"><div class="container"><div class="notice">MyPeptidePrice.com is an independent price reference and does not sell research materials. Prices come from third-party vendor listings and were last checked ${TODAY}. Confirm current details on the vendor site. For laboratory research use only, not for human consumption.</div></div></section>`;
 
   await writeFile(`${W}${path}`, shell({ title, desc, canonical, schema, body }));
   generated.compounds.push({ path, name: c.name });
@@ -335,18 +338,20 @@ for (const v of vendorNames) {
   const compoundCount = new Set(uniq.map(i => i.compound)).size;
   if (uniq.length === 0) { continue; } // vendor with no priced offers in snapshot, skip page
   const lo = uniq.length ? uniq[0].price : null;
-  const title = `${v.display} Peptide Prices & Discount Code | MyPeptidePrice`;
-  const desc = `Compare ${v.display} research peptide prices across ${compoundCount} compounds${lo != null ? `, from ${money(lo)} after the SAMMYC code` : ""}. Live tracked pricing and the current discount code. Research use only.`;
+  const hi = uniq.length ? uniq[uniq.length - 1].price : null;
+  const title = `${v.display} Prices | ${compoundCount} Research Compounds Compared`;
+  const desc = `${v.display} listed prices across ${compoundCount} research compounds${lo != null ? `, ${money(lo)} to ${money(hi)}` : ""}. Independent price reference. For laboratory research use only, not for human use.`;
 
-  const rowsHtml = uniq.slice(0, 20).map((o, i) => {
-    const disc = o.discount > 0 && o.code ? `${o.discount}% off with ${esc(o.code)}` : "Vendor offer tracked";
-    return `<a class="price-row" href="${esc(o.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(o.compound)}" data-category="${esc(o.category)}" data-vendor="${esc(v.key)}" data-code="${esc(o.code || "")}"><span class="price-size"><span class="size">${esc(o.compound)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}</span><span class="vendor">${esc(o.category)}</span><span class="disc">${disc}</span></span><span class="price-amount"><span class="from">${i === 0 ? "Lowest" : "Price"}</span><span class="amt">${esc(o.priceLabel)}</span>${o.permg ? `<span class="permg">${esc(o.permg)}</span>` : ""}<span class="go">Visit vendor &#8250;</span></span></a>`;
+  const rowsHtml = uniq.slice(0, 20).map((o) => {
+    const note = o.discount > 0 && o.code ? `Code ${esc(o.code)} applies (${o.discount}% off)` : "Listed price";
+    return `<a class="price-row" href="${esc(o.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(o.compound)}" data-category="${esc(o.category)}" data-vendor="${esc(v.key)}" data-code="${esc(o.code || "")}"><span class="price-size"><span class="size">${esc(o.compound)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}</span><span class="vendor">${esc(o.category)}</span><span class="disc">${note}</span></span><span class="price-amount"><span class="amt">${esc(o.priceLabel)}</span>${o.permg ? `<span class="permg">${esc(o.permg)}</span>` : ""}<span class="go">View listing &#8250;</span></span></a>`;
   }).join("\n");
 
   const faq = [
-    [`Does ${v.display} have a discount code?`, `Where supported, the SAMMYC code is applied in the comparison to estimate after-code pricing for ${v.display}, commonly 10 to 15 percent off. Confirm the code applies at checkout on the vendor website.`],
-    [`What research peptides does ${v.display} sell?`, `${v.display} is tracked across ${compoundCount} compounds in the MyPeptidePrice.com catalog. Browse the current listings above or compare against other vendors in the live comparison.`],
-    [`Is ${v.display} products for human use?`, `No. ${v.display} listings tracked here are sold for laboratory and research use only. MyPeptidePrice.com is an independent price comparison resource and does not sell products or provide medical guidance.`],
+    [`What does ${v.display} list?`, `${v.display} is one of the research vendors tracked on MyPeptidePrice.com, with ${compoundCount} compounds catalogued here. The listings above show current prices; browse them or compare the same compounds across other vendors.`],
+    [`What do ${v.display} listings cost?`, `${lo != null ? `Across the compounds tracked here, ${v.display} listings range from ${money(lo)} to ${money(hi)} depending on compound and size.` : `Pricing varies by compound and size.`} Prices come from vendor listings and change over time; confirm the current price on the vendor site.`],
+    [`Does the SAMMYC code apply at ${v.display}?`, `Where ${v.display} supports it, the SAMMYC code is reflected in the listed price shown here, and the row notes when it applies. Confirm the code at checkout on the vendor site.`],
+    [`Are ${v.display} listings for human use?`, `No. Listings tracked here are sold by ${v.display} for laboratory and research use only and are not for human consumption. MyPeptidePrice.com is an independent price reference and does not sell products or provide medical guidance.`],
   ];
   const schema = JSON.stringify({
     "@context": "https://schema.org",
@@ -363,21 +368,21 @@ for (const v of vendorNames) {
   const topCompounds = [...new Set(uniq.map(i => i.compound))].slice(0, 10);
   const xlinks = topCompounds.map(name => `<a href="${HAND_BUILT.get(slug(name)) || "/compounds/" + slug(name) + ".html"}">${esc(name)}</a>`).join("");
 
+  const priceRangeLabel = lo != null ? (hi && hi !== lo ? `${money(lo)} to ${money(hi)}` : money(lo)) : "See listings";
   const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/vendors.html">Vendors</a><span>/</span>${esc(v.display)}</nav>
-<section class="hero"><div class="hero-inner"><div><span class="eyebrow">${esc(v.display)} price tracking</span><h1>${esc(v.display)} peptide prices.</h1><p>Compare ${esc(v.display)} research peptide listings across ${compoundCount} tracked compounds${lo != null ? `, from ${money(lo)} after the SAMMYC code` : ""}.</p><div class="hero-actions"><a class="button" href="/?vendor=${encodeURIComponent(v.key)}#compare" data-cta="hero">See ${esc(v.display)} in the live comparison</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Lowest tracked</span><strong>${lo != null ? money(lo) : "See list"}</strong></div><div class="hero-stat"><span>Compounds</span><strong>${compoundCount}</strong></div><div class="hero-stat"><span>Discount code</span><strong>SAMMYC</strong></div></div></div></section>
-<div class="answer-box"><div class="inner"><p><strong>${esc(v.display)} is tracked across ${compoundCount} research compounds on MyPeptidePrice.com${lo != null ? `, with listings from ${money(lo)} after the SAMMYC code` : ""}.</strong> Prices below reflect the known code where supported. For research use only, confirm pricing on the vendor website.</p></div></div>
-<section class="section compact"><div class="snap-wrap"><div class="snap-head"><h2>${esc(v.display)} tracked listings</h2><span class="snap-meta"><span class="dot"></span>Updated ${TODAY}</span></div>
+<section class="hero"><div class="hero-inner"><div><span class="eyebrow">Vendor price reference</span><h1>${esc(v.display)} prices.</h1><p>Listed prices for ${esc(v.display)} across ${compoundCount} research compounds tracked on MyPeptidePrice.com. An independent price reference, for laboratory research use only.</p><div class="hero-actions"><a class="button" href="/?vendor=${encodeURIComponent(v.key)}#compare" data-cta="hero">View current listings</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Listed price range</span><strong>${priceRangeLabel}</strong></div><div class="hero-stat"><span>Compounds listed</span><strong>${compoundCount}</strong></div><div class="hero-stat"><span>Use</span><strong>Research only</strong></div></div></div></section>
+<div class="answer-box"><div class="inner"><p>${esc(v.display)} is one of the research vendors tracked on MyPeptidePrice.com, with ${compoundCount} compounds catalogued${lo != null ? ` and listed prices from ${money(lo)} to ${money(hi)}` : ""}. MyPeptidePrice.com is an independent price reference and does not sell these materials. Sold for laboratory research use only, not for human use.</p></div></div>
+<section class="section compact"><div class="snap-wrap"><div class="snap-head"><h2>${esc(v.display)} listings by price</h2><span class="snap-meta"><span class="dot"></span>Updated ${TODAY}</span></div>
 <div class="price-card">
 ${rowsHtml}
 </div>
-<p class="snap-note">Estimates reflect the known SAMMYC discount where supported. Confirm final price, exact size, and stock status on the vendor website before ordering. For research use only.</p>
-<div class="snap-cta"><a class="button" href="/?vendor=${encodeURIComponent(v.key)}#compare" data-cta="snapshot">Compare ${esc(v.display)} against other vendors</a></div>
+<p class="snap-note">Prices are drawn from ${esc(v.display)} listings and reflect a known discount code where one applies. They change over time; confirm the current price, size, and stock on the vendor site. For laboratory research use only.</p>
 </div></section>
-<div class="xlink-wrap"><h2>Popular compounds at ${esc(v.display)}</h2><div class="xlink-grid">${xlinks}</div></div>
-<section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">${esc(v.display)} FAQ</span><h2>${esc(v.display)} pricing FAQ</h2><div class="faq-list">
+<div class="xlink-wrap"><h2>Compounds listed at ${esc(v.display)}</h2><div class="xlink-grid">${xlinks}</div></div>
+<section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">${esc(v.display)} FAQ</span><h2>${esc(v.display)} questions</h2><div class="faq-list">
 ${faq.map(([q, a]) => `<article class="faq-item"><h3>${esc(q)}</h3><p>${esc(a)}</p></article>`).join("\n")}
 </div></div></section>
-<section class="section compact"><div class="container"><div class="notice">Use <span class="code-pill">SAMMYC</span> at supported vendor checkouts where listed. MyPeptidePrice.com is an independent comparison resource, not a seller. Confirm final details on the vendor website. Prices last verified ${TODAY}.</div></div></section>`;
+<section class="section compact"><div class="container"><div class="notice">MyPeptidePrice.com is an independent price reference and does not sell research materials. Prices come from ${esc(v.display)} listings and were last checked ${TODAY}. Confirm current details on the vendor site. For laboratory research use only, not for human consumption.</div></div></section>`;
 
   await writeFile(`${W}${path}`, shell({ title, desc, canonical, schema, body }));
   generated.vendors.push({ path, name: v.display });
