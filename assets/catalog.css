@@ -469,7 +469,7 @@
 .catalog-summary { align-items: center; margin: 0 2px 14px; color: var(--muted); font-size: 12px; font-weight: 700; }
 #catalogSource { color: var(--olive); }
 .catalog-grid { grid-template-columns: repeat(3, minmax(0,1fr)); gap: 18px; }
-.product-card { overflow: hidden; border: 1px solid rgba(31,58,45,.1); border-radius: 18px; background: rgba(255,255,255,.92); box-shadow: 0 12px 32px rgba(13,13,13,.06); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
+.product-card { overflow: hidden; border: 1px solid rgba(31,58,45,.1); border-left: 3px solid var(--tone-main, var(--olive)); border-radius: 18px; background: rgba(255,255,255,.92); box-shadow: 0 12px 32px rgba(13,13,13,.06); transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease; }
 .product-card:hover { transform: translateY(-4px); border-color: rgba(78,93,60,.25); box-shadow: 0 28px 70px rgba(13,13,13,.13); }
 .product-card-head { padding: 10px 12px 9px; border-bottom: 1px solid rgba(31,58,45,.08); background: radial-gradient(circle at 0 0, rgba(140,154,97,.13), transparent 32%), linear-gradient(180deg, #fff, #fdfbf6); }
 .product-molecule { position: relative; display: block; width: 38px; height: 38px; flex: 0 0 38px; border-radius: 12px; background: var(--tone-soft, #edf1e8); box-shadow: inset 0 0 0 1px rgba(31,58,45,.08); }
@@ -480,9 +480,9 @@
 .product-title-copy { min-width: 0; flex: 1 1 auto; }
 .product-title { margin: 0; color: var(--ink); font-family: var(--font-display); font-size: 18px; font-weight: 850; line-height: 1.1; letter-spacing: -.4px; }
 .product-subtitle { margin-top: 2px; color: var(--muted); font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 7px; flex-wrap: wrap; }
-.product-cat-inline { color: var(--tone-dark, var(--forest)); font-weight: 800; position: relative; padding-left: 8px; }
-.product-cat-inline::before { content: ""; position: absolute; left: 0; top: 50%; width: 3px; height: 3px; border-radius: 50%; background: currentColor; transform: translateY(-50%); opacity: .55; }
-.vendor-count { flex: 0 0 auto; align-self: flex-start; border: 1px solid rgba(31,58,45,.1); border-radius: 999px; background: #fff; color: var(--olive); padding: 4px 8px; font-size: 10px; font-weight: 900; white-space: nowrap; }
+.product-cat-inline { display: inline-flex; align-items: center; color: var(--tone-dark, var(--forest)); background: var(--tone-soft, #edf1e8); border-radius: 999px; padding: 2px 8px; font-weight: 800; font-size: 10px; }
+.product-cat-inline::before { display: none; }
+.vendor-count { flex: 0 0 auto; align-self: flex-start; border: 1px solid var(--tone-line, rgba(31,58,45,.18)); border-radius: 999px; background: var(--tone-soft, #fff); color: var(--tone-dark, var(--olive)); padding: 4px 8px; font-size: 10px; font-weight: 900; white-space: nowrap; }
 .card-lowest-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(31,58,45,.08); }
 .card-lowest-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 7px; min-width: 0; }
 .card-lowest-label { color: var(--muted); font-size: 8.5px; font-weight: 900; letter-spacing: .5px; text-transform: uppercase; width: 100%; }
@@ -523,14 +523,14 @@
 .supplier-copy { min-width: 0; }
 .supplier-name-row { display: flex; align-items: center; gap: 6px; min-width: 0; }
 .supplier-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); font-size: 13px; font-weight: 900; }
-.supplier-best { border-radius: 999px; background: var(--forest); color: #fff; padding: 2px 6px; font-size: 8px; font-weight: 900; letter-spacing: .7px; text-transform: uppercase; }
+.supplier-best { border-radius: 999px; background: linear-gradient(135deg, #2f8f4e, #24713e); color: #fff; padding: 2px 8px; font-size: 8px; font-weight: 900; letter-spacing: .7px; text-transform: uppercase; box-shadow: 0 2px 6px rgba(36,113,62,.4); }
 .supplier-meta-line { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-top: 3px; color: var(--muted); font-size: 10px; font-weight: 700; }
 .supplier-variant-line { display: inline-flex; align-items: center; gap: 4px; margin: 0; border-radius: 999px; background: #eef2e9; color: var(--olive); padding: 2px 6px; font-size: 9px; font-weight: 850; }
 .supplier-variant-line span { color: var(--muted); font-size: 7px; letter-spacing: .55px; text-transform: uppercase; }
 .supplier-listing { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 3px; color: var(--muted); font-size: 9.5px; font-weight: 650; }
 .supplier-sub { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 4px; color: var(--muted); font-size: 10px; }
-.supplier-discount { color: var(--olive); font-weight: 900; }
-.supplier-oos { color: #a4473e; font-weight: 900; }
+.supplier-discount { display: inline-flex; align-items: center; border-radius: 999px; background: rgba(47,143,78,.12); color: #24713e; font-weight: 900; padding: 2px 8px; font-size: 9.5px; }
+.supplier-oos { display: inline-flex; align-items: center; border-radius: 999px; background: rgba(164,71,62,.13); color: #a4473e; font-weight: 900; padding: 1px 7px; font-size: 9px; }
 .supplier-price-wrap { text-align: right; flex: none; }
 .supplier-regular { color: #a5a39d; font-size: 10px; font-weight: 700; text-decoration: line-through; }
 .supplier-price { color: var(--forest); font-family: var(--font-display); font-size: 17px; font-weight: 900; line-height: 1.05; }
@@ -926,8 +926,12 @@ body.theme-dark .payment-icon { background: rgba(255,255,255,.06); border-color:
 /* Price per mg. This is the metric the whole category competes on, so it gets
    real visual weight rather than being buried in the meta line. */
 .supplier-permg {
-  margin-top: 2px;
-  color: var(--olive-2, #6A7D52);
+  display: inline-block;
+  margin-top: 3px;
+  border-radius: 999px;
+  background: rgba(106,125,82,.14);
+  color: #4e5d3c;
+  padding: 1px 7px;
   font-size: 10px;
   font-weight: 800;
   letter-spacing: .2px;
