@@ -389,42 +389,6 @@
   .catalog-clear { padding: 8px 12px; font-size: 11px; }
 }
 
-/* ── LOWEST PRICE BLOCK (v3) ── */
-.card-lowest-block {
-  margin-top: 14px;
-  padding-top: 12px;
-  border-top: 1px solid var(--stone);
-}
-.card-lowest-label {
-  font-size: 9px;
-  font-weight: 700;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 4px;
-}
-.card-lowest-price {
-  font-family: var(--font-display);
-  font-size: 28px;
-  font-weight: 800;
-  color: var(--forest);
-  letter-spacing: -0.6px;
-  line-height: 1;
-}
-.card-lowest-na {
-  color: var(--muted);
-  font-size: 20px;
-}
-.card-lowest-vendor {
-  font-size: 11px;
-  font-weight: 500;
-  color: var(--muted);
-  margin-top: 4px;
-}
-@media (max-width: 620px) {
-  .card-lowest-price { font-size: 24px; }
-}
-
 /* ============================================================
    Premium product catalog overrides
    ============================================================ */
@@ -483,11 +447,7 @@
 .product-cat-inline { display: inline-flex; align-items: center; color: var(--tone-dark, var(--forest)); background: var(--tone-soft, #edf1e8); border-radius: 999px; padding: 2px 8px; font-weight: 800; font-size: 10px; }
 .product-cat-inline::before { display: none; }
 .vendor-count { flex: 0 0 auto; align-self: flex-start; border: 1px solid var(--tone-line, rgba(31,58,45,.18)); border-radius: 999px; background: var(--tone-soft, #fff); color: var(--tone-dark, var(--olive)); padding: 4px 8px; font-size: 10px; font-weight: 900; white-space: nowrap; }
-.card-lowest-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-top: 8px; padding-top: 8px; border-top: 1px solid rgba(31,58,45,.08); }
-.card-lowest-block { display: flex; align-items: baseline; flex-wrap: wrap; gap: 3px 7px; min-width: 0; }
-.card-lowest-label { color: var(--muted); font-size: 8.5px; font-weight: 900; letter-spacing: .5px; text-transform: uppercase; width: 100%; }
-.card-lowest-price { color: var(--forest); font-family: var(--font-display); font-size: 18px; font-weight: 900; letter-spacing: -.5px; line-height: 1; }
-.card-lowest-vendor { color: var(--muted); font-size: 11px; font-weight: 700; }
+.card-lowest-row { display: flex; align-items: center; justify-content: flex-end; gap: 12px; margin-top: 6px; padding-top: 0; border-top: 0; }
 .card-view-button { flex: 0 0 auto; display: inline-flex; align-items: center; justify-content: center; border: 0; border-radius: 11px; background: linear-gradient(135deg, var(--forest), var(--olive)); color: #fff; padding: 9px 16px; font-size: 12px; font-weight: 900; cursor: pointer; box-shadow: 0 8px 18px rgba(31,58,45,.18); transition: transform .16s ease, filter .16s ease; }
 .card-view-button:hover { transform: translateY(-1px); filter: brightness(1.05); }
 /* When the card is open, the listings below already show every price including
@@ -497,8 +457,6 @@
 /* When the card is open, the listings below already mark the lowest offer with
    a green "LOWEST" pill, so the separate lowest-price block is redundant. Hide
    it entirely and keep only the Hide button on its own compact row. */
-.product-card.is-expanded .card-lowest-row { margin-top: 8px; padding-top: 8px; justify-content: flex-end; }
-.product-card.is-expanded .card-lowest-block { display: none; }
 .variant-wrap { padding: 8px 12px; border-bottom: 1px solid rgba(31,58,45,.08); background: #fbfaf6; }
 .variant-label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 8.5px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
 .variant-pills-shell { position: relative; display: flex; align-items: center; gap: 5px; }
@@ -586,7 +544,6 @@
   .product-molecule::after { inset: 10px; }
   .product-title { font-size: 17px; }
   .vendor-count { font-size: 9px; }
-  .card-lowest-price { font-size: 17px; }
   .variant-wrap { padding: 10px 12px; }
   .variant-scroll-btn { width: 22px; height: 22px; font-size: 11px; }
   .supplier-head { padding: 10px 12px 4px; font-size: 8px; }

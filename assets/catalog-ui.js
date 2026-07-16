@@ -229,11 +229,6 @@
           <span class="vendor-count">${vendorLabel}</span>
         </div>
         <div class="card-lowest-row">
-          <div class="card-lowest-block">
-            <span class="card-lowest-label">${lowestLabel}</span>
-            <span class="card-lowest-price">${lowestPrice?esc(lowestPrice):"Not listed"}</span>
-            <span class="card-lowest-vendor">${lowestVendor?`from ${esc(lowestVendor)}`:"Check listings"}</span>
-          </div>
           <button type="button" class="card-view-button" data-action="expand" data-card="${attr(card.id)}">${expanded?"Hide":"View prices"}</button>
         </div>
       </header>
