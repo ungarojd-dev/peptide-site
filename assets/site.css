@@ -836,9 +836,10 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
   animation:dealSpotlightSweep 6s ease-in-out infinite; }
 @keyframes dealSpotlightSweep { 0%,62%{left:-24%;opacity:0} 74%{opacity:.7} 100%{left:112%;opacity:0} }
 .deal-carousel-wrap { position: relative; z-index: 1; max-width: 1224px !important; margin: 0 auto !important; border: 0 !important; border-radius: 0; background: none !important; box-shadow: none !important; overflow: visible; padding: 0; }
-.deal-carousel-header { display: flex; align-items: center; justify-content: space-between; gap: 10px; border-bottom: 0; padding: 0 0 10px; margin: 0; }
-.dc-label-eyebrow { display: inline-flex; border-radius: 5px; background: transparent; border: 1.5px solid rgba(169,209,58,.9); padding: 3px 8px; color: #d3f26a; font-size: 9px; font-weight: 900; letter-spacing: 1.1px; text-transform: uppercase; text-shadow: 0 0 8px rgba(169,209,58,.9); box-shadow: 0 0 10px rgba(169,209,58,.5), inset 0 0 8px rgba(169,209,58,.28); animation: neonFlicker 4.4s steps(1) infinite; }
-.dc-label-title { display: inline; margin-left: 8px; color: #fffdf8; font-family: var(--font-display); font-size: 16px; font-weight: 800; text-shadow: 0 0 6px rgba(255,253,248,.5), 0 0 16px rgba(224,180,67,.6), 0 0 30px rgba(224,180,67,.4); }
+.deal-carousel-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-bottom: 0; padding: 0 0 10px; margin: 0; }
+.dc-label-group { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
+.dc-label-eyebrow { display: inline-flex; border-radius: 5px; background: transparent; border: 1.5px solid rgba(169,209,58,.9); padding: 3px 8px; color: #d3f26a; font-size: 8.5px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; text-shadow: 0 0 8px rgba(169,209,58,.9); box-shadow: 0 0 10px rgba(169,209,58,.5), inset 0 0 8px rgba(169,209,58,.28); animation: neonFlicker 4.4s steps(1) infinite; }
+.dc-label-title { display: inline; margin-left: 0; color: #fffdf8; font-family: var(--font-display); font-size: 15px; font-weight: 800; white-space: nowrap; text-shadow: 0 0 6px rgba(255,253,248,.5), 0 0 16px rgba(224,180,67,.6), 0 0 30px rgba(224,180,67,.4); }
 .dc-view-all { border: 1px solid rgba(234,216,179,.4); border-radius: 999px; background: rgba(255,255,255,.06); color: #ead8b3; padding: 5px 11px; font-size: 11px; font-weight: 900; cursor: pointer; white-space: nowrap; }
 .deal-carousel-track { padding: 0; min-height: 0; box-sizing: border-box; display: flex; align-items: center; }
 .dc-card { display: flex; align-items: center; justify-content: space-between; gap: 12px; text-decoration: none; padding: 12px 14px; width: 100%; box-sizing: border-box;
@@ -1039,13 +1040,14 @@ body.theme-dark .notice strong { color: var(--olive-soft); }
    Fixed height so slide rotation cannot resize the card. The logo is small and
    the stack chip is allowed to shrink away before the vendor name ever clips. */
 .deal-carousel .dc-top {
-  display: flex; align-items: center; gap: 7px;
-  flex-wrap: nowrap; height: 28px; min-width: 0;
+  display: flex; align-items: center; gap: 8px;
+  flex-wrap: wrap; min-width: 0;
 }
-.deal-carousel .dc-logo { flex: 0 0 auto; width: 40px; height: 24px; border-radius: 7px; padding: 3px 4px; }
-.deal-carousel .dc-vendor-wrap { flex: 1 1 auto; min-width: 0; white-space: nowrap; overflow: visible; }
+.deal-carousel .dc-logo { flex: 0 0 auto; width: 52px; height: 32px; border-radius: 8px; padding: 4px 5px; background: #fff; border: 1px solid rgba(255,255,255,.7); box-shadow: 0 2px 10px rgba(0,0,0,.3); }
+.deal-carousel .dc-vendor-wrap { flex: 1 1 auto; min-width: 0; white-space: normal; overflow: visible; }
+.deal-carousel .dc-vendor { white-space: normal; }
 .deal-carousel .dc-badge { flex: 0 0 auto; }
-.deal-carousel .dc-stack { flex: 0 1 auto; min-width: 0; overflow: hidden; }
+.deal-carousel .dc-stack { flex: 0 0 auto; }
 
 @media (max-width: 640px) {
   .deal-carousel, body.theme-dark .deal-carousel { padding: 12px 12px 12px; }
@@ -1059,63 +1061,18 @@ body.theme-dark .notice strong { color: var(--olive-soft); }
   .dc-cta, body.theme-dark .dc-cta { display: inline-flex; margin-top: 0; }
   /* The badge duplicates the LIMITED TIME eyebrow directly above, so it only
      steals width from the vendor name on a phone. Drop it. */
-  .deal-carousel .dc-badge { display: none; }
-  .deal-carousel .dc-logo { width: 42px; height: 28px; }
+  .deal-carousel .dc-logo { width: 46px; height: 30px; }
   .deal-carousel .dc-vendor-wrap { font-size: 12.5px; }
-  .deal-carousel .dc-stack { font-size: 8px; padding: 3px 6px; }
+  .deal-carousel .dc-stack { font-size: 8px; padding: 2px 6px; }
 }
 
-/* The legacy .dc-vendor rule paints the name light gold, which is invisible on
-   the gold slab. Force dark ink on the name itself, not just its wrapper. */
+
+/* Deal card text colors for the neon treatment: light on the dark glass card,
+   never dark ink (the old gold-slab overrides forced #17130a which made the
+   vendor name invisible). */
 .deal-carousel .dc-vendor,
 .deal-carousel .dc-vendor-wrap span,
 body.theme-dark .deal-carousel .dc-vendor,
-body.theme-dark .deal-carousel .dc-vendor-wrap span { color: #17130a !important; }
-
-/* ── DEAL CARD TEXT IS ALWAYS DARK INK ──
-   Replaces the obsolete white-text hotfix that was written for the old dark
-   card. That rule forced the card dark with white text on :hover/:focus/:active,
-   so tapping it on a phone made the text flash white. On the gold slab every
-   state stays dark ink. */
-.deal-carousel .dc-card,
-.deal-carousel .dc-card:link,
-.deal-carousel .dc-card:visited,
-.deal-carousel .dc-card:hover,
-.deal-carousel .dc-card:focus,
-.deal-carousel .dc-card:focus-visible,
-.deal-carousel .dc-card:active,
-body.theme-dark .deal-carousel .dc-card,
-body.theme-dark .deal-carousel .dc-card:hover,
-body.theme-dark .deal-carousel .dc-card:focus,
-body.theme-dark .deal-carousel .dc-card:active { color: #17130a !important; }
-
-.deal-carousel .dc-card:hover .dc-headline,
-.deal-carousel .dc-card:focus .dc-headline,
-.deal-carousel .dc-card:active .dc-headline,
-.deal-carousel .dc-card:hover .dc-vendor-wrap,
-.deal-carousel .dc-card:focus .dc-vendor-wrap,
-.deal-carousel .dc-card:active .dc-vendor-wrap,
-.deal-carousel .dc-card:hover .dc-vendor,
-.deal-carousel .dc-card:focus .dc-vendor,
-.deal-carousel .dc-card:active .dc-vendor,
-.deal-carousel .dc-card:hover .dc-vendor-wrap span,
-.deal-carousel .dc-card:focus .dc-vendor-wrap span,
-.deal-carousel .dc-card:active .dc-vendor-wrap span { color: #17130a !important; }
-
-.deal-carousel .dc-card:hover .dc-detail,
-.deal-carousel .dc-card:focus .dc-detail,
-.deal-carousel .dc-card:active .dc-detail { color: rgba(23,19,10,.66) !important; }
-
-/* Keep the gold background on every state, never revert to the dark gradient. */
-.deal-carousel .dc-card:hover,
-.deal-carousel .dc-card:focus,
-.deal-carousel .dc-card:focus-visible,
-.deal-carousel .dc-card:active,
-body.theme-dark .deal-carousel .dc-card:hover,
-body.theme-dark .deal-carousel .dc-card:focus,
-body.theme-dark .deal-carousel .dc-card:active {
-  background: rgba(255,255,255,.62) !important;
-  border-color: rgba(23,19,10,.42) !important;
-  box-shadow: 0 8px 22px rgba(74,54,14,.22), 0 0 0 1px rgba(255,255,255,.55) inset !important;
-  outline: none;
-}
+body.theme-dark .deal-carousel .dc-vendor-wrap span { color: #e8f2cf !important; text-shadow: 0 0 8px rgba(169,209,58,.35); }
+.deal-carousel .dc-headline, body.theme-dark .deal-carousel .dc-headline { color: #ffffff !important; }
+.deal-carousel .dc-detail, body.theme-dark .deal-carousel .dc-detail { color: rgba(255,255,255,.66) !important; }

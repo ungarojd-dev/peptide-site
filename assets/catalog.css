@@ -494,10 +494,11 @@
    the lowest, so the big lowest-price block is redundant. Collapse it to a thin
    row with just the Hide button to reclaim vertical space (matches the denser
    feel of the old catalog). */
-.product-card.is-expanded .card-lowest-row { margin-top: 8px; padding-top: 8px; }
-.product-card.is-expanded .card-lowest-price { font-size: 15px; }
-.product-card.is-expanded .card-lowest-label { width: auto; }
-.product-card.is-expanded .card-lowest-vendor { display: none; }
+/* When the card is open, the listings below already mark the lowest offer with
+   a green "LOWEST" pill, so the separate lowest-price block is redundant. Hide
+   it entirely and keep only the Hide button on its own compact row. */
+.product-card.is-expanded .card-lowest-row { margin-top: 8px; padding-top: 8px; justify-content: flex-end; }
+.product-card.is-expanded .card-lowest-block { display: none; }
 .variant-wrap { padding: 8px 12px; border-bottom: 1px solid rgba(31,58,45,.08); background: #fbfaf6; }
 .variant-label { display: block; margin-bottom: 6px; color: var(--muted); font-size: 8.5px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; }
 .variant-pills-shell { position: relative; display: flex; align-items: center; gap: 5px; }
