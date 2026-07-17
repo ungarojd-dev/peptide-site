@@ -285,6 +285,7 @@
   }
 
   function bindCardActions(){
+    document.querySelectorAll('[data-action="clear-filters"]').forEach(button=>button.onclick=clear);
     document.querySelectorAll('[data-action="variant"]').forEach(button=>button.onclick=()=>{state.activeVariants[button.dataset.card]=button.dataset.variant;state.expanded[button.dataset.card]=true;renderCards(false);});
     document.querySelectorAll('[data-action="expand"]').forEach(button=>button.onclick=()=>{
       const cardId=button.dataset.card;
@@ -328,7 +329,7 @@
     const grid=$("catalogGrid");
     if(status) status.textContent=state.vendor==="All"?`Showing ${filtered.length} of ${state.cards.length} product cards`:`Showing ${filtered.length} products from ${state.vendor}`;
     if(source) source.textContent=state.source;
-    if(grid) grid.innerHTML=filtered.length?filtered.map(cardHtml).join(""):`<div class="catalog-empty">No product cards match these filters.</div>`;
+    if(grid) grid.innerHTML=filtered.length?filtered.map(cardHtml).join(""):`<div class="catalog-empty"><strong>No matches found.</strong><br>Try a different search term or <button type="button" class="catalog-empty-clear" data-action="clear-filters">clear all filters</button>.</div>`;
     bindCardActions();
     if(scroll&&grid) grid.scrollIntoView({behavior:"smooth",block:"start"});
   }
