@@ -141,5 +141,18 @@
       380,
       109
     ]
+  },
+  "bioedge-research-labs": {
+    "vendor": "Bioedge Research Labs",
+    "source": "uploaded logo",
+    "output": "assets/vendor-logos/bioedge-research-labs.webp",
+    "size": [
+      420,
+      160
+    ],
+    "content_size": [
+      132,
+      132
+    ]
   }
 }

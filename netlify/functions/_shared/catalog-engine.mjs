@@ -268,8 +268,24 @@ function findCanonicalRecord(raw) {
   return { id: slug(name), name, category: inferCategory(name, raw), aliases: [], mapped: false, mapping: "visible-unmapped" };
 }
 
+// Some vendors mislabel real research peptides as "Supplies" (e.g. a 1g raw of a
+// cosmetic peptide). These name-based overrides win over the vendor's category so
+// the compound lands in the right place. Keyed by a lowercase substring of the name.
+const FORCED_CATEGORY = [
+  ["acetyl hexapeptide", "Skin, Tanning & Sexual Health"],
+  ["argireline", "Skin, Tanning & Sexual Health"],
+  ["syn-ake", "Skin, Tanning & Sexual Health"],
+  ["syn ake", "Skin, Tanning & Sexual Health"],
+  ["hcg", "Growth Hormone Research"],
+  ["human chorionic", "Growth Hormone Research"],
+];
+
 function inferCategory(family, raw) {
   const sourceCategory = compact(raw.raw_category || raw.source_category || raw.category || "");
+  const nameHay = normalized([family, raw.product, raw.listing, raw.sku].filter(Boolean).join(" "));
+  for (const [term, category] of FORCED_CATEGORY) {
+    if (nameHay.includes(term)) return category;
+  }
   const haystack = normalized([family, raw.product, raw.listing, raw.sku, sourceCategory].filter(Boolean).join(" "));
   if (includesAny(haystack, SUPPLY_TERMS)) return "Supplies";
   for (const [category, terms] of CATEGORY_TERMS) {
@@ -381,11 +397,14 @@ export function normalizeOffer(raw = {}, options = {}) {
   const listedMin = listedPrices.length ? Math.min(...listedPrices) : Number.POSITIVE_INFINITY;
   const effectiveMin = effectivePrices.length ? Math.min(...effectivePrices) : listedMin;
   const sourceLayer = compact(options.source_layer || source.source_layer || source.source || "unknown-source");
+  const listingMg = parseListingMg(quantity.label);
+  const pricePerMg = computePricePerMg(Number.isFinite(effectiveMin) ? roundMoney(effectiveMin) : null, listingMg);
   return {
     vendor_id: meta.id,
     vendor_name: vendor,
-    vendor_display: compact(meta.display_name || vendor),
     vendor_logo: meta.logo || "",
+    vendor_display: compact(meta.display_name || vendor),
+    vendor_payment_methods: Array.isArray(meta.payment_methods) ? meta.payment_methods : [],
     product_id: canonical.id,
     product_name: canonical.name,
     category,
@@ -393,6 +412,9 @@ export function normalizeOffer(raw = {}, options = {}) {
     quantity_id: quantity.id,
     quantity_label: quantity.label,
     quantity_sort: quantity.sort,
+    listing_mg: listingMg,
+    price_per_mg: pricePerMg,
+    price_per_mg_label: formatPricePerMg(pricePerMg),
     regular_price_label: formatPriceRange(listedPrices),
     effective_price_label: discount > 0 && listedPrices.length ? formatPriceRange(effectivePrices) : formatPriceRange(listedPrices),
     regular_price_min: Number.isFinite(listedMin) ? roundMoney(listedMin) : null,
@@ -600,4 +622,45 @@ export function buildCatalog(rawRows = [], options = {}) {
 export function publicSnapshot(snapshot = {}) {
   const { raw_offers_by_vendor, ...publicData } = snapshot || {};
   return publicData;
+}
+
+// Derive the milligram weight of a listing from its size label so we can compute
+// a true price-per-mg. Returns null whenever the label is ambiguous, because a
+// wrong $/mg is far worse than no $/mg.
+//
+// Deliberately rejected:
+//   "5mg / 10mg"   multi-size listing, no single weight
+//   "10ml", "60ml" volume, not weight
+//   "32g", "31g / 10pk"  these are NEEDLE GAUGES, not grams of peptide
+//   "Standard listing", "Choose size on vendor site", "BW", "000iu"
+// Grams are only accepted at <= 10, which separates a real 1g raw powder from a
+// 30g syringe gauge.
+export function parseListingMg(label) {
+  if (!label) return null;
+  const text = String(label).trim().toLowerCase();
+  if (text.includes("/")) return null;            // multi-size or bundled listing
+  const match = text.match(/^([0-9]+(?:\.[0-9]+)?)\s*(mg|mcg|g)$/);
+  if (!match) return null;
+  const value = Number(match[1]);
+  if (!Number.isFinite(value) || value <= 0) return null;
+  const unit = match[2];
+  if (unit === "mg") return value;
+  if (unit === "mcg") return value / 1000;
+  if (unit === "g") return value <= 10 ? value * 1000 : null;  // >10 "g" is a gauge
+  return null;
+}
+
+export function computePricePerMg(price, mg) {
+  if (!Number.isFinite(price) || price <= 0) return null;
+  if (!Number.isFinite(mg) || mg <= 0) return null;
+  const perMg = price / mg;
+  if (!Number.isFinite(perMg) || perMg <= 0) return null;
+  return Math.round(perMg * 10000) / 10000;
+}
+
+export function formatPricePerMg(perMg) {
+  if (!Number.isFinite(perMg) || perMg <= 0) return "";
+  if (perMg >= 1) return "$" + perMg.toFixed(2) + "/mg";
+  if (perMg >= 0.01) return "$" + perMg.toFixed(3).replace(/0$/, "") + "/mg";
+  return "$" + perMg.toFixed(4) + "/mg";
 }

@@ -80,6 +80,8 @@ data/vendor-config.json
 
 Product-card links currently use confirmed base affiliate URLs while partner-level product deep-link tracking is verified. Each vendor can later be switched back to product deep links independently.
 
+## VANTYX Supply banner
+The homepage includes a compact VANTYX Supply banner below the hero. It is intentionally separate from the peptide comparison catalog because VANTYX is a lab and research supply partner rather than a peptide vendor. The banner promotes code `SAMMYC` for 10% off.
 
 ## Compliance gate
 The public site includes a session-based research-use acceptance gate. Visitors must accept it once per browser session before accessing the public site. Legal pages remain accessible for review.

@@ -7,92 +7,105 @@
       "discount_percent": 10,
       "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
       "logo": "/assets/vendor-logos/glacier-aminos.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     },
     "Ion Peptide": {
       "id": "ion-peptide",
       "discount_percent": 15,
       "affiliate_url": "https://ionpeptide.com?ref=SammyC",
       "logo": "/assets/vendor-logos/ion-peptide.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     },
     "LabSourced Peptides": {
       "id": "labsourced-peptides",
       "discount_percent": 15,
       "affiliate_url": "https://labsourced.com/?ref=SammyC",
       "logo": "/assets/vendor-logos/labsourced-peptides.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     },
     "Mile High Peptides": {
       "id": "mile-high-peptides",
-      "display_name": "Mile High Compounds",
       "discount_percent": 10,
       "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
       "logo": "/assets/vendor-logos/mile-high-peptides.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": [],
+      "display_name": "Mile High Compounds"
     },
     "Southern Aminos": {
       "id": "southern-aminos",
       "discount_percent": 15,
       "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/southern-aminos.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     },
     "Flawless Compounds": {
       "id": "flawless-compounds",
       "discount_percent": 15,
       "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
       "logo": "/assets/vendor-logos/flawless-compounds.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     },
     "Glow Aminos": {
       "id": "glow-aminos",
       "discount_percent": 15,
       "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
       "logo": "/assets/vendor-logos/glow-aminos.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     },
     "Instant Peptides": {
       "id": "instant-peptides",
       "discount_percent": 15,
       "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
       "logo": "/assets/vendor-logos/instant-peptides.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     },
     "Solyn Labs": {
       "id": "solyn-labs",
       "discount_percent": 10,
       "affiliate_url": "https://solyn.com/?ref=SammyC",
       "logo": "/assets/vendor-logos/solyn-labs.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     },
     "Oneday Compounds": {
       "id": "oneday-compounds",
       "discount_percent": 10,
       "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
       "logo": "/assets/vendor-logos/oneday-compounds.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     },
     "Coffee and Peppers": {
       "id": "coffee-and-peppers",
       "discount_percent": 15,
       "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/coffee-and-peppers.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     },
     "Bioedge Research Labs": {
       "id": "bioedge-research-labs",
       "discount_percent": 15,
       "affiliate_url": "https://bioedgeresearchlabs.com/?aff=1005717",
       "logo": "/assets/vendor-logos/bioedge-research-labs.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     },
     "High Tide Compounds": {
       "id": "high-tide-compounds",
       "discount_percent": 10,
       "affiliate_url": "https://hightidecompounds.com/?aff=44",
       "logo": "/assets/vendor-logos/high-tide-compounds.webp",
-      "use_product_deep_links": false
+      "use_product_deep_links": false,
+      "payment_methods": []
     }
   }
 }
