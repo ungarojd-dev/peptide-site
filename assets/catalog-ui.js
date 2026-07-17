@@ -248,11 +248,8 @@
         <div class="product-title-row">
           <div class="product-title-copy">
             <h2 class="product-title">${esc(card.name)}</h2>
-            <div class="product-subtitle">${esc(card.format||"Research product")}<span class="product-cat-inline">${esc(catLabel(card.category)||"Product")}</span></div>
+            <div class="product-subtitle">${esc(card.format||"Research product")}<span class="product-cat-inline">${esc(catLabel(card.category)||"Product")}</span><span class="vendor-count">${vendorLabel}</span></div>
           </div>
-          <span class="vendor-count">${vendorLabel}</span>
-        </div>
-        <div class="card-lowest-row">
           <button type="button" class="card-view-button" data-action="expand" data-card="${attr(card.id)}">${expanded?"Hide":"View prices"}</button>
         </div>
       </header>
