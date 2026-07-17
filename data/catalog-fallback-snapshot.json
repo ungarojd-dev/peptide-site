@@ -1,7 +1,7 @@
 {
   "schema_version": "catalog-v1",
   "engine_version": "1.0.0-clean",
-  "generated_at": "2026-07-15T18:43:22.829Z",
+  "generated_at": "2026-07-17T16:41:30.492Z",
   "coupon_code": "SAMMYC",
   "product_card_count": 109,
   "normalized_offer_count": 316,
@@ -5327,7 +5327,7 @@
       "id": "hcg::vials",
       "product_id": "hcg",
       "name": "HCG",
-      "category": "Other",
+      "category": "Growth Hormone Research",
       "format": "Vials",
       "mapped": true,
       "supplier_count": 1,
@@ -5349,7 +5349,7 @@
               "vendor_payment_methods": [],
               "product_id": "hcg",
               "product_name": "HCG",
-              "category": "Other",
+              "category": "Growth Hormone Research",
               "format": "Vials",
               "quantity_id": "000iu",
               "quantity_label": "000iu",
@@ -14114,7 +14114,7 @@
   ],
   "diagnostics": {
     "engine_version": "1.0.0-clean",
-    "generated_at": "2026-07-15T18:43:22.830Z",
+    "generated_at": "2026-07-17T16:41:30.494Z",
     "product_card_count": 109,
     "normalized_offer_count": 316,
     "visible_unmapped_count": 0,
@@ -14140,12 +14140,11 @@
       "Repair & Recovery": 37,
       "Metabolic & Mitochondrial": 57,
       "Longevity & Cellular Health": 55,
-      "Growth Hormone Research": 39,
+      "Growth Hormone Research": 40,
       "Cognitive & Nootropic": 31,
       "Bioregulators": 11,
       "Skin, Tanning & Sexual Health": 25,
-      "Supplies": 26,
-      "Other": 1
+      "Supplies": 26
     },
     "formats": {
       "Vials": 246,
@@ -14183,6 +14182,6 @@
     "excluded_products": [],
     "warnings": []
   },
-  "snapshot_updated_at": "2026-07-15T18:43:22.830Z",
+  "snapshot_updated_at": "2026-07-17T16:41:30.494Z",
   "snapshot_refresh_ms": 0
 }

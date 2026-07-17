@@ -2,6 +2,22 @@
   "use strict";
 
   const CATEGORY_ORDER=["All","Peptides","GLP-1 & Incretin","Repair & Recovery","Growth Hormone Research","Cognitive & Nootropic","Longevity & Cellular Health","Metabolic & Mitochondrial","Bioregulators","Skin, Tanning & Sexual Health","Supplies","Other"];
+  // Short display labels so the filter chips/dropdown stay tidy. The value stays
+  // the full category name (used for filtering and data); only the label shortens.
+  const CATEGORY_LABELS={
+    "All":"All",
+    "GLP-1 & Incretin":"GLP-1",
+    "Repair & Recovery":"Recovery",
+    "Growth Hormone Research":"Growth Hormone",
+    "Cognitive & Nootropic":"Cognitive",
+    "Longevity & Cellular Health":"Longevity",
+    "Metabolic & Mitochondrial":"Metabolic",
+    "Bioregulators":"Bioregulators",
+    "Skin, Tanning & Sexual Health":"Skin & Sexual",
+    "Supplies":"Supplies",
+    "Other":"Other"
+  };
+  function catLabel(value){return CATEGORY_LABELS[value]||value;}
   const TRACKED_VENDOR_COUNT=13;
   const NON_PEPTIDE_CATEGORIES=["Supplies","Other"];
   const FORMAT_ORDER=["All","Vials","Capsules","Dissolvable Strips","Nasal Sprays","Topicals","Liquids","Aminos","Bioregulators","Supplies"];
@@ -25,17 +41,18 @@
 
   function initials(name){return String(name||"?").split(/\s+/).map(word=>word[0]).join("").slice(0,2).toUpperCase();}
   function money(value){return value!=null&&Number.isFinite(Number(value))?`$${Number(value).toFixed(2)}`:null;}
-  function filterValues(order,property){
+  function filterValues(order,property,allowExtras){
     const found=new Set(state.cards.map(card=>card[property]).filter(Boolean));
     const ordered=order.filter(item=>item==="All"||item==="Peptides"||Array.from(found).some(value=>matchesFilterValue(value,item)));
+    if(allowExtras===false) return ordered;
     const extras=Array.from(found).filter(value=>!ordered.some(item=>matchesFilterValue(item,value))).sort((a,b)=>String(a).localeCompare(String(b)));
     return [...ordered,...extras];
   }
-  function chip(label,active){return `<button type="button" class="catalog-chip${active?" active":""}" data-chip="${attr(label)}">${esc(label)}</button>`;}
-  function option(label,active){return `<option value="${attr(label)}"${active?" selected":""}>${esc(label)}</option>`;}
-  function setSelectOptions(select,values,selected){
+  function chip(label,active,display){return `<button type="button" class="catalog-chip${active?" active":""}" data-chip="${attr(label)}">${esc(display||label)}</button>`;}
+  function option(label,active,display){return `<option value="${attr(label)}"${active?" selected":""}>${esc(display||label)}</option>`;}
+  function setSelectOptions(select,values,selected,labeler){
     if(!select) return;
-    select.innerHTML=values.map(label=>option(label,matchesFilterValue(label,selected))).join("");
+    select.innerHTML=values.map(label=>option(label,matchesFilterValue(label,selected),labeler?labeler(label):null)).join("");
     const hasSelected=values.some(label=>matchesFilterValue(label,selected));
     select.value=hasSelected?values.find(label=>matchesFilterValue(label,selected)):"All";
   }
@@ -62,6 +79,13 @@
     });
   }
   function bestOffer(card){const offers=offersForCard(card);return offers.find(o=>o.supplier.effective_price_min!=null)||offers[0]||null;}
+  // Lowest cost-per-mg across every offer on the card. This is the number a
+  // buyer actually optimizes for, so we surface it as the "Best value" hero row.
+  function bestValueOffer(card){
+    const priced=allOffers(card).filter(o=>typeof o.supplier.price_per_mg==="number"&&o.supplier.price_per_mg>0&&o.supplier.in_stock!==false);
+    if(!priced.length) return null;
+    return priced.reduce((best,o)=>o.supplier.price_per_mg<best.supplier.price_per_mg?o:best);
+  }
   function selectedVariantId(card){return state.activeVariants[card.id]||ALL_VARIANTS;}
   function activeVariant(card){const selected=selectedVariantId(card);return (card.variants||[]).find(variant=>variant.id===selected)||(card.variants||[])[0]||{id:"",label:"Standard listing",suppliers:[]};}
   function searchText(card){return [card.name,card.category,card.format,...(card.variants||[]).flatMap(variant=>(variant.suppliers||[]).flatMap(supplier=>[supplier.vendor_name,supplier.raw_product,supplier.raw_listing,supplier.sku]))].join(" ").toLowerCase();}
@@ -102,14 +126,14 @@
   }
 
   function renderFilters(){
-    const categoryValues=filterValues(CATEGORY_ORDER,"category");
-    const formatValues=filterValues(FORMAT_ORDER,"format");
+    const categoryValues=filterValues(CATEGORY_ORDER,"category",false);
+    const formatValues=filterValues(FORMAT_ORDER,"format",false);
     const vendorValues=["All",...allVendorNames()];
 
     const categorySelect=$("catalogCategorySelect");
     const formatSelect=$("catalogFormatSelect");
     const vendorSelect=$("catalogVendorSelect");
-    setSelectOptions(categorySelect,categoryValues,state.category);
+    setSelectOptions(categorySelect,categoryValues,state.category,catLabel);
     setSelectOptions(formatSelect,formatValues,state.format);
     setSelectOptions(vendorSelect,vendorValues,state.vendor);
 
@@ -120,7 +144,7 @@
     const categories=$("catalogCategories");
     const formats=$("catalogFormats");
     const vendors=$("catalogVendors");
-    if(categories) categories.innerHTML=categoryValues.map(label=>chip(label,matchesFilterValue(label,state.category))).join("");
+    if(categories) categories.innerHTML=categoryValues.map(label=>chip(label,matchesFilterValue(label,state.category),catLabel(label))).join("");
     if(formats) formats.innerHTML=formatValues.map(label=>chip(label,matchesFilterValue(label,state.format))).join("");
     if(vendors) vendors.innerHTML=vendorValues.map(label=>chip(label,matchesFilterValue(label,state.vendor))).join("");
     document.querySelectorAll("#catalogCategories [data-chip]").forEach(button=>button.onclick=()=>{state.category=button.dataset.chip;renderFilters();renderCards(true);});
@@ -196,10 +220,9 @@
     const variantLine=variantLabel&&variantLabel!=="Standard listing"?`<span class="supplier-variant-line"><span>Size</span> ${esc(variantLabel)}</span>`:"";
     const discount=supplier.discount_percent?`<span class="supplier-discount">${esc(supplier.discount_percent)}% off with ${esc(supplier.coupon_code||"SAMMYC")}</span>`:`<span class="supplier-discount">Code details on vendor site</span>`;
     const bestBadge=isBest?`<span class="supplier-best">Lowest</span>`:"";
-    const paymentIcons=(supplier.vendor_payment_methods||[]).length?`<div class="supplier-payment-icons" aria-label="Accepted payment methods">${supplier.vendor_payment_methods.map(method=>{const slug=paymentSlug(method);return `<span class="payment-icon payment-icon-${attr(slug)}" title="${attr(method)}"><img class="payment-icon-img" src="/assets/payment-icons/${attr(slug)}.svg" data-fallback="/assets/payment-icons/${attr(paymentGlyph(slug))}.svg" alt="" loading="lazy"/>${esc(method)}</span>`;}).join("")}</div>`:"";
     const promotions=global.MPPPromotions?.forOffer?.(supplier,card)||[];
-    const promoBadges=promotions.length?`<div class="supplier-promos">${promotions.slice(0,2).map(promotion=>`<span class="supplier-promo-badge">${esc(promotion.badge||promotion.headline)}</span>`).join("")}${promotions.length>2?`<span class="supplier-promo-more">+${promotions.length-2} more</span>`:""}</div>`:"";
-    return `<a class="supplier-row${isBest?" is-best":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}</div>${paymentIcons}<div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadges}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}<div class="supplier-go">View deal</div></div></a>`;
+    const promoBadges=promotions.length?`<div class="supplier-promos">${promotions.slice(0,1).map(promotion=>`<span class="supplier-promo-badge">${esc(promotion.badge||promotion.headline)}</span>`).join("")}</div>`:"";
+    return `<a class="supplier-row${isBest?" is-best":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}</div><div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadges}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}<div class="supplier-go">View deal</div></div></a>`;
   }
 
   function cardHtml(card){
@@ -208,9 +231,10 @@
     const variant=activeVariant(card);
     const expanded=!!state.expanded[card.id];
     const rows=(isAll?allOffers(card):(variant.suppliers||[]).map(supplier=>({supplier,variant})).sort((a,b)=>(a.supplier.effective_price_min??Number.POSITIVE_INFINITY)-(b.supplier.effective_price_min??Number.POSITIVE_INFINITY))).filter(offerMatchesVendor);
-    const visible=expanded?rows:rows.slice(0,isAll?7:6);
+    const visible=expanded?rows:rows.slice(0,3);
     const hidden=Math.max(0,rows.length-visible.length);
     const best=bestOffer(card);
+    const bestValue=bestValueOffer(card);
     const lowestPrice=best?money(best.supplier.effective_price_min):null;
     const lowestVendor=best?best.supplier.vendor_name:"";
     const tone=categoryClass(card.category);
@@ -224,7 +248,7 @@
         <div class="product-title-row">
           <div class="product-title-copy">
             <h2 class="product-title">${esc(card.name)}</h2>
-            <div class="product-subtitle">${esc(card.format||"Research product")}<span class="product-cat-inline">${esc(card.category||"Product")}</span></div>
+            <div class="product-subtitle">${esc(card.format||"Research product")}<span class="product-cat-inline">${esc(catLabel(card.category)||"Product")}</span></div>
           </div>
           <span class="vendor-count">${vendorLabel}</span>
         </div>
@@ -243,6 +267,17 @@
           <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="1" data-card="${attr(card.id)}" aria-label="Scroll sizes right">›</button>
         </div>
       </div>
+      ${bestValue?`<a class="best-value-row" href="${attr(bestValue.supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(bestValue.supplier.vendor_name)}" data-code="${attr(bestValue.supplier.coupon_code||"")}">
+        <span class="bv-mark" aria-hidden="true">&#9733;</span>
+        <span class="bv-body">
+          <span class="bv-label">Best value per mg</span>
+          <span class="bv-detail">${esc(bestValue.supplier.vendor_name)}${bestValue.variant&&bestValue.variant.label&&bestValue.variant.label!=="Standard listing"?` &middot; ${esc(bestValue.variant.label)}`:""}</span>
+        </span>
+        <span class="bv-figure">
+          <span class="bv-permg">${esc(bestValue.supplier.price_per_mg_label)}</span>
+          <span class="bv-go">View &#8250;</span>
+        </span>
+      </a>`:""}
       <div class="supplier-head"><span>Estimated after-code prices</span><span>Low to high</span></div>
       <div class="suppliers">${supplierHtml}</div>
       ${hidden?`<button type="button" class="expand-button" data-action="expand" data-card="${attr(card.id)}">${expanded?"Show fewer listings":`Show ${hidden} more listing${hidden===1?"":"s"}`}</button>`:""}

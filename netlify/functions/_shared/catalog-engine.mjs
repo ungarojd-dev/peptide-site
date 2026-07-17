@@ -276,6 +276,8 @@ const FORCED_CATEGORY = [
   ["argireline", "Skin, Tanning & Sexual Health"],
   ["syn-ake", "Skin, Tanning & Sexual Health"],
   ["syn ake", "Skin, Tanning & Sexual Health"],
+  ["hcg", "Growth Hormone Research"],
+  ["human chorionic", "Growth Hormone Research"],
 ];
 
 function inferCategory(family, raw) {

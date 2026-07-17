@@ -216,6 +216,32 @@
 }
 
 /* Supplier head */
+/* Best value per mg: the focal point of each card. Distinct gold treatment so
+   it reads before the vendor list, matching the buyer's real question (cheapest
+   per mg). Uses the site gold, not the category tone, so it always stands out. */
+.best-value-row {
+  display: flex; align-items: center; gap: 10px;
+  margin: 10px 12px 2px; padding: 9px 12px;
+  border: 1.5px solid rgba(201,146,42,.55); border-radius: 12px;
+  background: linear-gradient(135deg, rgba(233,199,107,.20), rgba(217,182,88,.10));
+  box-shadow: 0 4px 14px rgba(160,120,30,.14), inset 0 1px 0 rgba(255,255,255,.5);
+  text-decoration: none; color: inherit;
+  transition: transform .15s ease, box-shadow .15s ease, border-color .15s ease;
+}
+.best-value-row:hover { transform: translateY(-1px); border-color: rgba(201,146,42,.9); box-shadow: 0 8px 22px rgba(160,120,30,.24); }
+.bv-mark { flex: 0 0 auto; display: grid; place-items: center; width: 28px; height: 28px; border-radius: 50%; background: linear-gradient(135deg,#e9c76b,#c9922a); color: #3a2a08; font-size: 14px; box-shadow: 0 2px 8px rgba(160,120,30,.35); }
+.bv-body { display: flex; flex-direction: column; gap: 1px; flex: 1; min-width: 0; }
+.bv-label { color: #7a5c17; font-size: 9px; font-weight: 900; letter-spacing: .6px; text-transform: uppercase; }
+.bv-detail { color: var(--ink); font-size: 12px; font-weight: 800; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bv-figure { flex: 0 0 auto; display: flex; align-items: center; gap: 10px; }
+.bv-permg { color: #6b4e12; font-family: var(--font-display); font-size: 17px; font-weight: 900; letter-spacing: -.3px; white-space: nowrap; }
+.bv-go { flex: 0 0 auto; border-radius: 999px; background: #17130a; color: #f0d98a; padding: 6px 11px; font-size: 10px; font-weight: 900; white-space: nowrap; }
+@media (max-width: 640px) {
+  .best-value-row { margin: 8px 10px 2px; padding: 8px 10px; gap: 8px; }
+  .bv-permg { font-size: 15px; }
+  .bv-detail { font-size: 11.5px; }
+}
+
 .supplier-head {
   display: flex;
   justify-content: space-between;
