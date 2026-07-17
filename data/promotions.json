@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-15-birthday-lto-v2",
+  "version": "2026-07-17-oneday-mix-match-v1",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-15T14:30:00-04:00",
+  "updated_at": "2026-07-17T12:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -49,6 +49,21 @@
       "priority": 144,
       "badge": "🎈 Birthday Sale",
       "theme": "birthday",
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "oneday-mix-and-match-lto",
+      "vendor": "Oneday Compounds",
+      "display_vendor": "Oneday Compounds",
+      "headline": "Mix and Match sale, bulk pricing up to 25% off",
+      "short_detail": "Auto bulk pricing up to 25% off, stacks with SAMMYC and the 5% Zelle discount",
+      "full_detail": "Oneday Compounds is running a Mix and Match sale with bulk pricing applied automatically at checkout on any combination of research materials. Volume tiers are 10% off at 3 or more units, 15% off at 6 or more units, and 25% off at 10 or more units. No code is needed for the bulk pricing and it stacks with existing discount codes and the 5% Zelle payment discount. Research Rewards run alongside the sale, where qualifying spend after discounts unlocks complimentary research material that appears automatically in cart. Spend $300 unlocks 1 free vial, $600 unlocks 2, and $900 unlocks 3. Sale runs through Monday. Confirm final eligibility, stacking rules, and checkout pricing directly on the vendor website.",
+      "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
+      "end_at": "2026-07-21T00:00:00-04:00",
+      "show_in_rolodex": true,
+      "show_vendor_badge": true,
+      "priority": 140,
+      "badge": "Limited Time Deal",
       "cta_text": "Shop Now"
     },
     {
