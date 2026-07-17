@@ -18,7 +18,7 @@
     "Other":"Other"
   };
   function catLabel(value){return CATEGORY_LABELS[value]||value;}
-  const TRACKED_VENDOR_COUNT=13;
+  const TRACKED_VENDOR_COUNT=14;
   const NON_PEPTIDE_CATEGORIES=["Supplies","Other"];
   const FORMAT_ORDER=["All","Vials","Capsules","Dissolvable Strips","Nasal Sprays","Topicals","Liquids","Aminos","Bioregulators","Supplies"];
   const ALL_VARIANTS="__all__";
@@ -192,7 +192,7 @@
     set("statOffers",catalog.normalized_offer_count||catalog.mapped_offer_count||0);
     // The static fallback snapshot only carries a subset of vendors, so
     // vendors_loaded can read low (e.g. 5) on first paint and for crawlers.
-    // We track 13 vendors, so never display fewer than that.
+    // We track 14 vendors, so never display fewer than that.
     set("statVendors",Math.max(Number(catalog.vendors_loaded)||0,TRACKED_VENDOR_COUNT));
   }
 
@@ -250,7 +250,6 @@
             <h2 class="product-title">${esc(card.name)}</h2>
             <div class="product-subtitle">${esc(card.format||"Research product")}<span class="product-cat-inline">${esc(catLabel(card.category)||"Product")}</span><span class="vendor-count">${vendorLabel}</span></div>
           </div>
-          <button type="button" class="card-view-button" data-action="expand" data-card="${attr(card.id)}">${expanded?"Hide":"View prices"}</button>
         </div>
       </header>
       <div class="variant-wrap">

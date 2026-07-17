@@ -106,6 +106,14 @@
       "logo": "/assets/vendor-logos/high-tide-compounds.webp",
       "use_product_deep_links": false,
       "payment_methods": []
+    },
+    "Disguised Alpha": {
+      "id": "disguised-alpha",
+      "discount_percent": 10,
+      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
+      "logo": "/assets/vendor-logos/disguised-alpha.webp",
+      "use_product_deep_links": false,
+      "payment_methods": []
     }
   }
 }

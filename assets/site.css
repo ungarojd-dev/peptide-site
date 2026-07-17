@@ -155,6 +155,8 @@ button, input, select { font: inherit; }
   font-weight: 500;
   color: rgba(255,255,255,0.82);
 }
+.announce-text { transition: opacity .3s ease; }
+.announce-text.announce-fading { opacity: 0; }
 .announce-text strong { color: var(--sand); font-weight: 700; }
 .announce-link {
   font-size: 11px;
@@ -820,7 +822,7 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
 .premium-metrics .metric-label { margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 700; }
 /* Limited Time Deals: glowing neon-sign treatment (olive/gold on near-black),
    ported from the live site, kept at compact height. */
-.deal-carousel { position: relative; overflow: hidden; padding: 14px 14px 12px;
+.deal-carousel { position: relative; overflow: hidden; padding: 12px 14px 10px;
   background:
     radial-gradient(circle at 12% 0%, rgba(169,209,58,.20), transparent 42%),
     radial-gradient(circle at 92% 120%, rgba(224,180,67,.18), transparent 46%),
@@ -836,7 +838,7 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
   animation:dealSpotlightSweep 6s ease-in-out infinite; }
 @keyframes dealSpotlightSweep { 0%,62%{left:-24%;opacity:0} 74%{opacity:.7} 100%{left:112%;opacity:0} }
 .deal-carousel-wrap { position: relative; z-index: 1; max-width: 1224px !important; margin: 0 auto !important; border: 0 !important; border-radius: 0; background: none !important; box-shadow: none !important; overflow: visible; padding: 0; }
-.deal-carousel-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-bottom: 0; padding: 0 0 10px; margin: 0; }
+.deal-carousel-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-bottom: 0; padding: 0 0 8px; margin: 0; }
 .dc-label-group { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
 .dc-label-eyebrow { display: inline-flex; border-radius: 5px; background: transparent; border: 1.5px solid rgba(169,209,58,.9); padding: 3px 8px; color: #d3f26a; font-size: 8.5px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; text-shadow: 0 0 8px rgba(169,209,58,.9); box-shadow: 0 0 10px rgba(169,209,58,.5), inset 0 0 8px rgba(169,209,58,.28); animation: neonFlicker 4.4s steps(1) infinite; }
 .dc-label-title { display: inline; margin-left: 0; color: #fffdf8; font-family: var(--font-display); font-size: 15px; font-weight: 800; white-space: nowrap; text-shadow: 0 0 6px rgba(255,253,248,.5), 0 0 16px rgba(224,180,67,.6), 0 0 30px rgba(224,180,67,.4); }
