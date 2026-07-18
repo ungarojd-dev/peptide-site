@@ -513,6 +513,12 @@ function exclusionReason(raw) {
     "1st anniversary tee", "oversized tee", "tee shirt", "t-shirt",
     "snapback hat", "mhc-tee",
     "qa test product", "internal use only",
+    // Apparel and merch (per request, no clothing products on the site)
+    "apparel", "researcher hat", "grey on black", "grey-on-black",
+    " tee ", " tee(", "hoodie", "sweatshirt", "sweatpants", "beanie",
+    "crewneck", "long sleeve", "longsleeve", "tank top", "sticker pack",
+    "research apparel", "brand apparel", "logo tee", "logo hat",
+    "trucker hat", "dad hat", "polo shirt", "researcher tee",
   ];
   const allExcludes = [...(overridePayload.exclude_terms || []), ...HARDCODED_EXCLUDES];
   const matched = allExcludes.find(term => haystack.includes(normalized(term)));

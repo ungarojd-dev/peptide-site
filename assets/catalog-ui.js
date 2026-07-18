@@ -336,7 +336,7 @@
     state.format=params.get("format")||"All";
     state.vendor=params.get("vendor")||"All";
     state.query=params.get("q")||"";
-    state.sort=params.get("sort")||"price";
+    state.sort=params.get("sort")||"name";
     const search=$("catalogSearch");
     const sort=$("catalogSort");
     if(search) search.value=state.query;
@@ -359,7 +359,7 @@
     state.category=document.body.dataset.defaultCategory||"All";
     state.format="All";
     state.vendor="All";
-    state.sort="price";
+    state.sort="name";
     const search=$("catalogSearch");
     const sort=$("catalogSort");
     if(search) search.value="";
