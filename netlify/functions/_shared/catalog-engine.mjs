@@ -3,7 +3,7 @@ import overridePayload from "../../../data/catalog-overrides.json" with { type: 
 import vendorPayload from "../../../data/vendor-config.json" with { type: "json" };
 import promotionPayload from "../../../data/promotions.json" with { type: "json" };
 
-export const ENGINE_VERSION = "1.0.0-clean";
+export const ENGINE_VERSION = "1.1.0-merged-formats";
 export const COUPON_CODE = vendorPayload.coupon_code || "SAMMYC";
 export const VENDOR_CONFIG = vendorPayload.vendors || {};
 export const PROMOTIONS = promotionPayload.promotions || [];
@@ -643,18 +643,22 @@ export function buildCatalog(rawRows = [], options = {}) {
     normalizedRows.push(offer);
   }
 
+  // One card per compound. Formats (vials, capsules, nasal sprays, liquids) used
+  // to split a compound into separate cards, which meant the same compound
+  // appeared several times in the grid and each copy only carried a slice of the
+  // vendors. Formats are now a dimension inside the card, alongside size.
   const cards = new Map();
   for (const offer of normalizedRows) {
-    const cardKey = `${offer.product_id}::${slug(offer.format)}`;
+    const cardKey = offer.product_id;
     if (!cards.has(cardKey)) {
       cards.set(cardKey, {
         id: cardKey,
         product_id: offer.product_id,
         name: offer.product_name,
         category: offer.category,
-        format: offer.format,
         mapped: true,
         variants: new Map(),
+        formats: new Map(),
         vendorNames: new Set(),
         offer_count: 0
       });
@@ -664,16 +668,32 @@ export function buildCatalog(rawRows = [], options = {}) {
     card.vendorNames.add(offer.vendor_name);
     if (!offer.mapped) card.mapped = false;
     if (card.category === DEFAULT_CATEGORY && offer.category !== DEFAULT_CATEGORY) card.category = offer.category;
-    if (!card.variants.has(offer.quantity_id)) {
-      card.variants.set(offer.quantity_id, {
-        id: offer.quantity_id,
+    const formatId = slug(offer.format) || "other";
+    if (!card.formats.has(formatId)) {
+      card.formats.set(formatId, {
+        id: formatId,
+        label: offer.format,
+        offer_count: 0,
+        vendorNames: new Set()
+      });
+    }
+    const formatEntry = card.formats.get(formatId);
+    formatEntry.offer_count += 1;
+    formatEntry.vendorNames.add(offer.vendor_name);
+    const variantKey = `${formatId}::${offer.quantity_id}`;
+    if (!card.variants.has(variantKey)) {
+      card.variants.set(variantKey, {
+        id: variantKey,
+        quantity_id: offer.quantity_id,
         label: offer.quantity_label,
+        format: offer.format,
+        format_id: formatId,
         sort: offer.quantity_sort,
         suppliers: new Map(),
         all_offer_count: 0
       });
     }
-    const variant = card.variants.get(offer.quantity_id);
+    const variant = card.variants.get(variantKey);
     variant.all_offer_count += 1;
     const supplierKey = normalized([
       offer.vendor_id,
@@ -695,7 +715,11 @@ export function buildCatalog(rawRows = [], options = {}) {
       });
       return {
         id: variant.id,
+        quantity_id: variant.quantity_id,
         label: variant.label,
+        format: variant.format,
+        format_id: variant.format_id,
+        full_label: `${variant.label} ${variant.format}`,
         sort: variant.sort,
         supplier_count: suppliers.length,
         all_offer_count: variant.all_offer_count,
@@ -704,19 +728,27 @@ export function buildCatalog(rawRows = [], options = {}) {
     }).sort((a, b) => b.supplier_count - a.supplier_count || a.sort - b.sort || a.label.localeCompare(b.label));
     const allSuppliers = variants.flatMap(variant => variant.suppliers);
     const priced = allSuppliers.map(offer => offer.effective_price_min).filter(value => value != null);
+    const formats = [...card.formats.values()].map(entry => ({
+      id: entry.id,
+      label: entry.label,
+      offer_count: entry.offer_count,
+      supplier_count: entry.vendorNames.size
+    })).sort((a, b) => b.supplier_count - a.supplier_count || b.offer_count - a.offer_count || a.label.localeCompare(b.label));
     return {
       id: card.id,
       product_id: card.product_id,
       name: card.name,
       category: card.category,
-      format: card.format,
+      format: formats.length ? formats[0].label : DEFAULT_FORMAT,
+      formats,
+      format_labels: formats.map(entry => entry.label),
       mapped: card.mapped,
       supplier_count: card.vendorNames.size,
       offer_count: card.offer_count,
       lowest_effective_price: priced.length ? Math.min(...priced) : null,
       variants
     };
-  }).sort((a, b) => a.name.localeCompare(b.name) || a.format.localeCompare(b.format));
+  }).sort((a, b) => a.name.localeCompare(b.name));
 
   const unmapped = normalizedRows.filter(offer => !offer.mapped).map(offer => ({
     vendor: offer.vendor_name,

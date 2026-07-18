@@ -22,7 +22,12 @@
   const NON_PEPTIDE_CATEGORIES=["Supplies","Other"];
   const FORMAT_ORDER=["All","Vials","Capsules","Dissolvable Strips","Nasal Sprays","Topicals","Liquids","Aminos","Bioregulators","Supplies"];
   const ALL_VARIANTS="__all__";
-  const state={catalog:null,cards:[],query:"",category:"All",format:"All",vendor:"All",sort:"price",activeVariants:{},expanded:{},source:"Loading"};
+  const ALL_FORMATS="__allformats__";
+  // Cards carry every format for a compound now, so a single card can hold 14
+  // vendors where it used to hold 5. Three visible rows hid too much of that,
+  // and it also cut the amount of catalog text rendered for crawlers.
+  const DEFAULT_VISIBLE_ROWS=5;
+  const state={catalog:null,cards:[],query:"",category:"All",format:"All",vendor:"All",sort:"price",activeVariants:{},activeFormats:{},expanded:{},source:"Loading"};
   const $=id=>document.getElementById(id);
   const esc=value=>String(value==null?"":value).replace(/[&<>"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
   const attr=value=>esc(value).replace(/'/g,"&#39;");
@@ -42,7 +47,11 @@
   function initials(name){return String(name||"?").split(/\s+/).map(word=>word[0]).join("").slice(0,2).toUpperCase();}
   function money(value){return value!=null&&Number.isFinite(Number(value))?`$${Number(value).toFixed(2)}`:null;}
   function filterValues(order,property,allowExtras){
-    const found=new Set(state.cards.map(card=>card[property]).filter(Boolean));
+    const found=new Set();
+    state.cards.forEach(card=>{
+      const value=property==="format"?cardFormatLabels(card):[card[property]];
+      value.filter(Boolean).forEach(item=>found.add(item));
+    });
     const ordered=order.filter(item=>item==="All"||item==="Peptides"||Array.from(found).some(value=>matchesFilterValue(value,item)));
     if(allowExtras===false) return ordered;
     const extras=Array.from(found).filter(value=>!ordered.some(item=>matchesFilterValue(item,value))).sort((a,b)=>String(a).localeCompare(String(b)));
@@ -71,14 +80,42 @@
     return `<span class="product-molecule" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>`;
   }
 
-  function allOffers(card){
-    return (card.variants||[]).flatMap(variant=>(variant.suppliers||[]).map(supplier=>({variant,supplier}))).sort((a,b)=>{
+  // A card now carries every format for a compound (vials, capsules, nasal
+  // sprays and so on) instead of one card per format. These helpers read the
+  // format list and scope a card's listings to whichever format is selected.
+  function cardFormats(card){
+    if(Array.isArray(card.formats)&&card.formats.length) return card.formats;
+    return card.format?[{id:normalizeFilterValue(card.format).replace(/[^a-z0-9]+/g,"-"),label:card.format,supplier_count:card.supplier_count||0,offer_count:card.offer_count||0}]:[];
+  }
+  function cardFormatLabels(card){return cardFormats(card).map(item=>item.label);}
+  function cardHasFormat(card,value){return value==="All"||cardFormatLabels(card).some(label=>matchesFilterValue(label,value));}
+  function selectedFormatId(card){
+    const formats=cardFormats(card);
+    const chosen=state.activeFormats[card.id];
+    if(chosen&&(chosen===ALL_FORMATS||formats.some(item=>item.id===chosen))) return chosen;
+    if(state.format!=="All"){
+      const match=formats.find(item=>matchesFilterValue(item.label,state.format));
+      if(match) return match.id;
+    }
+    return ALL_FORMATS;
+  }
+  function cardVariants(card){
+    const formatId=selectedFormatId(card);
+    const variants=card.variants||[];
+    if(formatId===ALL_FORMATS) return variants;
+    const scoped=variants.filter(variant=>(variant.format_id||"")===formatId);
+    return scoped.length?scoped:variants;
+  }
+  function allOffers(card,scoped){
+    const variants=scoped===false?(card.variants||[]):cardVariants(card);
+    return variants.flatMap(variant=>(variant.suppliers||[]).map(supplier=>({variant,supplier}))).sort((a,b)=>{
       const pa=a.supplier.effective_price_min==null?Number.POSITIVE_INFINITY:a.supplier.effective_price_min;
       const pb=b.supplier.effective_price_min==null?Number.POSITIVE_INFINITY:b.supplier.effective_price_min;
       return pa-pb||String(a.variant.label||"").localeCompare(String(b.variant.label||""))||String(a.supplier.vendor_name||"").localeCompare(String(b.supplier.vendor_name||""));
     });
   }
   function bestOffer(card){const offers=offersForCard(card);return offers.find(o=>o.supplier.effective_price_min!=null)||offers[0]||null;}
+  function bestOfferAnyFormat(card){const offers=allOffers(card,false).filter(offerMatchesVendor);return offers.find(o=>o.supplier.effective_price_min!=null)||offers[0]||null;}
   // Lowest cost-per-mg across every offer on the card. This is the number a
   // buyer actually optimizes for, so we surface it as the "Best value" hero row.
   function bestValueOffer(card){
@@ -86,9 +123,13 @@
     if(!priced.length) return null;
     return priced.reduce((best,o)=>o.supplier.price_per_mg<best.supplier.price_per_mg?o:best);
   }
-  function selectedVariantId(card){return state.activeVariants[card.id]||ALL_VARIANTS;}
-  function activeVariant(card){const selected=selectedVariantId(card);return (card.variants||[]).find(variant=>variant.id===selected)||(card.variants||[])[0]||{id:"",label:"Standard listing",suppliers:[]};}
-  function searchText(card){return [card.name,card.category,card.format,...(card.variants||[]).flatMap(variant=>(variant.suppliers||[]).flatMap(supplier=>[supplier.vendor_name,supplier.raw_product,supplier.raw_listing,supplier.sku]))].join(" ").toLowerCase();}
+  function selectedVariantId(card){
+    const chosen=state.activeVariants[card.id];
+    if(!chosen||chosen===ALL_VARIANTS) return ALL_VARIANTS;
+    return cardVariants(card).some(variant=>variant.id===chosen)?chosen:ALL_VARIANTS;
+  }
+  function activeVariant(card){const selected=selectedVariantId(card);const list=cardVariants(card);return list.find(variant=>variant.id===selected)||list[0]||{id:"",label:"Standard listing",suppliers:[]};}
+  function searchText(card){return [card.name,card.category,cardFormatLabels(card).join(" "),...(card.variants||[]).flatMap(variant=>(variant.suppliers||[]).flatMap(supplier=>[supplier.vendor_name,supplier.raw_product,supplier.raw_listing,supplier.sku]))].join(" ").toLowerCase();}
   function cardVendors(card){return new Set((card.variants||[]).flatMap(variant=>(variant.suppliers||[]).map(supplier=>String(supplier.vendor_name||"").trim())).filter(Boolean));}
   function cardHasVendor(card,vendor){return vendor==="All"||Array.from(cardVendors(card)).some(name=>matchesFilterValue(name,vendor));}
   function offerMatchesVendor(offer){return state.vendor==="All"||matchesFilterValue(offer?.supplier?.vendor_name,state.vendor);}
@@ -102,7 +143,7 @@
   }
   function bestPerMg(card){
     let best=Number.POSITIVE_INFINITY;
-    allOffers(card).forEach(offer=>{
+    allOffers(card,false).forEach(offer=>{
       const value=offer?.supplier?.price_per_mg;
       if(Number.isFinite(value)&&value>0&&value<best) best=value;
     });
@@ -111,7 +152,7 @@
 
   function cards(){
     const query=state.query.trim().toLowerCase();
-    const filtered=state.cards.filter(card=>categoryMatches(card)&&(state.format==="All"||matchesFilterValue(card.format,state.format))&&cardHasVendor(card,state.vendor)&&(!query||searchText(card).includes(query)));
+    const filtered=state.cards.filter(card=>categoryMatches(card)&&cardHasFormat(card,state.format)&&cardHasVendor(card,state.vendor)&&(!query||searchText(card).includes(query)));
     return filtered.sort((a,b)=>{
       if(state.sort==="vendors") return Number(b.supplier_count||0)-Number(a.supplier_count||0)||String(a.name||"").localeCompare(String(b.name||""));
       if(state.sort==="name") return String(a.name||"").localeCompare(String(b.name||""));
@@ -119,8 +160,8 @@
         const ma=bestPerMg(a), mb=bestPerMg(b);
         return ma-mb||String(a.name||"").localeCompare(String(b.name||""));
       }
-      const pa=bestOffer(a)?.supplier?.effective_price_min??Number.POSITIVE_INFINITY;
-      const pb=bestOffer(b)?.supplier?.effective_price_min??Number.POSITIVE_INFINITY;
+      const pa=bestOfferAnyFormat(a)?.supplier?.effective_price_min??Number.POSITIVE_INFINITY;
+      const pb=bestOfferAnyFormat(b)?.supplier?.effective_price_min??Number.POSITIVE_INFINITY;
       return pa-pb||String(a.name||"").localeCompare(String(b.name||""));
     });
   }
@@ -229,9 +270,13 @@
     const selected=selectedVariantId(card);
     const isAll=selected===ALL_VARIANTS;
     const variant=activeVariant(card);
+    const formats=cardFormats(card);
+    const formatId=selectedFormatId(card);
+    const multiFormat=formats.length>1;
+    const scopedVariants=cardVariants(card);
     const expanded=!!state.expanded[card.id];
     const rows=(isAll?allOffers(card):(variant.suppliers||[]).map(supplier=>({supplier,variant})).sort((a,b)=>(a.supplier.effective_price_min??Number.POSITIVE_INFINITY)-(b.supplier.effective_price_min??Number.POSITIVE_INFINITY))).filter(offerMatchesVendor);
-    const visible=expanded?rows:rows.slice(0,3);
+    const visible=expanded?rows:rows.slice(0,DEFAULT_VISIBLE_ROWS);
     const hidden=Math.max(0,rows.length-visible.length);
     const best=bestOffer(card);
     const bestValue=bestValueOffer(card);
@@ -239,26 +284,45 @@
     const lowestVendor=best?best.supplier.vendor_name:"";
     const tone=categoryClass(card.category);
     const totalListings=rows.length;
-    const vendorLabel=state.vendor==="All"?`${esc(card.supplier_count||0)} vendor${card.supplier_count===1?"":"s"}`:`${esc(totalListings)} listing${totalListings===1?"":"s"}`;
+    const shownVendorCount=new Set(rows.map(row=>String(row.supplier.vendor_name||"").trim()).filter(Boolean)).size;
+    const vendorLabel=state.vendor==="All"?`${esc(shownVendorCount)} vendor${shownVendorCount===1?"":"s"}`:`${esc(totalListings)} listing${totalListings===1?"":"s"}`;
+    const formatSummary=formatId===ALL_FORMATS?(multiFormat?`${formats.length} formats`:(formats[0]?.label||"Research product")):(formats.find(item=>item.id===formatId)?.label||card.format||"Research product");
     const lowestLabel=state.vendor==="All"?"Lowest tracked price":`Lowest ${esc(state.vendor)} price`;
-    const supplierHtml=visible.length?visible.map((row,index)=>supplierRow(row.supplier,card,isAll?row.variant.label:"",index===0&&row.supplier.effective_price_min!=null)).join(""):`<div class="supplier-row supplier-empty-row"><span>No listings available for this vendor.</span></div>`;
+    const rowLabel=row=>{
+      const size=row.variant?.label||"";
+      if(!isAll) return "";
+      if(multiFormat&&formatId===ALL_FORMATS) return row.variant?.full_label||[size,row.variant?.format].filter(Boolean).join(" ");
+      return size;
+    };
+    const supplierHtml=visible.length?visible.map((row,index)=>supplierRow(row.supplier,card,rowLabel(row),index===0&&row.supplier.effective_price_min!=null)).join(""):`<div class="supplier-row supplier-empty-row"><span>No listings available for this vendor.</span></div>`;
 
     return `<article class="product-card ${tone}${expanded?" is-expanded":""}" data-card-id="${attr(card.id)}">
       <header class="product-card-head">
         <div class="product-title-row">
           <div class="product-title-copy">
             <h2 class="product-title">${esc(card.name)}</h2>
-            <div class="product-subtitle">${esc(card.format||"Research product")}<span class="product-cat-inline">${esc(catLabel(card.category)||"Product")}</span><span class="vendor-count">${vendorLabel}</span></div>
+            <div class="product-subtitle">${esc(formatSummary)}<span class="product-cat-inline">${esc(catLabel(card.category)||"Product")}</span><span class="vendor-count">${vendorLabel}</span></div>
           </div>
         </div>
       </header>
+      ${multiFormat?`<div class="variant-wrap format-wrap">
+        <span class="variant-label">Format</span>
+        <div class="variant-pills-shell" data-variant-shell="fmt-${attr(card.id)}">
+          <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="-1" data-card="fmt-${attr(card.id)}" aria-label="Scroll formats left">&lsaquo;</button>
+          <div class="variant-pills" data-variant-pills="fmt-${attr(card.id)}">
+            <button type="button" class="variant-button all${formatId===ALL_FORMATS?" active":""}" data-action="format" data-card="${attr(card.id)}" data-format="${ALL_FORMATS}">All formats (${esc(card.offer_count||0)})</button>
+            ${formats.map(item=>`<button type="button" class="variant-button${formatId===item.id?" active":""}" data-action="format" data-card="${attr(card.id)}" data-format="${attr(item.id)}">${esc(item.label)} (${esc(item.offer_count)})</button>`).join("")}
+          </div>
+          <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="1" data-card="fmt-${attr(card.id)}" aria-label="Scroll formats right">&rsaquo;</button>
+        </div>
+      </div>`:""}
       <div class="variant-wrap">
         <span class="variant-label">Compare size or listing</span>
         <div class="variant-pills-shell" data-variant-shell="${attr(card.id)}">
           <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="-1" data-card="${attr(card.id)}" aria-label="Scroll sizes left">‹</button>
           <div class="variant-pills" data-variant-pills="${attr(card.id)}">
             <button type="button" class="variant-button all${isAll?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${ALL_VARIANTS}">All listings${totalListings?` (${esc(totalListings)})`:""}</button>
-            ${(card.variants||[]).map(item=>`<button type="button" class="variant-button${!isAll&&item.id===variant.id?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${attr(item.id)}">${esc(item.label)}${item.all_offer_count?` (${esc(item.all_offer_count)})`:""}</button>`).join("")}
+            ${scopedVariants.map(item=>`<button type="button" class="variant-button${!isAll&&item.id===variant.id?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${attr(item.id)}">${esc(multiFormat&&formatId===ALL_FORMATS?(item.full_label||item.label):item.label)}${item.all_offer_count?` (${esc(item.all_offer_count)})`:""}</button>`).join("")}
           </div>
           <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="1" data-card="${attr(card.id)}" aria-label="Scroll sizes right">›</button>
         </div>
@@ -267,7 +331,7 @@
         <span class="bv-mark" aria-hidden="true">&#9733;</span>
         <span class="bv-body">
           <span class="bv-label">Best value per mg</span>
-          <span class="bv-detail">${esc(bestValue.supplier.vendor_name)}${bestValue.variant&&bestValue.variant.label&&bestValue.variant.label!=="Standard listing"?` &middot; ${esc(bestValue.variant.label)}`:""}</span>
+          <span class="bv-detail">${esc(bestValue.supplier.vendor_name)}${bestValue.variant&&bestValue.variant.label&&bestValue.variant.label!=="Standard listing"?` &middot; ${esc(bestValue.variant.label)}`:""}${multiFormat&&formatId===ALL_FORMATS&&bestValue.variant?.format?` &middot; ${esc(bestValue.variant.format)}`:""}</span>
         </span>
         <span class="bv-figure">
           <span class="bv-permg">${esc(bestValue.supplier.price_per_mg_label)}</span>
@@ -282,6 +346,7 @@
 
   function bindCardActions(){
     document.querySelectorAll('[data-action="clear-filters"]').forEach(button=>button.onclick=clear);
+    document.querySelectorAll('[data-action="format"]').forEach(button=>button.onclick=()=>{state.activeFormats[button.dataset.card]=button.dataset.format;delete state.activeVariants[button.dataset.card];renderCards(false);});
     document.querySelectorAll('[data-action="variant"]').forEach(button=>button.onclick=()=>{state.activeVariants[button.dataset.card]=button.dataset.variant;state.expanded[button.dataset.card]=true;renderCards(false);});
     document.querySelectorAll('[data-action="expand"]').forEach(button=>button.onclick=()=>{
       const cardId=button.dataset.card;
@@ -370,8 +435,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=filter-dropdown-fix",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=filter-dropdown-fix",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260718-merged-formats-v2",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260718-merged-formats-v2",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

@@ -9,8 +9,17 @@ const rebuilt = buildCatalog(rows);
 assert.equal(rebuilt.silent_drop_count, 0, "Catalog engine must not silently drop offers");
 assert.equal(rebuilt.normalized_offer_count + rebuilt.excluded_count, rows.length, "Every fallback row must normalize or be explicitly excluded");
 assert.ok(rebuilt.products.length > 90, "Expected a broad comparison catalog");
-assert.ok(rebuilt.products.some(card => card.name === "BPC-157" && card.format === "Vials"), "BPC-157 vial card missing");
-assert.ok(rebuilt.products.some(card => card.name === "BPC-157" && card.format === "Capsules"), "BPC-157 capsule card missing");
+// One card per compound. Formats are a dimension inside the card now, so BPC-157
+// must appear exactly once and carry both its vial and capsule listings.
+const bpc = rebuilt.products.filter(card => card.name === "BPC-157");
+assert.equal(bpc.length, 1, "BPC-157 must resolve to a single merged card");
+assert.ok(bpc[0].format_labels.includes("Vials"), "BPC-157 vial listings missing");
+assert.ok(bpc[0].format_labels.includes("Capsules"), "BPC-157 capsule listings missing");
+assert.ok(bpc[0].variants.some(v => v.format === "Vials") && bpc[0].variants.some(v => v.format === "Capsules"), "BPC-157 variants must span formats");
+const ids = rebuilt.products.map(card => card.id);
+assert.equal(new Set(ids).size, ids.length, "Product card ids must be unique");
+const productIds = rebuilt.products.map(card => card.product_id);
+assert.equal(new Set(productIds).size, productIds.length, "Each compound must produce exactly one card");
 assert.equal(normalizeOffer({ company: "Southern Aminos", product: "BPC-157 10mg", listing: "BPC-157 10mg", price: "$100.00" }).effective_price_label, "$85.00");
 assert.equal(normalizeOffer({ company: "Oneday Compounds", product: "BPC-157 10mg", listing: "BPC-157 10mg", price: "$100.00" }).effective_price_label, "$90.00");
 // Promotion-driven vendor overrides are time-windowed and rotate, so they are not asserted against fixed calendar dates. Standard per-vendor rates below still cover discountPercentForVendor.

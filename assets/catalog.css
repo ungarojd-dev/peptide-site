@@ -924,3 +924,12 @@ body.theme-dark .payment-icon { background: rgba(255,255,255,.06); border-color:
 @media (max-width: 640px) {
   .supplier-permg { font-size: 9px; }
 }
+
+/* Format selector. A compound card now carries every format (vials, capsules,
+   nasal sprays, liquids) instead of splitting into separate cards, so this row
+   scopes the listings below it. Rendered only when a card has 2+ formats. */
+.format-wrap { background: #f7f6ef; border-bottom: 1px solid rgba(31,58,45,.06); }
+.format-wrap .variant-button { font-size: 10px; }
+.format-wrap .variant-button.active, .format-wrap .variant-button.all.active { background: var(--forest); border-color: var(--forest); color: #fff; }
+.format-wrap .variant-pills { overflow-x: auto; scrollbar-width: none; }
+.format-wrap .variant-pills::-webkit-scrollbar { display: none; }
