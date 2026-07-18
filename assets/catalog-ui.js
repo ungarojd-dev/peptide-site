@@ -408,11 +408,64 @@
     if(sort) sort.value=state.sort;
   }
 
+  // A snapshot built by an older engine splits a compound into one card per
+  // format. The live Netlify Blobs snapshot can lag a deploy by a refresh cycle,
+  // and it overwrites the bundled catalog on load, which would resurrect the
+  // duplicate cards. Merging here means the grid is correct no matter which
+  // engine produced the payload.
+  function mergeLegacyCards(products){
+    const groups=new Map();
+    products.forEach(card=>{
+      const key=card.product_id||normalizeFilterValue(card.name);
+      if(!groups.has(key)) groups.set(key,[]);
+      groups.get(key).push(card);
+    });
+    if(groups.size===products.length) return products;
+    const merged=[];
+    groups.forEach((group,key)=>{
+      if(group.length===1&&Array.isArray(group[0].formats)&&group[0].formats.length){merged.push(group[0]);return;}
+      const variants=[];
+      const formats=new Map();
+      const vendors=new Set();
+      let offerCount=0;
+      group.forEach(card=>{
+        const label=card.format||"Vials";
+        const formatId=normalizeFilterValue(label).replace(/[^a-z0-9]+/g,"-")||"other";
+        if(!formats.has(formatId)) formats.set(formatId,{id:formatId,label,offer_count:0,vendorNames:new Set()});
+        const entry=formats.get(formatId);
+        (card.variants||[]).forEach(variant=>{
+          const suppliers=variant.suppliers||[];
+          suppliers.forEach(supplier=>{vendors.add(supplier.vendor_name);entry.vendorNames.add(supplier.vendor_name);});
+          entry.offer_count+=variant.all_offer_count||suppliers.length;
+          offerCount+=variant.all_offer_count||suppliers.length;
+          variants.push({...variant,id:`${formatId}::${variant.id}`,quantity_id:variant.id,format:label,format_id:formatId,full_label:`${variant.label} ${label}`});
+        });
+      });
+      const formatList=[...formats.values()].map(entry=>({id:entry.id,label:entry.label,offer_count:entry.offer_count,supplier_count:entry.vendorNames.size}))
+        .sort((a,b)=>b.supplier_count-a.supplier_count||b.offer_count-a.offer_count||String(a.label).localeCompare(String(b.label)));
+      const priced=variants.flatMap(variant=>variant.suppliers||[]).map(supplier=>supplier.effective_price_min).filter(value=>value!=null);
+      const base=group[0];
+      merged.push({...base,
+        id:key,
+        product_id:base.product_id||key,
+        format:formatList.length?formatList[0].label:base.format,
+        formats:formatList,
+        format_labels:formatList.map(entry=>entry.label),
+        supplier_count:vendors.size,
+        offer_count:offerCount,
+        lowest_effective_price:priced.length?Math.min(...priced):null,
+        variants:variants.sort((a,b)=>(b.supplier_count||0)-(a.supplier_count||0)||(a.sort||0)-(b.sort||0)||String(a.label).localeCompare(String(b.label)))
+      });
+    });
+    return merged.sort((a,b)=>String(a.name||"").localeCompare(String(b.name||"")));
+  }
+
   function applyCatalog(payload,source){
     const catalog=payload?.data?.products?payload.data:payload;
     if(!catalog?.products?.length) return;
-    state.catalog=catalog;
-    state.cards=catalog.products;
+    const products=mergeLegacyCards(catalog.products);
+    state.catalog={...catalog,product_card_count:products.length};
+    state.cards=products;
     state.source=source;
     updateStats();
     renderFilters();
@@ -435,8 +488,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260718-merged-formats-v2",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260718-merged-formats-v2",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260718-merged-formats-v3",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260718-merged-formats-v3",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
