@@ -574,7 +574,8 @@ body.mpp-compliance-open { overflow: hidden; }
 .mpp-compliance-backdrop { position: fixed; z-index: 4000; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(0,0,0,.78); padding: 14px; backdrop-filter: blur(6px); }
 .mpp-compliance-card, .mpp-full-disclaimer { display: flex; flex-direction: column; width: min(680px,100%); max-height: min(860px, calc(100vh - 28px)); max-height: min(860px, calc(100dvh - 28px)); overflow: hidden; border: 1px solid rgba(255,255,255,.08); border-radius: 18px; background: var(--cream); box-shadow: 0 30px 80px rgba(0,0,0,.5); }
 .mpp-compliance-header, .mpp-full-disclaimer-header { display: flex; align-items: flex-start; gap: 12px; background: var(--black); padding: 18px 20px; color: #fff; flex: 0 0 auto; }
-.mpp-compliance-icon { display: flex; width: 32px; height: 32px; flex: 0 0 auto; align-items: center; justify-content: center; border: 1px solid rgba(122,154,106,.4); border-radius: 9px; background: rgba(122,154,106,.16); color: var(--olive-light); font-size: 18px; font-weight: 700; line-height: 1; }
+.mpp-compliance-icon { display: flex; width: 38px; height: 38px; flex: 0 0 auto; align-items: center; justify-content: center; border: 1px solid rgba(122,154,106,.4); border-radius: 10px; background: rgba(122,154,106,.16); overflow: hidden; padding: 4px; }
+.mpp-compliance-icon img { width: 100%; height: 100%; object-fit: contain; display: block; }
 .mpp-compliance-header h2, .mpp-full-disclaimer-header h2 { margin: 0; font-family: var(--font-display); font-size: 18px; font-weight: 800; line-height: 1.2; }
 .mpp-compliance-header p, .mpp-full-disclaimer-header p { margin: 4px 0 0; color: rgba(255,255,255,.55); font-size: 11px; font-weight: 500; line-height: 1.4; }
 .mpp-compliance-content { flex: 1 1 auto; min-height: 0; overflow: auto; padding: 16px 20px; }
@@ -816,7 +817,7 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
 .trust-mini-icon { display: grid; width: 24px; height: 24px; flex: 0 0 24px; place-items: center; border: 1px solid rgba(216,199,167,.22); border-radius: 50%; color: var(--sand); }
 .premium-metrics { padding: 24px 28px; background: var(--cream); }
 .premium-metrics .metrics-inner { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; max-width: 1280px; margin: 0 auto; }
-.premium-metrics .metric-item { display: flex; align-items: center; gap: 14px; border: 1px solid rgba(31,58,45,.11); border-radius: 18px; background: rgba(255,255,255,.8); padding: 18px; box-shadow: 0 12px 36px rgba(13,13,13,.05); }
+.premium-metrics .metric-item { display: flex; align-items: center; justify-content: center; text-align: center; gap: 0; border: 1px solid rgba(31,58,45,.11); border-radius: 18px; background: rgba(255,255,255,.8); padding: 16px 14px; box-shadow: 0 12px 36px rgba(13,13,13,.05); }
 .metric-icon { display: grid; width: 42px; height: 42px; place-items: center; border-radius: 13px; background: #edf1e8; color: var(--olive); font-size: 20px; font-weight: 800; }
 .premium-metrics .metric-num { color: var(--forest); font-family: var(--font-display); font-size: 24px; font-weight: 800; line-height: 1; }
 .premium-metrics .metric-label { margin-top: 4px; color: var(--muted); font-size: 12px; font-weight: 700; }
@@ -837,7 +838,7 @@ body { background: var(--cream); color: var(--ink); font-family: var(--font-body
   background:linear-gradient(90deg,transparent,rgba(169,209,58,.16),transparent); transform:rotate(18deg);
   animation:dealSpotlightSweep 6s ease-in-out infinite; }
 @keyframes dealSpotlightSweep { 0%,62%{left:-24%;opacity:0} 74%{opacity:.7} 100%{left:112%;opacity:0} }
-.deal-carousel-wrap { position: relative; z-index: 1; max-width: 1224px !important; margin: 0 auto !important; border: 0 !important; border-radius: 0; background: none !important; box-shadow: none !important; overflow: visible; padding: 0; }
+.deal-carousel-wrap { position: relative; z-index: 1; max-width: 980px !important; margin: 0 auto !important; border: 0 !important; border-radius: 0; background: none !important; box-shadow: none !important; overflow: visible; padding: 0; }
 .deal-carousel-header { display: flex; align-items: center; justify-content: space-between; gap: 8px; border-bottom: 0; padding: 0 0 8px; margin: 0; }
 .dc-label-group { display: flex; align-items: center; gap: 8px; min-width: 0; flex-wrap: wrap; }
 .dc-label-eyebrow { display: inline-flex; border-radius: 5px; background: transparent; border: 1.5px solid rgba(169,209,58,.9); padding: 3px 8px; color: #d3f26a; font-size: 8.5px; font-weight: 900; letter-spacing: 1px; text-transform: uppercase; white-space: nowrap; text-shadow: 0 0 8px rgba(169,209,58,.9); box-shadow: 0 0 10px rgba(169,209,58,.5), inset 0 0 8px rgba(169,209,58,.28); animation: neonFlicker 4.4s steps(1) infinite; }
@@ -1065,7 +1066,7 @@ body.theme-dark .notice strong { color: var(--olive-soft); }
 .deal-carousel .dc-logo { order: 2; flex: 0 0 auto; width: 52px; height: 32px; border-radius: 8px; padding: 4px 5px; background: #fff; border: 1px solid rgba(255,255,255,.7); box-shadow: 0 2px 10px rgba(0,0,0,.3); }
 .deal-carousel .dc-vendor-wrap { order: 3; flex: 1 1 60px; min-width: 0; white-space: normal; overflow: visible; }
 .deal-carousel .dc-vendor { white-space: normal; }
-.deal-carousel .dc-stack { order: 4; flex: 1 0 100%; margin-top: 2px; }
+.deal-carousel .dc-stack { order: 4; flex: 0 0 auto; margin-top: 0; }
 .deal-carousel .dc-vendor { white-space: normal; }
 
 @media (max-width: 640px) {
@@ -1082,7 +1083,10 @@ body.theme-dark .notice strong { color: var(--olive-soft); }
      steals width from the vendor name on a phone. Drop it. */
   .deal-carousel .dc-logo { width: 46px; height: 30px; }
   .deal-carousel .dc-vendor-wrap { font-size: 12.5px; }
-  .deal-carousel .dc-stack { font-size: 8px; padding: 2px 6px; }
+  /* On a phone the vendor name length changes how the row wraps, which resized
+     the card on every rotation. Giving the chip its own row keeps every deal the
+     same height. On desktop there is room, so it stays inline. */
+  .deal-carousel .dc-stack { font-size: 8px; padding: 2px 6px; flex: 1 0 100%; margin-top: 2px; }
 }
 
 

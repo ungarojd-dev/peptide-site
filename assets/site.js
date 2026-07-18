@@ -75,7 +75,7 @@
       <div class="mpp-compliance-backdrop" data-compliance-backdrop>
         <section class="mpp-compliance-card" role="dialog" aria-modal="true" aria-labelledby="mpp-compliance-title">
           <header class="mpp-compliance-header">
-            <div class="mpp-compliance-icon" aria-hidden="true">△</div>
+            <div class="mpp-compliance-icon" aria-hidden="true"><img src="/assets/brand/logo-symbol.png" alt="" width="32" height="32"/></div>
             <div>
               <h2 id="mpp-compliance-title">Research Use and Compliance Disclaimer</h2>
               <p>Please review and acknowledge before accessing the website.</p>
