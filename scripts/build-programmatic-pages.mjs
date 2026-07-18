@@ -1,7 +1,12 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
 
-const W = "/home/claude/work";
-const VER = "20260714-v3-seo-permg-v1";
+// Resolve the repo root from this file's location so the generator works from
+// any checkout. It previously pointed at a hardcoded scratch directory, which
+// silently read a stale snapshot and wrote pages outside the repo.
+const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const VER = "20260718-full-catalog-v1";
 const TODAY = "July 2026";
 const VALID_UNTIL = "2026-08-31";
 const BASE = "https://mypeptideprice.com";
@@ -172,7 +177,11 @@ ${footer()}
 
 // ---- gather compound aggregates from the snapshot ----
 function compoundData() {
-  const out = [];
+  // The snapshot splits a compound into separate cards per format (vials,
+  // capsules, liquid). Those share one slug, so generating a page per card meant
+  // the pages overwrote each other and each showed only one format's vendors.
+  // Merge cards by slug first so a compound page carries every vendor.
+  const merged = new Map();
   for (const p of snap.products) {
     const name = p.name || p.title;
     if (!name || NONPEP.some(n => name.includes(n))) continue;
@@ -193,14 +202,25 @@ function compoundData() {
         inStock: s.in_stock !== false,
       });
     }
-    const vendors = new Set(offers.map(o => o.vendorKey));
+    const key = slug(name);
+    if (!merged.has(key)) {
+      merged.set(key, { name, category: p.category || "Research peptide", offers: [] });
+    }
+    const entry = merged.get(key);
+    entry.offers.push(...offers);
+    // keep the most specific category we see rather than a generic fallback
+    if ((!entry.category || entry.category === "Research peptide") && p.category) entry.category = p.category;
+  }
+
+  const out = [];
+  for (const entry of merged.values()) {
+    const vendors = new Set(entry.offers.map(o => o.vendorKey));
     if (vendors.size < 2) continue;              // skip thin single-vendor pages
-    // best offer = lowest effective price with a real number
-    const priced = offers.filter(o => Number.isFinite(o.price) && o.price > 0);
+    const priced = entry.offers.filter(o => Number.isFinite(o.price) && o.price > 0);
     priced.sort((a, b) => a.price - b.price);
     const lo = priced.length ? priced[0].price : null;
     const hi = priced.length ? priced[priced.length - 1].price : null;
-    out.push({ name, category: p.category || "Research peptide", offers, priced, vendors: [...vendors], lo, hi });
+    out.push({ name: entry.name, category: entry.category, offers: entry.offers, priced, vendors: [...vendors], lo, hi });
   }
   out.sort((a, b) => a.name.localeCompare(b.name));
   return out;
@@ -393,7 +413,7 @@ console.log("vendor pages written:", generated.vendors.length);
 {
   const canonical = `${BASE}/compounds.html`;
   const title = "All Peptide Compounds | Price Comparison by $/mg";
-  const desc = `Browse every research peptide tracked on MyPeptidePrice.com. Compare prices and cost per mg across ${compounds.length} compounds and 13 vendors. Research use only.`;
+  const desc = `Browse every research peptide tracked on MyPeptidePrice.com. Compare prices and cost per mg across ${compounds.length} compounds and ${new Set(compounds.flatMap(c=>c.vendors)).size} vendors. Research use only.`;
   const byCat = {};
   for (const c of compounds) (byCat[c.category] = byCat[c.category] || []).push(c);
   const cats = Object.keys(byCat).sort();
@@ -426,10 +446,45 @@ ${sections}
   console.log("compounds hub written");
 }
 
-// ---- emit sitemap additions ----
+// ---- emit sitemap ----
+// Previously this only wrote a list of URLs to a side file and left sitemap.xml
+// stale, so newly generated pages never got submitted. Now the sitemap is built
+// in full from the core pages plus everything generated in this run.
+const CORE_URLS = [
+  ["/", "1.0"],
+  ["/semaglutide-price-comparison.html", "0.9"],
+  ["/tirzepatide-price-comparison.html", "0.9"],
+  ["/retatrutide-price-comparison.html", "0.9"],
+  ["/bpc-157-price-comparison.html", "0.9"],
+  ["/glp-weight-loss.html", "0.8"],
+  ["/vendors.html", "0.8"],
+  ["/faq.html", "0.6"],
+  ["/blog/", "0.6"],
+  ["/blog/bpc-157-price-comparison.html", "0.5"],
+  ["/blog/how-to-evaluate-peptide-vendor.html", "0.5"],
+  ["/blog/what-is-7-7-testing-standard.html", "0.5"],
+  ["/disclaimer.html", "0.3"],
+  ["/privacy.html", "0.2"],
+  ["/terms.html", "0.2"],
+];
 const extra = [];
 for (const g of generated.compounds) extra.push([g.path, "0.7"]);
 for (const g of generated.vendors) extra.push([g.path, "0.6"]);
 extra.push(["/compounds.html", "0.8"]);
+
+const lastmod = new Date().toISOString().slice(0, 10);
+const seenUrl = new Set();
+const allUrls = [...CORE_URLS, ...extra].filter(([p]) => {
+  if (seenUrl.has(p)) return false;
+  seenUrl.add(p);
+  return true;
+});
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allUrls.map(([p, pr]) => `<url><loc>${BASE}${p}</loc><lastmod>${lastmod}</lastmod><priority>${pr}</priority></url>`).join("\n")}
+</urlset>
+`;
+await writeFile(`${W}/sitemap.xml`, sitemapXml);
 await writeFile(`${W}/scripts/_generated-urls.json`, JSON.stringify(extra, null, 0));
+console.log("sitemap written:", allUrls.length, "URLs");
 console.log("total generated pages:", generated.compounds.length + generated.vendors.length + 1);
