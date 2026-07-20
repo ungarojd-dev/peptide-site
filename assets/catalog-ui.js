@@ -76,6 +76,32 @@
     if(value.includes("supply")) return "tone-supplies";
     return "tone-default";
   }
+  // Small line icons for physical product type. Category still drives card
+  // colour; these make type scannable without spending the colour channel on
+  // a field that is 76% "Vials".
+  function formatIconKey(label){
+    const v=String(label||"").toLowerCase();
+    if(v.includes("nasal")||v.includes("spray")) return "spray";
+    if(v.includes("capsule")||v.includes("tablet")) return "capsule";
+    if(v.includes("liquid")||v.includes("solution")||v.includes("dropper")) return "liquid";
+    if(v.includes("topical")||v.includes("cream")||v.includes("gel")) return "topical";
+    if(v.includes("supply")||v.includes("supplies")||v.includes("syringe")) return "supplies";
+    if(v.includes("vial")||v.includes("lyophil")) return "vial";
+    return "";
+  }
+  function formatIcon(label){
+    const key=formatIconKey(label);
+    if(!key) return "";
+    const paths={
+      vial:'<path d="M6 2h6M7.5 2v7.6a2.5 2.5 0 0 0 .4 1.4l.9 1.3a2 2 0 0 1 .3 1.1V16h0M10.5 2v7.6a2.5 2.5 0 0 1-.4 1.4l-.9 1.3a2 2 0 0 0-.3 1.1V16"/><rect x="6.4" y="13.2" width="5.2" height="3.4" rx="1.1"/>',
+      capsule:'<rect x="2.6" y="6.4" width="12.8" height="5.2" rx="2.6" transform="rotate(-32 9 9)"/><path d="M7.1 5.2 10.9 12.8"/>',
+      spray:'<path d="M7 6h4v9.4a1.2 1.2 0 0 1-1.2 1.2H8.2A1.2 1.2 0 0 1 7 15.4Z"/><path d="M7.6 6V3.4h2.8V6"/><path d="M11.4 3.2h2.2M11.4 5h2.6M11.4 1.5h1.8"/>',
+      liquid:'<path d="M9 2.2c2.4 3 3.9 5 3.9 7.1A3.9 3.9 0 0 1 9 13.2a3.9 3.9 0 0 1-3.9-3.9C5.1 7.2 6.6 5.2 9 2.2Z"/>',
+      topical:'<rect x="5.4" y="6.6" width="7.2" height="9.6" rx="1.6"/><path d="M7.6 6.6V4.2a1.4 1.4 0 0 1 1.4-1.4h0a1.4 1.4 0 0 1 1.4 1.4v2.4"/><path d="M7.2 9.6h3.6"/>',
+      supplies:'<path d="M3.4 12.2 9.6 6l2.4 2.4-6.2 6.2H3.4Z"/><path d="M11 4.6 13.4 7"/><path d="M12.2 3.4 14.6 5.8"/>'
+    };
+    return `<svg class="fmt-icon" viewBox="0 0 18 18" width="12" height="12" aria-hidden="true" focusable="false">${paths[key]}</svg>`;
+  }
   function moleculeIcon(){
     return `<span class="product-molecule" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></span>`;
   }
@@ -301,7 +327,7 @@
         <div class="product-title-row">
           <div class="product-title-copy">
             <h2 class="product-title">${esc(card.name)}</h2>
-            <div class="product-subtitle">${esc(formatSummary)}<span class="product-cat-inline">${esc(catLabel(card.category)||"Product")}</span><span class="vendor-count">${vendorLabel}</span></div>
+            <div class="product-subtitle"><span class="fmt-summary">${multiFormat&&formatId===ALL_FORMATS?"":formatIcon(formatSummary)}${esc(formatSummary)}</span><span class="product-cat-inline">${esc(catLabel(card.category)||"Product")}</span><span class="vendor-count">${vendorLabel}</span></div>
           </div>
         </div>
       </header>
@@ -311,7 +337,7 @@
           <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="-1" data-card="fmt-${attr(card.id)}" aria-label="Scroll formats left">&lsaquo;</button>
           <div class="variant-pills" data-variant-pills="fmt-${attr(card.id)}">
             <button type="button" class="variant-button all${formatId===ALL_FORMATS?" active":""}" data-action="format" data-card="${attr(card.id)}" data-format="${ALL_FORMATS}">All formats (${esc(card.offer_count||0)})</button>
-            ${formats.map(item=>`<button type="button" class="variant-button${formatId===item.id?" active":""}" data-action="format" data-card="${attr(card.id)}" data-format="${attr(item.id)}">${esc(item.label)} (${esc(item.offer_count)})</button>`).join("")}
+            ${formats.map(item=>`<button type="button" class="variant-button${formatId===item.id?" active":""}" data-action="format" data-card="${attr(card.id)}" data-format="${attr(item.id)}">${formatIcon(item.label)}${esc(item.label)} (${esc(item.offer_count)})</button>`).join("")}
           </div>
           <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="1" data-card="fmt-${attr(card.id)}" aria-label="Scroll formats right">&rsaquo;</button>
         </div>
@@ -488,8 +514,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260720-partner-intro-v2",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260720-partner-intro-v2",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260720-format-icons-v1",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260720-format-icons-v1",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

@@ -933,3 +933,17 @@ body.theme-dark .payment-icon { background: rgba(255,255,255,.06); border-color:
 .format-wrap .variant-button.active, .format-wrap .variant-button.all.active { background: var(--forest); border-color: var(--forest); color: #fff; }
 .format-wrap .variant-pills { overflow-x: auto; scrollbar-width: none; }
 .format-wrap .variant-pills::-webkit-scrollbar { display: none; }
+
+/* ── FORMAT TYPE ICONS ── */
+/* Category still owns card colour; these carry physical product type. */
+.fmt-icon {
+  flex: 0 0 auto; vertical-align: -1px; margin-right: 4px;
+  fill: none; stroke: currentColor; stroke-width: 1.35;
+  stroke-linecap: round; stroke-linejoin: round;
+}
+.fmt-summary { display: inline-flex; align-items: center; color: var(--tone-dark, var(--forest)); }
+.variant-button .fmt-icon { margin-right: 5px; opacity: .82; }
+.variant-button.active .fmt-icon { opacity: 1; }
+@media (max-width: 700px) {
+  .fmt-icon { width: 11px; height: 11px; margin-right: 3px; }
+}
