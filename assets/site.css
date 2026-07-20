@@ -1206,7 +1206,10 @@ body.theme-dark .deal-carousel .dc-vendor-wrap span { color: #e8f2cf !important;
 /* ── PARTNER INTRO SLIDE-IN (scroll triggered) ── */
 .partner-intro {
   --bc: #de0d5b;
-  position: fixed; right: 18px; bottom: 18px; z-index: 60; width: min(370px, calc(100vw - 36px));
+  /* Above the sticky header (200), sticky-stack (120) and the sticky
+     catalog controls (110). Stays below the promo panel (1900) and the
+     compliance gate (4000), which are true modals. */
+  position: fixed; right: 18px; bottom: 18px; z-index: 1800; width: min(370px, calc(100vw - 36px));
   border: 1px solid color-mix(in srgb, var(--bc) 60%, transparent); border-radius: 14px;
   background:
     radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--bc) 26%, transparent), transparent 52%),
