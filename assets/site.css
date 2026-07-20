@@ -1169,7 +1169,7 @@ body.theme-dark .deal-carousel .dc-vendor-wrap span { color: #e8f2cf !important;
 .announce-neon .announce-link:hover { transform: translateY(-1px); filter: brightness(1.12); border-bottom-color: color-mix(in srgb, var(--bc) 70%, transparent); }
 .announce-neon .announce-dot { display: none; }
 @media (max-width: 860px) {
-  .announce-neon .announce-vendor { max-width: 128px; overflow: hidden; text-overflow: ellipsis; }
+  .announce-neon .announce-vendor { max-width: none; overflow: visible; }
 }
 @media (max-width: 700px) {
   .premium-announce.announce-neon { padding: 7px 10px; }
@@ -1177,11 +1177,28 @@ body.theme-dark .deal-carousel .dc-vendor-wrap span { color: #e8f2cf !important;
   .announce-neon .announce-tube { display: none; }
   .announce-neon .announce-sep { display: none; }
   .announce-neon .announce-logo { width: 21px; height: 21px; }
-  .announce-neon .announce-vendor { font-size: 11px; max-width: 96px; }
+  .announce-neon .announce-vendor { font-size: 11px; max-width: none; overflow: visible; white-space: normal; }
   .announce-neon .announce-text { font-size: 10.5px; white-space: normal; line-height: 1.25; max-height: 26px; }
   .announce-neon .announce-code { font-size: 9.5px; padding: 0 4px; }
   .announce-neon .announce-link { padding: 4px 10px; font-size: 9.5px; }
 }
 @media (max-width: 380px) {
-  .announce-neon .announce-vendor { display: none; }
+  .announce-neon .announce-logo { display: none; }
+  .announce-neon .announce-vendor { font-size: 10.5px; }
+  .announce-neon .announce-text { font-size: 10px; }
 }
+
+/* ── PINNED NEW PARTNER CARD (deal carousel) ── */
+.dc-card--pinned {
+  --bc: #a9d13a;
+  border-color: color-mix(in srgb, var(--bc) 75%, transparent) !important;
+  background:
+    radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--bc) 20%, transparent), transparent 46%),
+    linear-gradient(160deg, rgba(255,255,255,.07), rgba(255,255,255,.02)) !important;
+  box-shadow: 0 0 26px -10px var(--bc), inset 0 0 34px color-mix(in srgb, var(--bc) 10%, transparent) !important;
+}
+.dc-card--pinned .dc-badge { background: var(--bc); color: #05070a; box-shadow: 0 0 12px -2px var(--bc); }
+.dc-card--pinned .dc-vendor { color: #fff; text-shadow: 0 0 12px color-mix(in srgb, var(--bc) 70%, transparent); }
+.dc-card--pinned .dc-headline { text-shadow: 0 0 6px rgba(255,253,248,.4), 0 0 18px color-mix(in srgb, var(--bc) 55%, transparent); }
+.dc-card--pinned .dc-logo { border-color: color-mix(in srgb, var(--bc) 55%, transparent); box-shadow: 0 0 14px -3px var(--bc); }
+.dc-card--pinned .dc-cta { background: var(--bc); color: #05070a; box-shadow: 0 0 16px -4px var(--bc); }

@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260720-neon-announce-v1";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260720-neon-announce-v3";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -378,7 +378,8 @@
     const track=document.querySelector("[data-deal-track]");
     const dotsWrap=document.querySelector("[data-deal-dots]");
     if(!track) return;
-    const deals=promotions.filter(p=>p.show_in_rolodex===true);
+    const deals=promotions.filter(p=>p.show_in_rolodex===true)
+      .slice().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned));
     if(!deals.length){const s=document.querySelector(".deal-carousel");if(s)s.hidden=true;return;}
     const isStackable=deal=>{const h=((deal.short_detail||"")+" "+(deal.full_detail||"")).toLowerCase();return h.includes("stackable")||h.includes("sammyc");};
     let current=0;let autoTimer;
@@ -389,7 +390,9 @@
       const stackChip=isStackable(deal)?`<span class="dc-stack">+SAMMYC</span>`:"";
       const logo=dealLogoPath(deal.display_vendor||deal.vendor);
       const logoHtml=logo?`<img class="dc-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
-      track.innerHTML=`<a class="dc-card" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><div class="dc-card-body"><div class="dc-top">${badgeHtml}<span class="dc-vendor-wrap">${logoHtml}<span class="dc-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span></span>${stackChip}</div><strong class="dc-headline">${escapeHtml(headline)}</strong><span class="dc-detail">${escapeHtml(deal.short_detail||"")}</span></div><span class="dc-cta">View Deal ›</span></a>`;
+      const pinClass=deal.pinned?" dc-card--pinned":"";
+      const brand=deal.brand_color||"";
+      track.innerHTML=`<a class="dc-card${pinClass}"${brand?` style="--bc:${escapeHtml(brand)}"`:""} href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><div class="dc-card-body"><div class="dc-top">${badgeHtml}<span class="dc-vendor-wrap">${logoHtml}<span class="dc-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span></span>${stackChip}</div><strong class="dc-headline">${escapeHtml(headline)}</strong><span class="dc-detail">${escapeHtml(deal.short_detail||"")}</span></div><span class="dc-cta">View Deal ›</span></a>`;
       if(dotsWrap){dotsWrap.innerHTML=deals.map((_,i)=>`<button class="dc-dot${i===current?" active":""}" data-dot="${i}" aria-label="Deal ${i+1}"></button>`).join("");dotsWrap.querySelectorAll("[data-dot]").forEach(d=>d.addEventListener("click",()=>goTo(parseInt(d.dataset.dot))));}
       track.querySelector(".dc-card")&&track.querySelector(".dc-card").addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Deal carousel",product_category:"promotion",button_text:"View Deal",button_location:"deal_carousel",vendor_name:deal.vendor,affiliate_url:deal.affiliate_url||""});});
     };
