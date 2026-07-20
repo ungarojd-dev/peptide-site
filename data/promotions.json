@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-20-neon-announce-v2",
+  "version": "2026-07-20-partner-intro-v1",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-20T13:00:00-04:00",
+  "updated_at": "2026-07-20T18:30:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -177,13 +177,17 @@
       "announce_tube": "New partner",
       "announce_offer": "10% off sitewide",
       "announce_note": "with",
-      "show_in_rolodex": true,
-      "show_in_announce_bar": true,
-      "show_in_announcement_rolodex": true,
+      "show_in_rolodex": false,
+      "show_in_announce_bar": false,
+      "show_in_announcement_rolodex": false,
       "priority": 900,
-      "pinned": true,
       "badge": "NEW PARTNER",
-      "sale_percent": 10
+      "sale_percent": 10,
+      "show_as_intro": true,
+      "intro_eyebrow": "New vendor partner",
+      "intro_title": "Disguised Alpha",
+      "intro_body": "Disguised Alpha is now tracked on mypeptideprice.com, so their pricing appears alongside every other vendor in the comparison tables. Code SAMMYC takes 10% off sitewide.",
+      "intro_cta": "Visit Disguised Alpha"
     }
   ]
 }

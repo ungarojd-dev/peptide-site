@@ -22,15 +22,15 @@
   <meta name="twitter:title" content="Peptide Price Comparison Tool | Compare $/mg Across 14 Vendors"/>
   <meta name="twitter:description" content="Free peptide price comparison tool. Compare research peptide prices and cost per mg across 14 verified vendors, with live pricing and after-code totals. Updated continuously."/>
   <meta name="twitter:image" content="https://mypeptideprice.com/og-image-2026-rebrand.png"/>
-  <link rel="icon" href="/favicon.ico?v=20260720-neon-announce-v3" sizes="any"/>
-  <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260720-neon-announce-v3"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260720-neon-announce-v3"/>
+  <link rel="icon" href="/favicon.ico?v=20260720-partner-intro-v1" sizes="any"/>
+  <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260720-partner-intro-v1"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260720-partner-intro-v1"/>
   <link rel="manifest" href="/site.webmanifest"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/assets/site.css?v=20260720-neon-announce-v3"/>
-  <link rel="stylesheet" href="/assets/catalog.css?v=20260720-neon-announce-v3"/>
+  <link rel="stylesheet" href="/assets/site.css?v=20260720-partner-intro-v1"/>
+  <link rel="stylesheet" href="/assets/catalog.css?v=20260720-partner-intro-v1"/>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MyPeptidePrice.com","url":"https://mypeptideprice.com/","description":"Independent research peptide price comparison across tracked vendors.","potentialAction":{"@type":"SearchAction","target":"https://mypeptideprice.com/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://mypeptideprice.com/#organization","name":"MyPeptidePrice.com","url":"https://mypeptideprice.com/","logo":{"@type":"ImageObject","url":"https://mypeptideprice.com/assets/brand/logo-full-lockup.png"},"description":"MyPeptidePrice.com is an independent research peptide price comparison website. It compares research peptide pricing and cost per mg across tracked vendors. It does not sell products or process orders.","email":"contact@mypeptideprice.com","foundingDate":"2025","knowsAbout":["research peptide price comparison","cost per mg comparison","peptide vendor pricing","GLP-1 research compounds"],"contactPoint":{"@type":"ContactPoint","email":"contact@mypeptideprice.com","contactType":"customer support"}}</script>
   <!-- Google Tag Manager -->
@@ -46,7 +46,7 @@
   <div class="top-inner">
     <a class="brand premium-brand" href="/" aria-label="MyPeptidePrice home">
       <span class="brand-mark-wrap" aria-hidden="true">
-        <img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260720-neon-announce-v3" alt="" style="width:100%;height:100%;object-fit:contain;"/>
+        <img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260720-partner-intro-v1" alt="" style="width:100%;height:100%;object-fit:contain;"/>
       </span>
       <span class="brand-copy">
         <span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span>
@@ -291,7 +291,7 @@
   <div class="footer-inner">
     <div>
       <div class="footer-brand premium-footer-brand">
-        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260720-neon-announce-v3" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260720-partner-intro-v1" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
         <div><div class="footer-wordmark"><span class="footer-brand-my">my</span><span class="footer-brand-peptide">peptide</span><span class="footer-brand-price">price</span><span class="footer-brand-dot">.com</span></div><div class="footer-tagline">Research. Compare. Save.</div></div>
       </div>
       <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
@@ -303,8 +303,8 @@
   <div class="footer-bottom">© <span data-year></span> MyPeptidePrice.com. For research comparison purposes only. Not medical advice.</div>
 </footer>
 
-<script src="/assets/site.js?v=20260720-neon-announce-v3"></script>
-<script src="/assets/catalog-ui.js?v=20260720-neon-announce-v3"></script>
+<script src="/assets/site.js?v=20260720-partner-intro-v1"></script>
+<script src="/assets/catalog-ui.js?v=20260720-partner-intro-v1"></script>
 <script>
 (function(){
   var heroInput=document.getElementById('heroSearch');
@@ -321,6 +321,83 @@
   if(heroInput)heroInput.addEventListener('keydown',function(e){if(e.key==='Enter')doSearch()});
   document.querySelectorAll('[data-chip-query]').forEach(function(btn){btn.addEventListener('click',function(){if(heroInput)heroInput.value=btn.dataset.chipQuery;doSearch()})});
   var announceState={built:false,timer:null,slides:[],i:0};
+  // ── Partner intro slide-in ────────────────────────────────────────────
+  // Fires once per session after the visitor scrolls into the page, so it
+  // lands on engaged readers instead of stacking a second interstitial on
+  // top of the compliance gate.
+  var INTRO_DISMISS_KEY='mpp_partner_intro_dismissed_v1';
+  var introState={built:false,shown:false};
+  function introDismissed(){
+    try{ return sessionStorage.getItem(INTRO_DISMISS_KEY)==='1'; }catch(e){ return false; }
+  }
+  function introDismiss(reason,promo){
+    try{ sessionStorage.setItem(INTRO_DISMISS_KEY,'1'); }catch(e){}
+    var el=document.querySelector('[data-partner-intro]');
+    if(el){ el.classList.remove('is-visible'); setTimeout(function(){ if(el.parentNode) el.parentNode.removeChild(el); },420); }
+    window.removeEventListener('scroll',introOnScroll);
+    window.dataLayer=window.dataLayer||[];
+    window.dataLayer.push({event:'partner_intro_dismiss',product_name:(promo&&promo.vendor)||'partner_intro',product_category:'promotion',button_text:reason,button_location:'partner_intro'});
+  }
+  function introOnScroll(){}
+  function setupPartnerIntro(){
+    if(introState.built||introDismissed()) return;
+    var promos=window.MPPPromotions&&window.MPPPromotions.active?window.MPPPromotions.active():[];
+    var promo=promos.filter(function(p){return p.show_as_intro===true;})[0];
+    if(!promo) return;
+    // Never stack on top of the compliance dialog.
+    if(document.querySelector('.mpp-compliance-backdrop')) return;
+    introState.built=true;
+    var color=promo.brand_color||'#a9d13a';
+    var logo=announceLogoPath(promo.vendor);
+    var el=document.createElement('aside');
+    el.className='partner-intro';
+    el.setAttribute('data-partner-intro','');
+    el.setAttribute('role','complementary');
+    el.setAttribute('aria-label','New vendor partner announcement');
+    el.style.setProperty('--bc',color);
+    el.innerHTML=
+      '<button class="partner-intro-close" type="button" data-intro-close aria-label="Close announcement">&times;</button>'+
+      '<div class="partner-intro-body">'+
+        '<div class="partner-intro-head">'+
+          (logo?'<img class="partner-intro-logo" src="'+announceEscape(logo)+'" alt="" width="40" height="40"/>':'')+
+          '<span><span class="partner-intro-eyebrow">'+announceEscape(promo.intro_eyebrow||'New vendor partner')+'</span>'+
+          '<strong class="partner-intro-title">'+announceEscape(promo.intro_title||promo.display_vendor||promo.vendor)+'</strong></span>'+
+        '</div>'+
+        '<p class="partner-intro-text">'+announceEscape(promo.intro_body||promo.short_detail||'')
+          .replace('SAMMYC','<span class="partner-intro-code">SAMMYC</span>')+'</p>'+
+        '<div class="partner-intro-actions">'+
+          '<a class="partner-intro-cta" href="'+announceEscape(promo.affiliate_url||'#')+'" target="_blank" rel="nofollow sponsored noopener" data-intro-cta>'+announceEscape(promo.intro_cta||'Visit vendor')+'</a>'+
+          '<button class="partner-intro-later" type="button" data-intro-close>Not now</button>'+
+        '</div>'+
+        '<p class="partner-intro-note">Affiliate link. Research use only. Pricing on this site is for comparison, purchases happen on the vendor site.</p>'+
+      '</div>';
+    document.body.appendChild(el);
+    el.querySelectorAll('[data-intro-close]').forEach(function(btn){
+      btn.addEventListener('click',function(){ introDismiss('dismiss',promo); });
+    });
+    el.querySelector('[data-intro-cta]').addEventListener('click',function(){
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:'affiliate_click',product_name:promo.vendor||'partner_intro',product_category:'promotion',button_text:promo.intro_cta||'Visit vendor',button_location:'partner_intro',vendor_name:promo.vendor||'',affiliate_url:promo.affiliate_url||''});
+      try{ sessionStorage.setItem(INTRO_DISMISS_KEY,'1'); }catch(e){}
+    });
+    document.addEventListener('keydown',function(event){
+      if(event.key==='Escape'&&el.classList.contains('is-visible')) introDismiss('escape',promo);
+    });
+    introOnScroll=function(){
+      if(introState.shown) return;
+      var doc=document.documentElement;
+      var scrolled=window.pageYOffset||doc.scrollTop||0;
+      var reach=Math.max(doc.scrollHeight-window.innerHeight,1);
+      if(scrolled<420&&(scrolled/reach)<0.18) return;
+      introState.shown=true;
+      window.removeEventListener('scroll',introOnScroll);
+      requestAnimationFrame(function(){ el.classList.add('is-visible'); });
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:'partner_intro_view',product_name:promo.vendor||'partner_intro',product_category:'promotion',button_location:'partner_intro'});
+    };
+    window.addEventListener('scroll',introOnScroll,{passive:true});
+    introOnScroll();
+  }
   function announceUrgencyLabel(p){
     if(!p||!p.end_at) return '';
     var ends=new Date(p.end_at).getTime();
@@ -387,25 +464,31 @@
     // A slide earns the bar when it is genuinely time sensitive or brand new:
     // ending within 48 hours, a new partner announcement, or an explicit flag.
     var URGENT_WINDOW_MS=48*60*60*1000;
+    var MAX_VENDOR_SLIDES=4;
     var now=Date.now();
-    var announceable=promos.filter(function(p){
+    function endsInMs(p){
+      if(!p||!p.end_at) return Infinity;
+      var t=new Date(p.end_at).getTime();
+      return isFinite(t)?(t-now):Infinity;
+    }
+    var eligible=promos.filter(function(p){
       if(!p.announce_offer) return false;
-      if(p.show_in_announce_bar===false) return false;
-      if(p.show_in_announce_bar===true) return true;
-      if(p.announcement===true) return true;
-      if(!p.end_at) return false;
-      var ends=new Date(p.end_at).getTime();
-      return isFinite(ends)&&ends>now&&(ends-now)<=URGENT_WINDOW_MS;
+      return p.show_in_announce_bar!==false;
     });
+    // Urgent deals always earn a slot. Remaining slots go to the biggest
+    // verified discounts so evergreen deals are not permanently excluded.
+    var urgent=eligible.filter(function(p){var d=endsInMs(p);return d>0&&d<=URGENT_WINDOW_MS;});
+    var rest=eligible.filter(function(p){return urgent.indexOf(p)===-1;})
+      .sort(function(a,b){
+        var ap=Number(a.sale_percent)||0, bp=Number(b.sale_percent)||0;
+        if(ap!==bp) return bp-ap;
+        return endsInMs(a)-endsInMs(b);
+      });
+    var announceable=urgent.concat(rest);
     // Soonest-ending first so an expiring sale outranks an evergreen announcement
     // for the same vendor, then priority as the tiebreaker.
-    announceable.sort(function(a,b){
-      var ae=a.end_at?new Date(a.end_at).getTime():Infinity;
-      var be=b.end_at?new Date(b.end_at).getTime():Infinity;
-      if(ae!==be) return ae-be;
-      return Number(b.priority||0)-Number(a.priority||0);
-    });
     announceable=announceable.filter(function(p,i,a){return a.findIndex(function(x){return x.vendor===p.vendor;})===i;});
+    announceable=announceable.slice(0,MAX_VENDOR_SLIDES);
     announceable.forEach(function(p){
       var offer=p.announce_offer||p.headline||'';
       var note=p.announce_note||'';
@@ -490,9 +573,16 @@
       });
     });
   }
-  document.addEventListener('mpp:promotions-ready',updateAnnounce);
+  document.addEventListener('mpp:promotions-ready',function(){updateAnnounce();setupPartnerIntro();});
   bindDealScroll();
-  setTimeout(updateAnnounce,1200);
+  setTimeout(function(){updateAnnounce();setupPartnerIntro();},1200);
+  // The gate blocks the intro on first pass. Retry on scroll so it still
+  // appears for visitors who accept the disclaimer after page load.
+  function introRetry(){
+    if(introState.built||introDismissed()){ window.removeEventListener('scroll',introRetry); return; }
+    setupPartnerIntro();
+  }
+  window.addEventListener('scroll',introRetry,{passive:true});
 })();
 window.CatalogUI.boot();
 </script>

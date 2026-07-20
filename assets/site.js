@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260720-neon-announce-v3";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260720-partner-intro-v1";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
