@@ -1,5 +1,5 @@
 {
-  "version": "3.0.0",
+  "version": "3.1.0",
   "coupon_code": "SAMMYC",
   "vendors": {
     "Glacier Aminos": {
@@ -8,7 +8,8 @@
       "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
       "logo": "/assets/vendor-logos/glacier-aminos.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#1489d7"
     },
     "Ion Peptide": {
       "id": "ion-peptide",
@@ -16,7 +17,8 @@
       "affiliate_url": "https://ionpeptide.com?ref=SammyC",
       "logo": "/assets/vendor-logos/ion-peptide.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#5484e4"
     },
     "LabSourced Peptides": {
       "id": "labsourced-peptides",
@@ -24,7 +26,8 @@
       "affiliate_url": "https://labsourced.com/?ref=SammyC",
       "logo": "/assets/vendor-logos/labsourced-peptides.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#1470c8"
     },
     "Mile High Peptides": {
       "id": "mile-high-peptides",
@@ -33,7 +36,8 @@
       "logo": "/assets/vendor-logos/mile-high-peptides.webp",
       "use_product_deep_links": false,
       "payment_methods": [],
-      "display_name": "Mile High Compounds"
+      "display_name": "Mile High Compounds",
+      "brand_color": "#4175aa"
     },
     "Southern Aminos": {
       "id": "southern-aminos",
@@ -41,7 +45,8 @@
       "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/southern-aminos.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#c35b27"
     },
     "Flawless Compounds": {
       "id": "flawless-compounds",
@@ -49,7 +54,8 @@
       "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
       "logo": "/assets/vendor-logos/flawless-compounds.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#d8c7a7"
     },
     "Glow Aminos": {
       "id": "glow-aminos",
@@ -57,7 +63,8 @@
       "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
       "logo": "/assets/vendor-logos/glow-aminos.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#e454e4"
     },
     "Instant Peptides": {
       "id": "instant-peptides",
@@ -65,7 +72,8 @@
       "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
       "logo": "/assets/vendor-logos/instant-peptides.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#d8c7a7"
     },
     "Solyn Labs": {
       "id": "solyn-labs",
@@ -73,7 +81,8 @@
       "affiliate_url": "https://solyn.com/?ref=SammyC",
       "logo": "/assets/vendor-logos/solyn-labs.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#14b0d7"
     },
     "Oneday Compounds": {
       "id": "oneday-compounds",
@@ -81,7 +90,8 @@
       "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
       "logo": "/assets/vendor-logos/oneday-compounds.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#d8c7a7"
     },
     "Coffee and Peppers": {
       "id": "coffee-and-peppers",
@@ -89,7 +99,8 @@
       "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/coffee-and-peppers.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#aa7541"
     },
     "Bioedge Research Labs": {
       "id": "bioedge-research-labs",
@@ -97,7 +108,8 @@
       "affiliate_url": "https://bioedgeresearchlabs.com/?aff=1005717",
       "logo": "/assets/vendor-logos/bioedge-research-labs.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#1462d7"
     },
     "High Tide Compounds": {
       "id": "high-tide-compounds",
@@ -105,7 +117,8 @@
       "affiliate_url": "https://hightidecompounds.com/?aff=44",
       "logo": "/assets/vendor-logos/high-tide-compounds.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#3b62b0"
     },
     "Disguised Alpha": {
       "id": "disguised-alpha",
@@ -113,7 +126,8 @@
       "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/disguised-alpha.webp",
       "use_product_deep_links": false,
-      "payment_methods": []
+      "payment_methods": [],
+      "brand_color": "#de0d5b"
     }
   }
 }

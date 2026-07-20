@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260708-v3-functional-merge-v1";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260720-neon-announce-v1";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -352,6 +352,8 @@
   const dealLogoPath=vendor=>{
     const key=String(vendor||"").toLowerCase();
     const logos={
+      "disguised alpha":"/assets/vendor-logos/disguised-alpha.webp",
+      "bioedge research labs":"/assets/vendor-logos/bioedge-research-labs.webp",
       "southern aminos":"/assets/vendor-logos/southern-aminos.webp",
       "mile high peptides":"/assets/vendor-logos/mile-high-peptides.webp",
       "mile high compounds":"/assets/vendor-logos/mile-high-peptides.webp",

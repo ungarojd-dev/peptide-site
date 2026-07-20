@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-18-merged-formats-v3",
+  "version": "2026-07-20-neon-announce-v1",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-17T12:00:00-04:00",
+  "updated_at": "2026-07-20T09:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -33,7 +33,13 @@
       "priority": 145,
       "badge": "🎈 Birthday Sale",
       "theme": "birthday",
-      "cta_text": "Shop Now"
+      "cta_text": "Shop Now",
+      "brand_color": "#e454e4",
+      "announce_tube": "Birthday sale",
+      "announce_offer": "40% off sitewide",
+      "announce_note": "stacks with",
+      "sale_percent": 40,
+      "show_in_announce_bar": false
     },
     {
       "id": "flawless-birthday-sale-40",
@@ -49,7 +55,13 @@
       "priority": 144,
       "badge": "🎈 Birthday Sale",
       "theme": "birthday",
-      "cta_text": "Shop Now"
+      "cta_text": "Shop Now",
+      "brand_color": "#d8c7a7",
+      "announce_tube": "Live now",
+      "announce_offer": "40% off sitewide",
+      "announce_note": "stacks with",
+      "sale_percent": 40,
+      "show_in_announce_bar": false
     },
     {
       "id": "oneday-mix-and-match-lto",
@@ -64,7 +76,12 @@
       "show_vendor_badge": true,
       "priority": 140,
       "badge": "Limited Time Deal",
-      "cta_text": "Shop Now"
+      "cta_text": "Shop Now",
+      "brand_color": "#d8c7a7",
+      "announce_tube": "Live now",
+      "announce_offer": "Bulk pricing up to 25% off",
+      "announce_note": "",
+      "show_in_announce_bar": false
     },
     {
       "id": "labsourced-lto-25",
@@ -79,7 +96,13 @@
       "priority": 135,
       "badge": "Limited Time Deal",
       "cta_text": "Shop Now",
-      "discount_override_percent": 25
+      "discount_override_percent": 25,
+      "brand_color": "#1470c8",
+      "announce_tube": "Live now",
+      "announce_offer": "25% off",
+      "announce_note": "with",
+      "sale_percent": 25,
+      "show_in_announce_bar": false
     },
     {
       "id": "southern-aminos-25-stack",
@@ -93,7 +116,13 @@
       "show_vendor_badge": true,
       "priority": 130,
       "badge": "Limited Time Deal",
-      "cta_text": "Shop Now"
+      "cta_text": "Shop Now",
+      "brand_color": "#c35b27",
+      "announce_tube": "Live now",
+      "announce_offer": "30% off sitewide",
+      "announce_note": "stacks with",
+      "sale_percent": 30,
+      "show_in_announce_bar": false
     },
     {
       "id": "mile-high-sammyc-boost-30",
@@ -110,7 +139,53 @@
       "show_vendor_badge": true,
       "priority": 125,
       "badge": "Limited Time Deal",
-      "cta_text": "Shop Now"
+      "cta_text": "Shop Now",
+      "brand_color": "#4175aa",
+      "announce_tube": "Live now",
+      "announce_offer": "35% off",
+      "announce_note": "with",
+      "sale_percent": 35,
+      "show_in_announce_bar": false
+    },
+    {
+      "id": "disguised-alpha-weekend-sale-jul-2026",
+      "vendor": "Disguised Alpha",
+      "display_vendor": "Disguised Alpha",
+      "headline": "Weekend sale, two days only",
+      "short_detail": "20% off seven capsules and Buy 2 Get 1 Free on five peptides, Sun Jul 19 and Mon Jul 20.",
+      "full_detail": "Disguised Alpha is running a two day weekend sale covering 20% off seven capsule products and Buy 2 Get 1 Free on five peptides. The sale runs Sunday July 19 and Monday July 20 and ends at 11:59pm Eastern. Offer scope and stacking rules are set by the vendor, confirm eligibility at checkout.",
+      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
+      "badge": "2 DAYS ONLY",
+      "cta_text": "Shop sale",
+      "start_at": "2026-07-19T00:00:00-04:00",
+      "end_at": "2026-07-20T23:59:00-04:00",
+      "brand_color": "#de0d5b",
+      "announce_tube": "Ends tonight",
+      "announce_offer": "20% off capsules + B2G1 on peptides",
+      "announce_note": "with",
+      "show_in_rolodex": true,
+      "show_in_announce_bar": true,
+      "show_in_announcement_rolodex": true,
+      "priority": 400
+    },
+    {
+      "id": "disguised-alpha-new-partner",
+      "vendor": "Disguised Alpha",
+      "display_vendor": "Disguised Alpha",
+      "headline": "New partner: Disguised Alpha",
+      "short_detail": "10% off sitewide with SAMMYC.",
+      "full_detail": "Disguised Alpha is now a tracked vendor on mypeptideprice.com. Code SAMMYC applies 10% off sitewide.",
+      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
+      "cta_text": "Shop now",
+      "announcement": true,
+      "brand_color": "#de0d5b",
+      "announce_tube": "New partner",
+      "announce_offer": "10% off sitewide",
+      "announce_note": "with",
+      "show_in_rolodex": false,
+      "show_in_announce_bar": true,
+      "show_in_announcement_rolodex": true,
+      "priority": 300
     }
   ]
 }
