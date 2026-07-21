@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-21-instant-b3g1-v3",
+  "version": "2026-07-21-card-cleanup-v1",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-21T11:00:00-04:00",
+  "updated_at": "2026-07-21T14:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -17,7 +17,8 @@
       "show_in_rolodex": false,
       "priority": 500,
       "show_in_announcement_rolodex": true,
-      "rolodex_kicker": ""
+      "rolodex_kicker": "",
+      "show_vendor_badge": false
     },
     {
       "id": "glow-aminos-birthday-sale-40",
@@ -29,7 +30,7 @@
       "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
       "start_at": "2026-07-06T00:00:00-04:00",
       "show_in_rolodex": true,
-      "show_vendor_badge": true,
+      "show_vendor_badge": false,
       "priority": 145,
       "badge": "🎈 Birthday Sale",
       "theme": "birthday",
@@ -50,7 +51,7 @@
       "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
       "start_at": "2026-07-06T00:00:00-04:00",
       "show_in_rolodex": true,
-      "show_vendor_badge": true,
+      "show_vendor_badge": false,
       "priority": 144,
       "badge": "🎈 Birthday Sale",
       "theme": "birthday",
@@ -79,7 +80,9 @@
       "brand_color": "#d8c7a7",
       "announce_tube": "Live now",
       "announce_offer": "Bulk pricing up to 25% off",
-      "announce_note": ""
+      "announce_note": "",
+      "conditional_deal": true,
+      "chip_label": "Bulk pricing available"
     },
     {
       "id": "labsourced-lto-25",
@@ -90,7 +93,7 @@
       "full_detail": "LabSourced Peptides is running 10% off sitewide, with the SAMMYC code boosted to 25% off. Confirm final eligibility, stacking rules, and checkout pricing directly on the vendor website.",
       "affiliate_url": "https://labsourced.com/?ref=SammyC",
       "show_in_rolodex": true,
-      "show_vendor_badge": true,
+      "show_vendor_badge": false,
       "priority": 135,
       "badge": "Limited Time Deal",
       "cta_text": "Shop Now",
@@ -110,7 +113,7 @@
       "full_detail": "Southern Aminos is running 30% off sitewide, stackable with the 15% SAMMYC discount. Confirm the final discount and checkout terms directly on the vendor website.",
       "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
       "show_in_rolodex": true,
-      "show_vendor_badge": true,
+      "show_vendor_badge": false,
       "priority": 130,
       "badge": "Limited Time Deal",
       "cta_text": "Shop Now",
@@ -132,7 +135,7 @@
       "start_at": "2026-07-10T00:00:00-04:00",
       "end_at": "2026-07-22T23:59:00-04:00",
       "show_in_rolodex": true,
-      "show_vendor_badge": true,
+      "show_vendor_badge": false,
       "priority": 125,
       "badge": "Limited Time Deal",
       "cta_text": "Shop Now",
@@ -161,7 +164,10 @@
       "show_in_rolodex": true,
       "show_in_announce_bar": true,
       "show_in_announcement_rolodex": true,
-      "priority": 400
+      "priority": 400,
+      "conditional_deal": true,
+      "chip_label": "Bundle offer",
+      "show_vendor_badge": true
     },
     {
       "id": "disguised-alpha-new-partner",
@@ -187,7 +193,8 @@
       "intro_eyebrow": "New vendor partner",
       "intro_title": "Disguised Alpha",
       "intro_body": "Disguised Alpha is now tracked on mypeptideprice.com, so their pricing appears alongside every other vendor in the comparison tables. Code SAMMYC takes 10% off sitewide.",
-      "intro_cta": "Visit Disguised Alpha"
+      "intro_cta": "Visit Disguised Alpha",
+      "show_vendor_badge": false
     },
     {
       "id": "instant-peptides-b3g1-jul-2026",
@@ -208,7 +215,10 @@
       "show_in_rolodex": true,
       "show_in_announcement_rolodex": true,
       "priority": 500,
-      "show_in_announce_bar": true
+      "show_in_announce_bar": true,
+      "conditional_deal": true,
+      "chip_label": "Buy 3 Get 1 free",
+      "show_vendor_badge": true
     }
   ]
 }

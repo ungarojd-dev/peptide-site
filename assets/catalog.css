@@ -947,3 +947,25 @@ body.theme-dark .payment-icon { background: rgba(255,255,255,.06); border-color:
 @media (max-width: 700px) {
   .fmt-icon { width: 11px; height: 11px; margin-right: 3px; }
 }
+
+/* ── ROW CLEANUP ── */
+/* A flat sale reads from the struck-through price, so the badge is reserved
+   for conditional deals that leave the unit price unchanged. Quieter than the
+   old gold pill so it reads as information, not a second call to action. */
+.supplier-promos { margin-top: 3px; }
+.supplier-promo-badge, .supplier-promo-more {
+  border: 1px dashed rgba(201,146,42,.55);
+  background: rgba(201,146,42,.10);
+  color: #7a5410;
+  padding: 1px 7px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: .2px;
+  box-shadow: none;
+}
+/* Collapses to nothing when empty so rows do not carry dead vertical space. */
+.supplier-meta-line:empty { display: none; margin: 0; }
+.supplier-promos:empty { display: none; margin: 0; }
+@media (max-width: 700px) {
+  .supplier-promo-badge, .supplier-promo-more { font-size: 8.5px; padding: 1px 6px; }
+}

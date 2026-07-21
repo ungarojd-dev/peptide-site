@@ -280,15 +280,19 @@
   function supplierRow(supplier,card,variantLabel="",isBest=false){
     const logo=supplier.vendor_logo?`<img class="supplier-logo" src="${attr(supplier.vendor_logo)}" alt="${attr(supplier.vendor_name)} logo" loading="lazy" width="34" height="34"/>`:`<span class="supplier-initials">${esc(initials(supplier.vendor_name))}</span>`;
     const regular=supplier.discount_percent>0&&supplier.regular_price_label!==supplier.effective_price_label?`<div class="supplier-regular">${esc(supplier.regular_price_label)}</div>`:"";
-    const stock=supplier.in_stock===false?`<span class="supplier-oos">Out of stock</span>`:`<span>Listed</span>`;
+    const stock=supplier.in_stock===false?`<span class="supplier-oos">Out of stock</span>`:"";
     const alternate=supplier.alternate_offer_count?`<span>${esc(Number(supplier.alternate_offer_count)+1)} listings</span>`:"";
     const listingName=supplier.raw_listing||supplier.raw_product||"";
-    const productListing=listingName&&normalizedListing(listingName)!==normalizedListing(card.name)?`<div class="supplier-listing">${esc(listingName)}</div>`:"";
+    const productListing="";
     const variantLine=variantLabel&&variantLabel!=="Standard listing"?`<span class="supplier-variant-line"><span>Size</span> ${esc(variantLabel)}</span>`:"";
     const discount=supplier.discount_percent?`<span class="supplier-discount">${esc(supplier.discount_percent)}% off with ${esc(supplier.coupon_code||"SAMMYC")}</span>`:`<span class="supplier-discount">Code details on vendor site</span>`;
     const bestBadge=isBest?`<span class="supplier-best">Lowest</span>`:"";
     const promotions=global.MPPPromotions?.forOffer?.(supplier,card)||[];
-    const promoBadges=promotions.length?`<div class="supplier-promos">${promotions.slice(0,1).map(promotion=>`<span class="supplier-promo-badge">${esc(promotion.badge||promotion.headline)}</span>`).join("")}</div>`:"";
+    // A flat sale already shows as a struck-through price, so a badge would
+    // repeat it. Only conditional deals, which leave the unit price unchanged,
+    // still need a marker.
+    const conditional=promotions.filter(promotion=>promotion.conditional_deal===true&&promotion.chip_label);
+    const promoBadges=conditional.length?`<div class="supplier-promos"><span class="supplier-promo-badge">${esc(conditional[0].chip_label)}</span></div>`:"";
     return `<a class="supplier-row${isBest?" is-best":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}</div><div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadges}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}<div class="supplier-go">View deal</div></div></a>`;
   }
 
@@ -514,8 +518,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260721-instant-b3g1-v3",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260721-instant-b3g1-v3",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260721-card-cleanup-v1",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260721-card-cleanup-v1",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
