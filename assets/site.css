@@ -1203,76 +1203,65 @@ body.theme-dark .deal-carousel .dc-vendor-wrap span { color: #e8f2cf !important;
 .dc-card--pinned .dc-logo { border-color: color-mix(in srgb, var(--bc) 55%, transparent); box-shadow: 0 0 14px -3px var(--bc); }
 .dc-card--pinned .dc-cta { background: var(--bc); color: #05070a; box-shadow: 0 0 16px -4px var(--bc); }
 
-/* ── PARTNER INTRO SLIDE-IN (scroll triggered) ── */
-.partner-intro {
-  --bc: #de0d5b;
-  /* Above the sticky header (200), sticky-stack (120) and the sticky
-     catalog controls (110). Stays below the promo panel (1900) and the
-     compliance gate (4000), which are true modals. */
-  position: fixed; right: 18px; bottom: 18px; z-index: 1800; width: min(370px, calc(100vw - 36px));
-  border: 1px solid color-mix(in srgb, var(--bc) 60%, transparent); border-radius: 14px;
+/* ── NEW PARTNER BANNER ── */
+/* Same neon language as the announce bar, sitting below the deal carousel.
+   Replaced the scroll popup so the introduction never interrupts. */
+.partner-banner {
+  --bc: #a9d13a;
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 14px;
+  max-width: 1224px; margin: 0 auto 18px; padding: 12px 16px;
+  border: 1px solid color-mix(in srgb, var(--bc) 55%, transparent); border-radius: 14px;
   background:
-    radial-gradient(circle at 12% 0%, color-mix(in srgb, var(--bc) 26%, transparent), transparent 52%),
-    linear-gradient(150deg,#05070a 0%,#0c0a10 55%,#05070a 100%);
-  box-shadow: 0 22px 60px rgba(0,0,0,.62), 0 0 34px -14px var(--bc), inset 0 1px 0 rgba(255,255,255,.07);
-  color: #fff; overflow: hidden;
-  opacity: 0; transform: translateY(16px) scale(.985); pointer-events: none;
-  transition: opacity .38s ease, transform .38s cubic-bezier(.22,.8,.3,1);
+    radial-gradient(circle at 8% 0%, color-mix(in srgb, var(--bc) 24%, transparent), transparent 52%),
+    linear-gradient(140deg,#05070a 0%,#0c0a10 58%,#05070a 100%);
+  box-shadow: 0 14px 40px rgba(0,0,0,.42), 0 0 26px -12px var(--bc), inset 0 1px 0 rgba(255,255,255,.06);
 }
-.partner-intro.is-visible { opacity: 1; transform: none; pointer-events: auto; }
-.partner-intro::before {
+.partner-banner::before {
   content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .34;
   background:
     radial-gradient(rgba(255,255,255,.10) 1.2px, transparent 1.5px) 0 0/22px 22px,
     repeating-linear-gradient(180deg,rgba(255,255,255,.03) 0,rgba(255,255,255,.03) 2px,transparent 2px,transparent 20px);
 }
-.partner-intro-body { position: relative; z-index: 1; padding: 16px 16px 15px; }
-.partner-intro-head { display: flex; align-items: center; gap: 10px; margin-bottom: 11px; padding-right: 26px; }
-.partner-intro-logo {
-  width: 40px; height: 40px; flex: none; border-radius: 10px; background: #fff; object-fit: contain; padding: 4px;
-  border: 1px solid color-mix(in srgb, var(--bc) 55%, transparent); box-shadow: 0 0 16px -4px var(--bc);
+.pb-logo {
+  position: relative; z-index: 1; width: 44px; height: 44px; flex: none;
+  border-radius: 11px; background: #fff; object-fit: contain; padding: 4px;
+  border: 1px solid color-mix(in srgb, var(--bc) 55%, transparent);
+  box-shadow: 0 0 18px -5px var(--bc);
 }
-.partner-intro-eyebrow {
-  display: inline-block; border: 1.5px solid var(--bc); border-radius: 5px; padding: 2px 7px; margin-bottom: 5px;
-  color: var(--bc); font-size: 8px; font-weight: 900; letter-spacing: 1.1px; text-transform: uppercase;
+.pb-copy { position: relative; z-index: 1; flex: 1; min-width: 0; }
+.pb-eyebrow {
+  display: inline-block; border: 1.5px solid var(--bc); border-radius: 5px;
+  padding: 2px 7px; margin-bottom: 5px; color: var(--bc);
+  font-size: 8px; font-weight: 900; letter-spacing: 1.1px; text-transform: uppercase;
   text-shadow: 0 0 8px var(--bc);
   box-shadow: 0 0 10px color-mix(in srgb, var(--bc) 50%, transparent), inset 0 0 8px color-mix(in srgb, var(--bc) 28%, transparent);
 }
-.partner-intro-title {
-  display: block; font-family: 'Playfair Display', Georgia, serif; font-size: 19px; font-weight: 700; line-height: 1.1; color: #fffdf8;
-  text-shadow: 0 0 8px rgba(255,253,248,.4), 0 0 20px color-mix(in srgb, var(--bc) 60%, transparent);
+.pb-title {
+  display: block; font-family: 'Playfair Display', Georgia, serif;
+  font-size: 17px; font-weight: 700; line-height: 1.15; color: #fffdf8;
+  text-shadow: 0 0 8px rgba(255,253,248,.35), 0 0 20px color-mix(in srgb, var(--bc) 55%, transparent);
 }
-.partner-intro-text { margin: 0 0 13px; color: rgba(255,255,255,.74); font-size: 12.5px; font-weight: 600; line-height: 1.5; }
-.partner-intro-code {
+.pb-sub { margin: 3px 0 0; color: rgba(255,255,255,.74); font-size: 12.5px; font-weight: 650; line-height: 1.45; }
+.pb-code {
   border: 1px dashed rgba(234,216,179,.5); border-radius: 4px; background: rgba(234,216,179,.1);
   padding: 0 5px; color: #ead8b3; font-weight: 900; white-space: nowrap;
 }
-.partner-intro-actions { display: flex; align-items: center; gap: 10px; }
-.partner-intro-cta {
-  flex: 1; text-align: center; border-radius: 999px; background: var(--bc); color: #fff;
-  padding: 9px 14px; font-size: 12px; font-weight: 900; letter-spacing: .3px; text-decoration: none;
+.pb-note { margin: 5px 0 0; color: rgba(255,255,255,.32); font-size: 9.5px; font-weight: 600; line-height: 1.4; }
+.pb-cta {
+  position: relative; z-index: 1; flex: none; border-radius: 999px;
+  background: var(--bc); color: #fff; padding: 9px 16px;
+  font-size: 12px; font-weight: 900; letter-spacing: .3px; text-decoration: none; white-space: nowrap;
   box-shadow: 0 0 20px -6px var(--bc); transition: filter .15s ease, transform .15s ease;
 }
-.partner-intro-cta:hover { transform: translateY(-1px); filter: brightness(1.1); }
-.partner-intro-later {
-  flex: none; border: 0; background: none; color: rgba(255,255,255,.5); font-family: inherit;
-  font-size: 11.5px; font-weight: 700; cursor: pointer; padding: 6px 2px;
-}
-.partner-intro-later:hover { color: rgba(255,255,255,.82); }
-.partner-intro-close {
-  position: absolute; top: 9px; right: 9px; z-index: 2; width: 26px; height: 26px; display: flex; align-items: center; justify-content: center;
-  border: 1px solid rgba(255,255,255,.18); border-radius: 50%; background: rgba(0,0,0,.34);
-  color: rgba(255,255,255,.72); font-size: 15px; line-height: 1; cursor: pointer; padding: 0;
-}
-.partner-intro-close:hover { color: #fff; border-color: rgba(255,255,255,.4); }
-.partner-intro-note { margin: 9px 0 0; color: rgba(255,255,255,.34); font-size: 9.5px; font-weight: 600; line-height: 1.4; }
+.pb-cta:hover { transform: translateY(-1px); filter: brightness(1.1); }
 @media (max-width: 700px) {
-  .partner-intro { right: 10px; left: 10px; bottom: 10px; width: auto; }
-  .partner-intro-body { padding: 14px 14px 13px; }
-  .partner-intro-title { font-size: 17px; }
-  .partner-intro-text { font-size: 12px; margin-bottom: 11px; }
-  .partner-intro-logo { width: 36px; height: 36px; }
+  .partner-banner { flex-wrap: wrap; gap: 10px; padding: 11px 12px; border-radius: 12px; margin-bottom: 14px; }
+  .pb-logo { width: 36px; height: 36px; }
+  .pb-title { font-size: 15px; }
+  .pb-sub { font-size: 11.5px; }
+  .pb-note { font-size: 9px; }
+  .pb-cta { flex: 1 1 100%; text-align: center; padding: 9px 14px; }
 }
-@media (prefers-reduced-motion: reduce) {
-  .partner-intro { transition: opacity .2s ease; transform: none; }
-}
+@media (prefers-reduced-motion: reduce) { .pb-cta { transition: none; } }
+

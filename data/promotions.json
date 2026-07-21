@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-21-card-cleanup-v1",
+  "version": "2026-07-21-partner-banner-v1",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-21T14:00:00-04:00",
+  "updated_at": "2026-07-21T15:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -190,11 +190,12 @@
       "badge": "NEW PARTNER",
       "sale_percent": 10,
       "show_as_intro": true,
-      "intro_eyebrow": "New vendor partner",
+      "intro_eyebrow": "New partner added",
       "intro_title": "Disguised Alpha",
       "intro_body": "Disguised Alpha is now tracked on mypeptideprice.com, so their pricing appears alongside every other vendor in the comparison tables. Code SAMMYC takes 10% off sitewide.",
-      "intro_cta": "Visit Disguised Alpha",
-      "show_vendor_badge": false
+      "intro_cta": "View prices",
+      "show_vendor_badge": false,
+      "partner_since": "2026-07-18"
     },
     {
       "id": "instant-peptides-b3g1-jul-2026",
