@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-20-partner-intro-v1",
+  "version": "2026-07-21-instant-b3g1-v3",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-20T18:30:00-04:00",
+  "updated_at": "2026-07-21T11:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -188,6 +188,27 @@
       "intro_title": "Disguised Alpha",
       "intro_body": "Disguised Alpha is now tracked on mypeptideprice.com, so their pricing appears alongside every other vendor in the comparison tables. Code SAMMYC takes 10% off sitewide.",
       "intro_cta": "Visit Disguised Alpha"
+    },
+    {
+      "id": "instant-peptides-b3g1-jul-2026",
+      "vendor": "Instant Peptides",
+      "display_vendor": "Instant Peptides",
+      "headline": "Buy 3 Get 1 Free, mix and match",
+      "short_detail": "Buy any 3 products and the 4th is free, mix and match across the store. Applied automatically at checkout, no code needed. Code SAMMYC still applies on top for its standing 15% off.",
+      "full_detail": "Instant Peptides is running a Buy 3 Get 1 Free mix and match promotion from Monday July 21 through Sunday July 26, ending 11:59pm Eastern. Any 3 products qualify, they do not need to match, and the free item is applied automatically in the cart with no code required. Code SAMMYC still applies on top for its standing 15% off, which is the same rate it gives outside the sale. Every order placed during the sale is entered into the vendor Build-A-Kit giveaway, with 3 winners selected at random by Instant Peptides. Giveaway terms, eligibility and winner selection are handled entirely by the vendor.",
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
+      "badge": "BUY 3 GET 1",
+      "cta_text": "Shop sale",
+      "start_at": "2026-07-21T00:00:00-04:00",
+      "end_at": "2026-07-26T23:59:00-04:00",
+      "brand_color": "#d8c7a7",
+      "announce_tube": "Mix and match",
+      "announce_offer": "Buy 3 Get 1 Free",
+      "announce_note": "stacks with",
+      "show_in_rolodex": true,
+      "show_in_announcement_rolodex": true,
+      "priority": 500,
+      "show_in_announce_bar": true
     }
   ]
 }
