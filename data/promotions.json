@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-21-partner-banner-v1",
+  "version": "2026-07-22-announcements-strip-v1",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-21T15:00:00-04:00",
+  "updated_at": "2026-07-22T16:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -18,7 +18,11 @@
       "priority": 500,
       "show_in_announcement_rolodex": true,
       "rolodex_kicker": "",
-      "show_vendor_badge": false
+      "show_vendor_badge": false,
+      "show_in_strip": true,
+      "strip_tube": "Now live",
+      "strip_offer": "Research modules, vendor codes and giveaways",
+      "brand_color": "#e8412a"
     },
     {
       "id": "glow-aminos-birthday-sale-40",
@@ -195,7 +199,12 @@
       "intro_body": "Disguised Alpha is now tracked on mypeptideprice.com, so their pricing appears alongside every other vendor in the comparison tables. Code SAMMYC takes 10% off sitewide.",
       "intro_cta": "View prices",
       "show_vendor_badge": false,
-      "partner_since": "2026-07-18"
+      "partner_since": "2026-07-18",
+      "show_in_strip": true,
+      "strip_tube": "New partner",
+      "strip_offer": "Now tracked, 10% off",
+      "strip_stack": "SAMMYC",
+      "keep_after_window": false
     },
     {
       "id": "instant-peptides-b3g1-jul-2026",
@@ -220,6 +229,23 @@
       "conditional_deal": true,
       "chip_label": "Buy 3 Get 1 free",
       "show_vendor_badge": true
+    },
+    {
+      "id": "coffee-first-order-evergreen",
+      "vendor": "Coffee and Peppers",
+      "display_vendor": "Coffee & Peppers",
+      "evergreen": true,
+      "announcement": true,
+      "show_in_rolodex": false,
+      "show_in_announce_bar": false,
+      "show_in_strip": true,
+      "strip_tube": "New customers",
+      "strip_offer": "20% off first order",
+      "strip_code": "NEWCOFFEE20",
+      "strip_stack": "SAMMYC",
+      "brand_color": "#aa7541",
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "cta_text": "Shop now"
     }
   ]
 }

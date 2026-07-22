@@ -300,9 +300,9 @@
     if(conditional.length)chips.push(conditional[0].chip_label);
     if(firstOrder)chips.push(firstOrder.chip_label);
     const promoBadges=chips.length?`<div class="supplier-promos">${chips.slice(0,2).map(label=>`<span class="supplier-promo-badge">${esc(label)}</span>`).join("")}</div>`:"";
-    // First-order offers carry a plain-language line so the code is discoverable
-    // without opening anything. Kept out of the price; new customers only.
-    const firstOrderLine=firstOrder&&firstOrder.line?`<div class="supplier-firstorder">${esc(firstOrder.line)}</div>`:"";
+    // First-order detail now lives in the announcements strip, so the row
+    // carries only the chip to stay uncluttered.
+    const firstOrderLine="";
     return `<a class="supplier-row${isBest?" is-best":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}</div><div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadges}${firstOrderLine}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}<div class="supplier-go">View deal</div></div></a>`;
   }
 
@@ -528,8 +528,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260722-coffee-first-order-v3",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260722-coffee-first-order-v3",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260722-announcements-strip-v2",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260722-announcements-strip-v2",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
