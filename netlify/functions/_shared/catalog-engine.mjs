@@ -573,6 +573,7 @@ export function normalizeOffer(raw = {}, options = {}) {
     vendor_logo: meta.logo || "",
     vendor_display: compact(meta.display_name || vendor),
     vendor_payment_methods: Array.isArray(meta.payment_methods) ? meta.payment_methods : [],
+    vendor_first_order_offer: meta.first_order_offer && typeof meta.first_order_offer === "object" ? meta.first_order_offer : null,
     product_id: canonical.id,
     product_name: canonical.name,
     category,

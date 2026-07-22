@@ -1,5 +1,5 @@
 {
-  "version": "3.1.0",
+  "version": "3.3.0",
   "coupon_code": "SAMMYC",
   "vendors": {
     "Glacier Aminos": {
@@ -100,7 +100,14 @@
       "logo": "/assets/vendor-logos/coffee-and-peppers.webp",
       "use_product_deep_links": false,
       "payment_methods": [],
-      "brand_color": "#aa7541"
+      "brand_color": "#aa7541",
+      "first_order_offer": {
+        "code": "NEWCOFFEE20",
+        "percent": 20,
+        "stacks_with": "SAMMYC",
+        "chip_label": "New customer offer",
+        "line": "First order: 20% off with code NEWCOFFEE20, plus a stackable 15% off with code SAMMYC."
+      }
     },
     "Bioedge Research Labs": {
       "id": "bioedge-research-labs",
