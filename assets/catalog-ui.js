@@ -272,7 +272,8 @@
     usdt:"crypto",usdc:"crypto",litecoin:"crypto","coinbase-commerce":"crypto",
     cashapp:"mobile-pay","cash-app":"mobile-pay",venmo:"mobile-pay",
     "apple-pay":"mobile-pay","google-pay":"mobile-pay",
-    paypal:"wallet",wise:"wallet"
+    paypal:"wallet",wise:"wallet",affirm:"wallet",
+    chime:"bank",bank:"bank","bank-payment":"bank"
   };
   const paymentSlug=value=>String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
   const paymentGlyph=slug=>PAYMENT_GLYPHS[slug]||"card";
@@ -528,8 +529,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260722-announcements-strip-v2",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260722-announcements-strip-v2",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260723-split-strip-v1",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260723-split-strip-v1",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

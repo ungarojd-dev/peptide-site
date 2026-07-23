@@ -22,15 +22,15 @@
   <meta name="twitter:title" content="Peptide Price Comparison Tool | Compare $/mg Across 14 Vendors"/>
   <meta name="twitter:description" content="Free peptide price comparison tool. Compare research peptide prices and cost per mg across 14 verified vendors, with live pricing and after-code totals. Updated continuously."/>
   <meta name="twitter:image" content="https://mypeptideprice.com/og-image-2026-rebrand.png"/>
-  <link rel="icon" href="/favicon.ico?v=20260722-announcements-strip-v2" sizes="any"/>
-  <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260722-announcements-strip-v2"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260722-announcements-strip-v2"/>
+  <link rel="icon" href="/favicon.ico?v=20260723-split-strip-v1" sizes="any"/>
+  <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260723-split-strip-v1"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260723-split-strip-v1"/>
   <link rel="manifest" href="/site.webmanifest"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/assets/site.css?v=20260722-announcements-strip-v2"/>
-  <link rel="stylesheet" href="/assets/catalog.css?v=20260722-announcements-strip-v2"/>
+  <link rel="stylesheet" href="/assets/site.css?v=20260723-split-strip-v1"/>
+  <link rel="stylesheet" href="/assets/catalog.css?v=20260723-split-strip-v1"/>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MyPeptidePrice.com","url":"https://mypeptideprice.com/","description":"Independent research peptide price comparison across tracked vendors.","potentialAction":{"@type":"SearchAction","target":"https://mypeptideprice.com/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://mypeptideprice.com/#organization","name":"MyPeptidePrice.com","url":"https://mypeptideprice.com/","logo":{"@type":"ImageObject","url":"https://mypeptideprice.com/assets/brand/logo-full-lockup.png"},"description":"MyPeptidePrice.com is an independent research peptide price comparison website. It compares research peptide pricing and cost per mg across tracked vendors. It does not sell products or process orders.","email":"contact@mypeptideprice.com","foundingDate":"2025","knowsAbout":["research peptide price comparison","cost per mg comparison","peptide vendor pricing","GLP-1 research compounds"],"contactPoint":{"@type":"ContactPoint","email":"contact@mypeptideprice.com","contactType":"customer support"}}</script>
   <!-- Google Tag Manager -->
@@ -46,7 +46,7 @@
   <div class="top-inner">
     <a class="brand premium-brand" href="/" aria-label="MyPeptidePrice home">
       <span class="brand-mark-wrap" aria-hidden="true">
-        <img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260722-announcements-strip-v2" alt="" style="width:100%;height:100%;object-fit:contain;"/>
+        <img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260723-split-strip-v1" alt="" style="width:100%;height:100%;object-fit:contain;"/>
       </span>
       <span class="brand-copy">
         <span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span>
@@ -86,6 +86,8 @@
   </div>
 </div>
 </div>
+
+<div class="announcements-bar" data-announcements-bar aria-label="Announcements" hidden></div>
 
 
 <section class="hero premium-hero">
@@ -286,7 +288,7 @@
   <div class="footer-inner">
     <div>
       <div class="footer-brand premium-footer-brand">
-        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260722-announcements-strip-v2" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260723-split-strip-v1" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
         <div><div class="footer-wordmark"><span class="footer-brand-my">my</span><span class="footer-brand-peptide">peptide</span><span class="footer-brand-price">price</span><span class="footer-brand-dot">.com</span></div><div class="footer-tagline">Research. Compare. Save.</div></div>
       </div>
       <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
@@ -298,8 +300,8 @@
   <div class="footer-bottom">© <span data-year></span> MyPeptidePrice.com. For research comparison purposes only. Not medical advice.</div>
 </footer>
 
-<script src="/assets/site.js?v=20260722-announcements-strip-v2"></script>
-<script src="/assets/catalog-ui.js?v=20260722-announcements-strip-v2"></script>
+<script src="/assets/site.js?v=20260723-split-strip-v1"></script>
+<script src="/assets/catalog-ui.js?v=20260723-split-strip-v1"></script>
 <script>
 (function(){
   var heroInput=document.getElementById('heroSearch');
@@ -381,6 +383,67 @@
     });
     return out;
   }
+  // ── Announcements bar ─────────────────────────────────────────────────
+  // Evergreen items only: no end dates, no urgency. Deliberately static with
+  // manual arrows so the timed deal bar above is the only moving element on
+  // the page. Vendor colour is retained so it stays in the neon family.
+  var annState={i:0,items:[]};
+  function setupAnnouncementsBar(){
+    var host=document.querySelector('[data-announcements-bar]');
+    if(!host||annState.items.length) return;
+    var items=buildEvergreenSlides();
+    if(!items.length){ host.hidden=true; return; }
+    annState.items=items;
+    host.hidden=false;
+    var multi=items.length>1;
+    host.innerHTML=
+      (multi?'<button class="ann-nav" type="button" data-ann-prev aria-label="Previous announcement">‹</button>':'')+
+      '<div class="ann-inner">'+
+        '<span class="ann-tube" data-ann-tube></span>'+
+        '<img class="ann-logo" data-ann-logo alt="" width="22" height="22" hidden/>'+
+        '<span class="ann-vendor" data-ann-vendor></span>'+
+        '<span class="ann-sep" data-ann-sep></span>'+
+        '<span class="ann-text" data-ann-text></span>'+
+        '<a class="ann-cta" data-ann-cta target="_blank" rel="nofollow sponsored noopener"></a>'+
+      '</div>'+
+      (multi?'<button class="ann-nav" type="button" data-ann-next aria-label="Next announcement">›</button>':'')+
+      (multi?'<div class="ann-dots" data-ann-dots></div>':'');
+    var tube=host.querySelector('[data-ann-tube]'),logo=host.querySelector('[data-ann-logo]'),
+        vend=host.querySelector('[data-ann-vendor]'),sep=host.querySelector('[data-ann-sep]'),
+        text=host.querySelector('[data-ann-text]'),cta=host.querySelector('[data-ann-cta]'),
+        dots=host.querySelector('[data-ann-dots]');
+    function paint(){
+      var s=annState.items[annState.i];
+      host.style.setProperty('--bc',s.color);
+      tube.textContent=s.tube||''; tube.hidden=!s.tube;
+      if(s.logo){ logo.src=s.logo; logo.hidden=false; } else { logo.hidden=true; logo.removeAttribute('src'); }
+      vend.textContent=s.vendor||''; vend.hidden=!s.vendor;
+      sep.hidden=!s.vendor;
+      text.innerHTML=s.html;
+      cta.textContent=s.cta; cta.setAttribute('href',s.href||'#');
+      if(dots){
+        dots.innerHTML=annState.items.map(function(_,i){
+          return '<button class="ann-dot'+(i===annState.i?' is-active':'')+'" type="button" data-ann-dot="'+i+'" aria-label="Announcement '+(i+1)+'"></button>';
+        }).join('');
+        dots.querySelectorAll('[data-ann-dot]').forEach(function(btn){
+          btn.addEventListener('click',function(){ annState.i=Number(btn.dataset.annDot); paint(); });
+        });
+      }
+    }
+    function step(delta){
+      annState.i=(annState.i+delta+annState.items.length)%annState.items.length;
+      paint();
+    }
+    var prev=host.querySelector('[data-ann-prev]'),next=host.querySelector('[data-ann-next]');
+    if(prev) prev.addEventListener('click',function(){ step(-1); });
+    if(next) next.addEventListener('click',function(){ step(1); });
+    cta.addEventListener('click',function(){
+      var s=annState.items[annState.i];
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({event:'affiliate_click',product_name:s.vendorName||'announcement',product_category:'promotion',button_text:s.cta,button_location:'announcements_bar',vendor_name:s.vendorName||'',affiliate_url:s.href||''});
+    });
+    paint();
+  }
   function updateAnnounce(){
     if(announceState.built) return;
     var bar=document.querySelector('[data-announce-bar]');
@@ -458,22 +521,8 @@
         vendorName:p.vendor||''
       });
     });
-    // Evergreen announcements. Same neon strip, no urgency. New partner keeps
-    // its vendor colour for its window, then reads as plain. These live only
-    // here now: the standalone Skool bar and partner banner were removed.
-    // Interleave them near the front so an evergreen item is not stranded at
-    // the tail of a long cycle.
-    var evergreen=buildEvergreenSlides();
-    var timed=slides.slice();
-    slides=[];
-    var ti=0, ei=0;
-    // summary first if present
-    if(timed.length&&timed[0].scroll){ slides.push(timed[ti++]); }
-    // then alternate one timed, one evergreen
-    while(ti<timed.length||ei<evergreen.length){
-      if(ti<timed.length) slides.push(timed[ti++]);
-      if(ei<evergreen.length) slides.push(evergreen[ei++]);
-    }
+    // Evergreen announcements now live in their own static bar below this one,
+    // so the top bar carries timed deals only and stays short and urgent.
     if(!slides.length) return;
     announceState.built=true;
     announceState.slides=slides;
@@ -543,9 +592,9 @@
       });
     });
   }
-  document.addEventListener('mpp:promotions-ready',function(){updateAnnounce();});
+  document.addEventListener('mpp:promotions-ready',function(){updateAnnounce();setupAnnouncementsBar();});
   bindDealScroll();
-  setTimeout(function(){updateAnnounce();},1200);
+  setTimeout(function(){updateAnnounce();setupAnnouncementsBar();},1200);
 })();
 window.CatalogUI.boot();
 </script>

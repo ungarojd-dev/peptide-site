@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-22-announcements-strip-v1",
+  "version": "2026-07-23-split-strip-v1",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-22T16:00:00-04:00",
+  "updated_at": "2026-07-23T14:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -43,7 +43,8 @@
       "announce_tube": "Birthday sale",
       "announce_offer": "40% off sitewide",
       "announce_note": "stacks with",
-      "sale_percent": 40
+      "sale_percent": 40,
+      "end_at": "2026-07-22T23:59:00-04:00"
     },
     {
       "id": "flawless-birthday-sale-40",
@@ -75,7 +76,6 @@
       "short_detail": "Auto bulk pricing up to 25% off, stacks with SAMMYC and the 5% Zelle discount",
       "full_detail": "Oneday Compounds is running a Mix and Match sale with bulk pricing applied automatically at checkout on any combination of research materials. Volume tiers are 10% off at 3 or more units, 15% off at 6 or more units, and 25% off at 10 or more units. No code is needed for the bulk pricing and it stacks with existing discount codes and the 5% Zelle payment discount. Research Rewards run alongside the sale, where qualifying spend after discounts unlocks complimentary research material that appears automatically in cart. Spend $300 unlocks 1 free vial, $600 unlocks 2, and $900 unlocks 3. Sale runs through Monday. Confirm final eligibility, stacking rules, and checkout pricing directly on the vendor website.",
       "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
-      "end_at": "2026-07-21T00:00:00-04:00",
       "show_in_rolodex": true,
       "show_vendor_badge": true,
       "priority": 140,
@@ -86,7 +86,8 @@
       "announce_offer": "Bulk pricing up to 25% off",
       "announce_note": "",
       "conditional_deal": true,
-      "chip_label": "Bulk pricing available"
+      "chip_label": "Bulk pricing available",
+      "ongoing": true
     },
     {
       "id": "labsourced-lto-25",
@@ -246,6 +247,27 @@
       "brand_color": "#aa7541",
       "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
       "cta_text": "Shop now"
+    },
+    {
+      "id": "coffee-peppers-2day-jul-2026",
+      "vendor": "Coffee and Peppers",
+      "display_vendor": "Coffee & Peppers",
+      "headline": "15% off sitewide, two days only",
+      "short_detail": "15% off sitewide, stackable with code SAMMYC. New customers can also stack NEWCOFFEE20 for an extra 20% off.",
+      "full_detail": "Coffee & Peppers is running a two day sitewide sale on Saturday July 25 and Sunday July 26. The 15% sitewide discount stacks with code SAMMYC. First time customers can additionally stack code NEWCOFFEE20 for 20% off. Stacking rules and eligibility are set by the vendor, confirm at checkout.",
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "badge": "2 DAYS ONLY",
+      "cta_text": "Shop sale",
+      "start_at": "2026-07-25T00:00:00-04:00",
+      "end_at": "2026-07-26T23:59:00-04:00",
+      "brand_color": "#aa7541",
+      "announce_tube": "2 days only",
+      "announce_offer": "15% off sitewide",
+      "announce_note": "stacks with",
+      "sale_percent": 15,
+      "show_in_rolodex": true,
+      "show_in_announcement_rolodex": true,
+      "priority": 450
     }
   ]
 }

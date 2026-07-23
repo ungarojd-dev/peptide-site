@@ -1203,3 +1203,86 @@ body.theme-dark .deal-carousel .dc-vendor-wrap span { color: #e8f2cf !important;
 .dc-card--pinned .dc-logo { border-color: color-mix(in srgb, var(--bc) 55%, transparent); box-shadow: 0 0 14px -3px var(--bc); }
 .dc-card--pinned .dc-cta { background: var(--bc); color: #05070a; box-shadow: 0 0 16px -4px var(--bc); }
 
+
+/* ── ANNOUNCEMENTS BAR (evergreen, static) ── */
+/* Sits below the timed deal bar. Deliberately does not auto-rotate: the deal
+   bar above is the only moving element, so this reads as calm despite being
+   the same neon family. */
+.announcements-bar {
+  --bc: #a9d13a;
+  position: relative; overflow: hidden;
+  display: flex; align-items: center; gap: 8px;
+  padding: 6px 12px;
+  border-bottom: 1px solid color-mix(in srgb, var(--bc) 40%, transparent);
+  background:
+    radial-gradient(circle at 6% 0%, color-mix(in srgb, var(--bc) 16%, transparent), transparent 46%),
+    linear-gradient(150deg,#05070a 0%,#0b0f0c 60%,#05070a 100%);
+  box-shadow: inset 0 1px 0 rgba(255,255,255,.05);
+  transition: border-color .3s ease, background .3s ease;
+}
+.announcements-bar[hidden] { display: none; }
+.announcements-bar::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none; opacity: .3;
+  background: radial-gradient(rgba(255,255,255,.09) 1.1px, transparent 1.4px) 0 0/22px 22px;
+}
+.ann-inner {
+  position: relative; z-index: 1; flex: 1; min-width: 0;
+  display: flex; align-items: center; justify-content: center; gap: 9px;
+}
+.ann-nav {
+  position: relative; z-index: 1; flex: none;
+  width: 22px; height: 22px; display: flex; align-items: center; justify-content: center;
+  border: 1px solid color-mix(in srgb, var(--bc) 45%, transparent); border-radius: 50%;
+  background: color-mix(in srgb, var(--bc) 10%, transparent);
+  color: var(--bc); font-size: 14px; line-height: 1; cursor: pointer; padding: 0;
+  font-family: inherit; transition: filter .15s ease;
+}
+.ann-nav:hover { filter: brightness(1.35); }
+.ann-tube {
+  flex: none; border: 1.3px solid var(--bc); border-radius: 4px; padding: 2px 6px;
+  color: var(--bc); font-size: 7.5px; font-weight: 900; letter-spacing: 1px;
+  text-transform: uppercase; white-space: nowrap; text-shadow: 0 0 7px var(--bc);
+  box-shadow: 0 0 8px color-mix(in srgb, var(--bc) 45%, transparent), inset 0 0 6px color-mix(in srgb, var(--bc) 22%, transparent);
+}
+.ann-tube[hidden] { display: none; }
+.ann-logo {
+  flex: none; width: 22px; height: 22px; border-radius: 6px; background: #fff;
+  object-fit: contain; padding: 2px;
+  border: 1px solid color-mix(in srgb, var(--bc) 45%, transparent);
+  box-shadow: 0 0 10px -3px var(--bc);
+}
+.ann-vendor {
+  flex: none; color: #fffdf8; font-size: 11.5px; font-weight: 800; white-space: nowrap;
+  text-shadow: 0 0 12px color-mix(in srgb, var(--bc) 60%, transparent);
+}
+.ann-sep { flex: none; width: 1px; height: 15px; background: rgba(255,255,255,.13); }
+.ann-sep[hidden], .ann-vendor[hidden] { display: none; }
+.ann-text {
+  color: rgba(255,255,255,.74); font-size: 11.5px; font-weight: 700;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+}
+.ann-text strong { color: #fff; font-weight: 900; }
+.ann-cta {
+  flex: none; border: 1px solid color-mix(in srgb, var(--bc) 60%, transparent); border-radius: 999px;
+  background: color-mix(in srgb, var(--bc) 13%, transparent); color: #fff;
+  padding: 3px 11px; font-size: 10px; font-weight: 900; text-decoration: none; white-space: nowrap;
+  text-shadow: 0 0 7px color-mix(in srgb, var(--bc) 70%, transparent);
+}
+.ann-cta:hover { filter: brightness(1.15); }
+.ann-dots { position: absolute; right: 12px; bottom: 3px; z-index: 2; display: flex; gap: 3px; }
+.ann-dot {
+  width: 4px; height: 4px; padding: 0; border: 0; border-radius: 50%;
+  background: rgba(255,255,255,.24); cursor: pointer;
+}
+.ann-dot.is-active { background: var(--bc); box-shadow: 0 0 5px var(--bc); }
+@media (max-width: 700px) {
+  .announcements-bar { padding: 6px 8px; gap: 6px; }
+  .ann-inner { gap: 6px; justify-content: flex-start; }
+  .ann-tube { display: none; }
+  .ann-sep { display: none; }
+  .ann-vendor { font-size: 10.5px; }
+  .ann-text { font-size: 10px; white-space: normal; line-height: 1.25; max-height: 25px; }
+  .ann-cta { padding: 3px 9px; font-size: 9px; }
+  .ann-nav { width: 20px; height: 20px; font-size: 13px; }
+  .ann-dots { display: none; }
+}

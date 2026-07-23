@@ -1,5 +1,5 @@
 {
-  "version": "3.3.0",
+  "version": "3.4.0",
   "coupon_code": "SAMMYC",
   "vendors": {
     "Glacier Aminos": {
@@ -8,8 +8,18 @@
       "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
       "logo": "/assets/vendor-logos/glacier-aminos.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#1489d7"
+      "payment_methods": [
+        "Apple Pay",
+        "Google Pay",
+        "Visa",
+        "Discover",
+        "American Express",
+        "Zelle",
+        "ACH",
+        "Crypto"
+      ],
+      "brand_color": "#1489d7",
+      "package_protection_required": false
     },
     "Ion Peptide": {
       "id": "ion-peptide",
@@ -17,8 +27,17 @@
       "affiliate_url": "https://ionpeptide.com?ref=SammyC",
       "logo": "/assets/vendor-logos/ion-peptide.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#5484e4"
+      "payment_methods": [
+        "Apple Pay",
+        "Google Pay",
+        "Visa",
+        "Discover",
+        "American Express",
+        "Zelle",
+        "ACH"
+      ],
+      "brand_color": "#5484e4",
+      "package_protection_required": false
     },
     "LabSourced Peptides": {
       "id": "labsourced-peptides",
@@ -26,8 +45,16 @@
       "affiliate_url": "https://labsourced.com/?ref=SammyC",
       "logo": "/assets/vendor-logos/labsourced-peptides.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#1470c8"
+      "payment_methods": [
+        "Apple Pay",
+        "Google Pay",
+        "Visa",
+        "Discover",
+        "American Express",
+        "Zelle"
+      ],
+      "brand_color": "#1470c8",
+      "package_protection_required": false
     },
     "Mile High Peptides": {
       "id": "mile-high-peptides",
@@ -35,9 +62,18 @@
       "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
       "logo": "/assets/vendor-logos/mile-high-peptides.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
+      "payment_methods": [
+        "Apple Pay",
+        "Google Pay",
+        "Visa",
+        "Discover",
+        "American Express",
+        "Zelle",
+        "ACH"
+      ],
       "display_name": "Mile High Compounds",
-      "brand_color": "#4175aa"
+      "brand_color": "#4175aa",
+      "package_protection_required": false
     },
     "Southern Aminos": {
       "id": "southern-aminos",
@@ -45,8 +81,16 @@
       "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/southern-aminos.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#c35b27"
+      "payment_methods": [
+        "Apple Pay",
+        "Google Pay",
+        "Visa",
+        "Discover",
+        "American Express",
+        "Mastercard"
+      ],
+      "brand_color": "#c35b27",
+      "package_protection_required": false
     },
     "Flawless Compounds": {
       "id": "flawless-compounds",
@@ -54,8 +98,16 @@
       "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
       "logo": "/assets/vendor-logos/flawless-compounds.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#d8c7a7"
+      "payment_methods": [
+        "Apple Pay",
+        "Google Pay",
+        "Visa",
+        "Discover",
+        "American Express",
+        "Zelle"
+      ],
+      "brand_color": "#d8c7a7",
+      "package_protection_required": false
     },
     "Glow Aminos": {
       "id": "glow-aminos",
@@ -63,8 +115,16 @@
       "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
       "logo": "/assets/vendor-logos/glow-aminos.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#e454e4"
+      "payment_methods": [
+        "Apple Pay",
+        "Google Pay",
+        "Visa",
+        "Discover",
+        "American Express",
+        "Zelle"
+      ],
+      "brand_color": "#e454e4",
+      "package_protection_required": false
     },
     "Instant Peptides": {
       "id": "instant-peptides",
@@ -72,8 +132,18 @@
       "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
       "logo": "/assets/vendor-logos/instant-peptides.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#d8c7a7"
+      "payment_methods": [
+        "Apple Pay",
+        "Google Pay",
+        "Visa",
+        "Discover",
+        "American Express",
+        "Zelle",
+        "ACH",
+        "Crypto"
+      ],
+      "brand_color": "#d8c7a7",
+      "package_protection_required": false
     },
     "Solyn Labs": {
       "id": "solyn-labs",
@@ -81,8 +151,15 @@
       "affiliate_url": "https://solyn.com/?ref=SammyC",
       "logo": "/assets/vendor-logos/solyn-labs.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#14b0d7"
+      "payment_methods": [
+        "Visa",
+        "Discover",
+        "American Express",
+        "Zelle",
+        "ACH"
+      ],
+      "brand_color": "#14b0d7",
+      "package_protection_required": false
     },
     "Oneday Compounds": {
       "id": "oneday-compounds",
@@ -90,8 +167,17 @@
       "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
       "logo": "/assets/vendor-logos/oneday-compounds.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#d8c7a7"
+      "payment_methods": [
+        "Apple Pay",
+        "Google Pay",
+        "Visa",
+        "Discover",
+        "American Express",
+        "Zelle",
+        "ACH"
+      ],
+      "brand_color": "#d8c7a7",
+      "package_protection_required": false
     },
     "Coffee and Peppers": {
       "id": "coffee-and-peppers",
@@ -99,7 +185,13 @@
       "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/coffee-and-peppers.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
+      "payment_methods": [
+        "Visa",
+        "Discover",
+        "American Express",
+        "Zelle",
+        "Bank Payment"
+      ],
       "brand_color": "#aa7541",
       "first_order_offer": {
         "code": "NEWCOFFEE20",
@@ -107,7 +199,8 @@
         "stacks_with": "SAMMYC",
         "chip_label": "New customer offer",
         "line": "First order: 20% off with code NEWCOFFEE20, plus a stackable 15% off with code SAMMYC."
-      }
+      },
+      "package_protection_required": false
     },
     "Bioedge Research Labs": {
       "id": "bioedge-research-labs",
@@ -115,8 +208,15 @@
       "affiliate_url": "https://bioedgeresearchlabs.com/?aff=1005717",
       "logo": "/assets/vendor-logos/bioedge-research-labs.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#1462d7"
+      "payment_methods": [
+        "Visa",
+        "Discover",
+        "American Express",
+        "ACH",
+        "Cash App"
+      ],
+      "brand_color": "#1462d7",
+      "package_protection_required": false
     },
     "High Tide Compounds": {
       "id": "high-tide-compounds",
@@ -124,8 +224,15 @@
       "affiliate_url": "https://hightidecompounds.com/?aff=44",
       "logo": "/assets/vendor-logos/high-tide-compounds.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#3b62b0"
+      "payment_methods": [
+        "Visa",
+        "Discover",
+        "American Express",
+        "Mastercard",
+        "Zelle"
+      ],
+      "brand_color": "#3b62b0",
+      "package_protection_required": false
     },
     "Disguised Alpha": {
       "id": "disguised-alpha",
@@ -133,8 +240,20 @@
       "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/disguised-alpha.webp",
       "use_product_deep_links": false,
-      "payment_methods": [],
-      "brand_color": "#de0d5b"
+      "payment_methods": [
+        "Apple Pay",
+        "Google Pay",
+        "Visa",
+        "Discover",
+        "American Express",
+        "Zelle",
+        "Chime",
+        "Crypto",
+        "Bank",
+        "Affirm"
+      ],
+      "brand_color": "#de0d5b",
+      "package_protection_required": false
     }
   }
 }
