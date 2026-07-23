@@ -67,6 +67,11 @@ const PAGE_CSS = `<style>
 .price-amount .permg{display:block;font-size:.72rem;color:var(--olive-2);font-weight:800;margin-top:2px}
 .price-amount .go{display:block;font-size:.77rem;color:var(--olive-2);font-weight:700;margin-top:3px}
 .snap-note{font-size:.78rem;color:var(--muted);margin-top:12px;line-height:1.5}
+.pay-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pay-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:#fff;padding:5px 12px;font-size:.8rem;font-weight:600;color:var(--ink)}
+.pay-icon{width:14px;height:14px;flex:none;opacity:.7}
+.pay-note{font-size:.78rem;color:var(--muted);margin-top:12px;line-height:1.5}
+@media(max-width:700px){.pay-chip{padding:4px 10px;font-size:.74rem}.pay-grid{gap:6px}}
 .snap-cta{margin-top:14px}
 .copy{max-width:1120px;margin:0 auto;padding:0 20px}
 .copy h2{font-family:var(--font-display);color:var(--forest);margin-bottom:6px}
@@ -332,6 +337,39 @@ console.log("compound pages written:", generated.compounds.length);
 // priced offers in the snapshot get a page; the rest would be thin/empty shells
 // (the fallback snapshot currently carries a subset of vendors, the rest arrive
 // live from the Netlify function).
+// Payment methods accepted, from vendor-config. Vendor pages are where a buyer
+// decides "can I actually check out here", so this lives here rather than on
+// every catalog row.
+const PAYMENT_GLYPHS = {
+  visa: "card", mastercard: "card", amex: "card", "american-express": "card", discover: "card",
+  "credit-card": "card", card: "card",
+  zelle: "bank", ach: "bank", "bank-transfer": "bank", "bank-payment": "bank", bank: "bank", chime: "bank",
+  check: "check", "e-check": "check",
+  bitcoin: "crypto", btc: "crypto", ethereum: "crypto", crypto: "crypto", usdt: "crypto", usdc: "crypto",
+  cashapp: "mobile-pay", "cash-app": "mobile-pay", venmo: "mobile-pay",
+  "apple-pay": "mobile-pay", "google-pay": "mobile-pay",
+  paypal: "wallet", wise: "wallet", affirm: "wallet"
+};
+const paySlug = value => String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+function paymentBlock(cfg, display) {
+  const methods = Array.isArray(cfg && cfg.payment_methods) ? cfg.payment_methods : [];
+  if (!methods.length) return "";
+  const chips = methods.map(m => {
+    const glyph = PAYMENT_GLYPHS[paySlug(m)] || "card";
+    return `<span class="pay-chip"><img class="pay-icon" src="/assets/payment-icons/${glyph}.svg" alt="" width="14" height="14" loading="lazy"/>${esc(m)}</span>`;
+  }).join("");
+  const protection = cfg.package_protection_required === true
+    ? `<p class="pay-note">${esc(display)} requires package protection at checkout.</p>`
+    : cfg.package_protection_required === false
+      ? `<p class="pay-note">Package protection is not required at ${esc(display)}.</p>`
+      : "";
+  return `<section class="section compact"><div class="container"><h2>Payment methods at ${esc(display)}</h2>
+<div class="pay-grid">${chips}</div>
+${protection}
+<p class="pay-note">Payment options are set by the vendor and can change. Confirm at checkout. MyPeptidePrice.com does not process payments.</p>
+</div></section>`;
+}
+
 const vendorList = vendorCfg.vendors || vendorCfg;
 const vendorNames = Array.isArray(vendorList)
   ? vendorList.map(v => ({ key: v.name || v.id, display: v.display_name || v.name || v.id }))
@@ -339,6 +377,8 @@ const vendorNames = Array.isArray(vendorList)
 
 for (const v of vendorNames) {
   const sg = slug(v.key);
+  const vCfg = Array.isArray(vendorList) ? (vendorList.find(x => (x.name || x.id) === v.key) || {}) : (vendorList[v.key] || {});
+  const payHtml = paymentBlock(vCfg, v.display);
   const path = `/vendors/${sg}.html`;
   const canonical = `${BASE}${path}`;
   // gather this vendor's offers across all compounds
@@ -399,6 +439,7 @@ ${rowsHtml}
 <p class="snap-note">Prices are drawn from ${esc(v.display)} listings and reflect a known discount code where one applies. They change over time; confirm the current price, size, and stock on the vendor site. For laboratory research use only.</p>
 </div></section>
 <div class="xlink-wrap"><h2>Compounds listed at ${esc(v.display)}</h2><div class="xlink-grid">${xlinks}</div></div>
+${payHtml}
 <section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">${esc(v.display)} FAQ</span><h2>${esc(v.display)} questions</h2><div class="faq-list">
 ${faq.map(([q, a]) => `<article class="faq-item"><h3>${esc(q)}</h3><p>${esc(a)}</p></article>`).join("\n")}
 </div></div></section>
