@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260724-discount-label-v2";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260724-label-parts-v1";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -216,6 +216,9 @@
   };
   const activePromotions=()=>promoState.active;
   const offerPromotions=(supplier,card)=>activePromotions().filter(promotion=>promotion.show_vendor_badge&&promotionAppliesToOffer(promotion,supplier,card));
+  // Every active promo for an offer, regardless of whether it earns a badge.
+  // The discount label needs the sitewide sale, which is not badged.
+  const offerPromotionsAll=(supplier,card)=>activePromotions().filter(promotion=>promotionAppliesToOffer(promotion,supplier,card));
   const promotionDateText=promotion=>{
     if(!promotion.start_at&&!promotion.end_at) return "Active promotion";
     const options={month:"short",day:"numeric"};
@@ -438,7 +441,7 @@
     }
   }
   const promotionsReady=loadPromotions();
-  window.MPPPromotions={ready:promotionsReady,active:activePromotions,forOffer:offerPromotions,openPanel:openPromotionPanel};
+  window.MPPPromotions={ready:promotionsReady,active:activePromotions,forOffer:offerPromotions,forOfferAll:offerPromotionsAll,openPanel:openPromotionPanel};
 
   initComplianceGate();
 })();

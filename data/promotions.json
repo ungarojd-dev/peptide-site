@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-24-discount-label-v1",
+  "version": "2026-07-24-label-parts-v1",
   "timezone": "America/New_York",
   "updated_at": "2026-07-23T22:00:00-04:00",
   "promotions": [
@@ -44,7 +44,8 @@
       "announce_offer": "40% off sitewide",
       "announce_note": "plus 15% with",
       "sale_percent": 40,
-      "discount_override_percent": 49
+      "discount_override_percent": 49,
+      "code_percent": 15
     },
     {
       "id": "flawless-birthday-sale-40",
@@ -66,7 +67,8 @@
       "announce_offer": "40% off sitewide",
       "announce_note": "plus 15% with",
       "sale_percent": 40,
-      "discount_override_percent": 49
+      "discount_override_percent": 49,
+      "code_percent": 15
     },
     {
       "id": "oneday-mix-and-match-lto",
@@ -87,7 +89,8 @@
       "announce_note": "plus 10% with",
       "ongoing": true,
       "discount_override_percent": 41.5,
-      "sale_percent": 35
+      "sale_percent": 35,
+      "code_percent": 10
     },
     {
       "id": "labsourced-lto-25",
@@ -107,7 +110,8 @@
       "announce_tube": "Live now",
       "announce_offer": "10% off sitewide",
       "announce_note": "plus 15% with",
-      "sale_percent": 10
+      "sale_percent": 10,
+      "code_percent": 15
     },
     {
       "id": "southern-aminos-25-stack",
@@ -127,7 +131,8 @@
       "announce_offer": "30% off sitewide",
       "announce_note": "plus 15% with",
       "sale_percent": 30,
-      "discount_override_percent": 40.5
+      "discount_override_percent": 40.5,
+      "code_percent": 15
     },
     {
       "id": "mile-high-sammyc-boost-30",
@@ -193,7 +198,6 @@
       "show_in_announcement_rolodex": false,
       "priority": 900,
       "badge": "NEW PARTNER",
-      "sale_percent": 10,
       "show_as_intro": true,
       "intro_eyebrow": "New partner added",
       "intro_title": "Disguised Alpha",
@@ -268,7 +272,8 @@
       "show_in_rolodex": true,
       "show_in_announcement_rolodex": true,
       "priority": 450,
-      "discount_override_percent": 27.75
+      "discount_override_percent": 27.75,
+      "code_percent": 15
     },
     {
       "id": "disguised-alpha-glp-5",
