@@ -1,5 +1,10 @@
 # Changelog
 
+## July 2026
+- Removed limited-time promotion overrides from catalog price calculations so vendor feed prices receive only the standing `SAMMYC` discount.
+- Added a `Sale live` pill to applicable vendor rows while keeping promotional terms separate from the displayed after-code price.
+- Added regression coverage that prevents promotion metadata from altering calculated catalog prices.
+
 ## June 2026
 - Corrected the standard Glacier Aminos `SAMMYC` estimate from 5% to 10% across comparison pricing and the vendor directory.
 - Rebuilt the catalog around one stored snapshot instead of visitor-time vendor API fan-out.

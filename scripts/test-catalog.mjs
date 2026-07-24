@@ -25,10 +25,16 @@ const productIds = rebuilt.products.map(card => card.product_id);
 assert.equal(new Set(productIds).size, productIds.length, "Each compound must produce exactly one card");
 assert.equal(normalizeOffer({ company: "Bioedge Research Labs", product: "BPC-157 10mg", listing: "BPC-157 10mg", price: "$100.00" }).effective_price_label, "$85.00");
 assert.equal(normalizeOffer({ company: "Ion Peptide", product: "BPC-157 10mg", listing: "BPC-157 10mg", price: "$100.00" }).effective_price_label, "$85.00");
-// Ion Peptide is used here rather than a vendor that runs promotions: an active
-// discount_override_percent legitimately changes the effective price, which
-// would fail this assertion every time a sale is added or changed.
-// Promotion-driven vendor overrides are time-windowed and rotate, so they are not asserted against fixed calendar dates. Standard per-vendor rates below still cover discountPercentForVendor.
+const saleFeedOffer = normalizeOffer({
+  company: "Glow Aminos",
+  product: "BPC-157 10mg",
+  listing: "BPC-157 10mg",
+  price: "$100.00",
+  sale_price: "$60.00"
+});
+assert.equal(saleFeedOffer.regular_price_label, "$60.00", "The vendor feed sale price should be the catalog starting price");
+assert.equal(saleFeedOffer.effective_price_label, "$51.00", "Only Glow's standing 15 percent SAMMYC rate should be applied to the feed price");
+assert.equal(saleFeedOffer.discount_percent, 15, "A promotion must not replace the standing SAMMYC rate");
 assert.equal(discountPercentForVendor("Solyn Labs", "2026-06-10T12:00:00-04:00"), 10, "Solyn standard SAMMYC estimate should be 10 percent");
 assert.equal(snapshot.schema_version, "catalog-v1", "Bundled snapshot schema mismatch");
 const originalFetch = globalThis.fetch;
@@ -43,58 +49,16 @@ assert.ok(stale.products.some(card => card.name === "BPC-157"), "Stale vendor ro
 globalThis.fetch = originalFetch;
 console.log(`Catalog tests passed: ${rebuilt.product_card_count} cards, ${rebuilt.normalized_offer_count} offers, ${rebuilt.excluded_count} explicit exclusions`);
 
-// Category-scoped promotions must apply only to their scope. A GLP-only sale
-// repricing a vendor's whole catalogue would misprice every other product.
-{
-  // Only promotions that actually set a rate are checkable; scoped entries
-  // that exist purely as disclosure carry no override.
-  const scoped = (promoFilePre.promotions || []).filter(p =>
-    Array.isArray(p.scope_categories) && p.scope_categories.length
-    && Number.isFinite(Number(p.discount_override_percent)));
-  for (const promo of scoped) {
-    const inScope = discountPercentForVendor(promo.vendor, new Date(promo.start_at || Date.now()), promo.scope_categories[0]);
-    const outScope = discountPercentForVendor(promo.vendor, new Date(promo.start_at || Date.now()), "Repair & Recovery");
-    assert.equal(inScope, Number(promo.discount_override_percent),
-      `${promo.id}: in-scope category should get ${promo.discount_override_percent}%`);
-    assert.notEqual(inScope, outScope,
-      `${promo.id}: scoped rate leaked outside ${promo.scope_categories.join(", ")}`);
-  }
-  if (scoped.length) console.log(`Scoped promotions verified: ${scoped.length}`);
-
-  // Explicit guard on the known case. The filter above only inspects promos
-  // that still declare a scope, so removing the scope would slip past it.
-  // This asserts the outcome instead: a vendor's non-scoped categories must
-  // never inherit a scoped promotion's rate.
-  for (const promo of (promoFilePre.promotions || [])) {
-    if (!Array.isArray(promo.scope_categories) || !promo.scope_categories.length) continue;
-    if (!Number.isFinite(Number(promo.discount_override_percent))) continue;
-    const during = new Date(promo.start_at || Date.now());
-    const base = Number(vendorFilePre.vendors?.[promo.vendor]?.discount_percent || 0);
-    const unscopedRate = discountPercentForVendor(promo.vendor, during, "Repair & Recovery");
-    assert.equal(unscopedRate, base,
-      `${promo.vendor}: categories outside ${promo.scope_categories.join(", ")} should stay at the ${base}% base rate, got ${unscopedRate}%`);
-  }
-}
-
-// Guard against the stacking bug: when a promo declares a sitewide
-// sale_percent, the override must equal that sale compounded with the
-// vendor's own code rate. Checking against vendor-config rather than parsed
-// copy also catches compounding with the wrong base rate.
-const promoFile = JSON.parse(await readFile(new URL("../data/promotions.json", import.meta.url), "utf8"));
-const vendorFile = JSON.parse(await readFile(new URL("../data/vendor-config.json", import.meta.url), "utf8"));
-const stackIssues = [];
-for (const promo of promoFile.promotions || []) {
-  const sitewide = Number(promo.sale_percent);
-  const override = Number(promo.discount_override_percent);
-  if (!Number.isFinite(sitewide) || !Number.isFinite(override)) continue;
-  const base = Number(vendorFile.vendors?.[promo.vendor]?.discount_percent || 0);
-  const expected = Number(((1 - (1 - sitewide / 100) * (1 - base / 100)) * 100).toFixed(2));
-  if (Math.abs(override - expected) > 0.01) {
-    stackIssues.push(`${promo.id}: ${sitewide}% sale compounded with ${promo.vendor}'s ${base}% code = ${expected}%, override is ${override}`);
-  }
-}
-if (stackIssues.length) {
-  console.error("\nStacked discount mismatch:");
-  stackIssues.forEach(line => console.error(`  - ${line}`));
-  process.exitCode = 1;
+// Promotion metadata is disclosure-only. Every promo override must leave the
+// calculated price at the standing vendor-config SAMMYC rate.
+for (const promo of promoFilePre.promotions || []) {
+  if (!Number.isFinite(Number(promo.discount_override_percent))) continue;
+  const base = Number(vendorFilePre.vendors?.[promo.vendor]?.discount_percent || 0);
+  const during = new Date(promo.start_at || Date.now());
+  const category = promo.scope_categories?.[0] || null;
+  assert.equal(
+    discountPercentForVendor(promo.vendor, during, category),
+    base,
+    `${promo.id}: promotion metadata must not alter the ${base}% standing SAMMYC rate`
+  );
 }

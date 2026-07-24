@@ -287,35 +287,31 @@
     const productListing="";
     const variantLine=variantLabel&&variantLabel!=="Standard listing"?`<span class="supplier-variant-line"><span>Size</span> ${esc(variantLabel)}</span>`:"";
     const bestBadge=isBest?`<span class="supplier-best">Lowest</span>`:"";
-    // Label reads both raw percentages straight from promotions.json, which is
-    // loaded client side. Deliberately not derived from the snapshot: a stale
-    // snapshot used to make this fall back to a compounded figure like 40.5%,
-    // which is not a number any vendor advertises.
     const activePromos=global.MPPPromotions?.forOfferAll?.(supplier,card)||[];
     const badgePromos=global.MPPPromotions?.forOffer?.(supplier,card)||[];
-    const salePromo=activePromos.find(p=>Number.isFinite(Number(p.sale_percent))&&Number.isFinite(Number(p.code_percent)));
     const code=esc(supplier.coupon_code||"SAMMYC");
     let discount;
-    if(salePromo){
-      discount=`<span class="supplier-discount">${esc(Number(salePromo.sale_percent))}% off <span class="supplier-discount-plus">+ ${esc(Number(salePromo.code_percent))}% with ${code}</span></span>`;
-    }else if(supplier.discount_percent){
+    if(supplier.discount_percent){
       discount=`<span class="supplier-discount">${esc(Number(supplier.discount_percent))}% off with ${code}</span>`;
     }else{
       discount=`<span class="supplier-discount">Code details on vendor site</span>`;
     }
-    const promotions=badgePromos;
-    // A flat sale already shows as a struck-through price, so a badge would
-    // repeat it. Only conditional deals, which leave the unit price unchanged,
-    // still need a marker.
-    const conditional=promotions.filter(promotion=>promotion.conditional_deal===true&&promotion.chip_label);
+    // The vendor feed price may already include the sale. Keep the sale out of
+    // our math and disclose it separately on applicable vendor rows.
+    const salePromo=activePromos.find(promotion=>promotion.conditional_deal!==true&&(
+      Number.isFinite(Number(promotion.sale_percent))||
+      Number.isFinite(Number(promotion.discount_override_percent))
+    ));
+    const conditional=badgePromos.filter(promotion=>promotion.conditional_deal===true&&promotion.chip_label);
     // Vendor-level standing offer that never expires and applies only to a
     // subset of buyers (e.g. first-order code). Never in the pricing math,
     // shown as a conditional marker like a promo would be.
     const firstOrder=supplier.vendor_first_order_offer&&supplier.vendor_first_order_offer.chip_label?supplier.vendor_first_order_offer:null;
     const chips=[];
-    if(conditional.length)chips.push(conditional[0].chip_label);
-    if(firstOrder)chips.push(firstOrder.chip_label);
-    const promoBadges=chips.length?`<div class="supplier-promos">${chips.slice(0,2).map(label=>`<span class="supplier-promo-badge">${esc(label)}</span>`).join("")}</div>`:"";
+    if(salePromo)chips.push({label:"Sale live",sale:true,title:salePromo.headline||"Limited-time vendor sale"});
+    if(conditional.length)chips.push({label:conditional[0].chip_label,title:conditional[0].headline||""});
+    if(firstOrder)chips.push({label:firstOrder.chip_label,title:firstOrder.line||""});
+    const promoBadges=chips.length?`<div class="supplier-promos">${chips.slice(0,2).map(chip=>`<span class="supplier-promo-badge${chip.sale?" supplier-promo-badge--sale":""}"${chip.title?` title="${attr(chip.title)}"`:""}>${esc(chip.label)}</span>`).join("")}</div>`:"";
     // First-order detail now lives in the announcements strip, so the row
     // carries only the chip to stay uncluttered.
     const firstOrderLine="";
@@ -544,8 +540,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260724-a11y-v2",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260724-a11y-v2",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260724-sale-pill-v1",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260724-sale-pill-v1",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

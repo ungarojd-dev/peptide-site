@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260724-a11y-v2";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260724-sale-pill-v1";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -208,7 +208,7 @@
   };
   const promotionAppliesToOffer=(promotion,supplier={},card={})=>{
     if(promotion.vendor!==supplier.vendor_name) return false;
-    const categories=promotion.applicable_categories||[];
+    const categories=[...(promotion.applicable_categories||[]),...(promotion.scope_categories||[])];
     const terms=promotion.match_terms||[];
     if(!categories.length&&!terms.length) return true;
     const haystack=[card.name,card.category,card.format,supplier.raw_product,supplier.raw_listing,supplier.sku].filter(Boolean).join(" ").toLowerCase();
@@ -216,8 +216,8 @@
   };
   const activePromotions=()=>promoState.active;
   const offerPromotions=(supplier,card)=>activePromotions().filter(promotion=>promotion.show_vendor_badge&&promotionAppliesToOffer(promotion,supplier,card));
-  // Every active promo for an offer, regardless of whether it earns a badge.
-  // The discount label needs the sitewide sale, which is not badged.
+  // Every active promo for an offer, including sales that use a generic
+  // disclosure pill instead of changing the calculated catalog price.
   const offerPromotionsAll=(supplier,card)=>activePromotions().filter(promotion=>promotionAppliesToOffer(promotion,supplier,card));
   const promotionDateText=promotion=>{
     if(!promotion.start_at&&!promotion.end_at) return "Active promotion";

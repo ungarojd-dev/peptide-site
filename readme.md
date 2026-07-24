@@ -71,6 +71,8 @@ data/promotions.json
 
 The homepage and GLP landing page use that file for the rotating vendor-deals rolodex, the all-deals panel, and vendor-row deal badges. Date-limited offers automatically appear and expire according to their configured windows.
 
+Promotion percentages are disclosure-only and do not alter catalog price calculations. Vendor feeds supply the current source price, which may already reflect a sale, and the catalog applies only the standing `SAMMYC` rate from `data/vendor-config.json`. Active sale metadata is shown as a `Sale live` pill on applicable vendor rows.
+
 ## Affiliate URL rules
 Vendor affiliate routing is controlled from:
 

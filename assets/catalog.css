@@ -955,9 +955,8 @@ body.theme-dark .payment-icon { background: rgba(255,255,255,.06); border-color:
 }
 
 /* ── ROW CLEANUP ── */
-/* A flat sale reads from the struck-through price, so the badge is reserved
-   for conditional deals that leave the unit price unchanged. Quieter than the
-   old gold pill so it reads as information, not a second call to action. */
+/* Promotions are disclosure-only. The API price may already include a vendor
+   sale, while the calculated price applies only SAMMYC. */
 .supplier-promos { margin-top: 3px; }
 .supplier-promo-badge, .supplier-promo-more {
   border: 1px dashed rgba(201,146,42,.55);
@@ -968,6 +967,20 @@ body.theme-dark .payment-icon { background: rgba(255,255,255,.06); border-color:
   font-weight: 800;
   letter-spacing: .2px;
   box-shadow: none;
+}
+.supplier-promo-badge--sale {
+  border-style: solid;
+  background: rgba(201,146,42,.14);
+}
+.supplier-promo-badge--sale::before {
+  content: "";
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  margin-right: 5px;
+  border-radius: 50%;
+  background: #c9922a;
+  vertical-align: 1px;
 }
 /* Collapses to nothing when empty so rows do not carry dead vertical space. */
 .supplier-meta-line:empty { display: none; margin: 0; }
@@ -1013,7 +1026,3 @@ a.seo-card-name:hover { text-decoration: underline; }
   .seo-card-name { font-size: .9rem; }
   .seo-card-fmt { display: none; }
 }
-
-/* Stacked discount label: sale first, code second, so the code is not
-   credited with the whole compounded rate. */
-.supplier-discount-plus { font-weight: 600; opacity: .82; white-space: nowrap; }
