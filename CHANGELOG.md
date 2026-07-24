@@ -2,7 +2,7 @@
 
 ## July 2026
 - Removed limited-time promotion overrides from catalog price calculations so vendor feed prices receive only the standing `SAMMYC` discount.
-- Added a `Sale live` pill to applicable vendor rows while keeping promotional terms separate from the displayed after-code price.
+- Added one generic `Sale live` pill to applicable vendor rows. Sale percentages, bundle details, boosted rates, and first-order offers stay off the catalog cards.
 - Added regression coverage that prevents promotion metadata from altering calculated catalog prices.
 
 ## June 2026
