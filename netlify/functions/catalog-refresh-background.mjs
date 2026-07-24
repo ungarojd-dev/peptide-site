@@ -1,6 +1,7 @@
 import { randomUUID } from "node:crypto";
 import { refreshCatalog } from "./_shared/catalog-refresh.mjs";
 import { readRawSnapshot, readRefreshStatus, writeRefreshStatus, writeSnapshots } from "./_shared/catalog-store.mjs";
+import { recordDailyHistory } from "./_shared/catalog-history.mjs";
 
 function compact(value) {
   return value == null ? "" : String(value).trim();
@@ -54,6 +55,14 @@ export default async request => {
     const snapshot = await refreshCatalog(previous);
     if (!snapshot.products?.length) throw new Error("Catalog refresh generated no product cards");
     await writeSnapshots(snapshot);
+    // Record today's low per compound. Fully isolated: a history failure must
+    // never affect the pricing that was just written above.
+    try {
+      const history = await recordDailyHistory(snapshot);
+      console.log(`Price history recorded: ${history.written}/${history.attempted} compounds for ${history.day}`);
+    } catch (error) {
+      console.warn("Price history recording skipped:", error.message);
+    }
     await writeRefreshStatus({
       state: "complete",
       refresh_id: refreshId,
