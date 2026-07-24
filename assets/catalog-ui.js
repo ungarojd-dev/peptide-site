@@ -288,7 +288,6 @@
     const variantLine=variantLabel&&variantLabel!=="Standard listing"?`<span class="supplier-variant-line"><span>Size</span> ${esc(variantLabel)}</span>`:"";
     const bestBadge=isBest?`<span class="supplier-best">Lowest</span>`:"";
     const activePromos=global.MPPPromotions?.forOfferAll?.(supplier,card)||[];
-    const badgePromos=global.MPPPromotions?.forOffer?.(supplier,card)||[];
     const code=esc(supplier.coupon_code||"SAMMYC");
     let discount;
     if(supplier.discount_percent){
@@ -298,24 +297,15 @@
     }
     // The vendor feed price may already include the sale. Keep the sale out of
     // our math and disclose it separately on applicable vendor rows.
-    const salePromo=activePromos.find(promotion=>promotion.conditional_deal!==true&&(
+    const salePromo=activePromos.find(promotion=>
+      promotion.show_in_rolodex===true||
+      promotion.show_in_announcement_rolodex===true||
+      promotion.show_in_announce_bar===true||
       Number.isFinite(Number(promotion.sale_percent))||
       Number.isFinite(Number(promotion.discount_override_percent))
-    ));
-    const conditional=badgePromos.filter(promotion=>promotion.conditional_deal===true&&promotion.chip_label);
-    // Vendor-level standing offer that never expires and applies only to a
-    // subset of buyers (e.g. first-order code). Never in the pricing math,
-    // shown as a conditional marker like a promo would be.
-    const firstOrder=supplier.vendor_first_order_offer&&supplier.vendor_first_order_offer.chip_label?supplier.vendor_first_order_offer:null;
-    const chips=[];
-    if(salePromo)chips.push({label:"Sale live",sale:true,title:salePromo.headline||"Limited-time vendor sale"});
-    if(conditional.length)chips.push({label:conditional[0].chip_label,title:conditional[0].headline||""});
-    if(firstOrder)chips.push({label:firstOrder.chip_label,title:firstOrder.line||""});
-    const promoBadges=chips.length?`<div class="supplier-promos">${chips.slice(0,2).map(chip=>`<span class="supplier-promo-badge${chip.sale?" supplier-promo-badge--sale":""}"${chip.title?` title="${attr(chip.title)}"`:""}>${esc(chip.label)}</span>`).join("")}</div>`:"";
-    // First-order detail now lives in the announcements strip, so the row
-    // carries only the chip to stay uncluttered.
-    const firstOrderLine="";
-    return `<a class="supplier-row${isBest?" is-best":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}</div><div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadges}${firstOrderLine}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}<div class="supplier-go">View deal</div></div></a>`;
+    );
+    const promoBadge=salePromo?`<div class="supplier-promos"><span class="supplier-promo-badge supplier-promo-badge--sale">Sale live</span></div>`:"";
+    return `<a class="supplier-row${isBest?" is-best":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}</div><div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadge}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}<div class="supplier-go">View deal</div></div></a>`;
   }
 
   function cardHtml(card){
@@ -540,8 +530,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260724-sale-pill-v1",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260724-sale-pill-v1",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260724-sammyc-only-v2",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260724-sammyc-only-v2",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

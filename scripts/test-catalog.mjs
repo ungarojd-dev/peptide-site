@@ -2,6 +2,7 @@ import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
 const promoFilePre = JSON.parse(await readFile(new URL("../data/promotions.json", import.meta.url), "utf8"));
 const vendorFilePre = JSON.parse(await readFile(new URL("../data/vendor-config.json", import.meta.url), "utf8"));
+const catalogUiSource = await readFile(new URL("../assets/catalog-ui.js", import.meta.url), "utf8");
 import fallbackPayload from "../data/catalog-fallback.json" with { type: "json" };
 import snapshot from "../data/catalog-fallback-snapshot.json" with { type: "json" };
 import { buildCatalog, normalizeOffer, discountPercentForVendor } from "../netlify/functions/_shared/catalog-engine.mjs";
@@ -36,6 +37,31 @@ assert.equal(saleFeedOffer.regular_price_label, "$60.00", "The vendor feed sale 
 assert.equal(saleFeedOffer.effective_price_label, "$51.00", "Only Glow's standing 15 percent SAMMYC rate should be applied to the feed price");
 assert.equal(saleFeedOffer.discount_percent, 15, "A promotion must not replace the standing SAMMYC rate");
 assert.equal(discountPercentForVendor("Solyn Labs", "2026-06-10T12:00:00-04:00"), 10, "Solyn standard SAMMYC estimate should be 10 percent");
+const expectedSammycRates = {
+  "Glacier Aminos": 10,
+  "Mile High Peptides": 10,
+  "LabSourced Peptides": 15,
+  "Instant Peptides": 15,
+  "Southern Aminos": 15,
+  "Flawless Compounds": 15,
+  "Glow Aminos": 15,
+  "Solyn Labs": 10,
+  "Oneday Compounds": 10,
+  "Ion Peptide": 15,
+  "Coffee and Peppers": 15,
+  "Bioedge Research Labs": 15,
+  "High Tide Compounds": 10,
+  "Disguised Alpha": 10
+};
+for (const [vendor, expectedRate] of Object.entries(expectedSammycRates)) {
+  assert.equal(
+    Number(vendorFilePre.vendors?.[vendor]?.discount_percent),
+    expectedRate,
+    `${vendor}: standing SAMMYC rate must remain ${expectedRate}%`
+  );
+}
+assert.match(catalogUiSource, />Sale live</, "Active vendor sales should use one generic card pill");
+assert.doesNotMatch(catalogUiSource, /conditional\[0\]\.chip_label|firstOrder\.chip_label|supplier-discount-plus/, "Catalog cards must not list promotion-specific discounts or offer wording");
 assert.equal(snapshot.schema_version, "catalog-v1", "Bundled snapshot schema mismatch");
 const originalFetch = globalThis.fetch;
 globalThis.fetch = async () => { throw new Error("offline test"); };

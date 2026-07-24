@@ -1,7 +1,7 @@
 {
   "schema_version": "catalog-v1",
   "engine_version": "1.1.0-merged-formats",
-  "generated_at": "2026-07-24T20:07:42.479Z",
+  "generated_at": "2026-07-24T20:18:00.261Z",
   "coupon_code": "SAMMYC",
   "product_card_count": 220,
   "normalized_offer_count": 1506,
@@ -83874,7 +83874,7 @@
   ],
   "diagnostics": {
     "engine_version": "1.1.0-merged-formats",
-    "generated_at": "2026-07-24T20:07:42.480Z",
+    "generated_at": "2026-07-24T20:18:00.261Z",
     "product_card_count": 220,
     "normalized_offer_count": 1506,
     "visible_unmapped_count": 112,
@@ -85108,6 +85108,6 @@
     "excluded_products": [],
     "warnings": []
   },
-  "snapshot_updated_at": "2026-07-24T20:07:42.480Z",
+  "snapshot_updated_at": "2026-07-24T20:18:00.261Z",
   "snapshot_refresh_ms": 0
 }
