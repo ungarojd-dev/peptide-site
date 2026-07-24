@@ -286,7 +286,19 @@
     const listingName=supplier.raw_listing||supplier.raw_product||"";
     const productListing="";
     const variantLine=variantLabel&&variantLabel!=="Standard listing"?`<span class="supplier-variant-line"><span>Size</span> ${esc(variantLabel)}</span>`:"";
-    const discount=supplier.discount_percent?`<span class="supplier-discount">${esc(supplier.discount_percent)}% off with ${esc(supplier.coupon_code||"SAMMYC")}</span>`:`<span class="supplier-discount">Code details on vendor site</span>`;
+    // Show the two parts a shopper sees at checkout rather than the compounded
+    // rate. "49% off with SAMMYC" reads as if the code alone gives 49%.
+    const code=esc(supplier.coupon_code||"SAMMYC");
+    const sitewide=Number(supplier.discount_sitewide_percent);
+    const codePct=Number(supplier.discount_code_percent);
+    let discount;
+    if(Number.isFinite(sitewide)&&sitewide>0&&Number.isFinite(codePct)&&codePct>0){
+      discount=`<span class="supplier-discount">${esc(Math.round(sitewide))}% off <span class="supplier-discount-plus">+ ${esc(Math.round(codePct))}% with ${code}</span></span>`;
+    }else if(supplier.discount_percent){
+      discount=`<span class="supplier-discount">${esc(Math.round(Number(supplier.discount_percent)))}% off with ${code}</span>`;
+    }else{
+      discount=`<span class="supplier-discount">Code details on vendor site</span>`;
+    }
     const bestBadge=isBest?`<span class="supplier-best">Lowest</span>`:"";
     const promotions=global.MPPPromotions?.forOffer?.(supplier,card)||[];
     // A flat sale already shows as a struck-through price, so a badge would
@@ -529,8 +541,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260723-stacked-v3",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260723-stacked-v3",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260724-discount-label-v2",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260724-discount-label-v2",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

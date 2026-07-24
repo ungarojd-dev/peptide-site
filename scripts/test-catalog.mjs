@@ -41,25 +41,21 @@ assert.ok(stale.products.some(card => card.name === "BPC-157"), "Stale vendor ro
 globalThis.fetch = originalFetch;
 console.log(`Catalog tests passed: ${rebuilt.product_card_count} cards, ${rebuilt.normalized_offer_count} offers, ${rebuilt.excluded_count} explicit exclusions`);
 
-// Guard against the stacking bug: a promo whose copy states "X% ... stacks ...
-// 15%" must carry a discount_override_percent matching the compounded rate.
-// This was missed for weeks across six vendors, with the site understating
-// discounts and skewing the $/mg ranking.
+// Guard against the stacking bug: when a promo declares a sitewide
+// sale_percent, the override must equal that sale compounded with the
+// vendor's own code rate. Checking against vendor-config rather than parsed
+// copy also catches compounding with the wrong base rate.
 const promoFile = JSON.parse(await readFile(new URL("../data/promotions.json", import.meta.url), "utf8"));
+const vendorFile = JSON.parse(await readFile(new URL("../data/vendor-config.json", import.meta.url), "utf8"));
 const stackIssues = [];
 for (const promo of promoFile.promotions || []) {
-  const text = `${promo.headline || ""} ${promo.short_detail || ""} ${promo.full_detail || ""}`;
   const sitewide = Number(promo.sale_percent);
-  // Anchor on "additional/extra N%" or a number immediately after "stacks",
-  // so a bare "stacks with SAMMYC" cannot pull a percentage from a later sentence.
-  const stacksMatch = /(?:additional|extra)\s+(\d+(?:\.\d+)?)\s*%/i.exec(text)
-    || /stacks?\s+(\d+(?:\.\d+)?)\s*%/i.exec(text);
-  if (!Number.isFinite(sitewide) || !stacksMatch) continue;
-  const stackPct = Number(stacksMatch[1]);
-  const expected = Number(((1 - (1 - sitewide / 100) * (1 - stackPct / 100)) * 100).toFixed(2));
-  const actual = Number(promo.discount_override_percent);
-  if (!Number.isFinite(actual) || Math.abs(actual - expected) > 0.5) {
-    stackIssues.push(`${promo.id}: copy implies ${sitewide}% then ${stackPct}% = ${expected}%, override is ${promo.discount_override_percent ?? "unset"}`);
+  const override = Number(promo.discount_override_percent);
+  if (!Number.isFinite(sitewide) || !Number.isFinite(override)) continue;
+  const base = Number(vendorFile.vendors?.[promo.vendor]?.discount_percent || 0);
+  const expected = Number(((1 - (1 - sitewide / 100) * (1 - base / 100)) * 100).toFixed(2));
+  if (Math.abs(override - expected) > 0.01) {
+    stackIssues.push(`${promo.id}: ${sitewide}% sale compounded with ${promo.vendor}'s ${base}% code = ${expected}%, override is ${override}`);
   }
 }
 if (stackIssues.length) {

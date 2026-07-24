@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-23-stacked-discounts-v2",
+  "version": "2026-07-24-discount-label-v1",
   "timezone": "America/New_York",
   "updated_at": "2026-07-23T22:00:00-04:00",
   "promotions": [
@@ -73,8 +73,8 @@
       "vendor": "Oneday Compounds",
       "display_vendor": "Oneday Compounds",
       "headline": "35% off storewide",
-      "short_detail": "Oneday Compounds is running 35% off storewide, excluding nasal sprays and capsules. Code SAMMYC stacks for an additional 15% off the reduced price, for 44.75% off in total.",
-      "full_detail": "Oneday Compounds is running 35% off storewide, excluding nasal sprays and capsules. Code SAMMYC stacks for an additional 15% off the reduced price, for 44.75% off in total. No nasal spray or capsule listings from this vendor are currently tracked here, so the exclusion does not affect displayed pricing.",
+      "short_detail": "35% off storewide, excludes nasal sprays and capsules. Code SAMMYC stacks for an additional 10% off the reduced price.",
+      "full_detail": "Oneday Compounds is running 35% off storewide, excluding nasal sprays and capsules. Code SAMMYC stacks for an additional 10% off the reduced price, for 41.5% off in total. No nasal spray or capsule listings from this vendor are currently tracked here, so the exclusion does not affect displayed pricing.",
       "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
       "show_in_rolodex": true,
       "show_vendor_badge": false,
@@ -84,9 +84,9 @@
       "brand_color": "#d8c7a7",
       "announce_tube": "Live now",
       "announce_offer": "35% off sitewide",
-      "announce_note": "plus 15% with",
+      "announce_note": "plus 10% with",
       "ongoing": true,
-      "discount_override_percent": 44.75,
+      "discount_override_percent": 41.5,
       "sale_percent": 35
     },
     {
@@ -148,8 +148,7 @@
       "brand_color": "#4175aa",
       "announce_tube": "48 hours only",
       "announce_offer": "34% off",
-      "announce_note": "with",
-      "sale_percent": 34
+      "announce_note": "with"
     },
     {
       "id": "disguised-alpha-weekend-sale-jul-2026",

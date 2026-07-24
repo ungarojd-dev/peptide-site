@@ -42,8 +42,27 @@ const LEGACY_CATEGORIES = {
   "Sexual Health & Tanning": "Skin, Tanning & Sexual Health",
   "Metabolic & Energy": "Metabolic & Mitochondrial",
   "Capsules": "Other",
-  "Other": "Other"
+  "Other": "Other",
+  // Stray vendor-supplied categories seen in live diagnostics. Without these
+  // they pass straight through and create one-product filter entries.
+  "Research Sprays": "Cognitive & Nootropic",
+  "Singles": "Metabolic & Mitochondrial",
+  "Encapsulated Products": "Cognitive & Nootropic",
+  "Aminos & Oils / Exclusive Products": "Metabolic & Mitochondrial"
 };
+
+// Vendor feeds sometimes return HTML-encoded text. Left undecoded it renders
+// literally, e.g. "Aminos &amp; Oils" showing the entity in the UI.
+function decodeEntities(value) {
+  return String(value == null ? "" : value)
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#0?39;/g, "'")
+    .replace(/&apos;/g, "'")
+    .replace(/&nbsp;/g, " ");
+}
 
 function text(value) {
   return value == null ? "" : String(value);
@@ -443,7 +462,7 @@ const FORCED_CATEGORY = [
 ];
 
 function inferCategory(family, raw) {
-  const sourceCategory = compact(raw.raw_category || raw.source_category || raw.category || "");
+  const sourceCategory = decodeEntities(compact(raw.raw_category || raw.source_category || raw.category || ""));
   const nameHay = normalized([family, raw.product, raw.listing, raw.sku].filter(Boolean).join(" "));
   for (const [term, category] of FORCED_CATEGORY) {
     if (nameHay.includes(term)) return category;
@@ -453,7 +472,7 @@ function inferCategory(family, raw) {
   for (const [category, terms] of CATEGORY_TERMS) {
     if (includesAny(haystack, terms)) return category;
   }
-  return LEGACY_CATEGORIES[sourceCategory] || sourceCategory || DEFAULT_CATEGORY;
+  return LEGACY_CATEGORIES[sourceCategory] || decodeEntities(sourceCategory) || DEFAULT_CATEGORY;
 }
 
 function inferFormat(raw, category, family) {
@@ -513,6 +532,30 @@ export function discountPercentForVendor(vendor, when = new Date()) {
   return overrides.length ? Math.max(standard, ...overrides) : standard;
 }
 
+// Breaks the effective rate into the parts a shopper actually sees at
+// checkout: the vendor's sitewide sale, and the code that stacks on top.
+// The compounded figure is correct for pricing but reads wrong as a label,
+// because "49% off with SAMMYC" credits the code for the whole discount.
+export function discountBreakdownForVendor(vendor, when = new Date()) {
+  const codePercent = Number(VENDOR_CONFIG[vendor]?.discount_percent || 0);
+  const effective = discountPercentForVendor(vendor, when);
+  const sitewide = PROMOTIONS
+    .filter(promotion => promotion.vendor === vendor
+      && promotion.discount_override_percent != null
+      && Number.isFinite(Number(promotion.sale_percent))
+      && isPromotionActive(promotion, when))
+    .map(promotion => Number(promotion.sale_percent))
+    .filter(Number.isFinite)
+    .sort((a, b) => b - a)[0];
+  // Only report a split when the sale genuinely stacks on top of the code.
+  const stacks = Number.isFinite(sitewide) && effective > codePercent + 0.01;
+  return {
+    effective_percent: effective,
+    sitewide_percent: stacks ? sitewide : null,
+    code_percent: stacks ? codePercent : effective
+  };
+}
+
 function vendorMeta(vendor) {
   const base = VENDOR_CONFIG[vendor] || {
     id: slug(vendor || "unknown-vendor"),
@@ -520,7 +563,13 @@ function vendorMeta(vendor) {
     affiliate_url: "#",
     logo: ""
   };
-  return { ...base, discount_percent: discountPercentForVendor(vendor) };
+  const breakdown = discountBreakdownForVendor(vendor);
+  return {
+    ...base,
+    discount_percent: breakdown.effective_percent,
+    discount_sitewide_percent: breakdown.sitewide_percent,
+    discount_code_percent: breakdown.code_percent
+  };
 }
 
 function exclusionReason(raw) {
@@ -589,6 +638,8 @@ export function normalizeOffer(raw = {}, options = {}) {
     regular_price_min: Number.isFinite(listedMin) ? roundMoney(listedMin) : null,
     effective_price_min: Number.isFinite(effectiveMin) ? roundMoney(effectiveMin) : null,
     discount_percent: discount,
+    discount_sitewide_percent: meta.discount_sitewide_percent ?? null,
+    discount_code_percent: meta.discount_code_percent ?? discount,
     coupon_code: discount > 0 ? COUPON_CODE : "",
     in_stock: source.in_stock !== false,
     affiliate_url: compact((meta.use_product_deep_links === true ? source.url : meta.affiliate_url) || meta.affiliate_url || "#"),

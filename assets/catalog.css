@@ -1007,3 +1007,7 @@ a.seo-card-name:hover { text-decoration: underline; }
   .seo-card-name { font-size: .9rem; }
   .seo-card-fmt { display: none; }
 }
+
+/* Stacked discount label: sale first, code second, so the code is not
+   credited with the whole compounded rate. */
+.supplier-discount-plus { font-weight: 600; opacity: .82; }
