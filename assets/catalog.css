@@ -294,9 +294,9 @@
   flex: none;
 }
 .supplier-name {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
+  overflow: visible;
+  white-space: normal;
+  overflow-wrap: anywhere;
   font-size: 12px;
   font-weight: 700;
   color: var(--ink);
@@ -504,8 +504,10 @@
 .supplier-logo { width: 62px; height: 36px; flex: 0 0 62px; border: 1px solid rgba(31,58,45,.11); border-radius: 10px; background: #fff; object-fit: contain; padding: 5px 6px; box-shadow: inset 0 0 0 1px rgba(31,58,45,.03); }
 .supplier-initials { display: grid; width: 34px; height: 34px; flex: 0 0 34px; place-items: center; border: 1px solid rgba(31,58,45,.11); border-radius: 10px; background: #fff; color: var(--olive); font-size: 10px; font-weight: 900; }
 .supplier-copy { min-width: 0; }
-.supplier-name-row { display: flex; align-items: center; gap: 6px; min-width: 0; }
-.supplier-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; color: var(--ink); font-size: 13px; font-weight: 900; }
+.supplier-name-row { display: flex; align-items: center; gap: 6px; min-width: 0; flex-wrap: wrap; row-gap: 3px; }
+/* Vendor names must never truncate: the name is the identifying element of
+   the row. Wrap instead, and let the badge drop to a new line if needed. */
+.supplier-name { overflow: visible; white-space: normal; overflow-wrap: anywhere; color: var(--ink); font-size: 13px; font-weight: 900; line-height: 1.2; }
 .supplier-best { border-radius: 999px; background: linear-gradient(135deg, #2f8f4e, #24713e); color: #fff; padding: 2px 8px; font-size: 8px; font-weight: 900; letter-spacing: .7px; text-transform: uppercase; box-shadow: 0 2px 6px rgba(36,113,62,.4); }
 .supplier-meta-line { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; margin-top: 3px; color: var(--muted); font-size: 10px; font-weight: 700; }
 .supplier-variant-line { display: inline-flex; align-items: center; gap: 4px; margin: 0; border-radius: 999px; background: #eef2e9; color: var(--olive); padding: 2px 6px; font-size: 9px; font-weight: 850; }
@@ -1010,4 +1012,6 @@ a.seo-card-name:hover { text-decoration: underline; }
 
 /* Stacked discount label: sale first, code second, so the code is not
    credited with the whole compounded rate. */
-.supplier-discount-plus { font-weight: 600; opacity: .82; }
+/* .supplier-discount is inline-flex, so the whitespace text node before this
+   span is dropped. Space it explicitly rather than relying on markup. */
+.supplier-discount-plus { font-weight: 600; opacity: .82; margin-left: 4px; }

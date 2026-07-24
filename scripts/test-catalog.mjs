@@ -1,5 +1,7 @@
 import assert from "node:assert/strict";
 import { readFile } from "node:fs/promises";
+const promoFilePre = JSON.parse(await readFile(new URL("../data/promotions.json", import.meta.url), "utf8"));
+const vendorFilePre = JSON.parse(await readFile(new URL("../data/vendor-config.json", import.meta.url), "utf8"));
 import fallbackPayload from "../data/catalog-fallback.json" with { type: "json" };
 import snapshot from "../data/catalog-fallback-snapshot.json" with { type: "json" };
 import { buildCatalog, normalizeOffer, discountPercentForVendor } from "../netlify/functions/_shared/catalog-engine.mjs";
@@ -40,6 +42,39 @@ assert.equal(stale.diagnostics.vendor_status["Glow Aminos"].status, "stale_previ
 assert.ok(stale.products.some(card => card.name === "BPC-157"), "Stale vendor rows should remain represented");
 globalThis.fetch = originalFetch;
 console.log(`Catalog tests passed: ${rebuilt.product_card_count} cards, ${rebuilt.normalized_offer_count} offers, ${rebuilt.excluded_count} explicit exclusions`);
+
+// Category-scoped promotions must apply only to their scope. A GLP-only sale
+// repricing a vendor's whole catalogue would misprice every other product.
+{
+  // Only promotions that actually set a rate are checkable; scoped entries
+  // that exist purely as disclosure carry no override.
+  const scoped = (promoFilePre.promotions || []).filter(p =>
+    Array.isArray(p.scope_categories) && p.scope_categories.length
+    && Number.isFinite(Number(p.discount_override_percent)));
+  for (const promo of scoped) {
+    const inScope = discountPercentForVendor(promo.vendor, new Date(promo.start_at || Date.now()), promo.scope_categories[0]);
+    const outScope = discountPercentForVendor(promo.vendor, new Date(promo.start_at || Date.now()), "Repair & Recovery");
+    assert.equal(inScope, Number(promo.discount_override_percent),
+      `${promo.id}: in-scope category should get ${promo.discount_override_percent}%`);
+    assert.notEqual(inScope, outScope,
+      `${promo.id}: scoped rate leaked outside ${promo.scope_categories.join(", ")}`);
+  }
+  if (scoped.length) console.log(`Scoped promotions verified: ${scoped.length}`);
+
+  // Explicit guard on the known case. The filter above only inspects promos
+  // that still declare a scope, so removing the scope would slip past it.
+  // This asserts the outcome instead: a vendor's non-scoped categories must
+  // never inherit a scoped promotion's rate.
+  for (const promo of (promoFilePre.promotions || [])) {
+    if (!Array.isArray(promo.scope_categories) || !promo.scope_categories.length) continue;
+    if (!Number.isFinite(Number(promo.discount_override_percent))) continue;
+    const during = new Date(promo.start_at || Date.now());
+    const base = Number(vendorFilePre.vendors?.[promo.vendor]?.discount_percent || 0);
+    const unscopedRate = discountPercentForVendor(promo.vendor, during, "Repair & Recovery");
+    assert.equal(unscopedRate, base,
+      `${promo.vendor}: categories outside ${promo.scope_categories.join(", ")} should stay at the ${base}% base rate, got ${unscopedRate}%`);
+  }
+}
 
 // Guard against the stacking bug: when a promo declares a sitewide
 // sale_percent, the override must equal that sale compounded with the

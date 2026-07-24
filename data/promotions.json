@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-24-label-parts-v1",
+  "version": "2026-07-24-scoped-glp-v1",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-23T22:00:00-04:00",
+  "updated_at": "2026-07-24T09:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -293,7 +293,10 @@
       "show_vendor_badge": false,
       "pricing_reviewed": false,
       "priority": 200,
-      "superseded_by": "disguised-alpha-glp-weekend-jul-2026"
+      "superseded_by": "disguised-alpha-glp-weekend-jul-2026",
+      "scope_categories": [
+        "GLP-1 & Incretin"
+      ]
     },
     {
       "id": "disguised-alpha-glp-weekend-jul-2026",
@@ -315,7 +318,11 @@
       "show_in_rolodex": true,
       "show_in_announce_bar": true,
       "show_vendor_badge": false,
-      "priority": 600
+      "priority": 600,
+      "discount_override_percent": 25,
+      "scope_categories": [
+        "GLP-1 & Incretin"
+      ]
     }
   ]
 }

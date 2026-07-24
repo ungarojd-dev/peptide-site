@@ -523,10 +523,24 @@ function isPromotionActive(promotion, when = new Date()) {
   return now >= starts && now <= ends;
 }
 
-export function discountPercentForVendor(vendor, when = new Date()) {
+// A promotion may limit itself to certain categories via scope_categories.
+// Without this a GLP-only sale would reprice a vendor's whole catalogue.
+// An unscoped promotion applies everywhere, which is the common case.
+function promotionAppliesToCategory(promotion, category) {
+  const scope = promotion.scope_categories;
+  if (!Array.isArray(scope) || !scope.length) return true;
+  if (!category) return false;
+  const target = normalized(category);
+  return scope.some(entry => normalized(entry) === target);
+}
+
+export function discountPercentForVendor(vendor, when = new Date(), category = null) {
   const standard = Number(VENDOR_CONFIG[vendor]?.discount_percent || 0);
   const overrides = PROMOTIONS
-    .filter(promotion => promotion.vendor === vendor && promotion.discount_override_percent != null && isPromotionActive(promotion, when))
+    .filter(promotion => promotion.vendor === vendor
+      && promotion.discount_override_percent != null
+      && isPromotionActive(promotion, when)
+      && promotionAppliesToCategory(promotion, category))
     .map(promotion => Number(promotion.discount_override_percent))
     .filter(Number.isFinite);
   return overrides.length ? Math.max(standard, ...overrides) : standard;
@@ -536,14 +550,15 @@ export function discountPercentForVendor(vendor, when = new Date()) {
 // checkout: the vendor's sitewide sale, and the code that stacks on top.
 // The compounded figure is correct for pricing but reads wrong as a label,
 // because "49% off with SAMMYC" credits the code for the whole discount.
-export function discountBreakdownForVendor(vendor, when = new Date()) {
+export function discountBreakdownForVendor(vendor, when = new Date(), category = null) {
   const codePercent = Number(VENDOR_CONFIG[vendor]?.discount_percent || 0);
-  const effective = discountPercentForVendor(vendor, when);
+  const effective = discountPercentForVendor(vendor, when, category);
   const sitewide = PROMOTIONS
     .filter(promotion => promotion.vendor === vendor
       && promotion.discount_override_percent != null
       && Number.isFinite(Number(promotion.sale_percent))
-      && isPromotionActive(promotion, when))
+      && isPromotionActive(promotion, when)
+      && promotionAppliesToCategory(promotion, category))
     .map(promotion => Number(promotion.sale_percent))
     .filter(Number.isFinite)
     .sort((a, b) => b - a)[0];
@@ -556,14 +571,14 @@ export function discountBreakdownForVendor(vendor, when = new Date()) {
   };
 }
 
-function vendorMeta(vendor) {
+function vendorMeta(vendor, category = null) {
   const base = VENDOR_CONFIG[vendor] || {
     id: slug(vendor || "unknown-vendor"),
     discount_percent: 0,
     affiliate_url: "#",
     logo: ""
   };
-  const breakdown = discountBreakdownForVendor(vendor);
+  const breakdown = discountBreakdownForVendor(vendor, new Date(), category);
   return {
     ...base,
     discount_percent: breakdown.effective_percent,
@@ -603,9 +618,11 @@ export function normalizeOffer(raw = {}, options = {}) {
   if (isExcluded(raw)) return null;
   const source = { ...raw };
   const vendor = compact(source.company || source.vendor || "Unknown vendor");
-  const meta = vendorMeta(vendor);
   const canonical = findCanonicalRecord(source);
   const category = canonical.category && canonical.category !== DEFAULT_CATEGORY ? canonical.category : inferCategory(canonical.name, source);
+  // Category is resolved first so a category-scoped promotion can be applied
+  // to this offer specifically rather than to the vendor as a whole.
+  const meta = vendorMeta(vendor, category);
   const format = inferFormat(source, category, canonical.name);
   const quantity = inferQuantity(source, canonical.name, format);
   const listedPrices = priceNumbers(source.sale_price || source.price);
