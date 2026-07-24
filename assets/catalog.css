@@ -514,7 +514,10 @@
 .supplier-variant-line span { color: var(--muted); font-size: 7px; letter-spacing: .55px; text-transform: uppercase; }
 .supplier-listing { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; margin-top: 3px; color: var(--muted); font-size: 9.5px; font-weight: 650; }
 .supplier-sub { display: flex; gap: 5px; flex-wrap: wrap; margin-top: 4px; color: var(--muted); font-size: 10px; }
-.supplier-discount { display: inline-flex; align-items: center; border-radius: 999px; background: rgba(47,143,78,.12); color: #24713e; font-weight: 900; padding: 2px 8px; font-size: 9.5px; }
+/* inline-block, not inline-flex: as a flex container the two children wrapped
+   their text independently and rendered as side-by-side columns. Normal inline
+   flow keeps it one sentence that wraps as a sentence. */
+.supplier-discount { display: inline-block; border-radius: 999px; background: rgba(47,143,78,.12); color: #24713e; font-weight: 900; padding: 2px 8px; font-size: 9.5px; line-height: 1.35; }
 .supplier-oos { display: inline-flex; align-items: center; border-radius: 999px; background: rgba(164,71,62,.13); color: #a4473e; font-weight: 900; padding: 1px 7px; font-size: 9px; }
 .supplier-price-wrap { text-align: right; flex: none; }
 .supplier-regular { color: #a5a39d; font-size: 10px; font-weight: 700; text-decoration: line-through; }
@@ -1012,6 +1015,4 @@ a.seo-card-name:hover { text-decoration: underline; }
 
 /* Stacked discount label: sale first, code second, so the code is not
    credited with the whole compounded rate. */
-/* .supplier-discount is inline-flex, so the whitespace text node before this
-   span is dropped. Space it explicitly rather than relying on markup. */
-.supplier-discount-plus { font-weight: 600; opacity: .82; margin-left: 4px; }
+.supplier-discount-plus { font-weight: 600; opacity: .82; white-space: nowrap; }
