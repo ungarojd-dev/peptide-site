@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260724-label-flow-v1";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260724-a11y-v2";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -392,7 +392,7 @@
       const badgeHtml=`<span class="dc-badge">${escapeHtml(deal.badge||"Limited Time Deal")}</span>`;
       const stackChip=isStackable(deal)?`<span class="dc-stack">+SAMMYC</span>`:"";
       const logo=dealLogoPath(deal.display_vendor||deal.vendor);
-      const logoHtml=logo?`<img class="dc-logo" src="${escapeHtml(logo)}" alt="" loading="lazy">`:"";
+      const logoHtml=logo?`<img class="dc-logo" src="${escapeHtml(logo)}" alt="" width="46" height="30" loading="lazy">`:"";
       const pinClass=deal.pinned?" dc-card--pinned":"";
       const brand=deal.brand_color||"";
       track.innerHTML=`<a class="dc-card${pinClass}"${brand?` style="--bc:${escapeHtml(brand)}"`:""} href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><div class="dc-card-body"><div class="dc-top">${badgeHtml}<span class="dc-vendor-wrap">${logoHtml}<span class="dc-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span></span>${stackChip}</div><strong class="dc-headline">${escapeHtml(headline)}</strong><span class="dc-detail">${escapeHtml(deal.short_detail||"")}</span></div><span class="dc-cta">View Deal ›</span></a>`;

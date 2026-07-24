@@ -336,7 +336,7 @@
 .supplier-discount { color: var(--olive); font-weight: 700; }
 .supplier-oos { color: var(--danger); font-weight: 700; }
 .supplier-price-wrap { text-align: right; flex: none; }
-.supplier-regular { color: #ABABAB; font-size: 9px; text-decoration: line-through; }
+.supplier-regular { color: #6B6862; font-size: 9px; text-decoration: line-through; }
 .supplier-price { color: var(--forest); font-size: 13px; font-weight: 800; font-family: var(--font-display); }
 .supplier-go { margin-top: 2px; color: var(--olive); font-size: 9px; font-weight: 700; }
 
@@ -520,7 +520,8 @@
 .supplier-discount { display: inline-block; border-radius: 999px; background: rgba(47,143,78,.12); color: #24713e; font-weight: 900; padding: 2px 8px; font-size: 9.5px; line-height: 1.35; }
 .supplier-oos { display: inline-flex; align-items: center; border-radius: 999px; background: rgba(164,71,62,.13); color: #a4473e; font-weight: 900; padding: 1px 7px; font-size: 9px; }
 .supplier-price-wrap { text-align: right; flex: none; }
-.supplier-regular { color: #a5a39d; font-size: 10px; font-weight: 700; text-decoration: line-through; }
+/* #a5a39d was 2.52:1 on white, below the 4.5:1 WCAG AA minimum. */
+.supplier-regular { color: #6B6862; font-size: 10px; font-weight: 700; text-decoration: line-through; }
 .supplier-price { color: var(--forest); font-family: var(--font-display); font-size: 17px; font-weight: 900; line-height: 1.05; }
 .supplier-go { display: inline-flex; margin-top: 5px; border-radius: 999px; background: #111; color: #fff; padding: 5px 8px; font-size: 9px; font-weight: 900; text-transform: uppercase; }
 .supplier-promos { display: flex; gap: 4px; flex-wrap: wrap; margin-top: 6px; }

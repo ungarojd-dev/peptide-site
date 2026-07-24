@@ -1286,3 +1286,24 @@ body.theme-dark .deal-carousel .dc-vendor-wrap span { color: #e8f2cf !important;
   .ann-nav { width: 20px; height: 20px; font-size: 13px; }
   .ann-dots { display: none; }
 }
+
+/* ── CAROUSEL DOT TAP TARGETS ── */
+/* Dots were 7px (deals) and 4px (announcements) against a 44px comfortable
+   minimum. The visual size is deliberate, so expand the hit area with a
+   transparent pseudo-element instead of enlarging the dot itself. */
+.dc-dot, .ann-dot { position: relative; }
+/* Width is capped to the dot pitch so neighbouring hit areas cannot overlap
+   and steal each other's taps. Height is free to reach a comfortable size.
+   A 20px gap puts the pitch at 26px, clearing the 24px target width so the
+   areas sit flush without overlapping. Meets WCAG 2.5.8 AA. */
+.dc-dot::after, .ann-dot::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 24px;
+  height: 40px;
+  transform: translate(-50%, -50%);
+}
+.deal-carousel-dots { gap: 20px; }
+.ann-dots { gap: 20px; }
