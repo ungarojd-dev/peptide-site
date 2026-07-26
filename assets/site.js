@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260726-deals-portal-v1";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260726-portal-clarity-v1";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -297,7 +297,7 @@
     const b=dealBuckets(all);
     const section=(title,cls,items)=> items.length?`<div class="deals-group ${cls}"><h3>${title} <span class="deals-group-n">${items.length}</span></h3>${items.map(dealLineHtml).join("")}</div>`:"";
     const total=b.ending.length+b.live.length+b.upcoming.length;
-    return `<div class="deals-panel-backdrop" data-deals-backdrop hidden><section class="deals-panel" role="dialog" aria-modal="true" aria-labelledby="deals-panel-title"><header class="deals-panel-header"><div><span class="deals-eyebrow">Live roundup</span><h2 id="deals-panel-title">Today's Deals</h2></div><button class="deals-close" type="button" data-deals-close aria-label="Close deals">×</button></header><div class="deals-panel-scroll">${section("Ending soon","is-ending",b.ending)}${section("Live now","is-live",b.live)}${section("Upcoming","is-upcoming",b.upcoming)}${section("Standing codes","is-standing",b.standing)}${total+b.standing.length===0?'<p class="deals-empty">No active deals right now. Check back soon.</p>':""}</div><footer class="deals-panel-footer">Prices and stacking are set by each vendor and can change. Confirm at checkout.</footer></section></div>`;
+    return `<div class="deals-panel-backdrop" data-deals-backdrop hidden><section class="deals-panel" role="dialog" aria-modal="true" aria-labelledby="deals-panel-title"><header class="deals-panel-header"><div><span class="deals-eyebrow">Live roundup</span><h2 id="deals-panel-title">Today's Deals</h2></div><button class="deals-close" type="button" data-deals-close aria-label="Close deals">×</button></header><div class="deals-panel-scroll">${section("Ending soon","is-ending",b.ending)}${section("Live now","is-live",b.live)}${section("Upcoming","is-upcoming",b.upcoming)}${section("Always on","is-standing",b.standing)}${total+b.standing.length===0?'<p class="deals-empty">No active deals right now. Check back soon.</p>':""}</div><footer class="deals-panel-footer">Prices and stacking are set by each vendor and can change. Confirm at checkout.</footer></section></div>`;
   };
   let dealsPanelRoot=null;
   const openDealsPanel=()=>{ if(dealsPanelRoot){ dealsPanelRoot.hidden=false; document.body.classList.add("deals-panel-open"); dealsPanelRoot.querySelector("[data-deals-close]")?.focus(); } };

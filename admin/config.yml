@@ -1,18 +1,13 @@
 # Decap CMS config for the MyPeptidePrice deals portal.
-#
-# Backend uses Git Gateway, which pairs with the Netlify Identity you already
-# have enabled. No OAuth app needed. You log in at /admin with your Identity
-# account (ungarojd@gmail.com) and publishing commits straight to the repo.
+# Login uses the Netlify Identity + Git Gateway you already enabled.
 
 backend:
   name: git-gateway
   branch: main
 
-# Where uploaded media would go if you ever add image fields. Harmless as-is.
 media_folder: "assets/uploads"
 public_folder: "/assets/uploads"
 
-# Small quality-of-life: show a live preview link after publishing.
 site_url: https://mypeptideprice.com
 display_url: https://mypeptideprice.com
 logo_url: https://mypeptideprice.com/assets/brand/logo-symbol.png
@@ -21,21 +16,23 @@ collections:
   - name: deals
     label: "Deals & Promotions"
     label_singular: "Deal"
-    description: "Add, edit, or end vendor deals. Changes go live across the announcement strip, deal carousel, and the Today's Deals roundup automatically."
+    description: "Add, edit, or end vendor deals. Changes go live across the announcement strip, deal carousel, and Today's Deals roundup automatically."
     files:
       - name: deals
         label: "All Deals"
         file: "data/deals.json"
-        description: "Every active, upcoming, and standing deal."
         fields:
           - label: "Deals"
             name: "deals"
             widget: "list"
             summary: "{{fields.vendor}}: {{fields.headline}}"
             fields:
-              - label: "Vendor"
+
+              # ── STEP 1: THE BASICS (fill these for every deal) ──
+              - label: "① Vendor"
                 name: "vendor"
                 widget: "select"
+                hint: "Which vendor is running this deal."
                 options:
                   - "Glacier Aminos"
                   - "Ion Peptide"
@@ -53,62 +50,70 @@ collections:
                   - "Disguised Alpha"
                   - "Orbitrex Peptides"
                   - "SammyC's Skool"
-              - label: "Deal type"
+
+              - label: "② Deal type"
                 name: "type"
                 widget: "select"
-                hint: "Determines how it prices and displays."
+                hint: "Pick the kind of deal. This decides which pricing fields below you need to fill in (see the notes on each)."
                 options:
-                  - { label: "Sitewide sale (a % off the store)", value: "sitewide_sale" }
-                  - { label: "Code only (just the SAMMYC code)", value: "code_only" }
-                  - { label: "Conditional (buy-x-get-y, bulk)", value: "conditional" }
-                  - { label: "First order (new-customer code)", value: "first_order" }
-                  - { label: "New partner announcement", value: "new_partner" }
-                  - { label: "Community / other announcement", value: "community" }
-              - label: "Headline"
+                  - { label: "Sitewide sale, a % off the whole store", value: "sitewide_sale" }
+                  - { label: "Code only, just the SAMMYC code, no sale", value: "code_only" }
+                  - { label: "Conditional, buy-x-get-y or bulk pricing", value: "conditional" }
+                  - { label: "First order, new-customer code", value: "first_order" }
+                  - { label: "New partner, 'now tracked' announcement", value: "new_partner" }
+                  - { label: "Community, Skool or other announcement", value: "community" }
+
+              - label: "③ Headline"
                 name: "headline"
                 widget: "string"
-                hint: "Short, e.g. '40% off sitewide'. Shows on the strip and roundup."
-              - label: "Description"
+                hint: "The short line people see, e.g. '40% off sitewide'. Keep it to a few words."
+
+              - label: "④ Description"
                 name: "description"
                 widget: "text"
                 required: false
-                hint: "The full sentence shown in the deal carousel and detail views."
-              - label: "Sale percent"
+                hint: "Optional. A full sentence with the details, shown in the big deal carousel."
+
+              # STEP 2: PRICING, only for Sitewide sale deals
+              # For every other deal type, LEAVE ALL FOUR OF THESE BLANK.
+              - label: "---  PRICING (only for a Sitewide sale)  ---"
+                name: "_pricing_divider"
+                widget: "hidden"
+                required: false
+
+              - label: "Sale %, the storewide discount"
                 name: "sale_percent"
                 widget: "number"
                 required: false
-                hint: "SITEWIDE SALE ONLY. The storewide % (e.g. 40). Leave blank if this is a flat-rate deal."
                 value_type: "int"
                 min: 0
                 max: 100
-              - label: "Code percent"
+                hint: "The store's own sale %, e.g. 40. Pair this with 'Extra code %' below. LEAVE BLANK for a flat-rate deal or any non-sale deal."
+
+              - label: "Extra code %, what SAMMYC stacks on top"
                 name: "code_percent"
                 widget: "number"
                 required: false
-                hint: "SITEWIDE SALE ONLY. The extra % the SAMMYC code stacks (usually 15, sometimes 10). Leave blank to use the vendor default."
                 value_type: "int"
                 min: 0
                 max: 100
-              - label: "Flat rate (no stacking)"
+                hint: "The extra % the code adds on top of the sale, usually 15 (sometimes 10). Blank = use the vendor's default."
+
+              - label: "OR Flat rate %, one all-in number, no stacking"
                 name: "flat_rate"
                 widget: "number"
                 required: false
-                hint: "SITEWIDE SALE ONLY. Use INSTEAD of sale+code when the deal is one all-in number that does NOT stack a separate code (e.g. Mile High '34% off with any code')."
                 value_type: "int"
                 min: 0
                 max: 100
-              - label: "Code"
-                name: "code"
-                widget: "string"
-                required: false
-                default: "SAMMYC"
-                hint: "The coupon code. Usually SAMMYC; for first-order deals use their code (e.g. NEWCOFFEE20)."
+                hint: "Use this INSTEAD of the two fields above when the deal is a single number that does NOT stack, e.g. Mile High '34% off with any code'. If you fill this, leave Sale % and Extra code % blank."
+
               - label: "Limit to categories"
                 name: "scope_categories"
                 widget: "select"
                 multiple: true
                 required: false
-                hint: "Leave empty for a whole-store sale. Set to limit the deal to certain product types (e.g. a GLP-only sale)."
+                hint: "Almost always leave EMPTY (whole-store sale). Only set this for a sale limited to certain products, e.g. a GLP-only weekend."
                 options:
                   - "GLP-1 & Incretin"
                   - "Cognitive & Nootropic"
@@ -119,46 +124,76 @@ collections:
                   - "Skin, Tanning & Sexual Health"
                   - "Bioregulators"
                   - "Supplies"
+
+              - label: "Coupon code"
+                name: "code"
+                widget: "string"
+                required: false
+                default: "SAMMYC"
+                hint: "Usually SAMMYC. For a first-order deal, put their code here instead, e.g. NEWCOFFEE20."
+
+              # ── STEP 3: TIMING (blank dates = ongoing / always on) ──
+              - label: "---  TIMING (blank dates = ongoing deal)  ---"
+                name: "_timing_divider"
+                widget: "hidden"
+                required: false
+
               - label: "Start date"
                 name: "start_date"
-                widget: "date"
+                widget: "datetime"
                 required: false
-                format: "YYYY-MM-DD"
-                hint: "When it begins. Leave blank if it is already live / ongoing."
+                date_format: "YYYY-MM-DD"
+                time_format: false
+                picker_utc: false
+                hint: "When it begins. Blank = it's already live."
+
               - label: "End date"
                 name: "end_date"
-                widget: "date"
+                widget: "datetime"
                 required: false
-                format: "YYYY-MM-DD"
-                hint: "Last day of the deal. Leave blank for ongoing / evergreen deals."
+                date_format: "YYYY-MM-DD"
+                time_format: false
+                picker_utc: false
+                hint: "Last day of the deal. Blank = ongoing / always on."
+
               - label: "Timezone"
                 name: "timezone"
                 widget: "select"
                 default: "America/New_York"
+                hint: "The vendor's timezone, so the end date is correct. Eastern for most."
                 options:
                   - { label: "Eastern (most vendors)", value: "America/New_York" }
                   - { label: "Central", value: "America/Chicago" }
                   - { label: "Mountain", value: "America/Denver" }
                   - { label: "Pacific", value: "America/Los_Angeles" }
+
+              # ── STEP 4: WHERE IT SHOWS ──
+              - label: "---  WHERE IT SHOWS  ---"
+                name: "_display_divider"
+                widget: "hidden"
+                required: false
+
               - label: "Show in"
                 name: "show_in"
                 widget: "select"
                 multiple: true
                 default: ["roundup"]
-                hint: "Where this deal appears. Roundup = the Today's Deals panel. Strip = the top announcement bar. Carousel = the big Current Vendor Deals slider."
+                hint: "Tick where it appears. Roundup = Today's Deals panel (safe default). Strip = the thin top bar. Carousel = the big slider. Big sales get all three; small ongoing offers usually just roundup."
                 options:
                   - { label: "Today's Deals roundup", value: "roundup" }
                   - { label: "Announcement strip (top bar)", value: "strip" }
                   - { label: "Deal carousel (big slider)", value: "carousel" }
+
               - label: "Affiliate URL"
                 name: "affiliate_url"
                 widget: "string"
                 required: false
-                hint: "Where the deal links. Leave blank to use the vendor's default affiliate link."
+                hint: "Optional. Blank = use the vendor's default link."
+
               - label: "Priority"
                 name: "priority"
                 widget: "number"
                 required: false
                 value_type: "int"
                 default: 300
-                hint: "Higher shows first when multiple deals compete for a slot. Big sales ~500, standing offers ~200."
+                hint: "Optional. Higher shows first when deals compete for a spot. Big sales ~500, ongoing offers ~200. 300 is a fine default."

@@ -35,7 +35,9 @@ const slug = s => String(s || "").toLowerCase().replace(/[^a-z0-9]+/g, "-").repl
 // Convert a plain date (YYYY-MM-DD) plus a timezone into an ISO instant. Start
 // is midnight, end is 23:59 local, so a deal dated the 26th ends when the 26th
 // ends in its own timezone rather than in UTC.
-function offsetFor(tz, dateStr, endOfDay) {
+function offsetFor(tz, rawDate, endOfDay) {
+  // The datetime widget may hand back a full timestamp; we only want the day.
+  const dateStr = String(rawDate).slice(0, 10);
   const time = endOfDay ? "23:59:00" : "00:00:00";
   // Derive the tz offset on that date via Intl, then bake it into the string.
   const probe = new Date(`${dateStr}T${time}Z`);
@@ -135,7 +137,7 @@ function expand(deal) {
   out.show_in_rolodex = show.has("carousel");
 
   if (deal.type === "new_partner") {
-    if (deal.start_date) out.partner_since = deal.start_date;
+    if (deal.start_date) out.partner_since = String(deal.start_date).slice(0, 10);
     out.keep_after_window = false;
   }
 
