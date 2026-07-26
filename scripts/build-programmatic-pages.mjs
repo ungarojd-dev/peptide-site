@@ -348,7 +348,8 @@ const PAYMENT_GLYPHS = {
   bitcoin: "crypto", btc: "crypto", ethereum: "crypto", crypto: "crypto", usdt: "crypto", usdc: "crypto",
   cashapp: "mobile-pay", "cash-app": "mobile-pay", venmo: "mobile-pay",
   "apple-pay": "mobile-pay", "google-pay": "mobile-pay",
-  paypal: "wallet", wise: "wallet", affirm: "wallet"
+  paypal: "wallet", wise: "wallet", affirm: "wallet",
+  "idem-pay": "bank", idem: "bank"
 };
 const paySlug = value => String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 function paymentBlock(cfg, display) {

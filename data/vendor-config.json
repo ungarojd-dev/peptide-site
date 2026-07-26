@@ -1,5 +1,5 @@
 {
-  "version": "3.4.0",
+  "version": "3.5.0",
   "coupon_code": "SAMMYC",
   "vendors": {
     "Glacier Aminos": {
@@ -254,6 +254,21 @@
       ],
       "brand_color": "#de0d5b",
       "package_protection_required": false
+    },
+    "Orbitrex Peptides": {
+      "id": "orbitrex-peptides",
+      "discount_percent": 15,
+      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
+      "logo": "/assets/vendor-logos/orbitrex-peptides.webp",
+      "use_product_deep_links": false,
+      "payment_methods": [
+        "Visa",
+        "Discover",
+        "IDEM Pay"
+      ],
+      "brand_color": "#4aa132",
+      "package_protection_required": true,
+      "pending_feed": true
     }
   }
 }

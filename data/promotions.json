@@ -1,7 +1,7 @@
 {
-  "version": "2026-07-24-partner-sheet-v2",
+  "version": "2026-07-25-orbitrex-partner-v1",
   "timezone": "America/New_York",
-  "updated_at": "2026-07-24T16:16:31-04:00",
+  "updated_at": "2026-07-25T12:00:00-04:00",
   "promotions": [
     {
       "id": "skool-launch-announcement",
@@ -325,6 +325,21 @@
       "scope_categories": [
         "GLP-1 & Incretin"
       ]
+    },
+    {
+      "id": "orbitrex-new-partner",
+      "vendor": "Orbitrex Peptides",
+      "display_vendor": "Orbitrex Peptides",
+      "show_in_strip": true,
+      "strip_tube": "New partner",
+      "strip_offer": "Now tracked, 15% off",
+      "strip_code": null,
+      "strip_stack": "SAMMYC",
+      "partner_since": "2026-07-25",
+      "keep_after_window": false,
+      "brand_color": "#4aa132",
+      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
+      "cta_text": "View prices"
     }
   ]
 }
