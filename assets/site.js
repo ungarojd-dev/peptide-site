@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260725-orbitrex-v2";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260726-deals-roundup-v3";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -250,6 +250,77 @@
     promoPanelRoot.querySelectorAll("[data-promo-affiliate='1']").forEach(link=>link.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Active deals panel",product_category:"promotion",button_text:"Visit vendor",button_location:"active_deals_panel",affiliate_network:"direct_vendor",vendor_name:link.dataset.promoVendor||"",affiliate_url:link.href})}));
   }
   const splitHeadlineBadge=headline=>({badge:null,text:headline});
+
+  // ── Today's Deals roundup ──────────────────────────────────────────────
+  // A single concise panel of everything happening now, opened from the
+  // header button. Generated entirely from promotions.json so it can never go
+  // stale: buckets are computed from each promo's own start/end dates.
+  function dealBuckets(all){
+    const now=Date.now();
+    const HOUR=3.6e6;
+    const b={ending:[],live:[],upcoming:[],standing:[]};
+    for(const p of all){
+      const offer=p.strip_offer||p.announce_offer||p.headline||p.short_detail||"";
+      if(!offer && p.discount_override_percent==null && !p.show_in_strip) continue;
+      const start=p.start_at?new Date(p.start_at).getTime():null;
+      const end=p.end_at?new Date(p.end_at).getTime():null;
+      const active=(!start||start<=now)&&(!end||end>=now);
+      const item={
+        vendor:p.display_vendor||p.vendor||"",
+        offer,
+        sale:Number.isFinite(Number(p.sale_percent))?Number(p.sale_percent):null,
+        code:Number.isFinite(Number(p.code_percent))?Number(p.code_percent):null,
+        stack:p.strip_stack||"SAMMYC",
+        url:p.affiliate_url||"#",
+        vendorKey:p.vendor||"",
+        endLabel:end?new Date(end).toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"America/New_York"}):"",
+        startLabel:start?new Date(start).toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"America/New_York"}):""
+      };
+      if(start&&start>now){ b.upcoming.push(item); }
+      else if(active&&end){ ((end-now)<=48*HOUR ? b.ending : b.live).push(item); }
+      else if(active&&!end){
+        const isStanding=p.strip_tube==="New partner"||/skool|community/i.test(item.vendor)||/first order|new customer/i.test(offer);
+        (isStanding?b.standing:b.live).push(item);
+      }
+    }
+    return b;
+  }
+  function dealLineHtml(it){
+    // Show both parts when a sitewide sale stacks with a code, else the single rate.
+    let rate="";
+    if(it.sale!=null&&it.code!=null){ rate=`<span class="deal-rate">${it.sale}% off <span class="deal-rate-plus">+ ${it.code}% with ${escapeHtml(it.stack)}</span></span>`; }
+    else if(it.code!=null){ rate=`<span class="deal-rate">${it.code}% with ${escapeHtml(it.stack)}</span>`; }
+    const when = it.endLabel?`<span class="deal-when">ends ${escapeHtml(it.endLabel)}</span>` : (it.startLabel?`<span class="deal-when">starts ${escapeHtml(it.startLabel)}</span>`:"");
+    return `<a class="deal-line" href="${escapeHtml(it.url)}" target="_blank" rel="nofollow sponsored noopener" data-deal-affiliate="1" data-deal-vendor="${escapeHtml(it.vendorKey)}"><span class="deal-line-main"><strong>${escapeHtml(it.vendor)}</strong> <span class="deal-offer">${escapeHtml(it.offer)}</span></span>${rate||""}${when}</a>`;
+  }
+  const dealsPanelMarkup=all=>{
+    const b=dealBuckets(all);
+    const section=(title,cls,items)=> items.length?`<div class="deals-group ${cls}"><h3>${title} <span class="deals-group-n">${items.length}</span></h3>${items.map(dealLineHtml).join("")}</div>`:"";
+    const total=b.ending.length+b.live.length+b.upcoming.length;
+    return `<div class="deals-panel-backdrop" data-deals-backdrop hidden><section class="deals-panel" role="dialog" aria-modal="true" aria-labelledby="deals-panel-title"><header class="deals-panel-header"><div><span class="deals-eyebrow">Live roundup</span><h2 id="deals-panel-title">Today's Deals</h2></div><button class="deals-close" type="button" data-deals-close aria-label="Close deals">×</button></header><div class="deals-panel-scroll">${section("Ending soon","is-ending",b.ending)}${section("Live now","is-live",b.live)}${section("Upcoming","is-upcoming",b.upcoming)}${section("Standing codes","is-standing",b.standing)}${total+b.standing.length===0?'<p class="deals-empty">No active deals right now. Check back soon.</p>':""}</div><footer class="deals-panel-footer">Prices and stacking are set by each vendor and can change. Confirm at checkout.</footer></section></div>`;
+  };
+  let dealsPanelRoot=null;
+  const openDealsPanel=()=>{ if(dealsPanelRoot){ dealsPanelRoot.hidden=false; document.body.classList.add("deals-panel-open"); dealsPanelRoot.querySelector("[data-deals-close]")?.focus(); } };
+  const closeDealsPanel=()=>{ if(dealsPanelRoot){ dealsPanelRoot.hidden=true; document.body.classList.remove("deals-panel-open"); } };
+  function setupDealsPanel(all){
+    if(dealsPanelRoot) dealsPanelRoot.remove();
+    const holder=document.createElement("div");
+    holder.innerHTML=dealsPanelMarkup(all);
+    dealsPanelRoot=holder.firstElementChild;
+    document.body.appendChild(dealsPanelRoot);
+    dealsPanelRoot.querySelectorAll("[data-deals-close]").forEach(btn=>btn.addEventListener("click",closeDealsPanel));
+    dealsPanelRoot.addEventListener("click",e=>{if(e.target===dealsPanelRoot)closeDealsPanel();});
+    dealsPanelRoot.querySelectorAll("[data-deal-affiliate='1']").forEach(link=>link.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Today's Deals roundup",product_category:"promotion",button_text:"Deal line",button_location:"deals_roundup_panel",affiliate_network:"direct_vendor",vendor_name:link.dataset.dealVendor||"",affiliate_url:link.href});}));
+    // Header button count = time-sensitive deals only (ending + live + upcoming).
+    const b=dealBuckets(all);
+    const count=b.ending.length+b.live.length+b.upcoming.length;
+    document.querySelectorAll("[data-deals-open]").forEach(btn=>{
+      btn.addEventListener("click",openDealsPanel);
+      const badge=btn.querySelector("[data-deals-count]");
+      if(badge){ if(count>0){ badge.textContent=String(count); badge.hidden=false; } else { badge.hidden=true; } }
+    });
+    document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeDealsPanel(); });
+  }
   function setupPromotionRolodex(promotions){
     const saleCard=document.querySelector("[data-sale-card]");
     if(!saleCard) return;
@@ -430,6 +501,7 @@
       setupPromotionPanel(promoState.active);
       setupPromotionRolodex(promoState.active);
       setupDealCarousel(promoState.active);
+      setupDealsPanel(promoState.all);
       addVendorDirectoryBadges(promoState.active);
       document.dispatchEvent(new CustomEvent("mpp:promotions-ready"));
       return promoState.active;

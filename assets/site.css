@@ -1307,3 +1307,60 @@ body.theme-dark .deal-carousel .dc-vendor-wrap span { color: #e8f2cf !important;
 }
 .deal-carousel-dots { gap: 20px; }
 .ann-dots { gap: 20px; }
+
+/* ── TODAY'S DEALS BUTTON + ROUNDUP PANEL ── */
+.nav-deals-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid rgba(169,209,58,0.4); border-radius: var(--radius-pill);
+  background: rgba(169,209,58,0.12); color: #cfe89a;
+  padding: 5px 12px; font-size: 11px; font-weight: 800; letter-spacing: .4px;
+  font-family: inherit; cursor: pointer; margin-left: 6px;
+}
+.nav-deals-btn:hover { background: rgba(169,209,58,0.22); color: #e4f6b8; }
+.nav-deals-btn { margin-left: auto; order: 2; }
+.site-nav { order: 3; }
+.nav-toggle { order: 4; }
+@media (max-width: 900px) {
+  .nav-deals-btn { margin-left: auto; margin-right: 4px; }
+}
+.nav-deals-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px;
+  background: #a9d13a; color: #0b0f0c; font-size: 9.5px; font-weight: 900; line-height: 1;
+}
+
+.deals-panel-backdrop { position: fixed; z-index: 1950; inset: 0; display: flex; align-items: center; justify-content: center; background: rgba(6,10,8,.82); padding: 16px; }
+.deals-panel-backdrop[hidden] { display: none; }
+.deals-panel {
+  width: 100%; max-width: 460px; max-height: 86vh; display: flex; flex-direction: column;
+  border: 1px solid rgba(169,209,58,0.3); border-radius: 16px; overflow: hidden;
+  background: linear-gradient(160deg,#0c110d 0%,#0a0d0b 100%);
+  box-shadow: 0 24px 70px -20px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.03);
+}
+.deals-panel-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; padding: 16px 18px 12px; border-bottom: 1px solid rgba(255,255,255,.07); }
+.deals-eyebrow { display: block; font-size: 9px; font-weight: 900; letter-spacing: 1.5px; text-transform: uppercase; color: #a9d13a; margin-bottom: 3px; }
+.deals-panel-header h2 { margin: 0; font-size: 18px; color: #fffdf8; }
+.deals-close { flex: none; width: 30px; height: 30px; border-radius: 50%; border: 1px solid rgba(255,255,255,.14); background: transparent; color: #fff; font-size: 18px; line-height: 1; cursor: pointer; }
+.deals-close:hover { background: rgba(255,255,255,.08); }
+.deals-panel-scroll { overflow-y: auto; padding: 14px 18px; display: flex; flex-direction: column; gap: 16px; }
+.deals-group h3 { margin: 0 0 8px; font-size: 11px; font-weight: 900; letter-spacing: .5px; text-transform: uppercase; display: flex; align-items: center; gap: 7px; }
+.deals-group.is-ending h3 { color: #ff8f6b; }
+.deals-group.is-live h3 { color: #a9d13a; }
+.deals-group.is-upcoming h3 { color: #6fb8ff; }
+.deals-group.is-standing h3 { color: #c8b78a; }
+.deals-group-n { display: inline-flex; align-items: center; justify-content: center; min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px; background: rgba(255,255,255,.1); color: #fff; font-size: 9.5px; font-weight: 800; }
+.deal-line { display: block; text-decoration: none; border: 1px solid rgba(255,255,255,.08); border-radius: 10px; background: rgba(255,255,255,.02); padding: 9px 12px; margin-bottom: 7px; }
+.deal-line:hover { border-color: rgba(169,209,58,.35); background: rgba(169,209,58,.05); }
+.deal-line-main { display: block; color: rgba(255,255,255,.72); font-size: 12.5px; line-height: 1.35; }
+.deal-line-main strong { color: #fffdf8; font-weight: 800; }
+.deal-offer { color: rgba(255,255,255,.72); }
+.deal-rate { display: inline-block; margin-top: 4px; font-size: 11.5px; font-weight: 800; color: #24d17e; }
+.deal-rate-plus { font-weight: 600; opacity: .85; white-space: nowrap; }
+.deal-when { display: inline-block; margin-top: 3px; margin-left: 8px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .5px; }
+.deals-empty { color: rgba(255,255,255,.55); font-size: 13px; text-align: center; padding: 24px 0; }
+.deals-panel-footer { padding: 11px 18px; border-top: 1px solid rgba(255,255,255,.07); font-size: 10.5px; color: rgba(255,255,255,.4); line-height: 1.4; }
+body.deals-panel-open { overflow: hidden; }
+@media (max-width: 700px) {
+  .deals-panel { max-height: 90vh; }
+  .nav-deals-btn { font-size: 11px; }
+}
