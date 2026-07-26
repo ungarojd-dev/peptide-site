@@ -1,0 +1,249 @@
+{
+  "_comment": "Human-editable deal source. The Decap portal at /admin edits THIS file. scripts/build-promotions.mjs expands it into data/promotions.json, which the site reads. Do not edit promotions.json by hand.",
+  "deals": [
+    {
+      "id": "skool-launch-announcement",
+      "vendor": "SammyC's Skool",
+      "type": "community",
+      "headline": "SammyC's Skool is Live",
+      "description": "SammyC's Skool community is now live. Get direct access to Sam, research peptide modules, vendor intel, and community discussion.",
+      "timezone": "America/New_York",
+      "show_in": [
+        "strip",
+        "carousel",
+        "roundup"
+      ],
+      "affiliate_url": "https://www.skool.com/sammycs-skool/about",
+      "cta_text": "Join Now"
+    },
+    {
+      "id": "glow-aminos-birthday-sale-40",
+      "vendor": "Glow Aminos",
+      "type": "sitewide_sale",
+      "headline": "40% off sitewide, stacks with SAMMYC",
+      "description": "Glow Aminos is running 40% off sitewide. Code SAMMYC stacks for an additional 15% off the reduced price, for 49% off in total. Confirm final pricing at checkout.",
+      "start_date": "2026-07-06",
+      "end_date": "2026-07-31",
+      "timezone": "America/New_York",
+      "show_in": [
+        "roundup"
+      ],
+      "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
+      "sale_percent": 40,
+      "code_percent": 15,
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "flawless-birthday-sale-40",
+      "vendor": "Flawless Compounds",
+      "type": "sitewide_sale",
+      "headline": "40% off sitewide, stacks with SAMMYC",
+      "description": "Flawless Compounds is running 40% off sitewide. Code SAMMYC stacks for an additional 15% off the reduced price, for 49% off in total. Confirm final pricing at checkout.",
+      "start_date": "2026-07-06",
+      "end_date": "2026-07-31",
+      "timezone": "America/New_York",
+      "show_in": [
+        "roundup"
+      ],
+      "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
+      "sale_percent": 40,
+      "code_percent": 15,
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "oneday-mix-and-match-lto",
+      "vendor": "Oneday Compounds",
+      "type": "sitewide_sale",
+      "headline": "35% off storewide",
+      "description": "Oneday Compounds is running 35% off storewide, excluding nasal sprays and capsules. Code SAMMYC stacks for an additional 10% off the reduced price, for 41.5% off in total. No nasal spray or capsule listings from this vendor are currently tracked here, so the exclusion does not affect displayed pricing.",
+      "timezone": "America/New_York",
+      "show_in": [
+        "roundup"
+      ],
+      "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
+      "sale_percent": 35,
+      "code_percent": 10,
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "labsourced-lto-25",
+      "vendor": "LabSourced Peptides",
+      "type": "sitewide_sale",
+      "headline": "10% off sitewide, SAMMYC boosted to 25%",
+      "description": "LabSourced Peptides is running 10% off sitewide. Code SAMMYC stacks for an additional 15% off the reduced price, for 23.5% off in total. An extra 5% is available when paying by Zelle, and tiered bulk pricing can reach higher totals. Those depend on payment method and quantity, so they are not reflected in the prices shown here.",
+      "timezone": "America/New_York",
+      "show_in": [
+        "roundup"
+      ],
+      "affiliate_url": "https://labsourced.com/?ref=SammyC",
+      "sale_percent": 10,
+      "code_percent": 15,
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "southern-aminos-25-stack",
+      "vendor": "Southern Aminos",
+      "type": "sitewide_sale",
+      "headline": "30% off sitewide, stacks with SAMMYC",
+      "description": "Southern Aminos is running 30% off sitewide. Code SAMMYC stacks for an additional 15% off the reduced price, for 40.5% off in total.",
+      "timezone": "America/New_York",
+      "show_in": [
+        "roundup"
+      ],
+      "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
+      "sale_percent": 30,
+      "code_percent": 15,
+      "cta_text": "Shop Now"
+    },
+    {
+      "id": "mile-high-sammyc-boost-30",
+      "vendor": "Mile High Peptides",
+      "type": "sitewide_sale",
+      "headline": "34% off, two days only",
+      "description": "Mile High Compounds is running 34% off for 48 hours on July 27 and July 28, 2026. Confirm final eligibility and checkout pricing directly on the vendor website.",
+      "start_date": "2026-07-27",
+      "end_date": "2026-07-28",
+      "timezone": "America/New_York",
+      "show_in": [
+        "roundup"
+      ],
+      "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
+      "display_vendor": "Mile High Compounds",
+      "cta_text": "Shop Now",
+      "flat_rate": 34
+    },
+    {
+      "id": "disguised-alpha-weekend-sale-jul-2026",
+      "vendor": "Disguised Alpha",
+      "type": "conditional",
+      "headline": "Weekend sale, two days only",
+      "description": "Disguised Alpha is running a two day weekend sale covering 20% off seven capsule products and Buy 2 Get 1 Free on five peptides. The sale runs Sunday July 19 and Monday July 20 and ends at 11:59pm Eastern. Offer scope and stacking rules are set by the vendor, confirm eligibility at checkout.",
+      "start_date": "2026-07-19",
+      "end_date": "2026-07-20",
+      "timezone": "America/New_York",
+      "show_in": [
+        "carousel",
+        "roundup"
+      ],
+      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
+      "chip_label": "Bundle offer",
+      "cta_text": "Shop sale"
+    },
+    {
+      "id": "disguised-alpha-new-partner",
+      "vendor": "Disguised Alpha",
+      "type": "new_partner",
+      "headline": "New partner: Disguised Alpha",
+      "description": "Disguised Alpha is now a tracked vendor on mypeptideprice.com. Code SAMMYC applies 10% off sitewide.",
+      "timezone": "America/New_York",
+      "show_in": [
+        "strip",
+        "roundup"
+      ],
+      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
+      "cta_text": "Shop now"
+    },
+    {
+      "id": "instant-peptides-b3g1-jul-2026",
+      "vendor": "Instant Peptides",
+      "type": "conditional",
+      "headline": "Buy 3 Get 1 Free, mix and match",
+      "description": "Instant Peptides is running a Buy 3 Get 1 Free mix and match promotion from Monday July 21 through Sunday July 26, ending 11:59pm Eastern. Any 3 products qualify, they do not need to match, and the free item is applied automatically in the cart with no code required. Code SAMMYC still applies on top for its standing 15% off, which is the same rate it gives outside the sale. Every order placed during the sale is entered into the vendor Build-A-Kit giveaway, with 3 winners selected at random by Instant Peptides. Giveaway terms, eligibility and winner selection are handled entirely by the vendor.",
+      "start_date": "2026-07-21",
+      "end_date": "2026-07-26",
+      "timezone": "America/New_York",
+      "show_in": [
+        "carousel",
+        "roundup"
+      ],
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
+      "chip_label": "Buy 3 Get 1 free",
+      "cta_text": "Shop sale"
+    },
+    {
+      "id": "coffee-first-order-evergreen",
+      "vendor": "Coffee and Peppers",
+      "type": "first_order",
+      "headline": "20% off first order",
+      "description": "",
+      "timezone": "America/New_York",
+      "show_in": [
+        "strip",
+        "roundup"
+      ],
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "code": "NEWCOFFEE20",
+      "display_vendor": "Coffee & Peppers",
+      "cta_text": "Shop now"
+    },
+    {
+      "id": "coffee-peppers-2day-jul-2026",
+      "vendor": "Coffee and Peppers",
+      "type": "sitewide_sale",
+      "headline": "15% off sitewide, two days only",
+      "description": "Coffee & Peppers is running 15% off sitewide on Saturday July 25 and Sunday July 26. Code SAMMYC stacks for an additional 15% off the reduced price, for 27.75% off in total. First time customers can additionally stack code NEWCOFFEE20 for 20% off. Confirm eligibility at checkout.",
+      "start_date": "2026-07-25",
+      "end_date": "2026-07-26",
+      "timezone": "America/New_York",
+      "show_in": [
+        "carousel",
+        "roundup"
+      ],
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "sale_percent": 15,
+      "code_percent": 15,
+      "display_vendor": "Coffee & Peppers",
+      "cta_text": "Shop sale"
+    },
+    {
+      "id": "disguised-alpha-glp-5",
+      "vendor": "Disguised Alpha",
+      "type": "code_only",
+      "headline": "5% off GLP compounds with SAMMYC",
+      "description": "Disguised Alpha applies 5% off GLP compounds when using code SAMMYC. This rate is specific to GLP products and differs from their standard sitewide rate. Confirm the applicable discount at checkout.",
+      "timezone": "America/New_York",
+      "show_in": [
+        "roundup"
+      ],
+      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
+      "scope_categories": [
+        "GLP-1 & Incretin"
+      ],
+      "cta_text": "Shop now"
+    },
+    {
+      "id": "disguised-alpha-glp-weekend-jul-2026",
+      "vendor": "Disguised Alpha",
+      "type": "sitewide_sale",
+      "headline": "25% off all GLP compounds",
+      "description": "Disguised Alpha is running 25% off all GLP compounds from Friday July 24 at 12:01am Pacific through Sunday July 26 at 11:59pm Pacific. The discount applies with any code, including SAMMYC. First time buyers additionally receive a free 3ml BAC water. This offer is limited to GLP compounds, so pricing shown here for their other products reflects their standard rate. Confirm eligibility and final pricing at checkout.",
+      "start_date": "2026-07-24",
+      "end_date": "2026-07-26",
+      "timezone": "America/Los_Angeles",
+      "show_in": [
+        "carousel",
+        "roundup"
+      ],
+      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
+      "scope_categories": [
+        "GLP-1 & Incretin"
+      ],
+      "cta_text": "Shop sale",
+      "flat_rate": 25
+    },
+    {
+      "id": "orbitrex-new-partner",
+      "vendor": "Orbitrex Peptides",
+      "type": "new_partner",
+      "headline": "Now tracked, 15% off",
+      "description": "",
+      "timezone": "America/New_York",
+      "show_in": [
+        "strip",
+        "roundup"
+      ],
+      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
+      "cta_text": "View prices"
+    }
+  ]
+}

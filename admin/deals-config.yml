@@ -1,0 +1,170 @@
+# Deals portal collection for Decap CMS.
+#
+# Add this collection to your existing /admin/config.yml (the one that already
+# powers the blog). It edits data/deals.json, the human-friendly source.
+# On publish, Decap commits to GitHub, Netlify rebuilds, and the build chain
+# runs scripts/build-promotions.mjs to expand it into promotions.json.
+#
+# IMPORTANT: for the expansion to run on deploy, add this to the Netlify build
+# command, BEFORE the fallback build:
+#   node scripts/build-promotions.mjs && node scripts/build-catalog-fallback.mjs && ...
+
+collections:
+  - name: deals
+    label: "Deals & Promotions"
+    label_singular: "Deal"
+    description: "Add, edit, or end vendor deals. Changes go live across the announcement strip, deal carousel, and the Today's Deals roundup automatically."
+    files:
+      - name: deals
+        label: "All Deals"
+        file: "data/deals.json"
+        description: "Every active, upcoming, and standing deal."
+        fields:
+          - label: "Deals"
+            name: "deals"
+            widget: "list"
+            summary: "{{fields.vendor}}: {{fields.headline}}"
+            fields:
+              - label: "Vendor"
+                name: "vendor"
+                widget: "select"
+                options:
+                  - "Glacier Aminos"
+                  - "Ion Peptide"
+                  - "LabSourced Peptides"
+                  - "Mile High Peptides"
+                  - "Southern Aminos"
+                  - "Flawless Compounds"
+                  - "Glow Aminos"
+                  - "Instant Peptides"
+                  - "Solyn Labs"
+                  - "Oneday Compounds"
+                  - "Coffee and Peppers"
+                  - "Bioedge Research Labs"
+                  - "High Tide Compounds"
+                  - "Disguised Alpha"
+                  - "Orbitrex Peptides"
+                  - "SammyC's Skool"
+
+              - label: "Deal type"
+                name: "type"
+                widget: "select"
+                hint: "Determines how it prices and displays."
+                options:
+                  - { label: "Sitewide sale (a % off the store)", value: "sitewide_sale" }
+                  - { label: "Code only (just the SAMMYC code)", value: "code_only" }
+                  - { label: "Conditional (buy-x-get-y, bulk)", value: "conditional" }
+                  - { label: "First order (new-customer code)", value: "first_order" }
+                  - { label: "New partner announcement", value: "new_partner" }
+                  - { label: "Community / other announcement", value: "community" }
+
+              - label: "Headline"
+                name: "headline"
+                widget: "string"
+                hint: "Short, e.g. '40% off sitewide'. Shows on the strip and roundup."
+
+              - label: "Description"
+                name: "description"
+                widget: "text"
+                required: false
+                hint: "The full sentence shown in the deal carousel and detail views."
+
+              - label: "Sale percent"
+                name: "sale_percent"
+                widget: "number"
+                required: false
+                hint: "SITEWIDE SALE ONLY. The storewide % (e.g. 40). Leave blank if this is a flat-rate deal."
+                value_type: "int"
+                min: 0
+                max: 100
+
+              - label: "Code percent"
+                name: "code_percent"
+                widget: "number"
+                required: false
+                hint: "SITEWIDE SALE ONLY. The extra % the SAMMYC code stacks (usually 15, sometimes 10). Leave blank to use the vendor default."
+                value_type: "int"
+                min: 0
+                max: 100
+
+              - label: "Flat rate (no stacking)"
+                name: "flat_rate"
+                widget: "number"
+                required: false
+                hint: "SITEWIDE SALE ONLY. Use INSTEAD of sale+code when the deal is one all-in number that does NOT stack a separate code (e.g. Mile High '34% off with any code')."
+                value_type: "int"
+                min: 0
+                max: 100
+
+              - label: "Code"
+                name: "code"
+                widget: "string"
+                required: false
+                default: "SAMMYC"
+                hint: "The coupon code. Usually SAMMYC; for first-order deals use their code (e.g. NEWCOFFEE20)."
+
+              - label: "Limit to categories"
+                name: "scope_categories"
+                widget: "select"
+                multiple: true
+                required: false
+                hint: "Leave empty for a whole-store sale. Set to limit the deal to certain product types (e.g. a GLP-only sale)."
+                options:
+                  - "GLP-1 & Incretin"
+                  - "Cognitive & Nootropic"
+                  - "Metabolic & Mitochondrial"
+                  - "Repair & Recovery"
+                  - "Growth Hormone Research"
+                  - "Longevity & Cellular Health"
+                  - "Skin, Tanning & Sexual Health"
+                  - "Bioregulators"
+                  - "Supplies"
+
+              - label: "Start date"
+                name: "start_date"
+                widget: "date"
+                required: false
+                format: "YYYY-MM-DD"
+                hint: "When it begins. Leave blank if it is already live / ongoing."
+
+              - label: "End date"
+                name: "end_date"
+                widget: "date"
+                required: false
+                format: "YYYY-MM-DD"
+                hint: "Last day of the deal. Leave blank for ongoing / evergreen deals."
+
+              - label: "Timezone"
+                name: "timezone"
+                widget: "select"
+                default: "America/New_York"
+                options:
+                  - { label: "Eastern (most vendors)", value: "America/New_York" }
+                  - { label: "Central", value: "America/Chicago" }
+                  - { label: "Mountain", value: "America/Denver" }
+                  - { label: "Pacific", value: "America/Los_Angeles" }
+
+              - label: "Show in"
+                name: "show_in"
+                widget: "select"
+                multiple: true
+                default: ["roundup"]
+                hint: "Where this deal appears. Roundup = the Today's Deals panel. Strip = the top announcement bar. Carousel = the big Current Vendor Deals slider."
+                options:
+                  - { label: "Today's Deals roundup", value: "roundup" }
+                  - { label: "Announcement strip (top bar)", value: "strip" }
+                  - { label: "Deal carousel (big slider)", value: "carousel" }
+
+              - label: "Affiliate URL"
+                name: "affiliate_url"
+                widget: "string"
+                required: false
+                hint: "Where the deal links. Leave blank to use the vendor's default affiliate link."
+
+              - label: "Priority"
+                name: "priority"
+                widget: "number"
+                required: false
+                value_type: "int"
+                default: 300
+                hint: "Higher shows first when multiple deals compete for a slot. Big sales ~500, standing offers ~200."
