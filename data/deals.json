@@ -85,7 +85,8 @@
     },
     {
       "show_in": [
-        "roundup"
+        "roundup",
+        "carousel"
       ],
       "vendor": "Southern Aminos",
       "sale_percent": 30,
