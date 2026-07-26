@@ -3,7 +3,6 @@
   "deals": [
     {
       "show_in": [
-        "strip",
         "carousel",
         "roundup"
       ],
