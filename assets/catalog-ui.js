@@ -289,22 +289,28 @@
     const bestBadge=isBest?`<span class="supplier-best">Lowest</span>`:"";
     const activePromos=global.MPPPromotions?.forOfferAll?.(supplier,card)||[];
     const code=esc(supplier.coupon_code||"SAMMYC");
+    // The vendor feed price already includes any storewide sale, and our math
+    // applies the standing code on top. So when a sale is active for this
+    // vendor, tell the full story ("40% off + 15% with SAMMYC") by reading both
+    // percentages from the portal. This is display only; no price is recomputed.
+    const labelPromo=activePromos.find(promotion=>Number.isFinite(Number(promotion.sale_percent))&&Number.isFinite(Number(promotion.code_percent)));
     let discount;
-    if(supplier.discount_percent){
+    if(labelPromo){
+      discount=`<span class="supplier-discount">${esc(Number(labelPromo.sale_percent))}% off <span class="supplier-discount-plus">+ ${esc(Number(labelPromo.code_percent))}% with ${code}</span></span>`;
+    }else if(supplier.discount_percent){
       discount=`<span class="supplier-discount">${esc(Number(supplier.discount_percent))}% off with ${code}</span>`;
     }else{
       discount=`<span class="supplier-discount">Code details on vendor site</span>`;
     }
-    // The vendor feed price may already include the sale. Keep the sale out of
-    // our math and disclose it separately on applicable vendor rows.
-    const salePromo=activePromos.find(promotion=>
+    const salePromo=labelPromo||activePromos.find(promotion=>
       promotion.show_in_rolodex===true||
       promotion.show_in_announcement_rolodex===true||
       promotion.show_in_announce_bar===true||
-      Number.isFinite(Number(promotion.sale_percent))||
       Number.isFinite(Number(promotion.discount_override_percent))
     );
-    const promoBadge=salePromo?`<div class="supplier-promos"><span class="supplier-promo-badge supplier-promo-badge--sale">Sale live</span></div>`:"";
+    // The sale is now stated in the discount label, so the extra "Sale live"
+    // chip is only for vendors whose sale we can't express as a clean split.
+    const promoBadge=(salePromo&&!labelPromo)?`<div class="supplier-promos"><span class="supplier-promo-badge supplier-promo-badge--sale">Sale live</span></div>`:"";
     return `<a class="supplier-row${isBest?" is-best":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}</div><div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadge}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}<div class="supplier-go">View deal</div></div></a>`;
   }
 
@@ -530,8 +536,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260726-remove-annbar-v1",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260726-remove-annbar-v1",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260726-source-of-truth-v1",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260726-source-of-truth-v1",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
