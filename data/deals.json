@@ -258,6 +258,22 @@
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "description": "20% off Sitewide\n5% off if you use ACH at checkout\nStacks with code SAMMYC 15%"
+    },
+    {
+      "priority": 300,
+      "show_in": [
+        "roundup",
+        "carousel"
+      ],
+      "vendor": "Ion Peptide",
+      "start_date": "2026-07-26",
+      "sale_percent": 20,
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Flash Sale! Up to 38% off",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "description": "20% off sitewide\n5% off if you use ACH at checkout\nCode SAMMYC stacks for additional 15%"
     }
   ]
 }
