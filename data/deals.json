@@ -69,7 +69,8 @@
     },
     {
       "show_in": [
-        "roundup"
+        "roundup",
+        "carousel"
       ],
       "vendor": "LabSourced Peptides",
       "sale_percent": 10,
