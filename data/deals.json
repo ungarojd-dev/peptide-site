@@ -103,7 +103,8 @@
       "display_vendor": "Mile High Compounds",
       "flat_rate": 34,
       "show_in": [
-        "roundup"
+        "roundup",
+        "carousel"
       ],
       "vendor": "Mile High Peptides",
       "start_date": "2026-07-27",
