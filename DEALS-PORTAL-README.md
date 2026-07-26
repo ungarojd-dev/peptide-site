@@ -1,54 +1,61 @@
 # Deals Portal
 
-A no-code way to manage every vendor deal on the site, the same way the blog
-admin works. You edit one simple form; the site updates everywhere.
+Manage every vendor deal from a form at /admin. No code, no zip files.
 
-## How it flows
+## What's included
 
-1. You open `/admin` and edit deals in the **Deals & Promotions** collection.
-2. Publishing commits `data/deals.json` to GitHub.
-3. Netlify rebuilds and runs `scripts/build-promotions.mjs`, which expands your
-   simple entries into the full `data/promotions.json` the site reads.
-4. The announcement strip, deal carousel, row labels, and Today's Deals roundup
-   all update from that one file. You never edit `promotions.json` by hand.
+- admin/index.html      the /admin page that loads the editor
+- admin/config.yml      the form definition + login wiring
+- data/deals.json       the simple deal source you edit
+- scripts/build-promotions.mjs  expands deals into the file the site reads
 
-## One-time setup
+## SETUP (do these once)
 
-**1. Merge the collection into your Decap config.**
-Open your existing `/admin/config.yml` (the one powering the blog) and add the
-`deals` collection from `admin/deals-config.yml` under its `collections:` list.
+You already have Netlify Identity enabled and your user added, so login is done.
+Two things remain:
 
-**2. Add the expander to the Netlify build command**, BEFORE the fallback build:
+### 1. Turn on Git Gateway
+This lets the /admin editor commit to your repo using your Identity login.
+- Go to app.netlify.com, your mypeptideprice site
+- Identity, then Services (or "Configuration and usage")
+- Find "Git Gateway" and click Enable
+- (It connects Identity to your GitHub repo. One click.)
 
-```
-node scripts/build-promotions.mjs && node scripts/build-catalog-fallback.mjs && node scripts/build-catalog-seo.mjs && node scripts/build-programmatic-pages.mjs
-```
+### 2. Add the build step
+So edits actually expand and go live:
+- Netlify, Project configuration, Build & deploy, Build command, Edit
+- Add to the FRONT of the existing command:
+  node scripts/build-promotions.mjs &&
+- Save
 
-If a deal is malformed (missing vendor, unknown type), `build-promotions.mjs`
-exits non-zero and **the deploy fails safely** rather than pushing bad data.
+Then deploy this zip once. Setup is complete forever.
 
-## Adding a deal (the common cases)
+## USING IT
 
-**A normal stacking sale** ("40% off, SAMMYC stacks 15%"):
-type `Sitewide sale`, headline `40% off sitewide`, sale percent `40`, code
-percent `15`, set start/end dates, tick the surfaces under "Show in".
+1. Go to mypeptideprice.com/admin
+2. Log in (your Netlify Identity email)
+3. Click Deals & Promotions, then All Deals
+4. To add: click the + on the Deals list, fill the form, click Publish
+5. To end early: open the deal, set End date to today, Publish (or delete it)
+6. Live in ~2 minutes, everywhere at once
 
-**A flat sale that does NOT stack** (Mile High "34% off with any code"):
-type `Sitewide sale`, headline `34% off`, **flat rate** `34`, leave sale/code
-percent blank.
+## DEAL TYPES (cheat sheet)
 
-**A category-limited sale** (GLP-only weekend):
-as above, then set **Limit to categories** to `GLP-1 & Incretin`.
+- Normal stacking sale (Glow "40% + SAMMYC 15%"):
+  type Sitewide sale, sale percent 40, code percent 15
+- Flat sale, no stacking (Mile High "34% with any code"):
+  type Sitewide sale, FLAT RATE 34, leave sale/code blank
+- GLP-only sale: as above, set Limit to categories = GLP-1 & Incretin
+- First-order code (Coffee NEWCOFFEE20): type First order, code NEWCOFFEE20
 
-**A first-order code** (Coffee & Peppers):
-type `First order`, code `NEWCOFFEE20`.
+## SAFETY
 
-**Ending a deal early:** set its end date to today (or delete the entry).
+If a deal is malformed (no vendor, bad type), the build fails and the bad
+deal never goes live. You'll see a failed deploy in Netlify, not a broken site.
 
-## What still needs code (rare)
+## WHAT STILL NEEDS CODE (rare)
 
-- A brand-new **deal type** the site has never shown.
-- Changes to how discounts **stack or price** (that logic lives in the engine).
+- A brand-new deal type the site has never shown
+- Changes to how discounts stack or price (engine logic)
 
-Everything else, adding/editing/ending deals, changing dates, moving a deal
-between surfaces, is fully self-serve here.
+Everything else is self-serve here.
