@@ -242,8 +242,49 @@
         "strip",
         "roundup"
       ],
+<<<<<<< HEAD
       "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
       "cta_text": "View prices"
+=======
+      "vendor": "Orbitrex Peptides",
+      "headline": "Now tracked, 15% off",
+      "timezone": "America/New_York",
+      "type": "new_partner",
+      "id": "orbitrex-new-partner",
+      "cta_text": "View prices",
+      "description": "",
+      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate"
+    },
+    {
+      "priority": 300,
+      "show_in": [
+        "roundup",
+        "carousel"
+      ],
+      "vendor": "Ion Peptide",
+      "code": "SAMMYC",
+      "code_percent": 14,
+      "headline": "Up to 38% off + Limited-Time Deals",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "description": "20% off Sitewide\n5% off if you use ACH at checkout\nStacks with code SAMMYC 15%"
+    },
+    {
+      "priority": 300,
+      "show_in": [
+        "roundup",
+        "carousel"
+      ],
+      "vendor": "Ion Peptide",
+      "start_date": "2026-07-26",
+      "sale_percent": 20,
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Flash Sale! Up to 38% off",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "description": "20% off sitewide\n5% off if you use ACH at checkout\nCode SAMMYC stacks for additional 15%"
+>>>>>>> e5f673917a7de7045d228d895938f1ae8dcb5269
     }
   ]
 }
