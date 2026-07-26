@@ -1,5 +1,10 @@
 [build]
   functions = "netlify/functions"
+  # Runs on every deploy. build-promotions expands the human-edited
+  # data/deals.json (from the /admin portal) into data/promotions.json, THEN
+  # the catalog fallback rebuilds using it, then SEO and programmatic pages.
+  # Order matters: promotions before fallback before seo/pages.
+  command = "node scripts/build-promotions.mjs && node scripts/build-catalog-fallback.mjs && node scripts/build-catalog-seo.mjs && node scripts/build-programmatic-pages.mjs"
 
 [functions]
   node_bundler = "esbuild"
