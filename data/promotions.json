@@ -1,6 +1,6 @@
 {
   "version": "deals-2026-07-26",
-  "updated_at": "2026-07-26T18:46:05.826Z",
+  "updated_at": "2026-07-26T18:55:10.354Z",
   "_generated": "Built from data/deals.json by scripts/build-promotions.mjs. Do not edit by hand.",
   "promotions": [
     {
@@ -306,6 +306,32 @@
       "show_vendor_badge": false,
       "show_in_rolodex": false,
       "keep_after_window": false
+    },
+    {
+      "id": "ion-peptide-flash-jul-2026",
+      "vendor": "Ion Peptide",
+      "display_vendor": "Ion Peptide",
+      "brand_color": "#5484e4",
+      "affiliate_url": "https://ionpeptide.com?ref=SammyC",
+      "cta_text": "Shop now",
+      "headline": "20% off sitewide",
+      "short_detail": "Ion Peptide is running 20% off sitewide. Code SAMMYC stacks for an additional 15% off. An extra 5% is available when paying by ACH at checkout.",
+      "full_detail": "Ion Peptide is running 20% off sitewide. Code SAMMYC stacks for an additional 15% off. An extra 5% is available when paying by ACH at checkout.",
+      "priority": 400,
+      "start_at": "2026-07-26T00:00:00-04:00",
+      "end_at": "2026-07-27T23:59:00-04:00",
+      "sale_percent": 20,
+      "code_percent": 15,
+      "discount_override_percent": 32,
+      "strip_stack": "SAMMYC",
+      "show_in_announce_bar": true,
+      "show_in_announcement_rolodex": true,
+      "badge": "LIMITED TIME",
+      "announce_tube": "Live now",
+      "announce_offer": "20% off sitewide",
+      "announce_note": "plus 15% with",
+      "show_vendor_badge": true,
+      "show_in_rolodex": true
     }
   ]
 }
