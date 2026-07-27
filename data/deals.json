@@ -178,12 +178,12 @@
       "sale_percent": 15,
       "end_date": "2026-07-27",
       "code_percent": 15,
-      "headline": "15% off sitewide, two days only",
+      "headline": "15% off sitewide, Stacks with code SAMMYC (15%)",
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "id": "coffee-peppers-2day-jul-2026",
       "cta_text": "Shop sale",
-      "description": "Coffee & Peppers is running 15% off sitewide on Saturday July 25 and Sunday July 26. Code SAMMYC stacks for an additional 15% off the reduced price, for 27.75% off in total. First time customers can additionally stack code NEWCOFFEE20 for 20% off. Confirm eligibility at checkout.",
+      "description": "Coffee & Peppers is running 15% off sitewide on Saturday July 25 to Sunday July 27. Code SAMMYC stacks for an additional 15% off the reduced price, for 27.75% off in total. First time customers can additionally stack code NEWCOFFEE20 for 20% off. Confirm eligibility at checkout.",
       "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc"
     },
     {
