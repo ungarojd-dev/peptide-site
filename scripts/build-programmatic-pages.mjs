@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260724-sammyc-only-v2";
+const VER = "20260726-standards-page-v1";
 const TODAY = "July 2026";
 const VALID_UNTIL = "2026-08-31";
 const BASE = "https://mypeptideprice.com";
@@ -118,12 +118,13 @@ function header() {
         </div>
       </div>
       <a href="/faq.html">FAQ</a>
+      <a href="/standards.html">Standards</a>
       <a href="/blog/">Research</a>
       <a class="nav-code-pill" href="/#compare">Use SAMMYC</a>
     </nav>
   </div>
 </header>
-<div class="coupon-strip">Independent research peptide price reference. Prices reflect the <span class="code-pill">SAMMYC</span> code where a vendor supports it. For laboratory research use only.</div>`;
+<div class="coupon-strip">Independent research peptide price reference. Prices reflect the <span class="code-pill">SAMMYC</span> code where a vendor supports it. For laboratory research use only.</div>\n<div class="rou-strip" role="note">For laboratory and research use only. Not for human consumption. Not medical advice.</div>`;
 }
 
 function footer() {
@@ -137,8 +138,8 @@ function footer() {
       <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
     </div>
     <div class="footer-col"><div class="footer-title">Compounds</div><div class="footer-links"><a href="/semaglutide-price-comparison.html">Semaglutide</a><a href="/tirzepatide-price-comparison.html">Tirzepatide</a><a href="/retatrutide-price-comparison.html">Retatrutide</a><a href="/bpc-157-price-comparison.html">BPC-157</a><a href="/compounds.html">All compounds</a></div></div>
-    <div class="footer-col"><div class="footer-title">Site</div><div class="footer-links"><a href="/#compare">Compare prices</a><a href="/vendors.html">Vendors</a><a href="/faq.html">FAQ</a><a href="/blog/">Research</a></div></div>
-    <div class="footer-col"><div class="footer-title">Legal</div><div class="footer-links"><a href="/disclaimer.html">Disclaimer</a><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a></div></div>
+    <div class="footer-col"><div class="footer-title">Site</div><div class="footer-links"><a href="/#compare">Compare prices</a><a href="/vendors.html">Vendors</a><a href="/faq.html">FAQ</a><a href="/standards.html">7/7 Standard</a><a href="/blog/">Research</a></div></div>
+    <div class="footer-col"><div class="footer-title">Legal</div><div class="footer-links"><a href="/disclaimer.html">Disclaimer</a><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="mailto:contact@mypeptideprice.com?subject=Price%20issue%20report">Report a price issue</a></div></div>
   </div>
   <div class="footer-base"><span>&copy; 2026 MyPeptidePrice.com. Independent price comparison. For research use only.</span></div>
 </footer>
