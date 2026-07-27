@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="robots" content="noindex,nofollow"/>
+<title>Deals Status | MyPeptidePrice.com</title>
+<style>
+  :root{
+    --bg:#0b0f0c; --panel:#11161200; --card:#161c17; --line:rgba(255,255,255,.08);
+    --ink:#f4f7f0; --muted:#9aa69b; --lime:#a9d13a;
+    --live:#24d17e; --ending:#ff8f6b; --upcoming:#6fb8ff; --ended:#6b6862; --warn:#ffcf5c;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;padding:20px 16px 60px}
+  .wrap{max-width:820px;margin:0 auto}
+  h1{font-size:22px;margin:0 0 4px}
+  .sub{color:var(--muted);font-size:13px;margin:0 0 20px}
+  .counts{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px}
+  .count{border:1px solid var(--line);border-radius:10px;padding:8px 12px;font-size:12px;font-weight:700}
+  .count b{font-size:16px;display:block}
+  .c-live b{color:var(--live)} .c-ending b{color:var(--ending)}
+  .c-upcoming b{color:var(--upcoming)} .c-ended b{color:var(--ended)} .c-warn b{color:var(--warn)}
+  .group-title{font-size:11px;font-weight:800;letter-spacing:.8px;text-transform:uppercase;color:var(--muted);margin:22px 0 10px}
+  .deal{border:1px solid var(--line);border-radius:12px;background:var(--card);padding:12px 14px;margin-bottom:9px;display:flex;gap:12px;align-items:flex-start}
+  .dot{flex:none;width:10px;height:10px;border-radius:50%;margin-top:5px}
+  .d-live .dot{background:var(--live)} .d-ending .dot{background:var(--ending)}
+  .d-upcoming .dot{background:var(--upcoming)} .d-ended .dot{background:var(--ended)}
+  .deal-main{flex:1;min-width:0}
+  .deal-vendor{font-weight:800;font-size:14px}
+  .deal-head{color:var(--muted);font-size:12.5px;margin-top:2px}
+  .deal-meta{margin-top:6px;font-size:11px;color:var(--muted);display:flex;gap:12px;flex-wrap:wrap}
+  .status-pill{font-size:10px;font-weight:900;letter-spacing:.5px;text-transform:uppercase;padding:2px 7px;border-radius:999px}
+  .d-live .status-pill{background:rgba(36,209,126,.15);color:var(--live)}
+  .d-ending .status-pill{background:rgba(255,143,107,.15);color:var(--ending)}
+  .d-upcoming .status-pill{background:rgba(111,184,255,.15);color:var(--upcoming)}
+  .d-ended .status-pill{background:rgba(107,104,98,.2);color:#b7b3ab}
+  .flags{margin-top:8px;display:flex;flex-direction:column;gap:4px}
+  .flag{font-size:11px;color:var(--warn);display:flex;gap:6px;align-items:flex-start}
+  .flag::before{content:"!";flex:none;width:14px;height:14px;border-radius:50%;background:var(--warn);color:#000;font-weight:900;font-size:10px;text-align:center;line-height:14px}
+  .shows{display:flex;gap:5px;flex-wrap:wrap;margin-top:6px}
+  .chip{font-size:9.5px;font-weight:700;padding:2px 6px;border-radius:6px;background:rgba(255,255,255,.06);color:var(--muted)}
+  .chip.on{background:rgba(169,209,58,.15);color:var(--lime)}
+  .err{color:var(--ending);font-size:13px}
+  .refresh{margin:6px 0 0;font-size:11px;color:var(--muted)}
+  a.edit{color:var(--lime);font-size:11px;font-weight:700;text-decoration:none;white-space:nowrap}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Deals status</h1>
+  <p class="sub">Live view of every deal, read from the same data the site uses. <a class="edit" href="/admin/">Open the portal to edit &rsaquo;</a></p>
+  <div class="counts" id="counts"></div>
+  <div id="out"><p class="refresh">Loading deals...</p></div>
+</div>
+<script>
+// Read the live promotions.json (the file the site actually serves) so this
+// dashboard can never disagree with what visitors see.
+const KNOWN_CATS = ["GLP-1 & Incretin","Cognitive & Nootropic","Metabolic & Mitochondrial","Repair & Recovery","Growth Hormone Research","Longevity & Cellular Health","Skin, Tanning & Sexual Health","Bioregulators","Supplies"];
+
+function fmt(d){ if(!d) return null; try{ return new Date(d).toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"America/New_York"}); }catch{ return null; } }
+
+function statusOf(p, now){
+  const start = p.start_at ? new Date(p.start_at).getTime() : null;
+  const end = p.end_at ? new Date(p.end_at).getTime() : null;
+  if(start && start > now) return "upcoming";
+  if(end && end < now) return "ended";
+  if(end && (end - now) <= 48*3.6e6) return "ending";
+  return "live";
+}
+
+// Flags catch the mistakes worth catching, e.g. a sitewide sale only ticked
+// for the roundup so it never reaches the strip or the big carousel.
+function flagsFor(p){
+  const out=[];
+  const isSale = Number.isFinite(Number(p.sale_percent)) || Number.isFinite(Number(p.discount_override_percent));
+  const inStrip = p.show_in_strip===true;
+  const inCarousel = p.show_in_announce_bar===true || p.show_in_rolodex===true || p.show_vendor_badge===true;
+  if(isSale && !inStrip && !inCarousel){
+    out.push("This looks like a real sale but only shows in the roundup. Add the strip and carousel so people see it.");
+  }
+  if(p.end_at){
+    const end=new Date(p.end_at).getTime();
+    if(end < Date.now()) out.push("Ended. Delete it or extend the end date in the portal.");
+  }
+  if(Array.isArray(p.scope_categories)){
+    const bad=p.scope_categories.filter(c=>!KNOWN_CATS.includes(c));
+    if(bad.length) out.push("Unknown category scope: "+bad.join(", "));
+  }
+  if(Number.isFinite(Number(p.sale_percent)) && !Number.isFinite(Number(p.code_percent))){
+    out.push("Has a sale % but no code %. The row label may not show the full stack.");
+  }
+  return out;
+}
+
+function dealCard(p, now){
+  const st = statusOf(p, now);
+  const vendor = p.display_vendor || p.vendor || "Unknown";
+  const head = p.strip_offer || p.headline || p.short_detail || "";
+  const start = fmt(p.start_at), end = fmt(p.end_at);
+  const when = end ? ("Ends "+end) : (start && st==="upcoming" ? ("Starts "+start) : "Ongoing");
+  const flags = flagsFor(p);
+  const inStrip = p.show_in_strip===true;
+  const inCarousel = p.show_in_announce_bar===true || p.show_in_rolodex===true;
+  const inRoundup = true; // everything is in the roundup
+  const chips = `<div class="shows">
+    <span class="chip ${inRoundup?'on':''}">Roundup</span>
+    <span class="chip ${inStrip?'on':''}">Strip</span>
+    <span class="chip ${inCarousel?'on':''}">Carousel</span></div>`;
+  const flagHtml = flags.length ? `<div class="flags">${flags.map(f=>`<span class="flag">${f}</span>`).join("")}</div>` : "";
+  return `<div class="deal d-${st}"><span class="dot"></span><div class="deal-main">
+    <div class="deal-vendor">${vendor} <span class="status-pill">${st}</span></div>
+    <div class="deal-head">${head}</div>
+    <div class="deal-meta"><span>${when}</span>${p.code_percent?`<span>+${p.code_percent}% ${p.strip_stack||'SAMMYC'}</span>`:""}</div>
+    ${chips}${flagHtml}
+  </div></div>`;
+}
+
+(async function(){
+  const out=document.getElementById("out");
+  const counts=document.getElementById("counts");
+  try{
+    const res=await fetch("/data/promotions.json?ts="+Date.now());
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const data=await res.json();
+    const promos=(data.promotions||[]).filter(p=>p.vendor);
+    const now=Date.now();
+    const buckets={live:[],ending:[],upcoming:[],ended:[]};
+    let warnCount=0;
+    promos.forEach(p=>{ const st=statusOf(p,now); buckets[st].push(p); if(flagsFor(p).length) warnCount++; });
+    counts.innerHTML=`
+      <div class="count c-live"><b>${buckets.live.length}</b>Live</div>
+      <div class="count c-ending"><b>${buckets.ending.length}</b>Ending soon</div>
+      <div class="count c-upcoming"><b>${buckets.upcoming.length}</b>Upcoming</div>
+      <div class="count c-ended"><b>${buckets.ended.length}</b>Ended</div>
+      <div class="count c-warn"><b>${warnCount}</b>Need attention</div>`;
+    const order=[["Ending soon","ending"],["Live now","live"],["Upcoming","upcoming"],["Ended","ended"]];
+    let html="";
+    for(const [title,key] of order){
+      if(!buckets[key].length) continue;
+      html+=`<div class="group-title">${title}</div>`;
+      html+=buckets[key].map(p=>dealCard(p,now)).join("");
+    }
+    out.innerHTML=html||'<p class="refresh">No deals found.</p>';
+  }catch(e){
+    out.innerHTML='<p class="err">Could not load deals: '+e.message+'</p>';
+  }
+})();
+</script>
+</body>
+</html>

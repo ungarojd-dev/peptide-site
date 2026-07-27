@@ -146,6 +146,18 @@ function expand(deal) {
 
 const promotions = deals.map(expand).filter(Boolean);
 
+// Non-fatal warnings surfaced in the deploy log. These catch configuration
+// mistakes (like a big sale that never reaches the strip or carousel) without
+// failing the build, since the deal is still valid, just under-shown.
+for (const promo of promotions) {
+  const isSale = Number.isFinite(Number(promo.sale_percent)) || Number.isFinite(Number(promo.discount_override_percent));
+  const inStrip = promo.show_in_strip === true;
+  const inCarousel = promo.show_in_announce_bar === true || promo.show_in_rolodex === true;
+  if (isSale && !inStrip && !inCarousel) {
+    console.warn(`  NOTE: "${promo.vendor}: ${promo.headline}" is a sale but only shows in the roundup. Consider ticking Strip and Carousel.`);
+  }
+}
+
 if (errors.length) {
   console.error("Deal expansion errors:");
   errors.forEach(e => console.error("  - " + e));

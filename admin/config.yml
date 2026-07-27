@@ -25,6 +25,7 @@ collections:
           - label: "Deals"
             name: "deals"
             widget: "list"
+            allow_add: true
             summary: "{{fields.vendor}}: {{fields.headline}}"
             fields:
 
