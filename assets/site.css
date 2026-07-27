@@ -1260,3 +1260,25 @@ body.deals-panel-open { overflow: hidden; }
   .deals-panel { max-height: 90vh; }
   .nav-deals-btn { font-size: 11px; }
 }
+
+/* ── COMPLIANCE: research-use strip + affiliate note ── */
+/* Slim, always-visible under the header so the required notice is seen on
+   load rather than buried in the footer. Understated on purpose. */
+.rou-strip{
+  background:#0b0f0c;
+  color:rgba(255,255,255,.62);
+  font-size:11px;
+  font-weight:600;
+  letter-spacing:.3px;
+  text-align:center;
+  padding:6px 14px;
+  border-bottom:1px solid rgba(169,209,58,.18);
+}
+.catalog-affiliate-note{
+  font-size:11.5px;
+  color:var(--muted,#6b6862);
+  margin-top:8px;
+  max-width:640px;
+  line-height:1.45;
+}
+.catalog-affiliate-note a{color:inherit;text-decoration:underline;text-underline-offset:2px;}

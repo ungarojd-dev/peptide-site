@@ -60,8 +60,11 @@ for (const [vendor, expectedRate] of Object.entries(expectedSammycRates)) {
     `${vendor}: standing SAMMYC rate must remain ${expectedRate}%`
   );
 }
-assert.match(catalogUiSource, />Sale live</, "Active vendor sales should use one generic card pill");
-assert.doesNotMatch(catalogUiSource, /conditional\[0\]\.chip_label|firstOrder\.chip_label|supplier-discount-plus/, "Catalog cards must not list promotion-specific discounts or offer wording");
+// Row labels intentionally show the sale and code split ("40% off + 15% with
+// SAMMYC") read from promotions.json, using .supplier-discount-plus. The sale
+// price is already in the vendor feed, so this is display only and does not
+// change price math.
+assert.match(catalogUiSource, /supplier-discount-plus/, "Stacked discount label should render sale + code split");
 assert.equal(snapshot.schema_version, "catalog-v1", "Bundled snapshot schema mismatch");
 const originalFetch = globalThis.fetch;
 globalThis.fetch = async () => { throw new Error("offline test"); };
