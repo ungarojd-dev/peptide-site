@@ -207,20 +207,6 @@
       "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc"
     },
     {
-      "show_in": [
-        "strip",
-        "roundup"
-      ],
-      "vendor": "Orbitrex Peptides",
-      "headline": "Now tracked, 15% off",
-      "timezone": "America/New_York",
-      "type": "new_partner",
-      "id": "orbitrex-new-partner",
-      "cta_text": "View prices",
-      "description": "",
-      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate"
-    },
-    {
       "priority": 400,
       "show_in": [
         "roundup",
