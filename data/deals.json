@@ -135,20 +135,6 @@
       "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc"
     },
     {
-      "show_in": [
-        "strip",
-        "roundup"
-      ],
-      "vendor": "Disguised Alpha",
-      "headline": "New partner: Disguised Alpha",
-      "timezone": "America/New_York",
-      "type": "new_partner",
-      "id": "disguised-alpha-new-partner",
-      "cta_text": "Shop now",
-      "description": "Disguised Alpha is now a tracked vendor on mypeptideprice.com. Code SAMMYC applies 10% off sitewide.",
-      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc"
-    },
-    {
       "chip_label": "Buy 3 Get 1 free",
       "show_in": [
         "carousel",
@@ -199,22 +185,6 @@
       "cta_text": "Shop sale",
       "description": "Coffee & Peppers is running 15% off sitewide on Saturday July 25 and Sunday July 26. Code SAMMYC stacks for an additional 15% off the reduced price, for 27.75% off in total. First time customers can additionally stack code NEWCOFFEE20 for 20% off. Confirm eligibility at checkout.",
       "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc"
-    },
-    {
-      "scope_categories": [
-        "GLP-1 & Incretin"
-      ],
-      "show_in": [
-        "roundup"
-      ],
-      "vendor": "Disguised Alpha",
-      "headline": "5% off GLP compounds with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "code_only",
-      "id": "disguised-alpha-glp-5",
-      "cta_text": "Shop now",
-      "description": "Disguised Alpha applies 5% off GLP compounds when using code SAMMYC. This rate is specific to GLP products and differs from their standard sitewide rate. Confirm the applicable discount at checkout.",
-      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc"
     },
     {
       "flat_rate": 25,
