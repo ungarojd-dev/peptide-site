@@ -16,7 +16,7 @@ collections:
   - name: deals
     label: "Deals & Promotions"
     label_singular: "Deal"
-    description: "Add, edit, or end vendor deals. Changes go live across the announcement strip, deal carousel, and Today's Deals roundup automatically."
+    description: "Add, edit, or end vendor deals. Changes go live across the announcement strip, deal carousel, and Today's Deals roundup automatically. See what's live and catch problems at /admin/deals-status.html"
     files:
       - name: deals
         label: "All Deals"
