@@ -146,7 +146,7 @@
       "vendor": "Coffee and Peppers",
       "code": "NEWCOFFEE20",
       "code_percent": 15,
-      "headline": "20% off first order",
+      "headline": "20% off first order, stacks with SAMMYC",
       "timezone": "America/New_York",
       "type": "first_order",
       "id": "coffee-first-order-evergreen",
