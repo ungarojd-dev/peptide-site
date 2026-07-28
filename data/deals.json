@@ -210,6 +210,19 @@
       "type": "sitewide_sale",
       "id": "ion-peptide-flash-jul-2026",
       "description": "Ion Peptide is running 20% off sitewide. Code SAMMYC stacks for an additional 15% off. An extra 5% is available when paying by ACH at checkout."
+    },
+    {
+      "code": "SAMMYC",
+      "timezone": "America/New_York",
+      "show_in": [
+        "roundup",
+        "strip"
+      ],
+      "priority": 200,
+      "vendor": "Orbitrex Peptides",
+      "type": "new_partner",
+      "headline": "Now tracked, 15% off with SAMMYC",
+      "description": "Orbitrex Peptides is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 15% off using code SAMMYC."
     }
   ]
 }
