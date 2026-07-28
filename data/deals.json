@@ -113,29 +113,12 @@
       "start_date": "2026-07-27",
       "end_date": "2026-07-28",
       "headline": "34% off, two days only",
-      "timezone": "America/New_York",
+      "timezone": "America/Denver",
       "type": "sitewide_sale",
       "id": "mile-high-sammyc-boost-30",
       "cta_text": "Shop Now",
       "description": "Mile High Compounds is running 34% off for 48 hours on July 27 and July 28, 2026. Confirm final eligibility and checkout pricing directly on the vendor website.",
       "affiliate_url": "https://milehighcompounds.is/?ref=sammyc"
-    },
-    {
-      "chip_label": "Bundle offer",
-      "show_in": [
-        "carousel",
-        "roundup"
-      ],
-      "vendor": "Disguised Alpha",
-      "start_date": "2026-07-19",
-      "end_date": "2026-07-20",
-      "headline": "Weekend sale, two days only",
-      "timezone": "America/New_York",
-      "type": "conditional",
-      "id": "disguised-alpha-weekend-sale-jul-2026",
-      "cta_text": "Shop sale",
-      "description": "Disguised Alpha is running a two day weekend sale covering 20% off seven capsule products and Buy 2 Get 1 Free on five peptides. The sale runs Sunday July 19 and Monday July 20 and ends at 11:59pm Eastern. Offer scope and stacking rules are set by the vendor, confirm eligibility at checkout.",
-      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc"
     },
     {
       "chip_label": "Buy 3 Get 1 free",
@@ -162,6 +145,7 @@
       ],
       "vendor": "Coffee and Peppers",
       "code": "NEWCOFFEE20",
+      "code_percent": 15,
       "headline": "20% off first order",
       "timezone": "America/New_York",
       "type": "first_order",
