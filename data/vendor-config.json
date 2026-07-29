@@ -1,5 +1,5 @@
 {
-  "version": "3.5.0",
+  "version": "2026-07-29-deep-links-v1",
   "coupon_code": "SAMMYC",
   "vendors": {
     "Glacier Aminos": {
@@ -7,7 +7,7 @@
       "discount_percent": 10,
       "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
       "logo": "/assets/vendor-logos/glacier-aminos.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Apple Pay",
         "Google Pay",
@@ -26,7 +26,7 @@
       "discount_percent": 15,
       "affiliate_url": "https://ionpeptide.com?ref=SammyC",
       "logo": "/assets/vendor-logos/ion-peptide.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Apple Pay",
         "Google Pay",
@@ -44,7 +44,7 @@
       "discount_percent": 15,
       "affiliate_url": "https://labsourced.com/?ref=SammyC",
       "logo": "/assets/vendor-logos/labsourced-peptides.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Apple Pay",
         "Google Pay",
@@ -61,7 +61,7 @@
       "discount_percent": 10,
       "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
       "logo": "/assets/vendor-logos/mile-high-peptides.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Apple Pay",
         "Google Pay",
@@ -80,7 +80,7 @@
       "discount_percent": 15,
       "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/southern-aminos.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Apple Pay",
         "Google Pay",
@@ -97,7 +97,7 @@
       "discount_percent": 15,
       "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
       "logo": "/assets/vendor-logos/flawless-compounds.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Apple Pay",
         "Google Pay",
@@ -114,7 +114,7 @@
       "discount_percent": 15,
       "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
       "logo": "/assets/vendor-logos/glow-aminos.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Apple Pay",
         "Google Pay",
@@ -131,7 +131,7 @@
       "discount_percent": 15,
       "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
       "logo": "/assets/vendor-logos/instant-peptides.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Apple Pay",
         "Google Pay",
@@ -184,7 +184,7 @@
       "discount_percent": 15,
       "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/coffee-and-peppers.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Visa",
         "Discover",
@@ -207,7 +207,7 @@
       "discount_percent": 15,
       "affiliate_url": "https://bioedgeresearchlabs.com/?aff=1005717",
       "logo": "/assets/vendor-logos/bioedge-research-labs.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Visa",
         "Discover",
@@ -223,7 +223,7 @@
       "discount_percent": 10,
       "affiliate_url": "https://hightidecompounds.com/?aff=44",
       "logo": "/assets/vendor-logos/high-tide-compounds.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Visa",
         "Discover",
@@ -239,7 +239,7 @@
       "discount_percent": 10,
       "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
       "logo": "/assets/vendor-logos/disguised-alpha.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Apple Pay",
         "Google Pay",
@@ -260,15 +260,14 @@
       "discount_percent": 15,
       "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
       "logo": "/assets/vendor-logos/orbitrex-peptides.webp",
-      "use_product_deep_links": false,
+      "use_product_deep_links": true,
       "payment_methods": [
         "Visa",
         "Discover",
         "IDEM Pay"
       ],
       "brand_color": "#4aa132",
-      "package_protection_required": true,
-      "pending_feed": true
+      "package_protection_required": true
     }
   }
 }

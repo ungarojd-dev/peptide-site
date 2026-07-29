@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260728-hero-trust-badge-v1";
+const VER = "20260729-deep-links-copy-code-v1";
 const TODAY = "July 2026";
 const VALID_UNTIL = "2026-08-31";
 const BASE = "https://mypeptideprice.com";
@@ -19,6 +19,71 @@ const jesc = s => String(s == null ? "" : s).replace(/\\/g, "\\\\").replace(/"/g
 const slug = s => String(s).toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
 const money = n => "$" + Number(n).toFixed(2);
 const catUrl = c => `${BASE}/?cat=${encodeURIComponent(c)}`;
+
+// ---------------------------------------------------------------------------
+// Price context and row rendering, shared by compound and vendor pages.
+//
+// The median is computed here rather than read from the snapshot so these pages
+// carry price context on the very first build, before a live snapshot with the
+// engine's market fields has been pulled down.
+// ---------------------------------------------------------------------------
+const MARKET_BADGE_THRESHOLD = 10;
+const MIN_MARKET_SAMPLE = 4;
+
+function median(values = []) {
+  const sorted = values.filter(v => Number.isFinite(v)).sort((a, b) => a - b);
+  if (!sorted.length) return null;
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+// Compares like with like by bucketing on size before taking a median, so a
+// 10mg listing is never measured against a 100mg one.
+function marketDeltas(offers = [], sizeOf = o => o.size) {
+  const buckets = new Map();
+  for (const offer of offers) {
+    if (!Number.isFinite(offer.price)) continue;
+    const key = String(sizeOf(offer) || "");
+    if (!buckets.has(key)) buckets.set(key, []);
+    buckets.get(key).push(offer.price);
+  }
+  const medians = new Map();
+  for (const [key, prices] of buckets) {
+    if (prices.length < MIN_MARKET_SAMPLE) continue;
+    const reference = median(prices);
+    if (reference > 0) medians.set(key, reference);
+  }
+  const deltas = new Map();
+  for (const offer of offers) {
+    const reference = medians.get(String(sizeOf(offer) || ""));
+    if (!reference || !Number.isFinite(offer.price)) continue;
+    deltas.set(offer, Math.round(((offer.price - reference) / reference) * 100));
+  }
+  return deltas;
+}
+
+// Only the favourable side is ever rendered. Labelling a tracked partner as
+// expensive helps no one and invites a vendor-relations problem.
+function marketBadge(delta) {
+  return Number.isFinite(delta) && delta <= -MARKET_BADGE_THRESHOLD
+    ? `<span class="market-chip">${Math.abs(delta)}% below market</span>`
+    : "";
+}
+
+function ctaLabel(discount, vendor) {
+  return discount > 0 ? `Apply ${discount}% off at ${vendor}` : `View at ${vendor}`;
+}
+
+// The row is a container with a transparent stretched link, because the copy
+// button is a real <button> and cannot be nested inside an <a>.
+function priceRow(o) {
+  const cta = ctaLabel(o.discount, o.vendorDisplay);
+  const copy = o.discount > 0 && o.code
+    ? `<button class="row-copy" type="button" data-copy-code="${esc(o.code)}" data-vendor="${esc(o.vendorKey)}" data-product="${esc(o.product)}" data-copy-location="${esc(o.location || "static_price_table")}"><span class="supplier-copy-text">Copy ${esc(o.code)}</span></button>`
+    : "";
+  const hitLabel = `${o.priceLabel || "See price"} for ${o.sizeLine} at ${o.vendorDisplay}`;
+  return `<div class="price-row${o.inStock === false ? " is-oos" : ""}"><a class="row-hit" href="${esc(o.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(o.product)}" data-category="${esc(o.category)}" data-vendor="${esc(o.vendorKey)}" data-code="${esc(o.code || "")}" data-cta="${esc(cta)}" aria-label="${esc(hitLabel)}"></a><span class="price-size"><span class="size">${o.sizeLine}${marketBadge(o.delta)}</span><span class="vendor">${o.vendorLine}</span><span class="disc">${o.note}</span></span><span class="price-amount"><span class="amt">${esc(o.priceLabel || "See vendor")}</span>${o.permg ? `<span class="permg">${esc(o.permg)}</span>` : ""}<span class="row-actions">${copy}<span class="go">${esc(cta)}</span></span></span></div>`;
+}
 
 const NONPEP = ["Acetic Acid", "Bacteriostatic", "Travel Case", "Starter Kit", "Research Starter", "Case ONLY", "Protective Travel"];
 const HAND_BUILT = new Map([
@@ -73,6 +138,44 @@ const PAGE_CSS = `<style>
 .pay-note{font-size:.78rem;color:var(--muted);margin-top:12px;line-height:1.5}
 @media(max-width:700px){.pay-chip{padding:4px 10px;font-size:.74rem}.pay-grid{gap:6px}}
 .snap-cta{margin-top:14px}
+/* Row actions: stretched outbound link, copy-code button, price context.
+   The row is a container because a real <button> cannot sit inside an <a>. */
+.price-row{position:relative}
+.row-hit{position:absolute;inset:0;z-index:1;text-decoration:none}
+.row-hit:focus-visible{outline:3px solid var(--olive);outline-offset:-3px}
+.row-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:8px}
+.price-amount .go{display:inline-flex;align-items:center;margin-top:0;border-radius:999px;background:var(--forest);color:#fff;padding:6px 12px;font-size:.76rem;font-weight:800;line-height:1.3;text-align:left}
+.price-row:hover .go{background:var(--olive)}
+.row-copy{position:relative;z-index:2;display:inline-flex;align-items:center;border:1px dashed rgba(29,58,43,.5);border-radius:999px;background:#fff;color:var(--forest);padding:5px 11px;font:inherit;font-size:.76rem;font-weight:800;line-height:1.3;cursor:pointer;transition:background .14s ease,border-color .14s ease,color .14s ease}
+.row-copy:hover{border-style:solid;border-color:var(--olive);background:var(--soft)}
+.row-copy:focus-visible{outline:3px solid var(--olive);outline-offset:2px}
+.row-copy.is-copied{border-style:solid;border-color:var(--forest);background:var(--forest);color:#fff}
+.market-chip{display:inline-block;margin-left:8px;border-radius:999px;background:rgba(106,121,41,.14);color:#4c5720;padding:2px 8px;font-size:.66rem;font-weight:800;letter-spacing:.03em;text-transform:uppercase;vertical-align:middle;white-space:nowrap}
+.price-row.is-oos{opacity:.62}
+.price-row.is-oos .go{background:#6B6862}
+.price-row.is-oos:hover{opacity:1}
+/* Sticky lowest-price bar. Mobile-first: this is where nearly all search
+   traffic lands, and the price table scrolls away fast on a phone. */
+.sticky-best{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;align-items:center;gap:12px;background:var(--forest);color:var(--cream);padding:10px 16px;box-shadow:0 -6px 20px rgba(13,15,12,.28);transform:translateY(110%);transition:transform .22s ease;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+.sticky-best.is-visible{transform:translateY(0)}
+.sb-copy{display:flex;flex-direction:column;min-width:0;flex:1 1 auto}
+.sb-label{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.sb-detail{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.84rem;font-weight:700}
+.sb-figure{flex:none;font-family:var(--font-body);font-size:1.1rem;font-weight:900;font-variant-numeric:tabular-nums}
+.sb-go{flex:none;border-radius:999px;background:var(--cream);color:var(--forest);padding:9px 16px;font-size:.78rem;font-weight:900;text-decoration:none;white-space:nowrap}
+.sb-go:hover{background:#fff}
+.sb-go:focus-visible{outline:3px solid var(--cream);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.sticky-best{transition:none}.row-copy,.price-amount .go{transition:none}}
+@media(min-width:900px){.sticky-best{display:none}}
+@media(max-width:520px){
+.row-actions{width:100%;justify-content:flex-start;margin-top:9px}
+.price-amount .go{font-size:.72rem;padding:6px 10px}
+.row-copy{font-size:.72rem;padding:5px 9px}
+.market-chip{margin-left:0;margin-top:4px;font-size:.6rem}
+.sticky-best{gap:9px;padding:9px 12px;padding-bottom:calc(9px + env(safe-area-inset-bottom,0px))}
+.sb-figure{font-size:1rem}
+.sb-go{padding:8px 13px;font-size:.74rem}
+}
 .copy{max-width:1120px;margin:0 auto;padding:0 20px}
 .copy h2{font-family:var(--font-display);color:var(--forest);margin-bottom:6px}
 .copy h3{font-family:var(--font-display);color:var(--forest);font-size:1.2rem;margin:22px 0 6px}
@@ -265,10 +368,37 @@ for (const c of compoundPages) {
     rows.push(o);
     if (rows.length >= 14) break;
   }
+  const compoundDeltas = marketDeltas(rows);
   const rowsHtml = rows.map((o) => {
     const note = o.discount > 0 && o.code ? `Code ${esc(o.code)} applies (${o.discount}% off)` : (o.regularLabel && o.regularLabel !== o.priceLabel ? `Listed ${esc(o.regularLabel)}` : "Listed price");
-    return `<a class="price-row" href="${esc(o.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(c.name)}" data-category="${esc(c.category)}" data-vendor="${esc(o.vendorKey)}" data-code="${esc(o.code || "")}"><span class="price-size"><span class="size">${esc(c.name)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}</span><span class="vendor">${esc(o.vendor)}${/choose/i.test(o.size || "") ? ", size selected on vendor site" : ""}</span><span class="disc">${note}</span></span><span class="price-amount"><span class="amt">${esc(o.priceLabel || "See vendor")}</span>${o.permg ? `<span class="permg">${esc(o.permg)}</span>` : ""}<span class="go">View listing &#8250;</span></span></a>`;
+    return priceRow({
+      url: o.url,
+      product: c.name,
+      category: c.category,
+      vendorKey: o.vendorKey,
+      vendorDisplay: o.vendor,
+      code: o.code,
+      discount: o.discount,
+      sizeLine: `${esc(c.name)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}`,
+      vendorLine: `${esc(o.vendor)}${/choose/i.test(o.size || "") ? ", size selected on vendor site" : ""}`,
+      note,
+      priceLabel: o.priceLabel,
+      permg: o.permg,
+      delta: compoundDeltas.get(o),
+      inStock: o.inStock,
+      location: "compound_price_table",
+    });
   }).join("\n");
+
+  // Sticky bar target: the cheapest in-stock listing on the page. Out-of-stock
+  // rows are skipped, since a bar pointing at something unbuyable is worse
+  // than no bar.
+  const stickyPick = rows.find(o => Number.isFinite(o.price) && o.inStock !== false) || null;
+  const stickyHtml = stickyPick ? `<div class="sticky-best" data-sticky-best>
+  <span class="sb-copy"><span class="sb-label">Lowest tracked price</span><span class="sb-detail">${esc(stickyPick.vendor)}${stickyPick.size && !/standard|choose/i.test(stickyPick.size) ? " &middot; " + esc(stickyPick.size) : ""}</span></span>
+  <span class="sb-figure">${esc(stickyPick.priceLabel || "")}</span>
+  <a class="sb-go" href="${esc(stickyPick.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(c.name)}" data-category="${esc(c.category)}" data-vendor="${esc(stickyPick.vendorKey)}" data-code="${esc(stickyPick.code || "")}" data-cta="${esc(ctaLabel(stickyPick.discount, stickyPick.vendor))}">${stickyPick.discount > 0 ? `Apply ${stickyPick.discount}% off` : "View listing"}</a>
+</div>` : "";
 
   // related compounds in same category
   const related = compounds.filter(x => x.category === c.category && x.name !== c.name).slice(0, 8);
@@ -316,6 +446,7 @@ for (const c of compoundPages) {
 <section class="hero"><div class="hero-inner"><div><span class="eyebrow">${esc(c.category)}</span><h1>${esc(c.name)} price comparison.</h1><p>Listed prices and cost per mg for ${esc(c.name)} across ${c.vendors.length} research vendors tracked on MyPeptidePrice.com. An independent price reference, for laboratory research use only.</p><div class="hero-actions"><a class="button" href="/?q=${encodeURIComponent(c.name)}#compare" data-cta="hero">View current listings</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Listed price range</span><strong>${priceRangeLabel}</strong></div><div class="hero-stat"><span>Vendors listing it</span><strong>${c.vendors.length}</strong></div><div class="hero-stat"><span>Use</span><strong>Research only</strong></div></div></div></section>
 <div class="answer-box"><div class="inner"><p>${esc(answer)}</p></div></div>
 <section class="section compact"><div class="snap-wrap"><div class="snap-head"><h2>${esc(c.name)} prices by vendor</h2><span class="snap-meta"><span class="dot"></span>Updated ${TODAY}</span></div>
+<span data-sticky-anchor aria-hidden="true"></span>
 <div class="price-card">
 ${rowsHtml}
 </div>
@@ -326,6 +457,7 @@ ${relatedHtml}
 <section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">${esc(c.name)} FAQ</span><h2>${esc(c.name)} questions</h2><div class="faq-list">
 ${faq.map(([q, a]) => `<article class="faq-item"><h3>${esc(q)}</h3><p>${esc(a)}</p></article>`).join("\n")}
 </div></div></section>
+${stickyHtml}
 <section class="section compact"><div class="container"><div class="notice">MyPeptidePrice.com is an independent price reference and does not sell research materials. Prices come from third-party vendor listings and were last checked ${TODAY}. Confirm current details on the vendor site. For laboratory research use only, not for human consumption.</div></div></section>`;
 
   await writeFile(`${W}${path}`, shell({ title, desc, canonical, schema, body }));
@@ -404,9 +536,29 @@ for (const v of vendorNames) {
   const title = `${v.display} Prices | Compare ${compoundCount} Compounds Per Mg`;
   const desc = `${v.display} prices tracked across ${compoundCount} research compounds${lo != null ? `, ${money(lo)} to ${money(hi)}` : ""}, compared against other vendors per mg. Independent price reference, for laboratory research use only.`;
 
-  const rowsHtml = uniq.slice(0, 20).map((o) => {
+  const vendorRows = uniq.slice(0, 20);
+  // Bucketed on compound plus size here: a vendor page lists many different
+  // compounds, so size alone is not a like-for-like comparison.
+  const vendorDeltas = marketDeltas(vendorRows, o => `${o.compound}|${o.size}`);
+  const rowsHtml = vendorRows.map((o) => {
     const note = o.discount > 0 && o.code ? `Code ${esc(o.code)} applies (${o.discount}% off)` : "Listed price";
-    return `<a class="price-row" href="${esc(o.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(o.compound)}" data-category="${esc(o.category)}" data-vendor="${esc(v.key)}" data-code="${esc(o.code || "")}"><span class="price-size"><span class="size">${esc(o.compound)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}</span><span class="vendor">${esc(o.category)}</span><span class="disc">${note}</span></span><span class="price-amount"><span class="amt">${esc(o.priceLabel)}</span>${o.permg ? `<span class="permg">${esc(o.permg)}</span>` : ""}<span class="go">View listing &#8250;</span></span></a>`;
+    return priceRow({
+      url: o.url,
+      product: o.compound,
+      category: o.category,
+      vendorKey: v.key,
+      vendorDisplay: v.display,
+      code: o.code,
+      discount: o.discount,
+      sizeLine: `${esc(o.compound)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}`,
+      vendorLine: esc(o.category),
+      note,
+      priceLabel: o.priceLabel,
+      permg: o.permg,
+      delta: vendorDeltas.get(o),
+      inStock: o.inStock,
+      location: "vendor_price_table",
+    });
   }).join("\n");
 
   const faq = [
@@ -449,9 +601,61 @@ ${faq.map(([q, a]) => `<article class="faq-item"><h3>${esc(q)}</h3><p>${esc(a)}<
 <section class="section compact"><div class="container"><div class="notice">MyPeptidePrice.com is an independent price reference and does not sell research materials. Prices come from ${esc(v.display)} listings and were last checked ${TODAY}. Confirm current details on the vendor site. For laboratory research use only, not for human consumption.</div></div></section>`;
 
   await writeFile(`${W}${path}`, shell({ title, desc, canonical, schema, body }));
-  generated.vendors.push({ path, name: v.display });
+  generated.vendors.push({
+    path,
+    name: v.display,
+    key: v.key,
+    logo: vCfg.logo || "",
+    discount: Number(vCfg.discount_percent) || 0,
+    affiliateUrl: vCfg.affiliate_url || "",
+    compoundCount,
+    lo,
+    hi,
+  });
 }
 console.log("vendor pages written:", generated.vendors.length);
+
+// ---- VENDOR DIRECTORY ----
+// vendors.html is rewritten from the generated set rather than hand-maintained.
+// It had drifted to 13 cards against 14 built pages and a 15-vendor config, and
+// the count in the lead paragraph was stale. Generating it means the number and
+// the cards can never disagree again.
+{
+  const dir = [...generated.vendors].sort((a, b) => a.name.localeCompare(b.name));
+  const cards = dir.map(v => {
+    const logo = v.logo
+      ? `<img src="${esc(v.logo)}?v=${VER}" alt="${esc(v.name)} logo" loading="lazy"/>`
+      : "";
+    const discountLine = v.discount > 0
+      ? `<p>${v.discount}% estimated discount with <span class="code-pill">${esc(vendorCfg.coupon_code || "SAMMYC")}</span></p>`
+      : `<p>Tracked in the comparison catalog</p>`;
+    const range = v.lo != null ? (v.hi && v.hi !== v.lo ? `${money(v.lo)} to ${money(v.hi)}` : money(v.lo)) : "See listings";
+    // Primary action is the internal vendor page, which carries the full
+    // listing table. Sending this click straight offsite spent the visit on a
+    // homepage before they had seen a single price.
+    return `<article class="vendor-card"><div class="vendor-head">${logo}<div><h3>${esc(v.name)}</h3>${discountLine}</div></div>` +
+      `<p>${v.compoundCount} compounds tracked, listed from ${range}. Review current product details, testing documentation, stock status, and checkout terms directly with the vendor.</p>` +
+      `<div class="vendor-card-actions"><a class="button" href="${esc(v.path)}">Compare ${esc(v.name)} prices</a>` +
+      (v.affiliateUrl ? `<a class="vendor-out" href="${esc(v.affiliateUrl)}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Vendor directory" data-category="vendor" data-vendor="${esc(v.key)}" data-code="${esc(vendorCfg.coupon_code || "")}" data-cta="Visit ${esc(v.name)}">Visit site &#8250;</a>` : "") +
+      `</div></article>`;
+  }).join("\n");
+
+  const vendorsPath = `${W}/vendors.html`;
+  let html = await readFile(vendorsPath, "utf8");
+  const gridStart = html.indexOf('<div class="vendor-grid">');
+  const gridEnd = html.indexOf("</div></div></section>", gridStart);
+  if (gridStart === -1 || gridEnd === -1) {
+    console.warn("vendors.html: vendor-grid markers not found, directory left untouched");
+  } else {
+    html = html.slice(0, gridStart) + `<div class="vendor-grid">\n${cards}\n` + html.slice(gridEnd);
+    html = html.replace(
+      /The comparison catalog currently supports \d+ vendor partners\./,
+      `The comparison catalog currently supports ${dir.length} vendor partners.`
+    );
+    await writeFile(vendorsPath, html);
+    console.log("vendors.html directory rebuilt:", dir.length, "cards");
+  }
+}
 
 // ---- COMPOUNDS HUB ----
 {

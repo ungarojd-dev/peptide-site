@@ -2,7 +2,7 @@ import catalogPayload from "../../../data/catalog-products.json" with { type: "j
 import overridePayload from "../../../data/catalog-overrides.json" with { type: "json" };
 import vendorPayload from "../../../data/vendor-config.json" with { type: "json" };
 
-export const ENGINE_VERSION = "1.1.0-merged-formats";
+export const ENGINE_VERSION = "1.2.0-deep-links-market-median";
 export const COUPON_CODE = vendorPayload.coupon_code || "SAMMYC";
 export const VENDOR_CONFIG = vendorPayload.vendors || {};
 
@@ -636,6 +636,48 @@ export function normalizeOffer(raw = {}, options = {}) {
   };
 }
 
+// Price context is computed inside a single variant, so every offer being
+// compared is the same mg size and the same format. Median rather than mean,
+// because one vendor listing a 10x outlier should not drag the reference point.
+// MIN_MARKET_SAMPLE keeps us from calling three listings a "market".
+const MIN_MARKET_SAMPLE = 4;
+
+function median(values = []) {
+  const sorted = values.filter(value => Number.isFinite(value)).sort((a, b) => a - b);
+  if (!sorted.length) return null;
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+// Annotates each supplier in a variant with how far it sits from the variant
+// median, as a signed percentage. Negative means cheaper than the median.
+function withMarketContext(suppliers = []) {
+  const priced = suppliers.map(offer => offer.effective_price_min).filter(value => value != null);
+  const reference = priced.length >= MIN_MARKET_SAMPLE ? median(priced) : null;
+  if (reference == null || reference <= 0) {
+    return {
+      suppliers: suppliers.map(offer => ({ ...offer, market_median_price: null, market_delta_percent: null })),
+      marketMedian: null,
+      marketSample: priced.length
+    };
+  }
+  return {
+    suppliers: suppliers.map(offer => {
+      if (offer.effective_price_min == null) {
+        return { ...offer, market_median_price: roundMoney(reference), market_delta_percent: null };
+      }
+      const delta = ((offer.effective_price_min - reference) / reference) * 100;
+      return {
+        ...offer,
+        market_median_price: roundMoney(reference),
+        market_delta_percent: Math.round(delta)
+      };
+    }),
+    marketMedian: roundMoney(reference),
+    marketSample: priced.length
+  };
+}
+
 function rawOfferKey(offer) {
   return normalized([
     offer.vendor_name, offer.product_id, offer.format, offer.quantity_id, offer.raw_listing,
@@ -741,11 +783,12 @@ export function buildCatalog(rawRows = [], options = {}) {
 
   const productCards = [...cards.values()].map(card => {
     const variants = [...card.variants.values()].map(variant => {
-      const suppliers = [...variant.suppliers.values()].sort((a, b) => {
+      const sorted = [...variant.suppliers.values()].sort((a, b) => {
         const pa = a.effective_price_min == null ? Number.POSITIVE_INFINITY : a.effective_price_min;
         const pb = b.effective_price_min == null ? Number.POSITIVE_INFINITY : b.effective_price_min;
         return pa - pb || a.vendor_name.localeCompare(b.vendor_name);
       });
+      const { suppliers, marketMedian, marketSample } = withMarketContext(sorted);
       return {
         id: variant.id,
         quantity_id: variant.quantity_id,
@@ -756,6 +799,8 @@ export function buildCatalog(rawRows = [], options = {}) {
         sort: variant.sort,
         supplier_count: suppliers.length,
         all_offer_count: variant.all_offer_count,
+        market_median_price: marketMedian,
+        market_sample_size: marketSample,
         suppliers
       };
     }).sort((a, b) => b.supplier_count - a.supplier_count || a.sort - b.sort || a.label.localeCompare(b.label));

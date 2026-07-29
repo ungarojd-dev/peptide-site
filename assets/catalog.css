@@ -1026,3 +1026,111 @@ a.seo-card-name:hover { text-decoration: underline; }
   .seo-card-name { font-size: .9rem; }
   .seo-card-fmt { display: none; }
 }
+
+/* ============================================================
+   Row actions: copy code, benefit CTA, price context
+   The row is a container, not an anchor, because a real <button>
+   cannot be nested inside <a>. Outbound clicks go through
+   .supplier-hit, a transparent stretched link layered under the
+   copy button.
+   ============================================================ */
+.supplier-row { position: relative; }
+.supplier-hit {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border-radius: 10px;
+  text-decoration: none;
+}
+.supplier-hit:focus-visible {
+  outline: 3px solid var(--olive);
+  outline-offset: 2px;
+}
+.supplier-actions {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-top: 5px;
+}
+/* Sentence case and no truncation: the button names the vendor and the
+   saving, which is the whole point of the rewrite. Uppercase at this size
+   made the longer labels wrap badly. */
+.supplier-go {
+  display: inline-flex;
+  align-items: center;
+  margin-top: 0;
+  border-radius: 999px;
+  background: #111;
+  color: #fff;
+  padding: 5px 10px;
+  font-size: 9.5px;
+  font-weight: 900;
+  line-height: 1.3;
+  text-align: left;
+  text-transform: none;
+  letter-spacing: 0;
+}
+.supplier-row:hover .supplier-go { background: var(--forest); }
+.supplier-copy {
+  position: relative;
+  z-index: 2;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  border: 1px dashed rgba(31,58,45,.45);
+  border-radius: 999px;
+  background: #fff;
+  color: var(--forest);
+  padding: 4px 9px;
+  font: inherit;
+  font-size: 9.5px;
+  font-weight: 900;
+  line-height: 1.3;
+  cursor: pointer;
+  transition: background .14s ease, border-color .14s ease, color .14s ease;
+}
+.supplier-copy:hover { border-style: solid; border-color: var(--olive); background: #eef2e9; }
+.supplier-copy:focus-visible { outline: 3px solid var(--olive); outline-offset: 2px; }
+.supplier-copy.is-copied {
+  border-style: solid;
+  border-color: #24713e;
+  background: #24713e;
+  color: #fff;
+}
+/* Price context against the median of this exact size and format. Only the
+   favourable side is ever rendered, so this badge is always good news. */
+.supplier-market {
+  display: inline-flex;
+  align-items: center;
+  border-radius: 999px;
+  background: rgba(47,143,78,.12);
+  color: #1f6236;
+  padding: 2px 8px;
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: .5px;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+/* Out of stock rows still sort last, but they also read as inactive so the
+   eye skips them on the way to something buyable. */
+.supplier-row.is-oos { opacity: .62; }
+.supplier-row.is-oos .supplier-go { background: #6B6862; }
+.supplier-row.is-oos:hover { opacity: 1; }
+@media (prefers-reduced-motion: reduce) {
+  .supplier-row, .supplier-copy, .supplier-go { transition: none; }
+  .supplier-row:hover { transform: none; }
+}
+@media (max-width: 700px) {
+  .supplier-go { padding: 4px 8px; font-size: 8.5px; }
+  .supplier-copy { padding: 3px 8px; font-size: 8.5px; }
+  .supplier-market { font-size: 7.5px; padding: 2px 6px; }
+}
+@media (max-width: 420px) {
+  /* The price column becomes a single row on the narrowest screens, so the
+     actions stack under the figures rather than fighting them for width. */
+  .supplier-price-wrap { flex-wrap: wrap; }
+  .supplier-actions { width: 100%; justify-content: flex-start; margin-top: 7px; }
+}

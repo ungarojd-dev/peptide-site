@@ -27,6 +27,9 @@
   // vendors where it used to hold 5. Three visible rows hid too much of that,
   // and it also cut the amount of catalog text rendered for crawlers.
   const DEFAULT_VISIBLE_ROWS=5;
+  // Only badge a listing as below market once the gap is wide enough to be
+  // worth acting on. Below this it is rounding noise between vendors.
+  const MARKET_BADGE_THRESHOLD=10;
   const state={catalog:null,cards:[],query:"",category:"All",format:"All",vendor:"All",sort:"price",activeVariants:{},activeFormats:{},expanded:{},source:"Loading"};
   const $=id=>document.getElementById(id);
   const esc=value=>String(value==null?"":value).replace(/[&<>"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
@@ -132,12 +135,16 @@
     const scoped=variants.filter(variant=>(variant.format_id||"")===formatId);
     return scoped.length?scoped:variants;
   }
+  // An out-of-stock listing cannot be bought, so it never leads the list and
+  // never wears the "Lowest" badge. Stock status is the primary sort key,
+  // price the secondary.
+  function stockRank(supplier){return supplier&&supplier.in_stock===false?1:0;}
   function allOffers(card,scoped){
     const variants=scoped===false?(card.variants||[]):cardVariants(card);
     return variants.flatMap(variant=>(variant.suppliers||[]).map(supplier=>({variant,supplier}))).sort((a,b)=>{
       const pa=a.supplier.effective_price_min==null?Number.POSITIVE_INFINITY:a.supplier.effective_price_min;
       const pb=b.supplier.effective_price_min==null?Number.POSITIVE_INFINITY:b.supplier.effective_price_min;
-      return pa-pb||String(a.variant.label||"").localeCompare(String(b.variant.label||""))||String(a.supplier.vendor_name||"").localeCompare(String(b.supplier.vendor_name||""));
+      return stockRank(a.supplier)-stockRank(b.supplier)||pa-pb||String(a.variant.label||"").localeCompare(String(b.variant.label||""))||String(a.supplier.vendor_name||"").localeCompare(String(b.supplier.vendor_name||""));
     });
   }
   function bestOffer(card){const offers=offersForCard(card);return offers.find(o=>o.supplier.effective_price_min!=null)||offers[0]||null;}
@@ -311,7 +318,22 @@
     // The sale is now stated in the discount label, so the extra "Sale live"
     // chip is only for vendors whose sale we can't express as a clean split.
     const promoBadge=(salePromo&&!labelPromo)?`<div class="supplier-promos"><span class="supplier-promo-badge supplier-promo-badge--sale">Sale live</span></div>`:"";
-    return `<a class="supplier-row${isBest?" is-best":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}"><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}</div><div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadge}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}<div class="supplier-go">View deal</div></div></a>`;
+    // Price context, computed by the engine as a signed percentage against the
+    // median of this exact size and format. Only the favourable side is shown:
+    // flagging a tracked partner as expensive helps nobody.
+    const delta=Number(supplier.market_delta_percent);
+    const marketBadge=(Number.isFinite(delta)&&delta<=-MARKET_BADGE_THRESHOLD)?`<span class="supplier-market">${esc(Math.abs(delta))}% below market</span>`:"";
+    // Copy-then-click is the normal coupon flow, so the code needs to be
+    // grabbable without leaving the page. A real button cannot live inside an
+    // anchor, so the row is a container with a stretched hit-area link and the
+    // button layered above it.
+    const copyable=supplier.discount_percent>0&&supplier.coupon_code;
+    const copyButton=copyable?`<button class="supplier-copy" type="button" data-copy-code="${attr(supplier.coupon_code)}" data-vendor="${attr(supplier.vendor_name)}" data-product="${attr(card.name)}"><span class="supplier-copy-text">Copy ${esc(supplier.coupon_code)}</span></button>`:"";
+    const ctaLabel=supplier.discount_percent>0
+      ?`Apply ${esc(Number(supplier.discount_percent))}% off at ${esc(supplier.vendor_name)}`
+      :`View at ${esc(supplier.vendor_name)}`;
+    const hitLabel=`${supplier.effective_price_label||"See price"} for ${card.name}${variantLabel&&variantLabel!=="Standard listing"?` ${variantLabel}`:""} at ${supplier.vendor_name}`;
+    return `<div class="supplier-row${isBest?" is-best":""}${supplier.in_stock===false?" is-oos":""}"><a class="supplier-hit" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}" data-cta="${attr(ctaLabel)}" aria-label="${attr(hitLabel)}"></a><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}${marketBadge}</div><div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadge}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}<div class="supplier-actions">${copyButton}<span class="supplier-go">${ctaLabel}</span></div></div></div>`;
   }
 
   function cardHtml(card){
@@ -323,7 +345,7 @@
     const multiFormat=formats.length>1;
     const scopedVariants=cardVariants(card);
     const expanded=!!state.expanded[card.id];
-    const rows=(isAll?allOffers(card):(variant.suppliers||[]).map(supplier=>({supplier,variant})).sort((a,b)=>(a.supplier.effective_price_min??Number.POSITIVE_INFINITY)-(b.supplier.effective_price_min??Number.POSITIVE_INFINITY))).filter(offerMatchesVendor);
+    const rows=(isAll?allOffers(card):(variant.suppliers||[]).map(supplier=>({supplier,variant})).sort((a,b)=>stockRank(a.supplier)-stockRank(b.supplier)||(a.supplier.effective_price_min??Number.POSITIVE_INFINITY)-(b.supplier.effective_price_min??Number.POSITIVE_INFINITY))).filter(offerMatchesVendor);
     const visible=expanded?rows:rows.slice(0,DEFAULT_VISIBLE_ROWS);
     const hidden=Math.max(0,rows.length-visible.length);
     const best=bestOffer(card);
@@ -342,7 +364,7 @@
       if(multiFormat&&formatId===ALL_FORMATS) return row.variant?.full_label||[size,row.variant?.format].filter(Boolean).join(" ");
       return size;
     };
-    const supplierHtml=visible.length?visible.map((row,index)=>supplierRow(row.supplier,card,rowLabel(row),index===0&&row.supplier.effective_price_min!=null)).join(""):`<div class="supplier-row supplier-empty-row"><span>No listings available for this vendor.</span></div>`;
+    const supplierHtml=visible.length?visible.map((row,index)=>supplierRow(row.supplier,card,rowLabel(row),index===0&&row.supplier.effective_price_min!=null&&row.supplier.in_stock!==false)).join(""):`<div class="supplier-row supplier-empty-row"><span>No listings available for this vendor.</span></div>`;
 
     return `<article class="product-card ${tone}${expanded?" is-expanded":""}" data-card-id="${attr(card.id)}">
       <header class="product-card-head">
@@ -417,7 +439,7 @@
       const pills=document.querySelector(`[data-variant-pills="${button.dataset.card}"]`);
       if(pills) pills.scrollBy({left:Number(button.dataset.dir)*140,behavior:"smooth"});
     });
-    document.querySelectorAll('[data-affiliate="1"]').forEach(link=>link.onclick=()=>{global.dataLayer=global.dataLayer||[];global.dataLayer.push({event:"affiliate_click",product_name:link.dataset.product,product_category:link.dataset.category,lab_result:"tracked_vendor",button_text:"View deal",button_location:"comparison_card",affiliate_network:"direct_vendor",vendor_name:link.dataset.vendor,discount_code:link.dataset.code,affiliate_url:link.href});});
+    document.querySelectorAll('[data-affiliate="1"]').forEach(link=>link.onclick=()=>{global.dataLayer=global.dataLayer||[];global.dataLayer.push({event:"affiliate_click",product_name:link.dataset.product,product_category:link.dataset.category,lab_result:"tracked_vendor",button_text:link.dataset.cta||"View deal",button_location:"comparison_card",affiliate_network:"direct_vendor",vendor_name:link.dataset.vendor,discount_code:link.dataset.code,affiliate_url:link.href});});
     document.querySelectorAll('[data-variant-shell]').forEach(shell=>{
       const pills=shell.querySelector('[data-variant-pills]');
       if(!pills) return;
@@ -536,8 +558,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260728-hero-trust-badge-v1",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260728-hero-trust-badge-v1",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260729-deep-links-copy-code-v1",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260729-deep-links-copy-code-v1",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

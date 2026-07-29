@@ -1369,3 +1369,29 @@ body.deals-panel-open { overflow: hidden; }
   .hero-cert-strip { padding: 0 18px 18px; }
   .hero-cert-strip .trust-item-link { font-size: 11.5px; padding: 9px 12px; gap: 8px; }
 }
+
+/* ============================================================
+   Vendor directory card actions
+   Primary action is the internal vendor page, which carries the
+   full listing table. Sending this click straight offsite spent
+   the visit on a vendor homepage before a single price was seen.
+   ============================================================ */
+.vendor-card-actions { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; margin-top: 14px; }
+.vendor-card-actions .button { flex: 0 1 auto; }
+.vendor-out {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  color: var(--olive-2, #6A7929);
+  font-size: .84rem;
+  font-weight: 800;
+  text-decoration: none;
+  border-bottom: 1px solid transparent;
+}
+.vendor-out:hover { border-bottom-color: currentColor; }
+.vendor-out:focus-visible { outline: 3px solid var(--olive, #6A7929); outline-offset: 3px; border-radius: 4px; }
+@media (max-width: 520px) {
+  .vendor-card-actions { gap: 10px; }
+  .vendor-card-actions .button { width: 100%; justify-content: center; text-align: center; }
+  .vendor-out { font-size: .8rem; }
+}

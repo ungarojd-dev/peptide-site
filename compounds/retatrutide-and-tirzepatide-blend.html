@@ -11,14 +11,14 @@
 <meta property="og:url" content="https://mypeptideprice.com/compounds/retatrutide-and-tirzepatide-blend.html"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://mypeptideprice.com/og-image-2026-rebrand.png"/>
-<link rel="icon" href="/favicon.png?v=20260728-hero-trust-badge-v1"/>
-<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260728-hero-trust-badge-v1"/>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260728-hero-trust-badge-v1"/>
+<link rel="icon" href="/favicon.png?v=20260729-deep-links-copy-code-v1"/>
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260729-deep-links-copy-code-v1"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260729-deep-links-copy-code-v1"/>
 <link rel="manifest" href="/site.webmanifest"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/assets/site.css?v=20260728-hero-trust-badge-v1"/>
+<link rel="stylesheet" href="/assets/site.css?v=20260729-deep-links-copy-code-v1"/>
 <style>
 .crumbs{max-width:1120px;margin:0 auto;padding:14px 20px 0;font-size:.82rem;color:var(--muted)}
 .crumbs a{color:var(--olive-2);text-decoration:none}.crumbs a:hover{text-decoration:underline}.crumbs span{color:var(--muted);margin:0 6px}
@@ -51,6 +51,44 @@
 .pay-note{font-size:.78rem;color:var(--muted);margin-top:12px;line-height:1.5}
 @media(max-width:700px){.pay-chip{padding:4px 10px;font-size:.74rem}.pay-grid{gap:6px}}
 .snap-cta{margin-top:14px}
+/* Row actions: stretched outbound link, copy-code button, price context.
+   The row is a container because a real <button> cannot sit inside an <a>. */
+.price-row{position:relative}
+.row-hit{position:absolute;inset:0;z-index:1;text-decoration:none}
+.row-hit:focus-visible{outline:3px solid var(--olive);outline-offset:-3px}
+.row-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:8px}
+.price-amount .go{display:inline-flex;align-items:center;margin-top:0;border-radius:999px;background:var(--forest);color:#fff;padding:6px 12px;font-size:.76rem;font-weight:800;line-height:1.3;text-align:left}
+.price-row:hover .go{background:var(--olive)}
+.row-copy{position:relative;z-index:2;display:inline-flex;align-items:center;border:1px dashed rgba(29,58,43,.5);border-radius:999px;background:#fff;color:var(--forest);padding:5px 11px;font:inherit;font-size:.76rem;font-weight:800;line-height:1.3;cursor:pointer;transition:background .14s ease,border-color .14s ease,color .14s ease}
+.row-copy:hover{border-style:solid;border-color:var(--olive);background:var(--soft)}
+.row-copy:focus-visible{outline:3px solid var(--olive);outline-offset:2px}
+.row-copy.is-copied{border-style:solid;border-color:var(--forest);background:var(--forest);color:#fff}
+.market-chip{display:inline-block;margin-left:8px;border-radius:999px;background:rgba(106,121,41,.14);color:#4c5720;padding:2px 8px;font-size:.66rem;font-weight:800;letter-spacing:.03em;text-transform:uppercase;vertical-align:middle;white-space:nowrap}
+.price-row.is-oos{opacity:.62}
+.price-row.is-oos .go{background:#6B6862}
+.price-row.is-oos:hover{opacity:1}
+/* Sticky lowest-price bar. Mobile-first: this is where nearly all search
+   traffic lands, and the price table scrolls away fast on a phone. */
+.sticky-best{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;align-items:center;gap:12px;background:var(--forest);color:var(--cream);padding:10px 16px;box-shadow:0 -6px 20px rgba(13,15,12,.28);transform:translateY(110%);transition:transform .22s ease;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+.sticky-best.is-visible{transform:translateY(0)}
+.sb-copy{display:flex;flex-direction:column;min-width:0;flex:1 1 auto}
+.sb-label{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.sb-detail{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.84rem;font-weight:700}
+.sb-figure{flex:none;font-family:var(--font-body);font-size:1.1rem;font-weight:900;font-variant-numeric:tabular-nums}
+.sb-go{flex:none;border-radius:999px;background:var(--cream);color:var(--forest);padding:9px 16px;font-size:.78rem;font-weight:900;text-decoration:none;white-space:nowrap}
+.sb-go:hover{background:#fff}
+.sb-go:focus-visible{outline:3px solid var(--cream);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.sticky-best{transition:none}.row-copy,.price-amount .go{transition:none}}
+@media(min-width:900px){.sticky-best{display:none}}
+@media(max-width:520px){
+.row-actions{width:100%;justify-content:flex-start;margin-top:9px}
+.price-amount .go{font-size:.72rem;padding:6px 10px}
+.row-copy{font-size:.72rem;padding:5px 9px}
+.market-chip{margin-left:0;margin-top:4px;font-size:.6rem}
+.sticky-best{gap:9px;padding:9px 12px;padding-bottom:calc(9px + env(safe-area-inset-bottom,0px))}
+.sb-figure{font-size:1rem}
+.sb-go{padding:8px 13px;font-size:.74rem}
+}
 .copy{max-width:1120px;margin:0 auto;padding:0 20px}
 .copy h2{font-family:var(--font-display);color:var(--forest);margin-bottom:6px}
 .copy h3{font-family:var(--font-display);color:var(--forest);font-size:1.2rem;margin:22px 0 6px}
@@ -87,7 +125,7 @@
 <header class="site-top premium-top">
   <div class="top-inner">
     <a class="brand premium-brand" href="/" aria-label="MyPeptidePrice home">
-      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260728-hero-trust-badge-v1" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260729-deep-links-copy-code-v1" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
       <span class="brand-copy"><span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span><span class="brand-tagline">Research. Compare. Save.</span></span>
     </a>
     <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open navigation"><span></span><span></span><span></span></button>
@@ -117,11 +155,12 @@
 <section class="hero"><div class="hero-inner"><div><span class="eyebrow">GLP-1 &amp; Incretin</span><h1>Retatrutide &amp; Tirzepatide Blend price comparison.</h1><p>Listed prices and cost per mg for Retatrutide &amp; Tirzepatide Blend across 4 research vendors tracked on MyPeptidePrice.com. An independent price reference, for laboratory research use only.</p><div class="hero-actions"><a class="button" href="/?q=Retatrutide%20%26%20Tirzepatide%20Blend#compare" data-cta="hero">View current listings</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Listed price range</span><strong>$98.99 to $169.15</strong></div><div class="hero-stat"><span>Vendors listing it</span><strong>4</strong></div><div class="hero-stat"><span>Use</span><strong>Research only</strong></div></div></div></section>
 <div class="answer-box"><div class="inner"><p>Retatrutide &amp; Tirzepatide Blend is listed by 4 research vendors tracked here, with prices from $98.99 to $169.15 per listing depending on size and vendor. Cost per mg ranges from $2.87/mg to $2.87/mg. MyPeptidePrice.com is an independent price reference and does not sell it. Sold by third parties for laboratory research use only, not for human use.</p></div></div>
 <section class="section compact"><div class="snap-wrap"><div class="snap-head"><h2>Retatrutide &amp; Tirzepatide Blend prices by vendor</h2><span class="snap-meta"><span class="dot"></span>Updated July 2026</span></div>
+<span data-sticky-anchor aria-hidden="true"></span>
 <div class="price-card">
-<a class="price-row" href="https://glacieraminos.shop/?ref=SammyC" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Retatrutide &amp; Tirzepatide Blend" data-category="GLP-1 &amp; Incretin" data-vendor="Glacier Aminos" data-code="SAMMYC"><span class="price-size"><span class="size">Retatrutide &amp; Tirzepatide Blend, 20mg / 20g</span><span class="vendor">Glacier Aminos</span><span class="disc">Code SAMMYC applies (10% off)</span></span><span class="price-amount"><span class="amt">$98.99</span><span class="go">View listing &#8250;</span></span></a>
-<a class="price-row" href="https://southernaminos.com/?coupon=sammyc" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Retatrutide &amp; Tirzepatide Blend" data-category="GLP-1 &amp; Incretin" data-vendor="Southern Aminos" data-code="SAMMYC"><span class="price-size"><span class="size">Retatrutide &amp; Tirzepatide Blend, 35mg</span><span class="vendor">Southern Aminos</span><span class="disc">Code SAMMYC applies (15% off)</span></span><span class="price-amount"><span class="amt">$100.56</span><span class="permg">$2.87/mg</span><span class="go">View listing &#8250;</span></span></a>
-<a class="price-row" href="https://flawlesscompounds.com/shop/?coupon=SammyC" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Retatrutide &amp; Tirzepatide Blend" data-category="GLP-1 &amp; Incretin" data-vendor="Flawless Compounds" data-code="SAMMYC"><span class="price-size"><span class="size">Retatrutide &amp; Tirzepatide Blend</span><span class="vendor">Flawless Compounds</span><span class="disc">Code SAMMYC applies (15% off)</span></span><span class="price-amount"><span class="amt">$169.15</span><span class="go">View listing &#8250;</span></span></a>
-<a class="price-row" href="https://glowaminos.com/shop/?coupon=SammyC" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Retatrutide &amp; Tirzepatide Blend" data-category="GLP-1 &amp; Incretin" data-vendor="Glow Aminos" data-code="SAMMYC"><span class="price-size"><span class="size">Retatrutide &amp; Tirzepatide Blend</span><span class="vendor">Glow Aminos</span><span class="disc">Code SAMMYC applies (15% off)</span></span><span class="price-amount"><span class="amt">$169.15</span><span class="go">View listing &#8250;</span></span></a>
+<div class="price-row"><a class="row-hit" href="https://glacieraminos.shop/?ref=SammyC" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Retatrutide &amp; Tirzepatide Blend" data-category="GLP-1 &amp; Incretin" data-vendor="Glacier Aminos" data-code="SAMMYC" data-cta="Apply 10% off at Glacier Aminos" aria-label="$98.99 for Retatrutide &amp;amp; Tirzepatide Blend, 20mg / 20g at Glacier Aminos"></a><span class="price-size"><span class="size">Retatrutide &amp; Tirzepatide Blend, 20mg / 20g</span><span class="vendor">Glacier Aminos</span><span class="disc">Code SAMMYC applies (10% off)</span></span><span class="price-amount"><span class="amt">$98.99</span><span class="row-actions"><button class="row-copy" type="button" data-copy-code="SAMMYC" data-vendor="Glacier Aminos" data-product="Retatrutide &amp; Tirzepatide Blend" data-copy-location="compound_price_table"><span class="supplier-copy-text">Copy SAMMYC</span></button><span class="go">Apply 10% off at Glacier Aminos</span></span></span></div>
+<div class="price-row"><a class="row-hit" href="https://southernaminos.com/?coupon=sammyc" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Retatrutide &amp; Tirzepatide Blend" data-category="GLP-1 &amp; Incretin" data-vendor="Southern Aminos" data-code="SAMMYC" data-cta="Apply 15% off at Southern Aminos" aria-label="$100.56 for Retatrutide &amp;amp; Tirzepatide Blend, 35mg at Southern Aminos"></a><span class="price-size"><span class="size">Retatrutide &amp; Tirzepatide Blend, 35mg</span><span class="vendor">Southern Aminos</span><span class="disc">Code SAMMYC applies (15% off)</span></span><span class="price-amount"><span class="amt">$100.56</span><span class="permg">$2.87/mg</span><span class="row-actions"><button class="row-copy" type="button" data-copy-code="SAMMYC" data-vendor="Southern Aminos" data-product="Retatrutide &amp; Tirzepatide Blend" data-copy-location="compound_price_table"><span class="supplier-copy-text">Copy SAMMYC</span></button><span class="go">Apply 15% off at Southern Aminos</span></span></span></div>
+<div class="price-row"><a class="row-hit" href="https://flawlesscompounds.com/shop/?coupon=SammyC" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Retatrutide &amp; Tirzepatide Blend" data-category="GLP-1 &amp; Incretin" data-vendor="Flawless Compounds" data-code="SAMMYC" data-cta="Apply 15% off at Flawless Compounds" aria-label="$169.15 for Retatrutide &amp;amp; Tirzepatide Blend at Flawless Compounds"></a><span class="price-size"><span class="size">Retatrutide &amp; Tirzepatide Blend</span><span class="vendor">Flawless Compounds</span><span class="disc">Code SAMMYC applies (15% off)</span></span><span class="price-amount"><span class="amt">$169.15</span><span class="row-actions"><button class="row-copy" type="button" data-copy-code="SAMMYC" data-vendor="Flawless Compounds" data-product="Retatrutide &amp; Tirzepatide Blend" data-copy-location="compound_price_table"><span class="supplier-copy-text">Copy SAMMYC</span></button><span class="go">Apply 15% off at Flawless Compounds</span></span></span></div>
+<div class="price-row"><a class="row-hit" href="https://glowaminos.com/shop/?coupon=SammyC" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Retatrutide &amp; Tirzepatide Blend" data-category="GLP-1 &amp; Incretin" data-vendor="Glow Aminos" data-code="SAMMYC" data-cta="Apply 15% off at Glow Aminos" aria-label="$169.15 for Retatrutide &amp;amp; Tirzepatide Blend at Glow Aminos"></a><span class="price-size"><span class="size">Retatrutide &amp; Tirzepatide Blend</span><span class="vendor">Glow Aminos</span><span class="disc">Code SAMMYC applies (15% off)</span></span><span class="price-amount"><span class="amt">$169.15</span><span class="row-actions"><button class="row-copy" type="button" data-copy-code="SAMMYC" data-vendor="Glow Aminos" data-product="Retatrutide &amp; Tirzepatide Blend" data-copy-location="compound_price_table"><span class="supplier-copy-text">Copy SAMMYC</span></button><span class="go">Apply 15% off at Glow Aminos</span></span></span></div>
 </div>
 <p class="snap-note">Prices are drawn from third-party vendor listings and reflect a known discount code where one applies. They change over time; confirm the current price, size, and stock on the vendor site. MyPeptidePrice.com does not sell these materials. For laboratory research use only.</p>
 </div></section>
@@ -134,12 +173,17 @@
 <article class="faq-item"><h3>Is Retatrutide &amp; Tirzepatide Blend sold for human use?</h3><p>No. Every listing referenced here is sold by third-party vendors for laboratory and research use only and is not for human consumption. MyPeptidePrice.com does not sell products and provides no medical, dosing, or usage guidance.</p></article>
 <article class="faq-item"><h3>Does MyPeptidePrice.com sell Retatrutide &amp; Tirzepatide Blend?</h3><p>No. MyPeptidePrice.com is an independent price comparison reference. Purchases, shipping, testing documentation, and terms are handled entirely by the third-party vendors linked on this page.</p></article>
 </div></div></section>
+<div class="sticky-best" data-sticky-best>
+  <span class="sb-copy"><span class="sb-label">Lowest tracked price</span><span class="sb-detail">Glacier Aminos &middot; 20mg / 20g</span></span>
+  <span class="sb-figure">$98.99</span>
+  <a class="sb-go" href="https://glacieraminos.shop/?ref=SammyC" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Retatrutide &amp; Tirzepatide Blend" data-category="GLP-1 &amp; Incretin" data-vendor="Glacier Aminos" data-code="SAMMYC" data-cta="Apply 10% off at Glacier Aminos">Apply 10% off</a>
+</div>
 <section class="section compact"><div class="container"><div class="notice">MyPeptidePrice.com is an independent price reference and does not sell research materials. Prices come from third-party vendor listings and were last checked July 2026. Confirm current details on the vendor site. For laboratory research use only, not for human consumption.</div></div></section>
 <footer class="site-footer premium-footer">
   <div class="footer-inner">
     <div class="footer-col footer-col-brand">
       <div class="footer-brand premium-footer-brand">
-        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260728-hero-trust-badge-v1" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260729-deep-links-copy-code-v1" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
         <div><div class="footer-wordmark"><span class="footer-brand-my">my</span><span class="footer-brand-peptide">peptide</span><span class="footer-brand-price">price</span><span class="footer-brand-dot">.com</span></div><div class="footer-tagline">Research. Compare. Save.</div></div>
       </div>
       <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
@@ -150,6 +194,6 @@
   </div>
   <div class="footer-base"><span>&copy; 2026 MyPeptidePrice.com. Independent price comparison. For research use only.</span></div>
 </footer>
-<script src="/assets/site.js?v=20260728-hero-trust-badge-v1"></script>
+<script src="/assets/site.js?v=20260729-deep-links-copy-code-v1"></script>
 </body>
 </html>

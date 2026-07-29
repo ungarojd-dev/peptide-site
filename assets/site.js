@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260728-hero-trust-badge-v1";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260729-deep-links-copy-code-v1";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -525,4 +525,109 @@
   window.MPPPromotions={ready:promotionsReady,active:activePromotions,forOffer:offerPromotions,forOfferAll:offerPromotionsAll,openPanel:openPromotionPanel};
 
   initComplianceGate();
+})();
+
+/* ============================================================
+   Coupon copy, delegated
+   One document-level listener covers the live catalog (rows are
+   re-rendered constantly) and the static compound and vendor
+   pages, with no double-binding and nothing to re-attach.
+   ============================================================ */
+(function(){
+  "use strict";
+  function writeClipboard(text){
+    if(navigator.clipboard&&navigator.clipboard.writeText) return navigator.clipboard.writeText(text);
+    return new Promise(function(resolve,reject){
+      try{
+        var field=document.createElement("textarea");
+        field.value=text;
+        field.setAttribute("readonly","");
+        field.style.cssText="position:absolute;left:-9999px;top:0;";
+        document.body.appendChild(field);
+        field.select();
+        var ok=document.execCommand("copy");
+        document.body.removeChild(field);
+        ok?resolve():reject(new Error("copy rejected"));
+      }catch(error){reject(error);}
+    });
+  }
+  document.addEventListener("click",function(event){
+    var button=event.target.closest?event.target.closest("[data-copy-code]"):null;
+    if(!button) return;
+    // The button is layered above the row's stretched outbound link, so the
+    // click must not also register as an affiliate click.
+    event.preventDefault();
+    event.stopPropagation();
+    var code=button.getAttribute("data-copy-code")||"";
+    if(!code) return;
+    var label=button.querySelector(".supplier-copy-text")||button;
+    var original=button.getAttribute("data-copy-label")||label.textContent;
+    button.setAttribute("data-copy-label",original);
+    writeClipboard(code).then(function(){
+      button.classList.add("is-copied");
+      label.textContent="Copied";
+      clearTimeout(button._copyTimer);
+      button._copyTimer=setTimeout(function(){
+        button.classList.remove("is-copied");
+        label.textContent=original;
+      },1800);
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({
+        event:"coupon_copy",
+        discount_code:code,
+        vendor_name:button.getAttribute("data-vendor")||"",
+        product_name:button.getAttribute("data-product")||"",
+        button_location:button.getAttribute("data-copy-location")||"comparison_card"
+      });
+    }).catch(function(){
+      // Clipboard blocked. Show the code so it can still be selected by hand.
+      label.textContent=code;
+    });
+  });
+})();
+
+/* ============================================================
+   Sticky best-price bar, single-product pages only
+   Appears once the price table has scrolled out of view, so the
+   cheapest tracked listing stays one tap away on mobile.
+   ============================================================ */
+(function(){
+  "use strict";
+  var bar=document.querySelector("[data-sticky-best]");
+  if(!bar) return;
+  var anchor=document.querySelector("[data-sticky-anchor]");
+  if(!anchor){ return; }
+  var link=bar.querySelector("[data-affiliate]");
+  if(link){
+    link.addEventListener("click",function(){
+      window.dataLayer=window.dataLayer||[];
+      window.dataLayer.push({
+        event:"affiliate_click",
+        product_name:link.getAttribute("data-product")||"",
+        product_category:link.getAttribute("data-category")||"",
+        lab_result:"tracked_vendor",
+        button_text:link.getAttribute("data-cta")||"Get best price",
+        button_location:"sticky_best_price_bar",
+        affiliate_network:"direct_vendor",
+        vendor_name:link.getAttribute("data-vendor")||"",
+        discount_code:link.getAttribute("data-code")||"",
+        affiliate_url:link.href
+      });
+    });
+  }
+  function show(on){ bar.classList.toggle("is-visible",on); }
+  // The anchor is a zero-height sentinel sitting just above the price table,
+  // not the table itself. Observing the table meant waiting for all ~3000px of
+  // it to clear the viewport, so the bar only appeared once the reader was well
+  // past the FAQ. The sentinel fires the moment the cheapest row scrolls off,
+  // which is exactly when a shortcut back to it becomes useful.
+  if("IntersectionObserver" in window){
+    new IntersectionObserver(function(entries){
+      entries.forEach(function(entry){ show(!entry.isIntersecting&&entry.boundingClientRect.top<0); });
+    },{threshold:0}).observe(anchor);
+  }else{
+    window.addEventListener("scroll",function(){
+      show(anchor.getBoundingClientRect().top<0);
+    },{passive:true});
+  }
 })();
