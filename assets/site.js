@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260728-tap-contrast-v1";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260728-surface-separation-v1";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -301,7 +301,7 @@
     const b=dealBuckets(all);
     const section=(title,cls,items)=> items.length?`<div class="deals-group ${cls}"><h3>${title} <span class="deals-group-n">${items.length}</span></h3>${items.map(dealLineHtml).join("")}</div>`:"";
     const total=b.ending.length+b.live.length+b.upcoming.length;
-    return `<div class="deals-panel-backdrop" data-deals-backdrop hidden><section class="deals-panel" role="dialog" aria-modal="true" aria-labelledby="deals-panel-title"><header class="deals-panel-header"><div><span class="deals-eyebrow">Live roundup</span><h2 id="deals-panel-title">Today's Deals</h2></div><button class="deals-close" type="button" data-deals-close aria-label="Close deals">×</button></header><div class="deals-panel-scroll">${section("Ending soon","is-ending",b.ending)}${section("Live now","is-live",b.live)}${section("Upcoming","is-upcoming",b.upcoming)}${section("Announcements","is-standing",b.standing)}${total+b.standing.length===0?'<p class="deals-empty">No active deals right now. Check back soon.</p>':""}</div><footer class="deals-panel-footer">Prices and stacking are set by each vendor and can change. Confirm at checkout.</footer></section></div>`;
+    return `<div class="deals-panel-backdrop" data-deals-backdrop hidden><section class="deals-panel" role="dialog" aria-modal="true" aria-labelledby="deals-panel-title"><header class="deals-panel-header"><div><span class="deals-eyebrow">Live roundup</span><h2 id="deals-panel-title">Today's Deals</h2></div><button class="deals-close" type="button" data-deals-close aria-label="Close deals">×</button></header><div class="deals-panel-scroll">${section("Ending soon","is-ending",b.ending)}${section("Live now","is-live",b.live)}${section("Upcoming","is-upcoming",b.upcoming)}${total===0?'<p class="deals-empty">No active deals right now. Check back soon.</p>':""}</div><footer class="deals-panel-footer">Prices and stacking are set by each vendor and can change. Confirm at checkout.</footer></section></div>`;
   };
   let dealsPanelRoot=null;
   const openDealsPanel=()=>{ if(dealsPanelRoot){ dealsPanelRoot.hidden=false; document.body.classList.add("deals-panel-open"); dealsPanelRoot.querySelector("[data-deals-close]")?.focus(); } };
@@ -403,10 +403,15 @@
     if(banner)banner.hidden=false;
   }
 
+  // A promotion is an announcement (new partner, community news) rather than a
+  // deal. Announcements live only in the rotating strip; deals live only in the
+  // Deals panel and the carousel. One job per surface, nothing duplicated.
+  const isAnnouncementPromo=p=>p.strip_tube==="New partner"||/skool|community/i.test(String(p.display_vendor||p.vendor||""));
+
   function setupDealsStrip(promotions){
     const scroll=document.querySelector("[data-deals-strip-scroll]");
     if(!scroll) return;
-    const boardDeals=promotions.filter(promotion=>promotion.show_in_rolodex!==false);
+    const boardDeals=promotions.filter(promotion=>promotion.show_in_rolodex!==false&&!isAnnouncementPromo(promotion));
     if(!boardDeals.length){
       const section=document.querySelector(".deals-strip");
       if(section) section.hidden=true;
@@ -456,7 +461,7 @@
     const track=document.querySelector("[data-deal-track]");
     const dotsWrap=document.querySelector("[data-deal-dots]");
     if(!track) return;
-    const deals=promotions.filter(p=>p.show_in_rolodex===true)
+    const deals=promotions.filter(p=>p.show_in_rolodex===true&&!isAnnouncementPromo(p))
       .slice().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned));
     if(!deals.length){const s=document.querySelector(".deal-carousel");if(s)s.hidden=true;return;}
     const isStackable=deal=>{const h=((deal.short_detail||"")+" "+(deal.full_detail||"")).toLowerCase();return h.includes("stackable")||h.includes("sammyc");};
