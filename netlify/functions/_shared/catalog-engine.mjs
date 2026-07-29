@@ -137,6 +137,14 @@ const HARDCODED_FORCED_ALIASES = {
   "cag": "cagrilintide", "sermo": "sermorelin", "ipamo": "ipamorelin",
   "bw h brand": "bacteriostatic-water",
   "mlt i": "melanotan-i", "mlt ii": "melanotan-ii", "mlt 1": "melanotan-i", "mlt 2": "melanotan-ii",
+  // Orbitrex coded names, confirmed by the vendor. 1G-SGT is semaglutide;
+  // MT-II is Melanotan II (this also maps Coffee and Peppers' MT-II spray).
+  // Orbitzen 40 is intentionally NOT aliased: it is their own proprietary
+  // blend, so it stays its own listing rather than being folded into an
+  // unrelated compound card.
+  "1g sgt": "semaglutide", "1g-sgt": "semaglutide", "sgt": "semaglutide",
+  "mt ii": "melanotan-ii", "mt-ii": "melanotan-ii", "mt 2": "melanotan-ii",
+  "bact water": "bacteriostatic-water", "bact. water": "bacteriostatic-water",
   "oxt 10": "oxytocin", "oxt10": "oxytocin",
   // Southern SKU patterns
   "us hgh176 5": "hgh-fragment-176-191",

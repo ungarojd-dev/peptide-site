@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260726-standards-page-v1";
+const VER = "20260728-tap-contrast-v1";
 const TODAY = "July 2026";
 const VALID_UNTIL = "2026-08-31";
 const BASE = "https://mypeptideprice.com";
@@ -401,8 +401,8 @@ for (const v of vendorNames) {
   if (uniq.length === 0) { continue; } // vendor with no priced offers in snapshot, skip page
   const lo = uniq.length ? uniq[0].price : null;
   const hi = uniq.length ? uniq[uniq.length - 1].price : null;
-  const title = `${v.display} Prices | ${compoundCount} Research Compounds Compared`;
-  const desc = `${v.display} listed prices across ${compoundCount} research compounds${lo != null ? `, ${money(lo)} to ${money(hi)}` : ""}. Independent price reference. For laboratory research use only, not for human use.`;
+  const title = `${v.display} Prices | Compare ${compoundCount} Compounds Per Mg`;
+  const desc = `${v.display} prices tracked across ${compoundCount} research compounds${lo != null ? `, ${money(lo)} to ${money(hi)}` : ""}, compared against other vendors per mg. Independent price reference, for laboratory research use only.`;
 
   const rowsHtml = uniq.slice(0, 20).map((o) => {
     const note = o.discount > 0 && o.code ? `Code ${esc(o.code)} applies (${o.discount}% off)` : "Listed price";
@@ -410,6 +410,7 @@ for (const v of vendorNames) {
   }).join("\n");
 
   const faq = [
+    [`How do ${v.display} prices compare to other vendors?`, `MyPeptidePrice.com tracks ${v.display} alongside other research vendors so you can compare the same compound by price per mg. Use the listings above, then open any compound to see where ${v.display} ranks against other vendors for that specific item.`],
     [`What does ${v.display} list?`, `${v.display} is one of the research vendors tracked on MyPeptidePrice.com, with ${compoundCount} compounds catalogued here. The listings above show current prices; browse them or compare the same compounds across other vendors.`],
     [`What do ${v.display} listings cost?`, `${lo != null ? `Across the compounds tracked here, ${v.display} listings range from ${money(lo)} to ${money(hi)} depending on compound and size.` : `Pricing varies by compound and size.`} Prices come from vendor listings and change over time; confirm the current price on the vendor site.`],
     [`Does the SAMMYC code apply at ${v.display}?`, `Where ${v.display} supports it, the SAMMYC code is reflected in the listed price shown here, and the row notes when it applies. Confirm the code at checkout on the vendor site.`],

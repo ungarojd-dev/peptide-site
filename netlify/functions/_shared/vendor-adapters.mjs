@@ -286,8 +286,14 @@ function orbitrexAdapter() {
       const rows = Array.isArray(data) ? data : (data.products || data.items || data.prices || []);
       const products = [];
       for (const item of rows) {
-        const name = compact(item.name || item.product || item.title);
+        let name = compact(item.name || item.product || item.title);
         if (!name || !item.url) continue; // url is always present and unique
+        // Orbitrex prefixes some codes with a product-line marker like "1G-"
+        // (e.g. "1G-SGT 10mg"). It is not a quantity, and leaving it in made
+        // the size read as "1g / 10mg" instead of "10mg". Strip a leading
+        // digit+G hyphen prefix only; a real gram size is written as a
+        // trailing quantity, so this cannot swallow a genuine weight.
+        name = name.replace(/^\d+\s*G\s*-\s*/i, "").trim();
         const variant = compact(item.variant);
         const listing = variant ? `${name} - ${variant}` : name;
         // price/price_cents is the effective (charged) price; feeds already

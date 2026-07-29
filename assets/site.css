@@ -1282,3 +1282,57 @@ body.deals-panel-open { overflow: hidden; }
   line-height:1.45;
 }
 .catalog-affiliate-note a{color:inherit;text-decoration:underline;text-underline-offset:2px;}
+
+/* ── TAP TARGET + CONTRAST PASS (nighttime QA) ──────────────────────────
+   Invisible ::after expanders enlarge touch areas without changing any
+   visual sizing. Each expander is sized to stay INSIDE the neighbouring
+   gap so adjacent controls never steal each other's taps. */
+
+/* Carousel dots: 7px visual, 6px gap (13px pitch) fails the 24px minimum.
+   Widen the row gap to 16px (pitch 23px) and expand the hit box to 22x40,
+   which stays 1px clear of the neighbour. Dots look identical, just
+   slightly more breathing room. */
+.deal-carousel-dots { gap: 16px; }
+.dc-dot { position: relative; }
+.dc-dot::after {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 22px; height: 40px;
+}
+
+/* Carousel arrows: 26x26 with a 9px gap. Expand to 34x44, extending 4px
+   each side, comfortably inside the gap. */
+.dc-nav-btn { position: relative; }
+.dc-nav-btn::after {
+  content: ""; position: absolute; left: 50%; top: 50%;
+  transform: translate(-50%, -50%);
+  width: 34px; height: 44px;
+}
+
+/* Hamburger: the primary mobile nav control. Give it a real 44x44 box
+   while keeping the bars the same size. */
+.nav-toggle { min-width: 44px; min-height: 44px; align-items: center; justify-content: center; }
+
+/* Wide-but-short controls: only the height needs expanding, so widths stay
+   put and no horizontal neighbour is affected. */
+.nav-deals-btn, .announce-link, .dc-view-all { position: relative; }
+.nav-deals-btn::after, .announce-link::after, .dc-view-all::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%;
+  transform: translateY(-50%); height: 44px;
+}
+
+/* Hero jump chips wrap onto multiple rows (6px row gap, ~37px pitch), so
+   cap the expander at 36px to avoid bleeding into the row above/below. */
+.hero-chip { position: relative; }
+.hero-chip::after {
+  content: ""; position: absolute; left: 0; right: 0; top: 50%;
+  transform: translateY(-50%); height: 36px;
+}
+
+/* Deals panel footer disclaimer measured 3.80:1, under the 4.5:1 minimum. */
+.deals-panel-footer { color: rgba(255,255,255,.58); }
+
+/* The dot and arrow expanders need 11.5px of clearance between them but the
+   nav row gap was 9px, causing a 3px hit-area overlap at the end dots.
+   Widen the gap so every control owns its own tap zone. */
+.deal-carousel-nav { gap: 14px; }

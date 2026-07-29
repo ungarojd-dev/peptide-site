@@ -1,6 +1,6 @@
 {
-  "version": "deals-2026-07-27",
-  "updated_at": "2026-07-27T00:16:08.453Z",
+  "version": "deals-2026-07-29",
+  "updated_at": "2026-07-29T12:35:00.456Z",
   "_generated": "Built from data/deals.json by scripts/build-promotions.mjs. Do not edit by hand.",
   "promotions": [
     {
@@ -136,29 +136,6 @@
       "strip_stack": "SAMMYC",
       "show_vendor_badge": false,
       "show_in_rolodex": false
-    },
-    {
-      "id": "disguised-alpha-weekend-sale-jul-2026",
-      "vendor": "Disguised Alpha",
-      "display_vendor": "Disguised Alpha",
-      "brand_color": "#de0d5b",
-      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
-      "cta_text": "Shop sale",
-      "headline": "Weekend sale, two days only",
-      "short_detail": "Disguised Alpha is running a two day weekend sale covering 20% off seven capsule products and Buy 2 Get 1 Free on five peptides. The sale runs Sunday July 19 and Monday July 20 and ends at 11:59pm Eastern. Offer scope and stacking rules are set by the vendor, confirm eligibility at checkout.",
-      "full_detail": "Disguised Alpha is running a two day weekend sale covering 20% off seven capsule products and Buy 2 Get 1 Free on five peptides. The sale runs Sunday July 19 and Monday July 20 and ends at 11:59pm Eastern. Offer scope and stacking rules are set by the vendor, confirm eligibility at checkout.",
-      "priority": 300,
-      "start_at": "2026-07-19T00:00:00-04:00",
-      "end_at": "2026-07-20T23:59:00-04:00",
-      "conditional_deal": true,
-      "chip_label": "Bundle offer",
-      "show_in_announce_bar": true,
-      "show_in_announcement_rolodex": true,
-      "badge": "LIMITED TIME",
-      "announce_tube": "Live now",
-      "announce_offer": "Weekend sale, two days only",
-      "show_vendor_badge": true,
-      "show_in_rolodex": true
     },
     {
       "id": "disguised-alpha-new-partner",

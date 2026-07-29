@@ -1,16 +1,16 @@
 {
   "schema_version": "catalog-v1",
   "engine_version": "1.1.0-merged-formats",
-  "generated_at": "2026-07-26T18:55:11.741Z",
+  "generated_at": "2026-07-29T12:34:26.280Z",
   "coupon_code": "SAMMYC",
-  "product_card_count": 220,
+  "product_card_count": 219,
   "normalized_offer_count": 1506,
-  "visible_unmapped_count": 112,
-  "mapped_offer_count": 1394,
+  "visible_unmapped_count": 111,
+  "mapped_offer_count": 1395,
   "supply_offer_count": 56,
-  "review_offer_count": 112,
+  "review_offer_count": 111,
   "mapped_card_count": 120,
-  "review_card_count": 100,
+  "review_card_count": 99,
   "excluded_count": 0,
   "silent_drop_count": 0,
   "vendors_loaded": 14,
@@ -42535,8 +42535,8 @@
         {
           "id": "nasal-sprays",
           "label": "Nasal Sprays",
-          "offer_count": 1,
-          "supplier_count": 1
+          "offer_count": 2,
+          "supplier_count": 2
         }
       ],
       "format_labels": [
@@ -42545,7 +42545,7 @@
       ],
       "mapped": true,
       "supplier_count": 12,
-      "offer_count": 18,
+      "offer_count": 19,
       "lowest_effective_price": 24.29,
       "variants": [
         {
@@ -43019,7 +43019,7 @@
               "sku": "CP-MT2-1",
               "source_layer": "fallback-static",
               "mapped": true,
-              "mapping": "catalog-alias:mt-2",
+              "mapping": "forced-alias:mt 2",
               "source_product_id": "",
               "source_variation_id": "",
               "ingestion_warning": ""
@@ -43077,7 +43077,7 @@
               "sku": "MLN-010-MH",
               "source_layer": "fallback-static",
               "mapped": true,
-              "mapping": "catalog-alias:mt-2",
+              "mapping": "forced-alias:mt 2",
               "source_product_id": "",
               "source_variation_id": "",
               "ingestion_warning": ""
@@ -43139,7 +43139,69 @@
               "sku": "CP-MT2-10",
               "source_layer": "fallback-static",
               "mapped": true,
-              "mapping": "catalog-alias:mt-2",
+              "mapping": "forced-alias:mt 2",
+              "source_product_id": "",
+              "source_variation_id": "",
+              "ingestion_warning": ""
+            }
+          ]
+        },
+        {
+          "id": "nasal-sprays::10mg",
+          "quantity_id": "10mg",
+          "label": "10mg",
+          "format": "Nasal Sprays",
+          "format_id": "nasal-sprays",
+          "full_label": "10mg Nasal Sprays",
+          "sort": 10,
+          "supplier_count": 1,
+          "all_offer_count": 1,
+          "suppliers": [
+            {
+              "vendor_id": "coffee-and-peppers",
+              "vendor_name": "Coffee and Peppers",
+              "vendor_logo": "/assets/vendor-logos/coffee-and-peppers.webp",
+              "vendor_display": "Coffee and Peppers",
+              "vendor_payment_methods": [
+                "Visa",
+                "Discover",
+                "American Express",
+                "Zelle",
+                "Bank Payment"
+              ],
+              "vendor_first_order_offer": {
+                "code": "NEWCOFFEE20",
+                "percent": 20,
+                "stacks_with": "SAMMYC",
+                "chip_label": "New customer offer",
+                "line": "First order: 20% off with code NEWCOFFEE20, plus a stackable 15% off with code SAMMYC."
+              },
+              "product_id": "melanotan-ii",
+              "product_name": "Melanotan II",
+              "category": "Skin, Tanning & Sexual Health",
+              "format": "Nasal Sprays",
+              "quantity_id": "10mg",
+              "quantity_label": "10mg",
+              "quantity_sort": 10,
+              "listing_mg": 10,
+              "price_per_mg": 5.95,
+              "price_per_mg_label": "$5.95/mg",
+              "regular_price_label": "$70.00",
+              "effective_price_label": "$59.50",
+              "regular_price_min": 70,
+              "effective_price_min": 59.5,
+              "discount_percent": 15,
+              "discount_sitewide_percent": null,
+              "discount_code_percent": 15,
+              "coupon_code": "SAMMYC",
+              "in_stock": true,
+              "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+              "raw_product": "MT-II SPRAY 10MG",
+              "raw_listing": "MT-II SPRAY 10MG",
+              "sku": "CP-MT2SPRAY-8",
+              "source_layer": "fallback-static",
+              "mapped": true,
+              "mapping": "forced-alias:mt ii",
               "source_product_id": "",
               "source_variation_id": "",
               "ingestion_warning": ""
@@ -43494,7 +43556,7 @@
               "sku": "MT2Nasal",
               "source_layer": "fallback-static",
               "mapped": true,
-              "mapping": "catalog-alias:mt-2",
+              "mapping": "forced-alias:mt 2",
               "source_product_id": "",
               "source_variation_id": "",
               "ingestion_warning": ""
@@ -47032,92 +47094,6 @@
               "source_layer": "fallback-static",
               "mapped": true,
               "mapping": "catalog-alias:MOTS-c",
-              "source_product_id": "",
-              "source_variation_id": "",
-              "ingestion_warning": ""
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "mt-ii-spray",
-      "product_id": "mt-ii-spray",
-      "name": "MT-II SPRAY",
-      "category": "Skin, Tanning & Sexual Health",
-      "format": "Nasal Sprays",
-      "formats": [
-        {
-          "id": "nasal-sprays",
-          "label": "Nasal Sprays",
-          "offer_count": 1,
-          "supplier_count": 1
-        }
-      ],
-      "format_labels": [
-        "Nasal Sprays"
-      ],
-      "mapped": false,
-      "supplier_count": 1,
-      "offer_count": 1,
-      "lowest_effective_price": 59.5,
-      "variants": [
-        {
-          "id": "nasal-sprays::10mg",
-          "quantity_id": "10mg",
-          "label": "10mg",
-          "format": "Nasal Sprays",
-          "format_id": "nasal-sprays",
-          "full_label": "10mg Nasal Sprays",
-          "sort": 10,
-          "supplier_count": 1,
-          "all_offer_count": 1,
-          "suppliers": [
-            {
-              "vendor_id": "coffee-and-peppers",
-              "vendor_name": "Coffee and Peppers",
-              "vendor_logo": "/assets/vendor-logos/coffee-and-peppers.webp",
-              "vendor_display": "Coffee and Peppers",
-              "vendor_payment_methods": [
-                "Visa",
-                "Discover",
-                "American Express",
-                "Zelle",
-                "Bank Payment"
-              ],
-              "vendor_first_order_offer": {
-                "code": "NEWCOFFEE20",
-                "percent": 20,
-                "stacks_with": "SAMMYC",
-                "chip_label": "New customer offer",
-                "line": "First order: 20% off with code NEWCOFFEE20, plus a stackable 15% off with code SAMMYC."
-              },
-              "product_id": "mt-ii-spray",
-              "product_name": "MT-II SPRAY",
-              "category": "Skin, Tanning & Sexual Health",
-              "format": "Nasal Sprays",
-              "quantity_id": "10mg",
-              "quantity_label": "10mg",
-              "quantity_sort": 10,
-              "listing_mg": 10,
-              "price_per_mg": 5.95,
-              "price_per_mg_label": "$5.95/mg",
-              "regular_price_label": "$70.00",
-              "effective_price_label": "$59.50",
-              "regular_price_min": 70,
-              "effective_price_min": 59.5,
-              "discount_percent": 15,
-              "discount_sitewide_percent": null,
-              "discount_code_percent": 15,
-              "coupon_code": "SAMMYC",
-              "in_stock": true,
-              "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
-              "raw_product": "MT-II SPRAY 10MG",
-              "raw_listing": "MT-II SPRAY 10MG",
-              "sku": "CP-MT2SPRAY-8",
-              "source_layer": "fallback-static",
-              "mapped": false,
-              "mapping": "visible-unmapped",
               "source_product_id": "",
               "source_variation_id": "",
               "ingestion_warning": ""
@@ -83874,15 +83850,15 @@
   ],
   "diagnostics": {
     "engine_version": "1.1.0-merged-formats",
-    "generated_at": "2026-07-26T18:55:11.741Z",
-    "product_card_count": 220,
+    "generated_at": "2026-07-29T12:34:26.280Z",
+    "product_card_count": 219,
     "normalized_offer_count": 1506,
-    "visible_unmapped_count": 112,
-    "mapped_offer_count": 1394,
+    "visible_unmapped_count": 111,
+    "mapped_offer_count": 1395,
     "supply_offer_count": 56,
-    "review_offer_count": 112,
+    "review_offer_count": 111,
     "mapped_card_count": 120,
-    "review_card_count": 100,
+    "review_card_count": 99,
     "excluded_count": 0,
     "silent_drop_count": 0,
     "vendors": {
@@ -84083,16 +84059,6 @@
         "category": "Cognitive & Nootropic",
         "format": "Vials",
         "quantity": "Standard listing"
-      },
-      {
-        "vendor": "Coffee and Peppers",
-        "raw_product": "MT-II SPRAY 10MG",
-        "raw_listing": "MT-II SPRAY 10MG",
-        "sku": "CP-MT2SPRAY-8",
-        "grouped_as": "MT-II SPRAY",
-        "category": "Skin, Tanning & Sexual Health",
-        "format": "Nasal Sprays",
-        "quantity": "10mg"
       },
       {
         "vendor": "Coffee and Peppers",
@@ -85108,6 +85074,6 @@
     "excluded_products": [],
     "warnings": []
   },
-  "snapshot_updated_at": "2026-07-26T18:55:11.742Z",
+  "snapshot_updated_at": "2026-07-29T12:34:26.281Z",
   "snapshot_refresh_ms": 0
 }
