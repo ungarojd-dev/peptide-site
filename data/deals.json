@@ -148,7 +148,7 @@
       "code_percent": 15,
       "headline": "20% off first order, stacks with SAMMYC",
       "timezone": "America/New_York",
-      "type": "first_order",
+      "type": "sitewide_sale",
       "id": "coffee-first-order-evergreen",
       "cta_text": "Shop now",
       "description": "",
