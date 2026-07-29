@@ -1336,3 +1336,36 @@ body.deals-panel-open { overflow: hidden; }
    nav row gap was 9px, causing a 3px hit-area overlap at the end dots.
    Widen the gap so every control owns its own tap zone. */
 .deal-carousel-nav { gap: 14px; }
+
+/* ── HIDDEN ATTRIBUTE SAFETY NET ────────────────────────────────────────
+   The hidden attribute only gets display:none from the browser's default
+   stylesheet, so ANY rule that sets display (e.g. the neon bar's
+   .announce-tube { display: inline-flex }) silently defeats it and leaves an
+   empty styled shell on screen: a bordered, glowing pill with no text.
+   That is what produced the stray chip beside the vendor name when a promo
+   had no tube label. This guard makes hidden authoritative everywhere and
+   stops the whole class of bug recurring as more UI is added. */
+[hidden] { display: none !important; }
+
+/* ── HERO TRUST BADGE (was an 8-cell grid) ──────────────────────────────
+   The old grid repeated all seven testing categories, costing ~200px on
+   mobile and pushing the search box well past a screen and a half. Those
+   categories now have a dedicated Standards page, so the hero carries one
+   compact badge that links there instead: same credibility signal, a
+   fraction of the height, and it sends traffic to the page that explains
+   the standard. Overrides the grid rules above. */
+.hero-cert-strip { display: block; grid-template-columns: none; padding: 0 28px 22px; }
+.hero-cert-strip .trust-item-link {
+  display: flex; align-items: center; gap: 10px;
+  border: 1px solid rgba(216,199,167,.18); border-radius: 12px;
+  background: rgba(255,255,255,.03); color: rgba(255,255,255,.78);
+  padding: 10px 14px; font-size: 12px; font-weight: 650; line-height: 1.35;
+  text-decoration: none; min-height: 44px;
+}
+.hero-cert-strip .trust-item-link strong { color: #fff; font-weight: 850; }
+.hero-cert-strip .trust-item-link:hover { border-color: rgba(169,209,58,.45); background: rgba(169,209,58,.06); }
+.hero-cert-strip .trust-item-arrow { margin-left: auto; color: var(--lime,#a9d13a); font-weight: 900; flex: none; }
+@media (max-width: 700px) {
+  .hero-cert-strip { padding: 0 18px 18px; }
+  .hero-cert-strip .trust-item-link { font-size: 11.5px; padding: 9px 12px; gap: 8px; }
+}
