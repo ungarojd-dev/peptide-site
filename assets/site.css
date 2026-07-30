@@ -1480,14 +1480,39 @@ body.deals-panel-open { overflow: hidden; }
 }
 
 
-/* Narrow phones: drop the ".com" and tighten so the wordmark cannot reach
-   the Deals pill. At 360px it was still overlapping by 24px on size alone. */
-@media (max-width: 400px) {
+/* ============================================================
+   Mobile header budget
+   Two labelled pills plus the full wordmark do not fit on a phone.
+   Measured at 430px: mark 34 + wordmark 170 + Deals 79 + Giveaways 97
+   + burger 44 = 424px of content in a 406px content box, so the
+   wordmark ran straight through the Deals pill by 76 to 144px
+   depending on width.
+   The wordmark is the thing that gives way: the browser URL bar
+   already shows mypeptideprice.com, and the logo mark still links
+   home. The pills carry live counts and cannot be dropped.
+   ============================================================ */
+@media (max-width: 520px) {
+  .premium-brand { min-width: 0; flex: 0 1 auto; gap: 8px; }
+  .brand-copy { min-width: 0; }
+  .brand-wordmark { font-size: 0.78rem; letter-spacing: -.55px; white-space: nowrap; }
   .brand-wordmark .brand-dot { display: none; }
-  .brand-wordmark { font-size: 0.88rem; letter-spacing: -.4px; }
+  .brand-tagline { display: none; }
+  .nav-deals-btn, .nav-gw-btn { flex: 0 0 auto; padding: 5px 10px; font-size: 10.5px; margin-left: 5px; }
+  .nav-deals-count, .nav-gw-count { min-width: 15px; height: 15px; font-size: 9px; }
 }
-@media (max-width: 370px) {
-  .brand-wordmark { font-size: 0.8rem; }
+/* Below this the wordmark cannot fit at any readable size, so the brand
+   collapses to the mark alone. Squeezing it in was tried: at 390px there is
+   94px of free space and the wordmark needs 129px, so fitting it would mean
+   roughly 0.57rem, which is not readable. The child spans carry their own
+   font sizes, so shrinking the parent alone does nothing. */
+@media (max-width: 460px) {
+  .brand-wordmark { display: none; }
+  .premium-brand { flex: 0 0 auto; }
+  .nav-deals-btn { margin-left: auto; }
+}
+@media (max-width: 360px) {
+  .nav-deals-btn, .nav-gw-btn { padding: 5px 8px; font-size: 10px; margin-left: 4px; }
+  .nav-toggle { margin-left: 4px; }
 }
 
 /* ============================================================
