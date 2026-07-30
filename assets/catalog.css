@@ -1159,9 +1159,11 @@ a.seo-card-name:hover { text-decoration: underline; }
   .catalog-select-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
   /* The base rule for these groups is `display: flex !important`, so the
      override has to match it. Not a preference, just what it takes. */
-  .premium-catalog .catalog-select-grid .catalog-filter-format,
+  /* Format is the primary filter and must stay visible on mobile. This rule
+     was written when Category held that slot and Format was the thing being
+     folded away; leaving Format in it meant promoting Format changed nothing
+     on a phone. Only Sort folds now. */
   .premium-catalog .catalog-select-grid .catalog-sort-group { display: none !important; }
-  .premium-catalog .catalog-select-grid.is-expanded .catalog-filter-format,
   .premium-catalog .catalog-select-grid.is-expanded .catalog-sort-group { display: flex !important; }
   /* Compact inline control. A full-width button gave back most of the
      height the collapse had just saved. */
@@ -1253,6 +1255,6 @@ a.seo-card-name:hover { text-decoration: underline; }
 /* With Category gone there are three filters. Format and Company stay
    visible on mobile; Sort folds behind the toggle as before. */
 @media (max-width: 700px) {
-  .premium-catalog .catalog-select-grid .catalog-sort-group { display: none !important; }
-  .premium-catalog .catalog-select-grid.is-expanded .catalog-sort-group { display: flex !important; }
+  /* Sort folds behind the toggle; rule lives above with the filter grid. */
+
 }

@@ -37,6 +37,12 @@
   // only the minority formats get an accent, which makes the rare thing the
   // thing that stands out. Cards with more than one format stay neutral and
   // rely on their per-format chips instead.
+  // "Standard listing" is the engine's fallback when a vendor puts no size in
+  // the product name. It is not a size, and it must not read like one under a
+  // heading that says "Compare size or listing".
+  const UNSIZED_LABEL="Standard listing";
+  const isUnsized=label=>String(label||"").trim().toLowerCase()===UNSIZED_LABEL.toLowerCase();
+  const sizeLabel=label=>isUnsized(label)?"Size not listed":String(label||"");
   const formatSlug=label=>String(label||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
   const ACCENTED_FORMATS=new Set(["raw-powder","capsules","nasal-sprays","topicals","liquids","aminos","supplies","dissolvable-strips"]);
   function cardAccent(formats){
@@ -306,7 +312,11 @@
     const alternate=supplier.alternate_offer_count?`<span>${esc(Number(supplier.alternate_offer_count)+1)} listings</span>`:"";
     const listingName=supplier.raw_listing||supplier.raw_product||"";
     const productListing="";
-    const variantLine=variantLabel&&variantLabel!=="Standard listing"?`<span class="supplier-variant-line"><span>Size</span> ${esc(variantLabel)}</span>`:"";
+    // The original guard compared for equality with "Standard listing", but
+    // rowLabel often returns the full label with the format appended, so
+    // "Standard listing Vials" slipped through and rendered as a size. Match the
+    // prefix instead: if there is no real size, the line is dropped entirely.
+    const variantLine=variantLabel&&!/^\s*standard listing/i.test(variantLabel)?`<span class="supplier-variant-line"><span>Size</span> ${esc(variantLabel)}</span>`:"";
     const bestBadge=isBest?`<span class="supplier-best">Lowest</span>`:"";
     const activePromos=global.MPPPromotions?.forOfferAll?.(supplier,card)||[];
     const code=esc(supplier.coupon_code||"SAMMYC");
@@ -382,13 +392,16 @@
     };
     const supplierHtml=visible.length?visible.map((row,index)=>supplierRow(row.supplier,card,rowLabel(row),index===0&&row.supplier.effective_price_min!=null&&row.supplier.in_stock!==false)).join(""):`<div class="supplier-row supplier-empty-row"><span>No listings available for this vendor.</span></div>`;
 
+    // When every group in the size row is unsized, the row only repeats the
+    // format row above it, so it is dropped. Applies to roughly 45% of cards.
+    const sizeRowUseful=scopedVariants.some(item=>!isUnsized(item.label));
     const accent=cardAccent(formats);
     return `<article class="product-card ${tone}${expanded?" is-expanded":""}"${accent?` data-format="${accent}"`:""} data-card-id="${attr(card.id)}">
       <header class="product-card-head">
         <div class="product-title-row">
           <div class="product-title-copy">
             <h2 class="product-title">${esc(card.name)}</h2>
-            <div class="product-subtitle"><span class="fmt-summary">${multiFormat&&formatId===ALL_FORMATS?"":formatIcon(formatSummary)}${esc(formatSummary)}</span><span class="product-cat-inline">${esc(catLabel(card.category)||"Product")}</span><span class="vendor-count">${vendorLabel}</span></div>
+            <div class="product-subtitle"><span class="fmt-summary">${multiFormat&&formatId===ALL_FORMATS?"":formatIcon(formatSummary)}${esc(formatSummary)}</span><span class="vendor-count">${vendorLabel}</span></div>
           </div>
         </div>
       </header>
@@ -403,17 +416,17 @@
           <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="1" data-card="fmt-${attr(card.id)}" aria-label="Scroll formats right">&rsaquo;</button>
         </div>
       </div>`:""}
-      <div class="variant-wrap">
+      ${sizeRowUseful?`<div class="variant-wrap">
         <span class="variant-label">Compare size or listing</span>
         <div class="variant-pills-shell" data-variant-shell="${attr(card.id)}">
           <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="-1" data-card="${attr(card.id)}" aria-label="Scroll sizes left">‹</button>
           <div class="variant-pills" data-variant-pills="${attr(card.id)}">
             <button type="button" class="variant-button all${isAll?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${ALL_VARIANTS}">All listings${totalListings?` (${esc(totalListings)})`:""}</button>
-            ${scopedVariants.map(item=>`<button type="button" class="variant-button${!isAll&&item.id===variant.id?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${attr(item.id)}">${esc(multiFormat&&formatId===ALL_FORMATS?(item.full_label||item.label):item.label)}${item.all_offer_count?` (${esc(item.all_offer_count)})`:""}</button>`).join("")}
+            ${scopedVariants.map(item=>`<button type="button" class="variant-button${!isAll&&item.id===variant.id?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${attr(item.id)}">${esc(multiFormat&&formatId===ALL_FORMATS?(isUnsized(item.label)?`${sizeLabel(item.label)}, ${item.format||""}`.replace(/,\s*$/,""):(item.full_label||item.label)):sizeLabel(item.label))}${item.all_offer_count?` (${esc(item.all_offer_count)})`:""}</button>`).join("")}
           </div>
           <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="1" data-card="${attr(card.id)}" aria-label="Scroll sizes right">›</button>
         </div>
-      </div>
+      </div>`:""}
       ${bestValue?`<a class="best-value-row" href="${attr(bestValue.supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(bestValue.supplier.vendor_name)}" data-code="${attr(bestValue.supplier.coupon_code||"")}">
         <span class="bv-mark" aria-hidden="true">&#9733;</span>
         <span class="bv-body">
@@ -596,8 +609,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260730-format-primary-v18",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260730-format-primary-v18",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260730-mobile-format-filter-v21",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260730-mobile-format-filter-v21",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

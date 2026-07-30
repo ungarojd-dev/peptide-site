@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260730-format-primary-v18";
+const VER = "20260730-mobile-format-filter-v21";
 const TODAY = "July 2026";
 const VALID_UNTIL = "2026-08-31";
 const BASE = "https://mypeptideprice.com";
@@ -423,7 +423,7 @@ for (const c of compoundPages) {
     : `${c.name} is listed by ${c.vendors.length} research vendors tracked here. MyPeptidePrice.com is an independent price reference and does not sell it. Sold by third parties for laboratory research use only, not for human use.`;
 
   const faq = [
-    [`What is ${c.name}?`, `${c.name} is a research compound catalogued under the ${c.category} category on MyPeptidePrice.com. It is supplied by third-party vendors as a research material for laboratory use only. This page reports listed prices and does not describe effects, uses, or handling.`],
+    [`What is ${c.name}?`, `${c.name} is a research compound tracked on MyPeptidePrice.com. It is supplied by third-party vendors as a research material for laboratory use only. This page reports listed prices and does not describe effects, uses, or handling.`],
     [`What does ${c.name} cost across vendors?`, `${lowLabel ? `Listed prices range from ${lowLabel} to ${hiLabel} per listing across ${c.vendors.length} tracked vendors, depending on size and format.` : `${c.name} pricing varies by size, format, and vendor.`}${permgLine} Prices shown are drawn from vendor listings and change over time; confirm the current price on the vendor site.`],
     [`What does price per mg mean?`, `Price per mg divides a listing's price by its milligram amount, so listings of different sizes can be compared on the same basis. A lower price per mg means more material for the money at that listing size.`],
     [`Is ${c.name} sold for human use?`, `No. Every listing referenced here is sold by third-party vendors for laboratory and research use only and is not for human consumption. MyPeptidePrice.com does not sell products and provides no medical, dosing, or usage guidance.`],
@@ -439,7 +439,7 @@ for (const c of compoundPages) {
         { "@type": "ListItem", position: 2, name: "Compounds", item: `${BASE}/compounds.html` },
         { "@type": "ListItem", position: 3, name: c.name, item: canonical },
       ]},
-      { "@type": "Product", name: `${c.name} (Research Material)`, category: `${c.category} research compound`,
+      { "@type": "Product", name: `${c.name} (Research Material)`, category: "Research compound",
         description: `${c.name} listed by third-party vendors for laboratory research use only. Not for human consumption. This page is an independent price reference.`,
         ...(c.lo != null ? { offers: { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: c.lo.toFixed(2), highPrice: (c.hi ?? c.lo).toFixed(2), priceValidUntil: VALID_UNTIL, availability: "https://schema.org/InStock", offerCount: String(offerCount) } } : {}) },
       { "@type": "FAQPage", mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
@@ -457,7 +457,7 @@ ${rowsHtml}
 </div>
 <p class="snap-note">Prices are drawn from third-party vendor listings and reflect a known discount code where one applies. They change over time; confirm the current price, size, and stock on the vendor site. MyPeptidePrice.com does not sell these materials. For laboratory research use only.</p>
 </div></section>
-<section class="section compact"><div class="copy"><span class="research-tag">What this page is</span><h2>About ${esc(c.name)} on this page</h2><p>${esc(c.name)} is catalogued under the ${esc(c.category)} category. Vendors tracked here list it as a research material, typically as lyophilized powder in a vial. This page reports the prices those vendors list and the resulting cost per mg. It does not describe what ${esc(c.name)} does, how it is used, or how it is handled.</p><p>Every listing referenced here is sold by independent third-party vendors for laboratory research use only and is not for human consumption. MyPeptidePrice.com is an independent price comparison reference. It does not sell products, ship orders, or provide medical, dosing, or usage guidance of any kind.</p></div></section>
+<section class="section compact"><div class="copy"><span class="research-tag">What this page is</span><h2>About ${esc(c.name)} on this page</h2><p>${esc(c.name)} is tracked across the vendors compared on this site. Vendors list it as a research material, typically as lyophilized powder in a vial. This page reports the prices those vendors list and the resulting cost per mg. It does not describe what ${esc(c.name)} does, how it is used, or how it is handled.</p><p>Every listing referenced here is sold by independent third-party vendors for laboratory research use only and is not for human consumption. MyPeptidePrice.com is an independent price comparison reference. It does not sell products, ship orders, or provide medical, dosing, or usage guidance of any kind.</p></div></section>
 ${relatedHtml}
 <section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">${esc(c.name)} FAQ</span><h2>${esc(c.name)} questions</h2><div class="faq-list">
 ${faq.map(([q, a]) => `<article class="faq-item"><h3>${esc(q)}</h3><p>${esc(a)}</p></article>`).join("\n")}
@@ -690,8 +690,11 @@ console.log("vendor pages written:", generated.vendors.length);
     ],
   }, null, 0).replace(/&/g, "&amp;");
 
+  // Was hardcoded to 13 and had drifted. Derived from the vendor pages actually
+  // generated, so it cannot go stale again.
+  const vendorCount = generated.vendors.length || Object.keys(vendorCfg.vendors || {}).length;
   const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span>Compounds</nav>
-<section class="hero"><div class="hero-inner"><div><span class="eyebrow">Compound directory</span><h1>All tracked peptide compounds.</h1><p>Browse every research compound compared on MyPeptidePrice.com, grouped by category. Each page ranks vendors by price and cost per mg.</p><div class="hero-actions"><a class="button" href="/#compare" data-cta="hero">Open the live comparison</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Compounds</span><strong>${compounds.length}</strong></div><div class="hero-stat"><span>Vendors</span><strong>13</strong></div><div class="hero-stat"><span>Discount code</span><strong>SAMMYC</strong></div></div></div></section>
+<section class="hero"><div class="hero-inner"><div><span class="eyebrow">Compound directory</span><h1>All tracked peptide compounds.</h1><p>Browse every research compound compared on MyPeptidePrice.com. Each page ranks vendors by price and cost per mg.</p><div class="hero-actions"><a class="button" href="/#compare" data-cta="hero">Open the live comparison</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Compounds</span><strong>${compounds.length}</strong></div><div class="hero-stat"><span>Vendors</span><strong>${vendorCount}</strong></div><div class="hero-stat"><span>Discount code</span><strong>SAMMYC</strong></div></div></div></section>
 ${sections}
 <section class="section compact" style="margin-top:22px"><div class="container"><div class="notice">Use <span class="code-pill">SAMMYC</span> at supported vendor checkouts where listed. MyPeptidePrice.com is an independent comparison resource. For research use only. Prices last verified ${TODAY}.</div></div></section>`;
 
@@ -740,4 +743,22 @@ ${allUrls.map(([p, pr]) => `<url><loc>${BASE}${p}</loc><lastmod>${lastmod}</last
 await writeFile(`${W}/sitemap.xml`, sitemapXml);
 await writeFile(`${W}/scripts/_generated-urls.json`, JSON.stringify(extra, null, 0));
 console.log("sitemap written:", allUrls.length, "URLs");
+// Pages stop being generated when a compound drops below the vendor threshold or
+// a vendor is removed, but the old file stays on disk and keeps serving stale
+// copy while being absent from the sitemap. Warn rather than delete: a bad build
+// should never be able to wipe pages.
+{
+  const { readdir, stat } = await import("node:fs/promises");
+  const expected = new Set([...generated.compounds, ...generated.vendors].map(g => `${W}${g.path}`));
+  for (const dir of ["compounds", "vendors"]) {
+    let files = [];
+    try { files = await readdir(`${W}/${dir}`); } catch { continue; }
+    for (const file of files) {
+      if (!file.endsWith(".html")) continue;
+      const full = `${W}/${dir}/${file}`;
+      if (expected.has(full)) continue;
+      console.warn(`  orphan: ${dir}/${file} is no longer generated and may be serving stale content`);
+    }
+  }
+}
 console.log("total generated pages:", generated.compounds.length + generated.vendors.length + 1);

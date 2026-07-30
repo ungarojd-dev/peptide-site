@@ -63,7 +63,10 @@ const rows = cards
     const vendorBit = vendors
       ? `<span class="seo-card-vendors">${vendors} vendor${vendors === 1 ? "" : "s"}</span>`
       : "";
-    const catBit = card.category ? `<span class="seo-card-cat">${esc(card.category)}</span>` : "";
+    // Category is internal only. It was emitting raw vendor category names into
+    // indexed HTML ("Aminos & Oils / New Arrivals", "Aerosol Research Sprays /
+    // Exclusive Products / New Arrivals"), which is noise in the crawlable copy.
+    const catBit = "";
     const fmtBit = formats ? `<span class="seo-card-fmt">${esc(formats)}</span>` : "";
     return `<li class="seo-card">${title}${priceBit}${vendorBit}${catBit}${fmtBit}</li>`;
   })
