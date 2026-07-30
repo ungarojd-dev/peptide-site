@@ -423,6 +423,27 @@
 
   function bindCardActions(){
     document.querySelectorAll('[data-action="clear-filters"]').forEach(button=>button.onclick=clear);
+    // Format and Sort are folded away on small screens to give the first
+    // fold back to the actual prices. Injected here rather than into 127 HTML
+    // files, and only when the toggle is actually needed.
+    (function(){
+      const gridEl=document.querySelector(".catalog-select-grid");
+      if(!gridEl||gridEl.dataset.toggleReady) return;
+      const hidden=gridEl.children.length-2;
+      if(hidden<1) return;
+      const btn=document.createElement("button");
+      btn.type="button";
+      btn.className="catalog-filter-toggle";
+      btn.textContent=`More filters (${hidden})`;
+      btn.setAttribute("aria-expanded","false");
+      btn.onclick=()=>{
+        const open=gridEl.classList.toggle("is-expanded");
+        btn.setAttribute("aria-expanded",String(open));
+        btn.textContent=open?"Fewer filters":`More filters (${hidden})`;
+      };
+      gridEl.insertAdjacentElement("afterend",btn);
+      gridEl.dataset.toggleReady="1";
+    })();
     document.querySelectorAll('[data-action="format"]').forEach(button=>button.onclick=()=>{state.activeFormats[button.dataset.card]=button.dataset.format;delete state.activeVariants[button.dataset.card];renderCards(false);});
     document.querySelectorAll('[data-action="variant"]').forEach(button=>button.onclick=()=>{state.activeVariants[button.dataset.card]=button.dataset.variant;state.expanded[button.dataset.card]=true;renderCards(false);});
     document.querySelectorAll('[data-action="expand"]').forEach(button=>button.onclick=()=>{
@@ -565,15 +586,21 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260730-compact-deals-v9",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260730-compact-deals-v9",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260730-header-filters-v11",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260730-header-filters-v11",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
     const search=$("catalogSearch");
     const clearButton=$("catalogClear");
     const sort=$("catalogSort");
-    if(search) search.oninput=event=>{state.query=event.target.value;renderCards(false);};
+    // Debounced: every keystroke used to trigger a full grid rebuild.
+    let searchTimer=null;
+    if(search) search.oninput=event=>{
+      const value=event.target.value;
+      clearTimeout(searchTimer);
+      searchTimer=setTimeout(()=>{state.query=value;renderCards(false);},180);
+    };
     if(clearButton) clearButton.onclick=clear;
     if(sort) sort.onchange=event=>{state.sort=event.target.value;renderCards(false);};
     // Hero "Jump to" chips: fill the catalog search and scroll to the compare grid.

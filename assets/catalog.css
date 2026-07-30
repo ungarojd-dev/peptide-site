@@ -1147,3 +1147,40 @@ a.seo-card-name:hover { text-decoration: underline; }
 @media (max-width: 420px) {
   .supplier-row > .supplier-actions { justify-content: flex-start; }
 }
+
+/* ============================================================
+   Mobile catalog filters
+   176px of the first fold was four dropdowns plus a search row.
+   Category and Company stay, Format and Sort fold behind a toggle.
+   Targeted by name rather than position, and placed here because
+   catalog.css loads after site.css and wins on equal specificity.
+   ============================================================ */
+@media (max-width: 700px) {
+  .catalog-select-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+  /* The base rule for these groups is `display: flex !important`, so the
+     override has to match it. Not a preference, just what it takes. */
+  .premium-catalog .catalog-select-grid .catalog-filter-format,
+  .premium-catalog .catalog-select-grid .catalog-sort-group { display: none !important; }
+  .premium-catalog .catalog-select-grid.is-expanded .catalog-filter-format,
+  .premium-catalog .catalog-select-grid.is-expanded .catalog-sort-group { display: flex !important; }
+  /* Compact inline control. A full-width button gave back most of the
+     height the collapse had just saved. */
+  .catalog-filter-toggle {
+    display: inline-block;
+    width: auto;
+    margin: 4px 0 0 auto;
+    border: 0;
+    border-bottom: 1px dashed rgba(31,58,45,.4);
+    border-radius: 0;
+    background: none;
+    color: var(--forest);
+    padding: 1px 0;
+    font: inherit;
+    font-size: 11px;
+    font-weight: 800;
+    line-height: 1.4;
+    cursor: pointer;
+  }
+  .catalog-filter-toggle:focus-visible { outline: 3px solid var(--olive); outline-offset: 2px; }
+}
+@media (min-width: 701px) { .catalog-filter-toggle { display: none; } }
