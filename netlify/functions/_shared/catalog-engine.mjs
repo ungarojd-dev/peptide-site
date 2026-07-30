@@ -897,9 +897,40 @@ export function buildCatalog(rawRows = [], options = {}) {
   };
 }
 
+// Fields carried through the engine for normalization, debugging and mapping
+// that no consumer reads: not the catalog UI, not the promotions logic, not the
+// programmatic page builder, not the SEO block builder. They were roughly 39% of
+// the snapshot's raw size, repeated across every one of ~1,650 supplier objects,
+// and the snapshot is downloaded twice per page load (bundled fallback, then the
+// live function). vendor_payment_methods was the worst offender: an array
+// duplicated onto every supplier when the page reads it from vendor-config.
+const INTERNAL_SUPPLIER_FIELDS = [
+  "discount_code_percent", "discount_sitewide_percent", "ingestion_warning",
+  "listing_mg", "mapped", "mapping", "market_median_price", "product_name",
+  "quantity_id", "quantity_sort", "regular_price_min", "source_layer",
+  "source_product_id", "source_variation_id", "vendor_first_order_offer",
+  "vendor_id", "vendor_payment_methods"
+];
+
+function trimSupplier(supplier) {
+  const out = { ...supplier };
+  for (const field of INTERNAL_SUPPLIER_FIELDS) delete out[field];
+  return out;
+}
+
 export function publicSnapshot(snapshot = {}) {
   const { raw_offers_by_vendor, ...publicData } = snapshot || {};
-  return publicData;
+  if (!Array.isArray(publicData.products)) return publicData;
+  return {
+    ...publicData,
+    products: publicData.products.map(product => ({
+      ...product,
+      variants: (product.variants || []).map(variant => ({
+        ...variant,
+        suppliers: (variant.suppliers || []).map(trimSupplier)
+      }))
+    }))
+  };
 }
 
 // Derive the milligram weight of a listing from its size label so we can compute

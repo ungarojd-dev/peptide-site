@@ -1,6 +1,6 @@
 {
   "version": "deals-2026-07-30",
-  "updated_at": "2026-07-30T00:30:27.985Z",
+  "updated_at": "2026-07-30T01:55:40.716Z",
   "_generated": "Built from data/deals.json by scripts/build-promotions.mjs. Do not edit by hand.",
   "promotions": [
     {
@@ -308,6 +308,53 @@
       "strip_offer": "Now tracked, 15% off with SAMMYC",
       "show_vendor_badge": false,
       "show_in_rolodex": false,
+      "keep_after_window": false
+    },
+    {
+      "id": "instant-peptides-sitewide-15-aug-2026",
+      "vendor": "Instant Peptides",
+      "display_vendor": "Instant Peptides",
+      "brand_color": "#d8c7a7",
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
+      "cta_text": "Shop sale",
+      "headline": "15% off sitewide, stacks with SAMMYC",
+      "short_detail": "Instant Peptides is running 15% off sitewide through Sunday August 2. The sale is applied automatically at checkout with no code needed, and it stacks with volume pricing. Code SAMMYC stacks on top for a further 15% off the reduced price. Confirm final pricing at checkout.",
+      "full_detail": "Instant Peptides is running 15% off sitewide through Sunday August 2. The sale is applied automatically at checkout with no code needed, and it stacks with volume pricing. Code SAMMYC stacks on top for a further 15% off the reduced price. Confirm final pricing at checkout.",
+      "priority": 300,
+      "start_at": "2026-07-29T00:00:00-04:00",
+      "end_at": "2026-08-02T23:59:00-04:00",
+      "sale_percent": 15,
+      "code_percent": 15,
+      "discount_override_percent": 27.75,
+      "strip_stack": "SAMMYC",
+      "show_in_announce_bar": true,
+      "show_in_announcement_rolodex": true,
+      "badge": "LIMITED TIME",
+      "announce_tube": "Live now",
+      "announce_offer": "15% off sitewide, stacks with SAMMYC",
+      "announce_note": "plus 15% with",
+      "show_vendor_badge": true,
+      "show_in_rolodex": true
+    },
+    {
+      "id": "instant-peptides-tampa-restock-aug-2026",
+      "vendor": "Instant Peptides",
+      "display_vendor": "Instant Peptides",
+      "brand_color": "#d8c7a7",
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
+      "cta_text": "See what's new",
+      "headline": "Now shipping from Tampa, new raw powders added",
+      "short_detail": "Instant Peptides has moved fulfillment in-house to a new Tampa, Florida warehouse, so orders now ship from Tampa rather than Tempe, Arizona. Three raw powders have been added to the catalog: GHK-Cu, AHK-Cu and Snap-8. Bacteriostatic Water 10ml is back in stock. The vendor states the raw powders each ship with a certificate of analysis and that the bacteriostatic water now includes test reports and a measured pH. Testing documentation is provided by the vendor and should be reviewed directly on their site.",
+      "full_detail": "Instant Peptides has moved fulfillment in-house to a new Tampa, Florida warehouse, so orders now ship from Tampa rather than Tempe, Arizona. Three raw powders have been added to the catalog: GHK-Cu, AHK-Cu and Snap-8. Bacteriostatic Water 10ml is back in stock. The vendor states the raw powders each ship with a certificate of analysis and that the bacteriostatic water now includes test reports and a measured pH. Testing documentation is provided by the vendor and should be reviewed directly on their site.",
+      "priority": 150,
+      "start_at": "2026-07-29T00:00:00-04:00",
+      "end_at": "2026-08-31T23:59:00-04:00",
+      "show_in_strip": true,
+      "strip_tube": "Vendor update",
+      "strip_offer": "Now shipping from Tampa, new raw powders added",
+      "show_vendor_badge": false,
+      "show_in_rolodex": false,
+      "partner_since": "2026-07-29",
       "keep_after_window": false
     }
   ]

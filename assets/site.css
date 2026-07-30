@@ -1395,3 +1395,30 @@ body.deals-panel-open { overflow: hidden; }
   .vendor-card-actions .button { width: 100%; justify-content: center; text-align: center; }
   .vendor-out { font-size: .8rem; }
 }
+
+/* ============================================================
+   Mobile header and deal carousel stability fixes
+   ============================================================ */
+
+/* The brand mark is a flex item with a fixed width but default
+   flex-shrink: 1, so on narrow phones the wordmark, Deals button and
+   hamburger squeezed it horizontally while height held. It measured
+   17x34 at 390px and 10x34 at 360px, rendering as a bare rounded
+   sliver of the wrapper's border and background, with the logo
+   collapsed to nothing inside it. */
+.brand-mark-wrap { flex: 0 0 auto; }
+
+/* Deal carousel: every rotation resized the track and pushed the page.
+   The variance was the vendor name wrapping to a second line, which
+   moved .dc-top between 37px and 66px, a 29px jump per slide. Reserving
+   the two-line height makes every card the same height regardless of
+   vendor name length, and the track min-height is a backstop so the
+   container never collapses between renders. */
+@media (max-width: 900px) {
+  .deal-carousel .dc-top { min-height: 66px; align-content: start; }
+  .deal-carousel-track { min-height: 156px; }
+}
+@media (max-width: 420px) {
+  .deal-carousel .dc-top { min-height: 66px; }
+  .deal-carousel-track { min-height: 156px; }
+}

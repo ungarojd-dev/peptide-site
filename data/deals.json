@@ -224,6 +224,42 @@
       "type": "new_partner",
       "headline": "Now tracked, 15% off with SAMMYC",
       "description": "Orbitrex Peptides is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 15% off using code SAMMYC."
+    },
+    {
+      "id": "instant-peptides-sitewide-15-aug-2026",
+      "vendor": "Instant Peptides",
+      "type": "sitewide_sale",
+      "show_in": [
+        "carousel",
+        "roundup"
+      ],
+      "start_date": "2026-07-29",
+      "end_date": "2026-08-02",
+      "timezone": "America/New_York",
+      "headline": "15% off sitewide, stacks with SAMMYC",
+      "cta_text": "Shop sale",
+      "description": "Instant Peptides is running 15% off sitewide through Sunday August 2. The sale is applied automatically at checkout with no code needed, and it stacks with volume pricing. Code SAMMYC stacks on top for a further 15% off the reduced price. Confirm final pricing at checkout.",
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
+      "sale_percent": 15,
+      "code_percent": 15
+    },
+    {
+      "id": "instant-peptides-tampa-restock-aug-2026",
+      "vendor": "Instant Peptides",
+      "type": "new_partner",
+      "show_in": [
+        "strip",
+        "roundup"
+      ],
+      "strip_tube": "Vendor update",
+      "priority": 150,
+      "start_date": "2026-07-29",
+      "end_date": "2026-08-31",
+      "timezone": "America/New_York",
+      "headline": "Now shipping from Tampa, new raw powders added",
+      "cta_text": "See what's new",
+      "description": "Instant Peptides has moved fulfillment in-house to a new Tampa, Florida warehouse, so orders now ship from Tampa rather than Tempe, Arizona. Three raw powders have been added to the catalog: GHK-Cu, AHK-Cu and Snap-8. Bacteriostatic Water 10ml is back in stock. The vendor states the raw powders each ship with a certificate of analysis and that the bacteriostatic water now includes test reports and a measured pH. Testing documentation is provided by the vendor and should be reviewed directly on their site.",
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC"
     }
   ]
 }
