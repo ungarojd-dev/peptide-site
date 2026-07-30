@@ -2,7 +2,7 @@ import catalogPayload from "../../../data/catalog-products.json" with { type: "j
 import overridePayload from "../../../data/catalog-overrides.json" with { type: "json" };
 import vendorPayload from "../../../data/vendor-config.json" with { type: "json" };
 
-export const ENGINE_VERSION = "1.4.0-term-normalization";
+export const ENGINE_VERSION = "1.5.0-format-primary";
 export const COUPON_CODE = vendorPayload.coupon_code || "SAMMYC";
 export const VENDOR_CONFIG = vendorPayload.vendors || {};
 
@@ -500,7 +500,11 @@ function inferFormat(raw, category, family) {
   for (const [format, terms] of Object.entries(FORMAT_TERMS)) {
     if (includesAny(haystack, terms)) return format;
   }
-  if (category === "Bioregulators") return "Bioregulators";
+  // Bioregulators was returned as a format, but it describes what the compound
+  // is, not how it is supplied: they ship in vials and capsules like anything
+  // else. Harmless while Format was buried behind a toggle; wrong once Format
+  // becomes the primary filter and the dropdown reads
+  // "Vials, Capsules, Nasal Sprays, Bioregulators".
   return DEFAULT_FORMAT;
 }
 

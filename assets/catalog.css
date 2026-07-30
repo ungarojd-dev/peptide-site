@@ -1184,3 +1184,75 @@ a.seo-card-name:hover { text-decoration: underline; }
   .catalog-filter-toggle:focus-visible { outline: 3px solid var(--olive); outline-offset: 2px; }
 }
 @media (min-width: 701px) { .catalog-filter-toggle { display: none; } }
+
+/* ============================================================
+   Format accents
+   Vials is 78% of the catalog, so it deliberately has no accent:
+   colouring 1,300 cards says nothing. Only the minority formats
+   are tinted, which makes the uncommon thing the thing that
+   catches the eye. Tones are muted and kept near the Engineered
+   Earth range so seven accents read as highlights rather than a
+   rainbow. Colour is never the only signal: the format name is
+   always present as text.
+   ============================================================ */
+:root {
+  --fmt-raw-powder: #9A7B4F;
+  --fmt-capsules: #6A7929;
+  --fmt-nasal-sprays: #3E7C7B;
+  --fmt-liquids: #4A6FA5;
+  --fmt-topicals: #A5654A;
+  --fmt-aminos: #6F5B8E;
+  --fmt-supplies: #6B6862;
+  --fmt-dissolvable-strips: #8A6E9E;
+}
+
+/* Card edge accent, single-format cards only. Multi-format cards stay
+   neutral and let their per-format chips carry the colour instead. */
+.product-card[data-format] { position: relative; }
+.product-card[data-format]::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 14px;
+  bottom: 14px;
+  width: 3px;
+  border-radius: 0 3px 3px 0;
+  background: var(--fmt-accent, transparent);
+  pointer-events: none;
+}
+.product-card[data-format="raw-powder"] { --fmt-accent: var(--fmt-raw-powder); }
+.product-card[data-format="capsules"] { --fmt-accent: var(--fmt-capsules); }
+.product-card[data-format="nasal-sprays"] { --fmt-accent: var(--fmt-nasal-sprays); }
+.product-card[data-format="liquids"] { --fmt-accent: var(--fmt-liquids); }
+.product-card[data-format="topicals"] { --fmt-accent: var(--fmt-topicals); }
+.product-card[data-format="aminos"] { --fmt-accent: var(--fmt-aminos); }
+.product-card[data-format="supplies"] { --fmt-accent: var(--fmt-supplies); }
+.product-card[data-format="dissolvable-strips"] { --fmt-accent: var(--fmt-dissolvable-strips); }
+
+/* The format summary line under the title picks up the same tone. */
+.product-card[data-format] .fmt-summary { color: var(--fmt-accent); font-weight: 800; }
+
+/* Per-format chips inside multi-format cards. Vials intentionally omitted. */
+.variant-button[data-fmt-tone="raw-powder"].active { background: var(--fmt-raw-powder); border-color: var(--fmt-raw-powder); }
+.variant-button[data-fmt-tone="capsules"].active { background: var(--fmt-capsules); border-color: var(--fmt-capsules); }
+.variant-button[data-fmt-tone="nasal-sprays"].active { background: var(--fmt-nasal-sprays); border-color: var(--fmt-nasal-sprays); }
+.variant-button[data-fmt-tone="liquids"].active { background: var(--fmt-liquids); border-color: var(--fmt-liquids); }
+.variant-button[data-fmt-tone="topicals"].active { background: var(--fmt-topicals); border-color: var(--fmt-topicals); }
+.variant-button[data-fmt-tone="aminos"].active { background: var(--fmt-aminos); border-color: var(--fmt-aminos); }
+.variant-button[data-fmt-tone="supplies"].active { background: var(--fmt-supplies); border-color: var(--fmt-supplies); }
+.variant-button[data-fmt-tone="dissolvable-strips"].active { background: var(--fmt-dissolvable-strips); border-color: var(--fmt-dissolvable-strips); }
+.variant-button[data-fmt-tone]:not(.active) { box-shadow: inset 3px 0 0 var(--fmt-chip, transparent); }
+.variant-button[data-fmt-tone="raw-powder"] { --fmt-chip: var(--fmt-raw-powder); }
+.variant-button[data-fmt-tone="capsules"] { --fmt-chip: var(--fmt-capsules); }
+.variant-button[data-fmt-tone="nasal-sprays"] { --fmt-chip: var(--fmt-nasal-sprays); }
+.variant-button[data-fmt-tone="liquids"] { --fmt-chip: var(--fmt-liquids); }
+.variant-button[data-fmt-tone="topicals"] { --fmt-chip: var(--fmt-topicals); }
+.variant-button[data-fmt-tone="aminos"] { --fmt-chip: var(--fmt-aminos); }
+.variant-button[data-fmt-tone="supplies"] { --fmt-chip: var(--fmt-supplies); }
+
+/* With Category gone there are three filters. Format and Company stay
+   visible on mobile; Sort folds behind the toggle as before. */
+@media (max-width: 700px) {
+  .premium-catalog .catalog-select-grid .catalog-sort-group { display: none !important; }
+  .premium-catalog .catalog-select-grid.is-expanded .catalog-sort-group { display: flex !important; }
+}

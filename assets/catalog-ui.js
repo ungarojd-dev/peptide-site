@@ -23,7 +23,7 @@
   // Raw Powder sits next to Vials: both describe the material as supplied,
   // the rest describe a delivery format. Omitting it here would leave the
   // format in the data but absent from the filter dropdown.
-  const FORMAT_ORDER=["All","Vials","Raw Powder","Capsules","Dissolvable Strips","Nasal Sprays","Topicals","Liquids","Aminos","Bioregulators","Supplies"];
+  const FORMAT_ORDER=["All","Vials","Raw Powder","Capsules","Dissolvable Strips","Nasal Sprays","Topicals","Liquids","Aminos","Supplies"];
   const ALL_VARIANTS="__all__";
   const ALL_FORMATS="__allformats__";
   // Cards carry every format for a compound now, so a single card can hold 14
@@ -33,6 +33,17 @@
   // Only badge a listing as below market once the gap is wide enough to be
   // worth acting on. Below this it is rounding noise between vendors.
   const MARKET_BADGE_THRESHOLD=10;
+  // Format accent. Vials is 78% of the catalog, so colouring it says nothing;
+  // only the minority formats get an accent, which makes the rare thing the
+  // thing that stands out. Cards with more than one format stay neutral and
+  // rely on their per-format chips instead.
+  const formatSlug=label=>String(label||"").toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-+|-+$/g,"");
+  const ACCENTED_FORMATS=new Set(["raw-powder","capsules","nasal-sprays","topicals","liquids","aminos","supplies","dissolvable-strips"]);
+  function cardAccent(formats){
+    if(!formats||formats.length!==1) return "";
+    const slug=formatSlug(formats[0].label);
+    return ACCENTED_FORMATS.has(slug)?slug:"";
+  }
   const state={catalog:null,cards:[],query:"",category:"All",format:"All",vendor:"All",sort:"price",activeVariants:{},activeFormats:{},expanded:{},source:"Loading"};
   const $=id=>document.getElementById(id);
   const esc=value=>String(value==null?"":value).replace(/[&<>"]/g,char=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[char]));
@@ -371,7 +382,8 @@
     };
     const supplierHtml=visible.length?visible.map((row,index)=>supplierRow(row.supplier,card,rowLabel(row),index===0&&row.supplier.effective_price_min!=null&&row.supplier.in_stock!==false)).join(""):`<div class="supplier-row supplier-empty-row"><span>No listings available for this vendor.</span></div>`;
 
-    return `<article class="product-card ${tone}${expanded?" is-expanded":""}" data-card-id="${attr(card.id)}">
+    const accent=cardAccent(formats);
+    return `<article class="product-card ${tone}${expanded?" is-expanded":""}"${accent?` data-format="${accent}"`:""} data-card-id="${attr(card.id)}">
       <header class="product-card-head">
         <div class="product-title-row">
           <div class="product-title-copy">
@@ -386,7 +398,7 @@
           <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="-1" data-card="fmt-${attr(card.id)}" aria-label="Scroll formats left">&lsaquo;</button>
           <div class="variant-pills" data-variant-pills="fmt-${attr(card.id)}">
             <button type="button" class="variant-button all${formatId===ALL_FORMATS?" active":""}" data-action="format" data-card="${attr(card.id)}" data-format="${ALL_FORMATS}">All formats (${esc(card.offer_count||0)})</button>
-            ${formats.map(item=>`<button type="button" class="variant-button${formatId===item.id?" active":""}" data-action="format" data-card="${attr(card.id)}" data-format="${attr(item.id)}">${formatIcon(item.label)}${esc(item.label)} (${esc(item.offer_count)})</button>`).join("")}
+            ${formats.map(item=>`<button type="button" class="variant-button${formatId===item.id?" active":""}" data-action="format" data-card="${attr(card.id)}" data-format="${attr(item.id)}" data-fmt-tone="${attr(formatSlug(item.label))}">${formatIcon(item.label)}${esc(item.label)} (${esc(item.offer_count)})</button>`).join("")}
           </div>
           <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="1" data-card="fmt-${attr(card.id)}" aria-label="Scroll formats right">&rsaquo;</button>
         </div>
@@ -427,7 +439,7 @@
     (function(){
       const gridEl=document.querySelector(".catalog-select-grid");
       if(!gridEl||gridEl.dataset.toggleReady) return;
-      const hidden=gridEl.children.length-2;
+      const hidden=[...gridEl.children].filter(c=>getComputedStyle(c).display==="none").length;
       if(hidden<1) return;
       const btn=document.createElement("button");
       btn.type="button";
@@ -584,8 +596,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260730-term-normalization-v17",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260730-term-normalization-v17",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260730-format-primary-v18",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260730-format-primary-v18",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
