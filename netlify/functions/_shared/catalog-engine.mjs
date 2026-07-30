@@ -2,7 +2,7 @@ import catalogPayload from "../../../data/catalog-products.json" with { type: "j
 import overridePayload from "../../../data/catalog-overrides.json" with { type: "json" };
 import vendorPayload from "../../../data/vendor-config.json" with { type: "json" };
 
-export const ENGINE_VERSION = "1.2.0-deep-links-market-median";
+export const ENGINE_VERSION = "1.4.0-term-normalization";
 export const COUPON_CODE = vendorPayload.coupon_code || "SAMMYC";
 export const VENDOR_CONFIG = vendorPayload.vendors || {};
 
@@ -15,22 +15,33 @@ const SUPPLY_TERMS = [
   "cartridge", "starter kit", "supplies", "supply", "reconstitution solution", "reusable peptide pen"
 ];
 const FORMAT_TERMS = {
+  // Raw material, not a delivery format, so it is checked first: a listing that
+  // says raw is raw regardless of what else the title mentions. Vendors label
+  // these as "(Raw)", "RAW POWDER" or "RAW 1G"; the normalizer strips
+  // punctuation, so a leading-space substring catches every variant without
+  // matching words that merely end in those letters.
+  // Without this, every raw powder fell through to DEFAULT_FORMAT and was
+  // labelled Vials, which is what Aurora Peptides reported.
+  "Raw Powder": [" raw", "raw powder", "lyophilized", "lyophilised"],
   "Dissolvable Strips": ["buccal strip", "dissolvable strip", "oral strip", "lozenge"],
   "Capsules": ["capsule", "capsules", "tablet", "tablets", "tab", "tabs", "troche", "oral"],
   "Nasal Sprays": ["nasal spray", "nasal", "intranasal", "spray"],
   "Topicals": ["topical", "cream", "serum", "lotion", "gel", "mask", "shampoo", "conditioner", "balm"],
-  "Liquids": ["liquid", "drops", "solution", "lemon bottle", "methylene blue", "metholine blue", "lipo-c"],
-  "Aminos": ["amino", "l-carnitine", "carnitine"]
+  "Liquids": ["liquid", "drops", "solution", "lemon bottle", "methylene blue", "metholine blue", "lipo c", "lipo-c"],
+  // "amino" alone matched only 5-Amino-1MQ, whose name contains the word; no
+  // real amino-format product ever hit it. "aminos" still catches a vendor that
+  // labels the format itself, and l carnitine is space-form so it can match.
+  "Aminos": ["aminos", "l carnitine", "carnitine"]
 };
 const CATEGORY_TERMS = [
   [GLP_CATEGORY, ["glp", "semaglutide", "tirzepatide", "retatrutide", "cagrilintide", "cagri", "mazdutide", "survodutide", "liraglutide", "tesofensine", "orforglipron", "amycretin", "weight loss"]],
-  ["Repair & Recovery", ["bpc", "tb-500", "tb500", "kpv", "ll-37", "ll37", "wolverine", "repair", "recovery", "recover", "healing", "ara-290"]],
-  ["Growth Hormone Research", ["cjc", "ipamorelin", "sermorelin", "tesamorelin", "ghrp", "hexarelin", "igf", "hgh", "growth hormone", "modified grf", "mod grf", "peg-mgf", "mgf"]],
-  ["Cognitive & Nootropic", ["semax", "selank", "dihexa", "cerebrolysin", "vip", "dsip", "nootropic", "cognitive", "adamax", "pe-22", "p21"]],
-  ["Skin, Tanning & Sexual Health", ["pt-141", "pt141", "melanotan", "mt-1", "mt-2", "kisspeptin", "oxytocin", "tanning", "sexual health", "bremelanotide"]],
+  ["Repair & Recovery", ["bpc", "tb 500", "tb500", "kpv", "ll 37", "ll37", "wolverine", "repair", "recovery", "recover", "healing", "ara 290"]],
+  ["Growth Hormone Research", ["cjc", "ipamorelin", "sermorelin", "tesamorelin", "ghrp", "hexarelin", "igf", "hgh", "growth hormone", "modified grf", "mod grf", "peg mgf", "mgf"]],
+  ["Cognitive & Nootropic", ["semax", "selank", "dihexa", "cerebrolysin", "vip", "dsip", "nootropic", "cognitive", "adamax", "pe 22", "p21"]],
+  ["Skin, Tanning & Sexual Health", ["pt 141", "pt141", "melanotan", "mt 1", "mt 2", "kisspeptin", "oxytocin", "tanning", "sexual health", "bremelanotide"]],
   ["Bioregulators", ["pinealon", "vilon", "vesugen", "pancragen", "bronchogen", "cardiogen", "ovagen", "livagen", "thymagen", "thymalin", "thymulin", "cartalax", "bioregulator"]],
-  ["Metabolic & Mitochondrial", ["mots", "ss-31", "s-31-s", "§-31", "5-amino", "aod", "slu-pp", "glutathione", "lipo-c", "aicar", "adipotide", "metabolic", "mitochondrial"]],
-  ["Longevity & Cellular Health", ["nad", "ghk", "ahk", "snap-8", "foxo4", "humanin", "epitalon", "thymosin alpha", "longevity", "cellular", "anti-aging", "anti aging"]]
+  ["Metabolic & Mitochondrial", ["mots", "ss 31", "s 31 s", "§-31", "5 amino", "aod", "slu pp", "glutathione", "lipo-c", "aicar", "adipotide", "metabolic", "mitochondrial"]],
+  ["Longevity & Cellular Health", ["nad", "ghk", "ahk", "snap 8", "foxo4", "humanin", "epitalon", "thymosin alpha", "longevity", "cellular", "anti aging", "anti aging"]]
 ];
 const LEGACY_CATEGORIES = {
   "GLP / Weight Loss": GLP_CATEGORY,

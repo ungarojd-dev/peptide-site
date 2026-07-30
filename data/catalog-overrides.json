@@ -1,5 +1,5 @@
 {
-  "version": "3.0.3-glacier-listing-visibility",
+  "version": "2026-07-30-aurora-merch-exclusions",
   "exclude_terms": [
     "ship safely",
     "shipping protection",
@@ -20,7 +20,9 @@
     "1st anniversary tee",
     "extend product protection",
     "helloextend",
-    "helloextend-product-protection"
+    "helloextend-product-protection",
+    "wallet topup",
+    "signature hat"
   ],
   "forced_aliases": {
     "gla 1 sm": "semaglutide",
