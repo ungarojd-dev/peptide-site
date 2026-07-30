@@ -1073,7 +1073,7 @@ a.seo-card-name:hover { text-decoration: underline; }
   letter-spacing: 0;
 }
 .supplier-row:hover .supplier-go { background: var(--forest); }
-.supplier-copy {
+.supplier-code-copy {
   position: relative;
   z-index: 2;
   display: inline-flex;
@@ -1091,9 +1091,9 @@ a.seo-card-name:hover { text-decoration: underline; }
   cursor: pointer;
   transition: background .14s ease, border-color .14s ease, color .14s ease;
 }
-.supplier-copy:hover { border-style: solid; border-color: var(--olive); background: #eef2e9; }
-.supplier-copy:focus-visible { outline: 3px solid var(--olive); outline-offset: 2px; }
-.supplier-copy.is-copied {
+.supplier-code-copy:hover { border-style: solid; border-color: var(--olive); background: #eef2e9; }
+.supplier-code-copy:focus-visible { outline: 3px solid var(--olive); outline-offset: 2px; }
+.supplier-code-copy.is-copied {
   border-style: solid;
   border-color: #24713e;
   background: #24713e;
@@ -1120,12 +1120,12 @@ a.seo-card-name:hover { text-decoration: underline; }
 .supplier-row.is-oos .supplier-go { background: #6B6862; }
 .supplier-row.is-oos:hover { opacity: 1; }
 @media (prefers-reduced-motion: reduce) {
-  .supplier-row, .supplier-copy, .supplier-go { transition: none; }
+  .supplier-row, .supplier-code-copy, .supplier-go { transition: none; }
   .supplier-row:hover { transform: none; }
 }
 @media (max-width: 700px) {
   .supplier-go { padding: 4px 8px; font-size: 8.5px; }
-  .supplier-copy { padding: 3px 8px; font-size: 8.5px; }
+  .supplier-code-copy { padding: 3px 8px; font-size: 8.5px; }
   .supplier-market { font-size: 7.5px; padding: 2px 6px; }
 }
 @media (max-width: 420px) {
@@ -1133,4 +1133,17 @@ a.seo-card-name:hover { text-decoration: underline; }
      actions stack under the figures rather than fighting them for width. */
   .supplier-price-wrap { flex-wrap: wrap; }
   .supplier-actions { width: 100%; justify-content: flex-start; margin-top: 7px; }
+}
+
+/* ------------------------------------------------------------
+   Row actions span the full grid width.
+   Previously .supplier-actions lived inside .supplier-price-wrap,
+   which sits in the grid's `auto` track. The button text set that
+   track's max-content width, so a long CTA starved the
+   minmax(0,1fr) name track down to a single character per line.
+   Actions now occupy their own full-width row instead.
+   ------------------------------------------------------------ */
+.supplier-row > .supplier-actions { grid-column: 1 / -1; justify-content: flex-end; margin-top: 7px; }
+@media (max-width: 420px) {
+  .supplier-row > .supplier-actions { justify-content: flex-start; }
 }

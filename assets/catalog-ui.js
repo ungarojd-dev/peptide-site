@@ -328,12 +328,19 @@
     // anchor, so the row is a container with a stretched hit-area link and the
     // button layered above it.
     const copyable=supplier.discount_percent>0&&supplier.coupon_code;
-    const copyButton=copyable?`<button class="supplier-copy" type="button" data-copy-code="${attr(supplier.coupon_code)}" data-vendor="${attr(supplier.vendor_name)}" data-product="${attr(card.name)}"><span class="supplier-copy-text">Copy ${esc(supplier.coupon_code)}</span></button>`:"";
+    const copyButton=copyable?`<button class="supplier-code-copy" type="button" data-copy-code="${attr(supplier.coupon_code)}" data-vendor="${attr(supplier.vendor_name)}" data-product="${attr(card.name)}"><span class="supplier-copy-text">Copy ${esc(supplier.coupon_code)}</span></button>`:"";
+    // Visible label stays short: these cards are ~366px wide and the vendor
+    // name already leads the row, so naming it again in the button is double
+    // duty and it was wide enough to collapse the grid's other track.
     const ctaLabel=supplier.discount_percent>0
-      ?`Apply ${esc(Number(supplier.discount_percent))}% off at ${esc(supplier.vendor_name)}`
-      :`View at ${esc(supplier.vendor_name)}`;
+      ?`Apply ${esc(Number(supplier.discount_percent))}% off`
+      :"View listing";
+    // Analytics keeps the descriptive version.
+    const ctaTracking=supplier.discount_percent>0
+      ?`Apply ${Number(supplier.discount_percent)}% off at ${supplier.vendor_name}`
+      :`View at ${supplier.vendor_name}`;
     const hitLabel=`${supplier.effective_price_label||"See price"} for ${card.name}${variantLabel&&variantLabel!=="Standard listing"?` ${variantLabel}`:""} at ${supplier.vendor_name}`;
-    return `<div class="supplier-row${isBest?" is-best":""}${supplier.in_stock===false?" is-oos":""}"><a class="supplier-hit" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}" data-cta="${attr(ctaLabel)}" aria-label="${attr(hitLabel)}"></a><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}${marketBadge}</div><div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadge}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}<div class="supplier-actions">${copyButton}<span class="supplier-go">${ctaLabel}</span></div></div></div>`;
+    return `<div class="supplier-row${isBest?" is-best":""}${supplier.in_stock===false?" is-oos":""}"><a class="supplier-hit" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}" data-cta="${attr(ctaTracking)}" aria-label="${attr(hitLabel)}"></a><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}${marketBadge}</div><div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadge}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}</div><div class="supplier-actions">${copyButton}<span class="supplier-go">${ctaLabel}</span></div></div>`;
   }
 
   function cardHtml(card){
@@ -558,8 +565,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260729-deep-links-copy-code-v1",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260729-deep-links-copy-code-v1",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260729-catalog-row-hotfix-v2",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260729-catalog-row-hotfix-v2",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
