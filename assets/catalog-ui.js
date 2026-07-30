@@ -609,8 +609,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260730-mobile-lockup-v26",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260730-mobile-lockup-v26",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260730-lockup-doubling-fix-v27",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260730-lockup-doubling-fix-v27",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

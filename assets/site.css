@@ -1516,9 +1516,23 @@ body.deals-panel-open { overflow: hidden; }
   .premium-top .top-inner { gap: 10px; }
   .brand-wordmark {
     display: block;
+    position: relative;
     width: 100px; height: 14px;
-    font-size: 0; line-height: 0; letter-spacing: 0;
-    background: url("/assets/brand/logo-wordmark.png?v=20260730-mobile-lockup-v26") left center / contain no-repeat;
+    overflow: hidden;
+    background: url("/assets/brand/logo-wordmark.png?v=20260730-lockup-doubling-fix-v27") left center / contain no-repeat;
+  }
+  /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
+     .brand-price and .brand-dot each set their own font-size, so the text kept
+     rendering on top of the lockup image. This is the standard visually-hidden
+     pattern, which works regardless of what the children declare and keeps the
+     brand name in the accessibility tree. */
+  .brand-wordmark > * {
+    position: absolute;
+    width: 1px; height: 1px;
+    margin: -1px; padding: 0; border: 0;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
   }
   /* 0 0 auto, not 0 1 auto: the lockup has a fixed width, so allowing the
      brand to shrink below its own contents made the image spill out of its
