@@ -1422,3 +1422,41 @@ body.deals-panel-open { overflow: hidden; }
   .deal-carousel .dc-top { min-height: 66px; }
   .deal-carousel-track { min-height: 156px; }
 }
+
+/* ============================================================
+   Mobile: compact the deal carousel
+   The section was 305px and the catalog started at 924px, more than a
+   full viewport of scrolling before any price was visible. Trimmed
+   without reintroducing the rotation height shift: every card is still
+   a fixed height, just a shorter one.
+   ============================================================ */
+@media (max-width: 900px) {
+  /* The description was clamped to two lines and cut mid-sentence, and it
+     restates the headline ("30% off sitewide, stacks with SAMMYC" followed
+     by "is running 30% off sitewide. Code SAMMYC stacks for an..."). The
+     full text is still in the deals panel and the roundup. */
+  .deal-carousel .dc-detail { display: none; }
+
+  /* Card height reserve stays uniform so rotation cannot resize the track.
+     66px covers the tallest .dc-top: a two-line vendor name alongside the
+     +SAMMYC chip. Forcing the vendor onto one line was tried and made this
+     worse, because the wider row pushed the chip to wrap instead, taking
+     .dc-top from 66px to 84px. Left alone deliberately. */
+  .deal-carousel .dc-top { min-height: 66px; }
+  .deal-carousel-track { min-height: 130px; }
+
+  .deal-carousel { padding-top: 10px; padding-bottom: 8px; }
+  .deal-carousel-header { padding-bottom: 6px; }
+  .deal-carousel-nav { padding-top: 6px; margin-top: 4px; }
+}
+@media (max-width: 420px) {
+  .deal-carousel .dc-top { min-height: 66px; }
+  .deal-carousel-track { min-height: 130px; }
+}
+
+/* Mobile: tighten the 7/7 trust strip. Two lines of text in 69px of box.
+   Kept fully legible, just less padding around it. */
+@media (max-width: 900px) {
+  .hero-cert-strip { padding: 8px 12px; }
+  .hero-cert-strip .trust-item { padding: 8px 10px; gap: 8px; }
+}
