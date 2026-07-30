@@ -1505,11 +1505,32 @@ body.deals-panel-open { overflow: hidden; }
    94px of free space and the wordmark needs 129px, so fitting it would mean
    roughly 0.57rem, which is not readable. The child spans carry their own
    font sizes, so shrinking the parent alone does nothing. */
+/* Rather than leaving a lone symbol floating next to two pills, the text
+   wordmark is swapped for the horizontal lockup image, which is 7.6:1 and
+   fits the space the text never could. font-size: 0 collapses the text
+   visually while leaving it in the DOM for screen readers. */
 @media (max-width: 460px) {
-  .brand-wordmark { display: none; }
-  .premium-brand { flex: 0 0 auto; }
+  /* The container gap is 20px, so three gaps alone ate 60px of a 366px box and
+     squeezed the brand to 106px while its contents needed 159px, which is what
+     pushed the lockup over the Deals pill. */
+  .premium-top .top-inner { gap: 10px; }
+  .brand-wordmark {
+    display: block;
+    width: 100px; height: 14px;
+    font-size: 0; line-height: 0; letter-spacing: 0;
+    background: url("/assets/brand/logo-wordmark.png?v=20260730-mobile-lockup-v26") left center / contain no-repeat;
+  }
+  /* 0 0 auto, not 0 1 auto: the lockup has a fixed width, so allowing the
+     brand to shrink below its own contents made the image spill out of its
+     box. The width tiers below keep it inside the header at every size. */
+  .premium-brand { flex: 0 0 auto; min-width: 0; gap: 7px; }
   .nav-deals-btn { margin-left: auto; }
 }
+/* Widths below are the measured budget at each size: content box, minus the
+   two pills, the burger and three 10px gaps, minus the 34px mark and its gap. */
+@media (max-width: 389px) { .brand-wordmark { width: 86px; height: 12px; } }
+@media (max-width: 374px) { .brand-wordmark { width: 74px; height: 10px; } .premium-brand { gap: 5px; } }
+@media (max-width: 349px) { .brand-wordmark { display: none; } }
 @media (max-width: 360px) {
   .nav-deals-btn, .nav-gw-btn { padding: 5px 8px; font-size: 10px; margin-left: 4px; }
   .nav-toggle { margin-left: 4px; }
