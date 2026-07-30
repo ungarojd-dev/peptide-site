@@ -1507,3 +1507,100 @@ body.deals-panel-open { overflow: hidden; }
   .premium-hero .hero-inner { padding-bottom: 18px; gap: 14px; }
   .hero-cert-strip { margin-top: 10px; }
 }
+
+/* ============================================================
+   Giveaways pill and panel
+   Cyan, because lime is the Deals pill sitting right next to it,
+   gold is deal CTAs and red is urgency. A cool accent against a
+   warm palette reads as a different thing at a glance rather
+   than a second version of the same thing.
+   ============================================================ */
+:root { --gw-neon: #35e0d0; --gw-neon-soft: #9df0e6; --gw-neon-bright: #c4f7f0; }
+
+.nav-gw-btn {
+  display: inline-flex; align-items: center; gap: 6px;
+  border: 1px solid rgba(53,224,208,0.42); border-radius: var(--radius-pill);
+  background: rgba(53,224,208,0.12); color: var(--gw-neon-soft);
+  padding: 5px 12px; font-size: 11px; font-weight: 800; letter-spacing: .4px;
+  font-family: inherit; cursor: pointer; margin-left: 6px; order: 2;
+  box-shadow: 0 0 0 0 rgba(53,224,208,0);
+  transition: background .16s ease, color .16s ease, box-shadow .16s ease;
+}
+.nav-gw-btn:hover { background: rgba(53,224,208,0.22); color: var(--gw-neon-bright); box-shadow: 0 0 14px rgba(53,224,208,.28); }
+.nav-gw-btn:focus-visible { outline: 3px solid var(--gw-neon); outline-offset: 2px; }
+.nav-gw-count {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 16px; height: 16px; padding: 0 4px; border-radius: 999px;
+  background: var(--gw-neon); color: #04211d; font-size: 9.5px; font-weight: 900; line-height: 1;
+}
+
+.gw-backdrop {
+  position: fixed; z-index: 1960; inset: 0; display: none;
+  align-items: center; justify-content: center;
+  background: rgba(4,14,13,.84); padding: 16px;
+}
+.gw-backdrop.is-open { display: flex; }
+.gw-panel {
+  width: min(560px, 100%); max-height: min(84vh, 760px); overflow: auto;
+  border: 1px solid rgba(53,224,208,.28); border-radius: 18px;
+  background: #0b1413; color: var(--cream, #F4F1E8);
+  box-shadow: 0 24px 70px rgba(0,0,0,.6), 0 0 40px rgba(53,224,208,.08);
+}
+.gw-panel-head { position: sticky; top: 0; z-index: 1; display: flex; align-items: center; gap: 10px;
+  padding: 16px 18px 12px; background: linear-gradient(#0b1413 76%, rgba(11,20,19,0));
+  border-bottom: 1px solid rgba(53,224,208,.14); }
+.gw-eyebrow { border: 1px solid rgba(53,224,208,.4); border-radius: 999px; background: rgba(53,224,208,.12);
+  color: var(--gw-neon-soft); padding: 3px 9px; font-size: 9px; font-weight: 900; letter-spacing: 1.1px; text-transform: uppercase; }
+.gw-panel-head h2 { margin: 0; font-size: 19px; font-weight: 900; letter-spacing: -.4px; }
+.gw-close { margin-left: auto; border: 0; border-radius: 999px; background: rgba(255,255,255,.07);
+  color: var(--cream, #F4F1E8); width: 30px; height: 30px; font-size: 19px; line-height: 1; cursor: pointer; }
+.gw-close:hover { background: rgba(255,255,255,.14); }
+.gw-close:focus-visible { outline: 3px solid var(--gw-neon); outline-offset: 2px; }
+.gw-panel-body { padding: 14px 18px 6px; }
+
+.gw-group + .gw-group { margin-top: 18px; }
+.gw-group-title { display: flex; align-items: center; gap: 7px; margin: 0 0 9px;
+  font-size: 10px; font-weight: 900; letter-spacing: 1.1px; text-transform: uppercase; color: rgba(244,241,232,.55); }
+.gw-group-title span { border-radius: 999px; background: rgba(53,224,208,.16); color: var(--gw-neon-soft);
+  padding: 1px 7px; font-size: 9.5px; }
+
+.gw-card { border: 1px solid rgba(255,255,255,.08); border-radius: 14px;
+  background: rgba(255,255,255,.03); padding: 14px; }
+.gw-card + .gw-card { margin-top: 10px; }
+.gw-card.is-ending { border-color: rgba(53,224,208,.38); background: rgba(53,224,208,.05); }
+.gw-image { display: block; width: 100%; height: auto; max-height: 180px; object-fit: cover;
+  border-radius: 10px; margin-bottom: 11px; }
+.gw-head { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
+.gw-when { border-radius: 999px; background: rgba(53,224,208,.14); color: var(--gw-neon-soft);
+  padding: 2px 9px; font-size: 9.5px; font-weight: 900; letter-spacing: .5px; text-transform: uppercase; }
+.gw-partner { color: rgba(244,241,232,.62); font-size: 11px; font-weight: 700; }
+.gw-title { margin: 0 0 6px; font-size: 15.5px; font-weight: 900; line-height: 1.3; }
+.gw-prize { display: inline-block; margin-bottom: 7px; border: 1px dashed rgba(53,224,208,.42);
+  border-radius: 999px; padding: 3px 10px; font-size: 11px; font-weight: 800; color: var(--gw-neon-soft); }
+.gw-desc { margin: 0 0 11px; font-size: 12.8px; line-height: 1.55; color: rgba(244,241,232,.74); }
+.gw-foot { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.gw-cta { display: inline-flex; align-items: center; border-radius: 999px;
+  background: var(--gw-neon); color: #04211d; padding: 8px 15px;
+  font-size: 12px; font-weight: 900; text-decoration: none; }
+.gw-cta:hover { background: var(--gw-neon-bright); }
+.gw-cta:focus-visible { outline: 3px solid var(--gw-neon); outline-offset: 2px; }
+.gw-cta.is-soon { background: rgba(255,255,255,.1); color: rgba(244,241,232,.6); }
+.gw-rules { color: rgba(244,241,232,.55); font-size: 11px; font-weight: 700; text-decoration: underline; }
+.gw-rules:hover { color: var(--gw-neon-soft); }
+.gw-panel-foot { padding: 12px 18px 16px; border-top: 1px solid rgba(255,255,255,.07);
+  font-size: 10.5px; line-height: 1.5; color: rgba(244,241,232,.5); }
+
+@media (prefers-reduced-motion: reduce) { .nav-gw-btn { transition: none; } }
+@media (max-width: 430px) {
+  .nav-gw-btn { padding: 5px 9px; font-size: 10px; margin-left: 4px; }
+  .gw-panel { max-height: 90vh; }
+}
+
+/* Empty state: the pill stays in the header even with nothing running, so the
+   panel needs something to say rather than opening onto a blank box. */
+.gw-empty { padding: 26px 6px 30px; text-align: center; }
+.gw-empty-mark { display: block; margin-bottom: 10px; font-size: 26px; color: rgba(53,224,208,.55); }
+.gw-empty-title { margin: 0 0 6px; font-size: 15px; font-weight: 900; }
+.gw-empty-note { margin: 0 auto; max-width: 300px; font-size: 12.5px; line-height: 1.55; color: rgba(244,241,232,.6); }
+.nav-gw-btn.is-empty { border-color: rgba(53,224,208,.26); background: rgba(53,224,208,.07); color: rgba(157,240,230,.78); }
+.nav-gw-btn.is-empty:hover { background: rgba(53,224,208,.16); color: var(--gw-neon-bright); }

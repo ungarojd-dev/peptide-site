@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260730-mobile-format-filter-v21";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260730-giveaways-empty-state-v23";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -639,4 +639,157 @@
       show(anchor.getBoundingClientRect().top<0);
     },{passive:true});
   }
+})();
+
+/* ============================================================
+   Giveaways
+   Mirrors the Deals pill but is a completely separate surface:
+   giveaways never appear in Today's Deals, the carousel, or the
+   announcement strip. The pill is injected next to the Deals
+   button rather than added to 127 HTML files, so every page
+   picks it up automatically.
+   Live/upcoming/ended is worked out here from the dates, so a
+   giveaway ends on time without a redeploy.
+   ============================================================ */
+(function(){
+  "use strict";
+  const DAY = 86400000;
+  let panelRoot = null;
+
+  const esc = value => String(value == null ? "" : value)
+    .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
+
+  // Dates are plain YYYY-MM-DD and the end date is inclusive, so compare against
+  // the end of that day rather than midnight at its start.
+  function startOf(date){ const d = new Date(`${date}T00:00:00`); return Number.isNaN(d.getTime()) ? null : d.getTime(); }
+  function endOf(date){ const t = startOf(date); return t == null ? null : t + DAY - 1; }
+
+  function bucket(giveaway, now){
+    const start = startOf(giveaway.start_date);
+    const end = endOf(giveaway.end_date);
+    if (start == null || end == null) return "ended";
+    if (now < start) return "upcoming";
+    if (now > end) return "ended";
+    return (end - now) <= 3 * DAY ? "ending" : "live";
+  }
+
+  function daysLeft(giveaway, now){
+    const end = endOf(giveaway.end_date);
+    if (end == null) return null;
+    return Math.max(0, Math.ceil((end - now) / DAY));
+  }
+
+  function cardMarkup(giveaway, state, now){
+    const left = daysLeft(giveaway, now);
+    const when = state === "upcoming"
+      ? `Opens ${esc(giveaway.start_date)}`
+      : (left === 0 ? "Ends today" : `${left} day${left === 1 ? "" : "s"} left`);
+    const partner = giveaway.is_partner
+      ? `<span class="gw-partner">With ${esc(giveaway.host)}</span>` : "";
+    const prize = giveaway.prize ? `<span class="gw-prize">${esc(giveaway.prize)}</span>` : "";
+    const image = giveaway.image
+      ? `<img class="gw-image" src="${esc(giveaway.image)}" alt="" loading="lazy"/>` : "";
+    const rules = giveaway.rules_url
+      ? `<a class="gw-rules" href="${esc(giveaway.rules_url)}" target="_blank" rel="noopener">Official rules</a>` : "";
+    const cta = state === "upcoming"
+      ? `<span class="gw-cta is-soon">Opens soon</span>`
+      : `<a class="gw-cta" href="${esc(giveaway.entry_url)}" target="_blank" rel="nofollow noopener" data-gw-enter="1" data-gw-id="${esc(giveaway.id)}" data-gw-host="${esc(giveaway.host)}">${esc(giveaway.cta_text || "Enter now")}</a>`;
+    return `<article class="gw-card${state === "ending" ? " is-ending" : ""}">
+      ${image}
+      <div class="gw-head"><span class="gw-when">${when}</span>${partner}</div>
+      <h3 class="gw-title">${esc(giveaway.title)}</h3>
+      ${prize}
+      ${giveaway.description ? `<p class="gw-desc">${esc(giveaway.description)}</p>` : ""}
+      <div class="gw-foot">${cta}${rules}</div>
+    </article>`;
+  }
+
+  function panelMarkup(groups, now){
+    const section = (title, list) => list.length
+      ? `<section class="gw-group"><h4 class="gw-group-title">${title} <span>${list.length}</span></h4>
+          ${list.map(g => cardMarkup(g, g._state, now)).join("")}</section>` : "";
+    return `<div class="gw-backdrop" data-gw-panel role="dialog" aria-modal="true" aria-label="Current giveaways">
+      <div class="gw-panel">
+        <header class="gw-panel-head">
+          <span class="gw-eyebrow">${(groups.ending.length + groups.live.length) ? "Live now" : "Giveaways"}</span>
+          <h2>Giveaways</h2>
+          <button class="gw-close" type="button" data-gw-close aria-label="Close giveaways">&times;</button>
+        </header>
+        <div class="gw-panel-body">
+          ${(groups.ending.length + groups.live.length + groups.upcoming.length)
+            ? `${section("Ending soon", groups.ending)}${section("Live", groups.live)}${section("Opening soon", groups.upcoming)}`
+            : `<div class="gw-empty"><span class="gw-empty-mark" aria-hidden="true">&#9734;</span><p class="gw-empty-title">No current giveaways</p><p class="gw-empty-note">Nothing running right now. New ones are posted here as they open, so check back.</p></div>`}
+        </div>
+        <footer class="gw-panel-foot">Giveaways are run by the named host, not by MyPeptidePrice unless stated. Entry terms, eligibility, and prize fulfilment are the host's responsibility. Research materials are for laboratory research use only.</footer>
+      </div>
+    </div>`;
+  }
+
+  function closePanel(){ if (panelRoot) { panelRoot.classList.remove("is-open"); document.body.style.overflow = ""; } }
+  function openPanel(){ if (panelRoot) { panelRoot.classList.add("is-open"); document.body.style.overflow = "hidden"; } }
+
+  function injectPill(count){
+    // Sits beside the Deals pill wherever that exists, so the header markup in
+    // every page stays untouched.
+    document.querySelectorAll(".nav-deals-btn").forEach(deals => {
+      if (deals.parentElement.querySelector(".nav-gw-btn")) return;
+      const btn = document.createElement("button");
+      btn.type = "button";
+      btn.className = "nav-gw-btn";
+      btn.setAttribute("aria-haspopup", "dialog");
+      // The pill is always present so the header does not jump around between
+      // an empty week and a busy one. The count badge only appears when there
+      // is actually something to enter.
+      btn.innerHTML = count > 0
+        ? `Giveaways<span class="nav-gw-count">${count}</span>`
+        : `Giveaways`;
+      if (!count) btn.classList.add("is-empty");
+      btn.addEventListener("click", openPanel);
+      deals.insertAdjacentElement("afterend", btn);
+    });
+  }
+
+  async function init(){
+    let data;
+    try {
+      const response = await fetch("/data/giveaways-public.json", { cache: "no-store" });
+      if (!response.ok) throw new Error("unavailable");
+      data = await response.json();
+    } catch { data = { giveaways: [] }; }
+
+    const now = Date.now();
+    const all = (data.giveaways || []).map(g => ({ ...g, _state: bucket(g, now) }))
+      .filter(g => g._state !== "ended");
+
+    const byFeature = (a, b) => (b.featured === true) - (a.featured === true);
+    const groups = {
+      ending: all.filter(g => g._state === "ending").sort(byFeature),
+      live: all.filter(g => g._state === "live").sort(byFeature),
+      upcoming: all.filter(g => g._state === "upcoming").sort(byFeature)
+    };
+
+    const holder = document.createElement("div");
+    holder.innerHTML = panelMarkup(groups, now);
+    panelRoot = holder.firstElementChild;
+    document.body.appendChild(panelRoot);
+    panelRoot.querySelectorAll("[data-gw-close]").forEach(b => b.addEventListener("click", closePanel));
+    panelRoot.addEventListener("click", e => { if (e.target === panelRoot) closePanel(); });
+    document.addEventListener("keydown", e => { if (e.key === "Escape") closePanel(); });
+    panelRoot.querySelectorAll("[data-gw-enter]").forEach(link => link.addEventListener("click", () => {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "giveaway_enter",
+        giveaway_id: link.getAttribute("data-gw-id") || "",
+        giveaway_host: link.getAttribute("data-gw-host") || "",
+        button_location: "giveaways_panel"
+      });
+    }));
+
+    // Count excludes upcoming: the badge should mean "you can enter this now".
+    injectPill(groups.ending.length + groups.live.length);
+  }
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
+  else init();
 })();

@@ -4,7 +4,11 @@
   #
   # 1. build-promotions   expands the human-edited data/deals.json (from /admin)
   #                       into data/promotions.json
-  # 2. build-catalog-live pulls the live vendor feeds and writes
+  # 2. build-giveaways   validates data/giveaways.json (from /admin) into
+  #                       data/giveaways-public.json. Fails the build on a bad
+  #                       date or missing entry link rather than shipping an
+  #                       empty panel.
+  # 3. build-catalog-live pulls the live vendor feeds and writes
   #                       data/catalog-fallback-snapshot.json, so the bundled
   #                       snapshot ships with real product deep links and the
   #                       full vendor roster. Falls back to the committed
@@ -18,7 +22,7 @@
   # from data/catalog-fallback.json, a committed seed with no product URLs and
   # only 14 vendors, which reverted every static page to base affiliate URLs on
   # each deploy. It remains available for offline engine testing via `npm test`.
-  command = "node scripts/build-promotions.mjs && node scripts/build-catalog-live.mjs && node scripts/build-catalog-seo.mjs && node scripts/build-programmatic-pages.mjs"
+  command = "node scripts/build-promotions.mjs && node scripts/build-giveaways.mjs && node scripts/build-catalog-live.mjs && node scripts/build-catalog-seo.mjs && node scripts/build-programmatic-pages.mjs"
 
 [functions]
   node_bundler = "esbuild"

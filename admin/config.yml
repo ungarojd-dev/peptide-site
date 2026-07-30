@@ -198,3 +198,114 @@ collections:
                 value_type: "int"
                 default: 300
                 hint: "Optional. Higher shows first when deals compete for a spot. Big sales ~500, ongoing offers ~200. 300 is a fine default."
+
+  - name: giveaways
+    label: "Giveaways"
+    label_singular: "Giveaway"
+    description: "Add or end giveaways. These appear behind the Giveaways pill in the site header and nowhere else. A giveaway shows automatically between its start and end dates, then disappears on its own, so there is nothing to switch off afterwards."
+    files:
+      - name: giveaways
+        label: "All Giveaways"
+        file: "data/giveaways.json"
+        fields:
+          - label: "Giveaways"
+            name: "giveaways"
+            widget: "list"
+            allow_add: true
+            summary: "{{fields.host}}: {{fields.title}}"
+            fields:
+
+              - label: "① Title"
+                name: "title"
+                widget: "string"
+                hint: "What someone can win, in a short line. Example: Win a $250 Southern Aminos bundle."
+
+              - label: "② Who is running it"
+                name: "host"
+                widget: "select"
+                default: "MyPeptidePrice"
+                hint: "Pick MyPeptidePrice for anything we run ourselves, or the partner vendor if it is a joint giveaway."
+                options:
+                  - "MyPeptidePrice"
+                  - "SammyC"
+                  - "Glacier Aminos"
+                  - "Ion Peptide"
+                  - "LabSourced Peptides"
+                  - "Mile High Peptides"
+                  - "Southern Aminos"
+                  - "Flawless Compounds"
+                  - "Glow Aminos"
+                  - "Instant Peptides"
+                  - "Solyn Labs"
+                  - "Oneday Compounds"
+                  - "Coffee and Peppers"
+                  - "Bioedge Research Labs"
+                  - "High Tide Compounds"
+                  - "Disguised Alpha"
+                  - "Orbitrex Peptides"
+                  - "Aurora Peptides"
+
+              - label: "③ Description"
+                name: "description"
+                widget: "text"
+                hint: "What it is and how to enter. Keep it factual. Do not describe what any product does or is used for."
+
+              - label: "④ Prize"
+                name: "prize"
+                widget: "string"
+                required: false
+                hint: "Optional short line shown as its own chip. Example: $250 store credit."
+
+              - label: "⑤ Starts"
+                name: "start_date"
+                widget: "date"
+                format: "YYYY-MM-DD"
+                hint: "The giveaway appears in the header from this date."
+
+              - label: "⑥ Ends"
+                name: "end_date"
+                widget: "date"
+                format: "YYYY-MM-DD"
+                hint: "Last day it runs, included. It disappears by itself the day after."
+
+              - label: "⑦ Timezone"
+                name: "timezone"
+                widget: "select"
+                default: "America/New_York"
+                required: false
+                options:
+                  - "America/New_York"
+                  - "America/Chicago"
+                  - "America/Denver"
+                  - "America/Los_Angeles"
+
+              - label: "⑧ Entry link"
+                name: "entry_url"
+                widget: "string"
+                hint: "Where the Enter button goes. Must start with https://. Instagram post, Skool, a form, wherever entries are collected."
+
+              - label: "⑨ Button text"
+                name: "cta_text"
+                widget: "string"
+                required: false
+                default: "Enter now"
+                hint: "Optional. Examples: Enter on Instagram, Enter on Skool."
+
+              - label: "⑩ Official rules link"
+                name: "rules_url"
+                widget: "string"
+                required: false
+                hint: "Strongly recommended. US giveaways are generally expected to publish official rules, eligibility, and no-purchase-necessary wording, and it matters more when a partner brand is involved. The build logs a warning when this is empty."
+
+              - label: "⑪ Image"
+                name: "image"
+                widget: "image"
+                required: false
+                hint: "Optional. Shown at the top of the giveaway card."
+
+              - label: "⑫ Feature this one"
+                name: "featured"
+                widget: "boolean"
+                required: false
+                default: false
+                hint: "Pins it to the top of the panel."
