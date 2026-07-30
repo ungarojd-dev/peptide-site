@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-29-deep-links-v1",
+  "version": "2026-07-30-aurora-peptides-v1",
   "coupon_code": "SAMMYC",
   "vendors": {
     "Glacier Aminos": {
@@ -268,6 +268,17 @@
       ],
       "brand_color": "#4aa132",
       "package_protection_required": true
+    },
+    "Aurora Peptides": {
+      "id": "aurora-peptides",
+      "discount_percent": 15,
+      "affiliate_url": "https://aurora-peptides.com/?ref=102",
+      "logo": "/assets/vendor-logos/aurora-peptides.webp",
+      "use_product_deep_links": true,
+      "payment_methods": [],
+      "brand_color": "#5b3fa8",
+      "package_protection_required": false,
+      "launch_date": "2026-07-31"
     }
   }
 }

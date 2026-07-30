@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260730-header-filters-v11";
+const VER = "20260730-aurora-peptides-v13";
 const TODAY = "July 2026";
 const VALID_UNTIL = "2026-08-31";
 const BASE = "https://mypeptideprice.com";
@@ -70,19 +70,24 @@ function marketBadge(delta) {
     : "";
 }
 
-function ctaLabel(discount, vendor) {
-  return discount > 0 ? `Apply ${discount}% off at ${vendor}` : `View at ${vendor}`;
+function ctaLabel() {
+  return "View listing";
+}
+// Analytics keeps the descriptive version even though the button is generic.
+function ctaTracking(discount, vendor) {
+  return discount > 0 ? `View listing, ${discount}% off at ${vendor}` : `View listing at ${vendor}`;
 }
 
 // The row is a container with a transparent stretched link, because the copy
 // button is a real <button> and cannot be nested inside an <a>.
 function priceRow(o) {
-  const cta = ctaLabel(o.discount, o.vendorDisplay);
+  const cta = ctaLabel();
+  const ctaTrack = ctaTracking(o.discount, o.vendorDisplay);
   const copy = o.discount > 0 && o.code
     ? `<button class="row-copy" type="button" data-copy-code="${esc(o.code)}" data-vendor="${esc(o.vendorKey)}" data-product="${esc(o.product)}" data-copy-location="${esc(o.location || "static_price_table")}"><span class="supplier-copy-text">Copy ${esc(o.code)}</span></button>`
     : "";
   const hitLabel = `${o.priceLabel || "See price"} for ${o.sizeLine} at ${o.vendorDisplay}`;
-  return `<div class="price-row${o.inStock === false ? " is-oos" : ""}"><a class="row-hit" href="${esc(o.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(o.product)}" data-category="${esc(o.category)}" data-vendor="${esc(o.vendorKey)}" data-code="${esc(o.code || "")}" data-cta="${esc(cta)}" aria-label="${esc(hitLabel)}"></a><span class="price-size"><span class="size">${o.sizeLine}${marketBadge(o.delta)}</span><span class="vendor">${o.vendorLine}</span><span class="disc">${o.note}</span></span><span class="price-amount"><span class="amt">${esc(o.priceLabel || "See vendor")}</span>${o.permg ? `<span class="permg">${esc(o.permg)}</span>` : ""}<span class="row-actions">${copy}<span class="go">${esc(cta)}</span></span></span></div>`;
+  return `<div class="price-row${o.inStock === false ? " is-oos" : ""}"><a class="row-hit" href="${esc(o.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(o.product)}" data-category="${esc(o.category)}" data-vendor="${esc(o.vendorKey)}" data-code="${esc(o.code || "")}" data-cta="${esc(ctaTrack)}" aria-label="${esc(hitLabel)}"></a><span class="price-size"><span class="size">${o.sizeLine}${marketBadge(o.delta)}</span><span class="vendor">${o.vendorLine}</span><span class="disc">${o.note}</span></span><span class="price-amount"><span class="amt">${esc(o.priceLabel || "See vendor")}</span>${o.permg ? `<span class="permg">${esc(o.permg)}</span>` : ""}<span class="row-actions">${copy}<span class="go">${esc(cta)}</span></span></span></div>`;
 }
 
 const NONPEP = ["Acetic Acid", "Bacteriostatic", "Travel Case", "Starter Kit", "Research Starter", "Case ONLY", "Protective Travel"];
@@ -397,7 +402,7 @@ for (const c of compoundPages) {
   const stickyHtml = stickyPick ? `<div class="sticky-best" data-sticky-best>
   <span class="sb-copy"><span class="sb-label">Lowest tracked price</span><span class="sb-detail">${esc(stickyPick.vendor)}${stickyPick.size && !/standard|choose/i.test(stickyPick.size) ? " &middot; " + esc(stickyPick.size) : ""}</span></span>
   <span class="sb-figure">${esc(stickyPick.priceLabel || "")}</span>
-  <a class="sb-go" href="${esc(stickyPick.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(c.name)}" data-category="${esc(c.category)}" data-vendor="${esc(stickyPick.vendorKey)}" data-code="${esc(stickyPick.code || "")}" data-cta="${esc(ctaLabel(stickyPick.discount, stickyPick.vendor))}">${stickyPick.discount > 0 ? `Apply ${stickyPick.discount}% off` : "View listing"}</a>
+  <a class="sb-go" href="${esc(stickyPick.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(c.name)}" data-category="${esc(c.category)}" data-vendor="${esc(stickyPick.vendorKey)}" data-code="${esc(stickyPick.code || "")}" data-cta="${esc(ctaTracking(stickyPick.discount, stickyPick.vendor))}">View listing</a>
 </div>` : "";
 
   // related compounds in same category

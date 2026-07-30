@@ -38,6 +38,19 @@ const allowMissing = new Set(
     .split(",").map(s => s.trim()).filter(Boolean)
 );
 
+// A vendor with a future launch_date in vendor-config is expected to be absent
+// and must not hold up a deploy. This is self-healing: the waiver lapses on its
+// own the day the vendor goes live, so nobody has to remember to remove an
+// environment variable, and a genuinely broken feed still trips the guard.
+const vendorConfig = JSON.parse(await readFile(`${W}/data/vendor-config.json`, "utf8"));
+const today = new Date().toISOString().slice(0, 10);
+const preLaunch = [];
+for (const [name, meta] of Object.entries(vendorConfig.vendors || {})) {
+  const launch = String(meta.launch_date || "").slice(0, 10);
+  if (launch && launch > today) { allowMissing.add(name); preLaunch.push(`${name} (launches ${launch})`); }
+}
+if (preLaunch.length) console.log(`build-catalog-live: pre-launch, absence waived: ${preLaunch.join(", ")}`);
+
 function keepCommitted(reason) {
   console.warn(`\n  build-catalog-live: ${reason}`);
   console.warn("  Keeping the committed snapshot. Static pages will use the");

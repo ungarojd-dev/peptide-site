@@ -56,6 +56,8 @@ only for offline engine testing.
 - `FLAWLESS_CS`
 - `GLOW_CK`
 - `GLOW_CS`
+- `AURORA_CK`
+- `AURORA_CS`
 - `MILEHIGH_CK`
 - `MILEHIGH_CS`
 - `SOLYN_CK`

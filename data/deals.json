@@ -248,8 +248,7 @@
       "vendor": "Instant Peptides",
       "type": "new_partner",
       "show_in": [
-        "strip",
-        "roundup"
+        "strip"
       ],
       "strip_tube": "Vendor update",
       "priority": 150,
@@ -257,9 +256,25 @@
       "end_date": "2026-08-31",
       "timezone": "America/New_York",
       "headline": "Now shipping from Tampa, new raw powders added",
-      "cta_text": "See what's new",
       "description": "Instant Peptides has moved fulfillment in-house to a new Tampa, Florida warehouse, so orders now ship from Tampa rather than Tempe, Arizona. Three raw powders have been added to the catalog: GHK-Cu, AHK-Cu and Snap-8. Bacteriostatic Water 10ml is back in stock. The vendor states the raw powders each ship with a certificate of analysis and that the bacteriostatic water now includes test reports and a measured pH. Testing documentation is provided by the vendor and should be reviewed directly on their site.",
       "affiliate_url": "https://instantpeptides.com?ref=SAMMYC"
+    },
+    {
+      "id": "aurora-peptides-now-tracked-2026-07-31",
+      "vendor": "Aurora Peptides",
+      "type": "new_partner",
+      "show_in": [
+        "strip"
+      ],
+      "strip_tube": "New partner",
+      "priority": 200,
+      "start_date": "2026-07-31",
+      "end_date": "2026-08-31",
+      "timezone": "America/New_York",
+      "headline": "Now tracked, 15% off with SAMMYC",
+      "cta_text": "Shop now",
+      "description": "Aurora Peptides is now tracked in the price comparison catalog. Code SAMMYC applies 15% off. Confirm final pricing and terms at checkout.",
+      "affiliate_url": "https://aurora-peptides.com/?ref=102"
     }
   ]
 }

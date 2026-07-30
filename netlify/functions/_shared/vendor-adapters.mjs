@@ -348,6 +348,10 @@ export const VENDOR_ADAPTERS = [
   wooAdapter({ vendor: "Flawless Compounds", base: "https://flawlesscompounds.com/wp-json/wc/v3", ckEnv: "FLAWLESS_CK", csEnv: "FLAWLESS_CS", affiliateUrl: configUrl("Flawless Compounds"), affiliateParams: { coupon: "SammyC" } }),
   wooAdapter({ vendor: "Glow Aminos", base: "https://glowaminos.com/wp-json/wc/v3", ckEnv: "GLOW_CK", csEnv: "GLOW_CS", affiliateUrl: configUrl("Glow Aminos"), affiliateParams: { ref: "sammyc", coupon: "SammyC" } }),
   wooAdapter({ vendor: "Mile High Peptides", base: "https://milehighcompounds.is/wp-json/wc/v3", ckEnv: "MILEHIGH_CK", csEnv: "MILEHIGH_CS", affiliateUrl: configUrl("Mile High Peptides"), affiliateParams: { ref: "sammyc" } }),
+  // Aurora Peptides. Credentials live in Netlify environment variables only:
+  // the repository is public, so ck_/cs_ pairs must never be committed.
+  // Affiliate attribution is a numeric partner id rather than a code.
+  wooAdapter({ vendor: "Aurora Peptides", base: "https://aurora-peptides.com/wp-json/wc/v3", ckEnv: "AURORA_CK", csEnv: "AURORA_CS", affiliateUrl: configUrl("Aurora Peptides"), affiliateParams: { ref: "102" } }),
   instantAdapter(),
   labSourcedAdapter(),
   wooAdapter({ vendor: "Solyn Labs", base: "https://solyn.com/wp-json/wc/v3", ckEnv: "SOLYN_CK", csEnv: "SOLYN_CS", affiliateUrl: configUrl("Solyn Labs"), alwaysUseAffiliateUrl: true }),

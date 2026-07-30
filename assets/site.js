@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260730-header-filters-v11";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260730-aurora-peptides-v13";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -306,7 +306,16 @@
   let dealsPanelRoot=null;
   const openDealsPanel=()=>{ if(dealsPanelRoot){ dealsPanelRoot.hidden=false; document.body.classList.add("deals-panel-open"); dealsPanelRoot.querySelector("[data-deals-close]")?.focus(); } };
   const closeDealsPanel=()=>{ if(dealsPanelRoot){ dealsPanelRoot.hidden=true; document.body.classList.remove("deals-panel-open"); } };
-  function setupDealsPanel(all){
+  // Today's Deals is a deal surface. An entry that only ticks "Announcement
+  // strip (top bar)" is vendor news, not an offer, and was appearing here and
+  // in the header count because the panel received every promotion. Anything
+  // shown in the deal carousel or the roundup still appears; only strip-only
+  // announcements are filtered out.
+  function isDealSurface(promo){
+    return promo.show_in_rolodex===true||promo.show_in_deal_roundup===true||promo.show_in_roundup===true;
+  }
+  function setupDealsPanel(everything){
+    const all=(everything||[]).filter(isDealSurface);
     if(dealsPanelRoot) dealsPanelRoot.remove();
     const holder=document.createElement("div");
     holder.innerHTML=dealsPanelMarkup(all);
