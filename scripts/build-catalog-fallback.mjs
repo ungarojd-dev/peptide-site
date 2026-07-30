@@ -1,3 +1,12 @@
+// OFFLINE ENGINE TEST ONLY. Rebuilds data/catalog-fallback-snapshot.json from
+// data/catalog-fallback.json, a committed seed of 1506 rows with NO product url
+// field and only 14 vendors. Running this overwrites the live snapshot and
+// reverts every generated static page to base affiliate URLs.
+//
+// The deploy chain uses scripts/build-catalog-live.mjs instead. Only run this
+// when you specifically want to exercise the engine against the fixed seed:
+//   npm run build:fallback:seed
+
 import { writeFile } from "node:fs/promises";
 import fallbackPayload from "../data/catalog-fallback.json" with { type: "json" };
 import { buildCatalog, publicSnapshot } from "../netlify/functions/_shared/catalog-engine.mjs";

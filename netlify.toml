@@ -1,10 +1,24 @@
 [build]
   functions = "netlify/functions"
-  # Runs on every deploy. build-promotions expands the human-edited
-  # data/deals.json (from the /admin portal) into data/promotions.json, THEN
-  # the catalog fallback rebuilds using it, then SEO and programmatic pages.
-  # Order matters: promotions before fallback before seo/pages.
-  command = "node scripts/build-promotions.mjs && node scripts/build-catalog-fallback.mjs && node scripts/build-catalog-seo.mjs && node scripts/build-programmatic-pages.mjs"
+  # Runs on every deploy. Order matters.
+  #
+  # 1. build-promotions   expands the human-edited data/deals.json (from /admin)
+  #                       into data/promotions.json
+  # 2. build-catalog-live pulls the live vendor feeds and writes
+  #                       data/catalog-fallback-snapshot.json, so the bundled
+  #                       snapshot ships with real product deep links and the
+  #                       full vendor roster. Falls back to the committed
+  #                       snapshot if coverage is short; never fails the build.
+  # 3. build-catalog-seo  renders the crawlable catalog block from the snapshot
+  # 4. build-programmatic-pages
+  #                       regenerates compound pages, vendor pages, the vendor
+  #                       directory and the sitemap from the snapshot
+  #
+  # build-catalog-fallback.mjs is deliberately NOT in this chain. It rebuilds
+  # from data/catalog-fallback.json, a committed seed with no product URLs and
+  # only 14 vendors, which reverted every static page to base affiliate URLs on
+  # each deploy. It remains available for offline engine testing via `npm test`.
+  command = "node scripts/build-promotions.mjs && node scripts/build-catalog-live.mjs && node scripts/build-catalog-seo.mjs && node scripts/build-programmatic-pages.mjs"
 
 [functions]
   node_bundler = "esbuild"

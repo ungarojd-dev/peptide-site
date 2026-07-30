@@ -10,6 +10,41 @@ Upload the replacement files to the root of the GitHub repository connected to N
 
 For a complete rebuild, replace the visible repo contents locally while keeping the hidden `.git` folder intact, then commit and push through GitHub Desktop.
 
+## Deploy-time catalog build
+
+Every Netlify deploy runs, in order:
+
+```
+node scripts/build-promotions.mjs
+node scripts/build-catalog-live.mjs
+node scripts/build-catalog-seo.mjs
+node scripts/build-programmatic-pages.mjs
+```
+
+`build-catalog-live.mjs` pulls the live vendor feeds and writes
+`data/catalog-fallback-snapshot.json`, so the bundled snapshot and all generated
+static pages ship with real product deep links and the full vendor roster. There
+is no manual snapshot step.
+
+It never fails the build. If fewer vendors load than expected, or every feed
+fails, it keeps the committed snapshot and logs a warning, because a stale but
+complete snapshot beats a fresh partial one baked into 100+ pages.
+
+Build environment variables, all optional:
+
+- `SKIP_CATALOG_LIVE=1` bypass the live pull and use the committed snapshot
+- `CATALOG_ALLOW_MISSING` comma-separated vendor names permitted to be absent
+- `CATALOG_MIN_VENDORS` override the minimum vendor count
+
+The build log reports the deep-link rate. Solyn Labs and Oneday Compounds are
+intentionally held on base URLs, so roughly 90 base URLs is expected. A drop to
+zero deep links means the `use_product_deep_links` flags are not being read.
+
+`scripts/build-catalog-fallback.mjs` is NOT in the deploy chain. It rebuilds from
+the committed seed, which has no product URLs and only 14 vendors, and would
+revert every static page to base affiliate URLs. Use `npm run build:fallback:seed`
+only for offline engine testing.
+
 ## Required Netlify environment variables
 - `GLACIER_CK`
 - `GLACIER_CS`

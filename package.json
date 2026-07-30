@@ -9,9 +9,10 @@
     "node": "20.x"
   },
   "scripts": {
-    "build:fallback": "node scripts/build-catalog-fallback.mjs",
     "test:catalog": "node scripts/test-catalog.mjs",
     "validate": "node scripts/validate-build.mjs",
-    "test": "npm run build:fallback && npm run test:catalog && npm run validate"
+    "test": "npm run test:catalog && npm run validate",
+    "build:fallback:seed": "node scripts/build-catalog-fallback.mjs",
+    "snapshot:live": "node scripts/build-catalog-live.mjs"
   }
 }
