@@ -1,4 +1,16 @@
 {
   "version": "2026-07-30-giveaways-v1",
-  "giveaways": []
+  "giveaways": [
+    {
+      "entry_url": "https://aurora-peptides.com/?ref=102",
+      "host": "Aurora Peptides",
+      "start_date": "2026-08-01",
+      "featured": true,
+      "end_date": "2026-08-03",
+      "title": "Aurora Peptides Launch Giveaway",
+      "timezone": "America/New_York",
+      "cta_text": "Shop Aurora Now!",
+      "description": "Orders over $100 after discount code and tax will be entered to win 1 of 3 prizes.\n(must use SAMMYC to be entered)\n\nWinner 1 - $100 store credit\nWinner 2 - $100 store credit\nWinner 3 - 4 count vial case fully loaded (by us)"
+    }
+  ]
 }
