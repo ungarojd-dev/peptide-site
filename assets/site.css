@@ -1489,3 +1489,21 @@ body.deals-panel-open { overflow: hidden; }
 @media (max-width: 370px) {
   .brand-wordmark { font-size: 0.8rem; }
 }
+
+/* ============================================================
+   Mobile hero: less runway before the prices
+   The hero was 466px of a 844px viewport. The Jump-to chips are
+   buttons that prefill the search, not links, so removing them on
+   small screens costs nothing for crawling or internal linking.
+   Desktop keeps them.
+   ============================================================ */
+@media (max-width: 700px) {
+  .premium-hero .hero-search-wrap .hero-chips,
+  .hero-search-wrap .hero-chips { display: none; }
+  .premium-hero { padding-top: 26px; }
+  .premium-hero .eyebrow { margin-bottom: 10px; }
+  .premium-hero h1 { letter-spacing: -1.6px; line-height: 1.02; }
+  .premium-hero p { margin: 12px 0 14px; font-size: 15px; line-height: 1.55; }
+  .premium-hero .hero-inner { padding-bottom: 18px; gap: 14px; }
+  .hero-cert-strip { margin-top: 10px; }
+}
