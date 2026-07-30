@@ -256,15 +256,24 @@ collections:
                 required: false
                 hint: "Optional short line shown as its own chip. Example: $250 store credit."
 
+              # widget: "date" was removed in Decap 3.x and renders as
+              # "No control for widget 'date'". datetime with time_format off is
+              # the date-only replacement, matching the deals collection above.
               - label: "⑤ Starts"
                 name: "start_date"
-                widget: "date"
+                widget: "datetime"
+                date_format: "YYYY-MM-DD"
+                time_format: false
+                picker_utc: false
                 format: "YYYY-MM-DD"
                 hint: "The giveaway appears in the header from this date."
 
               - label: "⑥ Ends"
                 name: "end_date"
-                widget: "date"
+                widget: "datetime"
+                date_format: "YYYY-MM-DD"
+                time_format: false
+                picker_utc: false
                 format: "YYYY-MM-DD"
                 hint: "Last day it runs, included. It disappears by itself the day after."
 
