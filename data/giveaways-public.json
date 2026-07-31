@@ -1,4 +1,23 @@
 {
-  "version": "2026-07-30-giveaways-v1",
-  "giveaways": []
+  "version": "2026-07-30-aurora-giveaway",
+  "giveaways": [
+    {
+      "id": "aurora-peptides-august-prize-draw-2026",
+      "title": "Win 1 of 3 Aurora Peptides prizes",
+      "host": "Aurora Peptides",
+      "is_partner": true,
+      "description": "Orders over $100 after discount code and tax placed between August 1 and August 3 are entered automatically. Code SAMMYC must be used on the order to be entered. Three prizes are drawn: $100 store credit, a 4 count vial case loaded by Aurora Peptides, and a second $100 store credit. Winners are emailed on August 4.",
+      "prize": "$100 credit, loaded 4 count vial case, $100 credit",
+      "start_date": "2026-08-01",
+      "end_date": "2026-08-03",
+      "timezone": "America/New_York",
+      "entry_url": "https://aurora-peptides.com/?ref=102",
+      "cta_text": "Shop to enter",
+      "rules_url": "",
+      "image": "",
+      "featured": true,
+      "show_in_panel": true,
+      "show_in_announcement": true
+    }
+  ]
 }
