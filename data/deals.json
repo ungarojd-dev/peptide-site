@@ -283,15 +283,15 @@
         "strip"
       ],
       "vendor": "Aurora Peptides",
-      "start_date": "2026-07-31",
+      "start_date": "2026-07-30",
       "sale_percent": 24,
       "code": "SAMMYC",
       "end_date": "2026-07-31",
-      "code_percent": 14,
-      "headline": "7/31 24 Hour Launch Sale! 24% off",
+      "code_percent": 15,
+      "headline": "7/31: 24 Hour Launch Sale! 24% off",
       "timezone": "America/New_York",
       "type": "sitewide_sale",
-      "description": "For 24 hours the site will be 24% off"
+      "description": "For 24 hours the site will be 24% off stackable with SAMMYC"
     },
     {
       "priority": 300,
