@@ -308,6 +308,20 @@
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "description": "Month of August: 15% off sitewide, stacks with SAMMYC(15%)"
+    },
+    {
+      "priority": 500,
+      "show_in": [
+        "strip"
+      ],
+      "vendor": "Aurora Peptides",
+      "code": "SAMMYC",
+      "end_date": "2026-08-30",
+      "code_percent": 15,
+      "headline": "Now tracked, 15% off with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "new_partner",
+      "description": "Orbitrex Peptides is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 15% off using code SAMMYC."
     }
   ]
 }
