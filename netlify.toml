@@ -2,6 +2,9 @@
   functions = "netlify/functions"
   # Runs on every deploy. Order matters.
   #
+  # 0. sync-cms-vendors regenerates the vendor dropdowns in admin/config.yml from
+  #                       vendor-config.json, so a newly added vendor cannot be
+  #                       missing from the Deals or Giveaways pickers.
   # 1. build-promotions   expands the human-edited data/deals.json (from /admin)
   #                       into data/promotions.json
   # 2. build-giveaways   validates data/giveaways.json (from /admin) into
@@ -22,7 +25,7 @@
   # from data/catalog-fallback.json, a committed seed with no product URLs and
   # only 14 vendors, which reverted every static page to base affiliate URLs on
   # each deploy. It remains available for offline engine testing via `npm test`.
-  command = "node scripts/build-promotions.mjs && node scripts/build-giveaways.mjs && node scripts/build-catalog-live.mjs && node scripts/build-catalog-seo.mjs && node scripts/build-programmatic-pages.mjs"
+  command = "node scripts/sync-cms-vendors.mjs && node scripts/build-promotions.mjs && node scripts/build-giveaways.mjs && node scripts/build-catalog-live.mjs && node scripts/build-catalog-seo.mjs && node scripts/build-programmatic-pages.mjs"
 
 [functions]
   node_bundler = "esbuild"
