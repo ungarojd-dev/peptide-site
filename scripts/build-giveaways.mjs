@@ -55,6 +55,12 @@ function expand(entry, index) {
 
   const host = clean(entry.host) || "MyPeptidePrice";
 
+  // Same two-surface model as deals. The giveaways panel is where they always
+  // live; the announcement bar is opt-in for the ones worth the top of the page.
+  const surfaces = new Set(Array.isArray(entry.show_in) && entry.show_in.length ? entry.show_in : ["panel"]);
+  const inPanel = surfaces.has("panel") || surfaces.size === 0;
+  const inAnnouncement = surfaces.has("announcement");
+
   return {
     id: clean(entry.id) || slug(`${host}-${title}`) || `giveaway-${index + 1}`,
     title,
@@ -71,7 +77,9 @@ function expand(entry, index) {
     cta_text: clean(entry.cta_text) || "Enter now",
     rules_url: rulesUrl,
     image: clean(entry.image),
-    featured: entry.featured === true
+    featured: entry.featured === true,
+    show_in_panel: inPanel,
+    show_in_announcement: inAnnouncement
   };
 }
 

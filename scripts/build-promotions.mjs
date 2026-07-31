@@ -116,15 +116,34 @@ function expand(deal) {
     out.scope_categories = deal.scope_categories;
   }
 
-  // Surface flags, derived from the single show_in list.
-  if (show.has("strip")) {
+  // Two surfaces, not three. "deals" means the big carousel and Today's Deals
+  // together, because anything worth putting in the slider belongs in the
+  // roundup too and splitting them only produced inconsistent states.
+  // "announcement" means the sticky top bar.
+  //
+  // Legacy values are still accepted so existing entries keep working:
+  //   carousel, roundup -> deals
+  //   strip             -> announcement
+  if (show.has("deals") || show.has("carousel") || show.has("roundup")) show.add("__deals");
+  if (show.has("announcement") || show.has("strip")) show.add("__announcement");
+
+  // A new-partner or community entry is an announcement by nature. Several were
+  // ticked for the carousel and only reached the top bar because the old code
+  // sniffed the vendor name for "skool" or the tube for "New partner". That
+  // routing is now explicit.
+  if (deal.type === "new_partner" || deal.type === "community") {
+    show.add("__announcement");
+    show.delete("__deals");
+  }
+
+  if (show.has("__announcement")) {
     out.show_in_strip = true;
     out.strip_tube = deal.strip_tube || (deal.type === "new_partner" ? "New partner" : deal.type === "first_order" ? "New customers" : "Live now");
     out.strip_offer = deal.headline || "";
     if (deal.code && deal.type === "first_order") out.strip_code = deal.code;
     if (deal.type === "sitewide_sale") out.strip_stack = code;
   }
-  if (show.has("carousel")) {
+  if (show.has("__deals")) {
     out.show_in_announce_bar = true;
     out.show_in_announcement_rolodex = true;
     out.badge = deal.badge || (deal.end_date ? "LIMITED TIME" : "NOW LIVE");
@@ -133,8 +152,11 @@ function expand(deal) {
     if (out.sale_percent != null && out.code_percent) out.announce_note = `plus ${out.code_percent}% with`;
   }
   // roundup reads everything from the fields above, no extra flag needed.
-  out.show_vendor_badge = show.has("carousel");
-  out.show_in_rolodex = show.has("carousel");
+  out.show_vendor_badge = show.has("__deals");
+  out.show_in_rolodex = show.has("__deals");
+  // Explicit surface flags replacing the old string sniffing in site.js.
+  out.show_in_deals = show.has("__deals") === true;
+  out.show_in_announcement = show.has("__announcement") === true;
 
   if (deal.type === "new_partner") {
     if (deal.start_date) out.partner_since = String(deal.start_date).slice(0, 10);

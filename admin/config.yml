@@ -181,12 +181,11 @@ collections:
                 name: "show_in"
                 widget: "select"
                 multiple: true
-                default: ["roundup"]
-                hint: "Tick where it appears. Roundup = Today's Deals panel (safe default). Strip = the thin top bar. Carousel = the big slider. Big sales get all three; small ongoing offers usually just roundup."
+                default: ["deals"]
+                hint: "Deals appear in both the big slider and the Today's Deals panel together. Announcements appear in the sticky bar at the top of the page. Most vendor offers are just Deals. New partners, restocks and community news are Announcements. Tick both only if an offer is genuinely worth the top bar."
                 options:
-                  - { label: "Today's Deals roundup", value: "roundup" }
-                  - { label: "Announcement strip (top bar)", value: "strip" }
-                  - { label: "Deal carousel (big slider)", value: "carousel" }
+                  - { label: "Deal carousel and Today's Deals", value: "deals" }
+                  - { label: "Announcement bar (top of page)", value: "announcement" }
 
               - label: "Affiliate URL"
                 name: "affiliate_url"
@@ -255,7 +254,17 @@ collections:
                 widget: "text"
                 hint: "What it is and how to enter. Keep it factual. Do not describe what any product does or is used for."
 
-              - label: "④ Prize"
+              - label: "④ Where it appears"
+                name: "show_in"
+                widget: "select"
+                multiple: true
+                default: ["panel"]
+                hint: "Giveaways always belong in the Giveaways panel. Tick the announcement bar as well only for ones worth the top of every page, the same way deals work."
+                options:
+                  - { label: "Giveaways panel", value: "panel" }
+                  - { label: "Announcement bar (top of page)", value: "announcement" }
+
+              - label: "⑤ Prize"
                 name: "prize"
                 widget: "string"
                 required: false
@@ -264,7 +273,7 @@ collections:
               # widget: "date" was removed in Decap 3.x and renders as
               # "No control for widget 'date'". datetime with time_format off is
               # the date-only replacement, matching the deals collection above.
-              - label: "⑤ Starts"
+              - label: "⑥ Starts"
                 name: "start_date"
                 widget: "datetime"
                 date_format: "YYYY-MM-DD"
@@ -273,7 +282,7 @@ collections:
                 format: "YYYY-MM-DD"
                 hint: "The giveaway appears in the header from this date."
 
-              - label: "⑥ Ends"
+              - label: "⑦ Ends"
                 name: "end_date"
                 widget: "datetime"
                 date_format: "YYYY-MM-DD"
@@ -282,7 +291,7 @@ collections:
                 format: "YYYY-MM-DD"
                 hint: "Last day it runs, included. It disappears by itself the day after."
 
-              - label: "⑦ Timezone"
+              - label: "⑧ Timezone"
                 name: "timezone"
                 widget: "select"
                 default: "America/New_York"
@@ -293,31 +302,31 @@ collections:
                   - "America/Denver"
                   - "America/Los_Angeles"
 
-              - label: "⑧ Entry link"
+              - label: "⑨ Entry link"
                 name: "entry_url"
                 widget: "string"
                 hint: "Where the Enter button goes. Must start with https://. Instagram post, Skool, a form, wherever entries are collected."
 
-              - label: "⑨ Button text"
+              - label: "⑩ Button text"
                 name: "cta_text"
                 widget: "string"
                 required: false
                 default: "Enter now"
                 hint: "Optional. Examples: Enter on Instagram, Enter on Skool."
 
-              - label: "⑩ Official rules link"
+              - label: "⑪ Official rules link"
                 name: "rules_url"
                 widget: "string"
                 required: false
                 hint: "Strongly recommended. US giveaways are generally expected to publish official rules, eligibility, and no-purchase-necessary wording, and it matters more when a partner brand is involved. The build logs a warning when this is empty."
 
-              - label: "⑪ Image"
+              - label: "⑫ Image"
                 name: "image"
                 widget: "image"
                 required: false
                 hint: "Optional. Shown at the top of the giveaway card."
 
-              - label: "⑫ Feature this one"
+              - label: "⑬ Feature this one"
                 name: "featured"
                 widget: "boolean"
                 required: false

@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260730-cms-vendor-sync-v28";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260730-announce-bar-fix-v30";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -283,7 +283,7 @@
         // partners (their % is just standard SAMMYC) and community items.
         // Everything with a real offer, including special first-order codes,
         // belongs in the live deal buckets.
-        const isAnnouncement=p.strip_tube==="New partner"||/skool|community/i.test(item.vendor);
+        const isAnnouncement=p.show_in_announcement===true&&p.show_in_deals!==true;
         (isAnnouncement?b.standing:b.live).push(item);
       }
     }
@@ -312,7 +312,7 @@
   // shown in the deal carousel or the roundup still appears; only strip-only
   // announcements are filtered out.
   function isDealSurface(promo){
-    return promo.show_in_rolodex===true||promo.show_in_deal_roundup===true||promo.show_in_roundup===true;
+    return promo.show_in_deals===true;
   }
   function setupDealsPanel(everything){
     const all=(everything||[]).filter(isDealSurface);
@@ -362,7 +362,11 @@
       window.dataLayer=window.dataLayer||[];
       window.dataLayer.push({event:"promo_section_click",product_name:"Limited Time Deals",product_category:"promotion",button_text:"View deals",button_location:"announcement_rolodex"});
     };
-    const announcementPromos=promotions.filter(p=>p.show_in_announcement_rolodex===true).sort((a,b)=>Number(b.priority||0)-Number(a.priority||0));
+    // Reads the explicit announcement flag. It used to filter on
+    // show_in_announcement_rolodex, which was set by ticking "Deal carousel",
+    // so ticking "Announcement strip" did nothing and only entries whose tube
+    // happened to be "New partner" or whose vendor matched "skool" ever showed.
+    const announcementPromos=promotions.filter(p=>p.show_in_announcement===true).sort((a,b)=>Number(b.priority||0)-Number(a.priority||0));
     const slides=[{static:true},...announcementPromos];
     let current=0;let autoTimer;
     const render=()=>{
@@ -415,12 +419,11 @@
   // A promotion is an announcement (new partner, community news) rather than a
   // deal. Announcements live only in the rotating strip; deals live only in the
   // Deals panel and the carousel. One job per surface, nothing duplicated.
-  const isAnnouncementPromo=p=>p.strip_tube==="New partner"||/skool|community/i.test(String(p.display_vendor||p.vendor||""));
 
   function setupDealsStrip(promotions){
     const scroll=document.querySelector("[data-deals-strip-scroll]");
     if(!scroll) return;
-    const boardDeals=promotions.filter(promotion=>promotion.show_in_rolodex!==false&&!isAnnouncementPromo(promotion));
+    const boardDeals=promotions.filter(promotion=>promotion.show_in_deals===true);
     if(!boardDeals.length){
       const section=document.querySelector(".deals-strip");
       if(section) section.hidden=true;
@@ -470,7 +473,7 @@
     const track=document.querySelector("[data-deal-track]");
     const dotsWrap=document.querySelector("[data-deal-dots]");
     if(!track) return;
-    const deals=promotions.filter(p=>p.show_in_rolodex===true&&!isAnnouncementPromo(p))
+    const deals=promotions.filter(p=>p.show_in_deals===true)
       .slice().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned));
     if(!deals.length){const s=document.querySelector(".deal-carousel");if(s)s.hidden=true;return;}
     const isStackable=deal=>{const h=((deal.short_detail||"")+" "+(deal.full_detail||"")).toLowerCase();return h.includes("stackable")||h.includes("sammyc");};
@@ -517,6 +520,12 @@
       promoState.active=promoState.all.filter(promotion=>isPromotionActive(promotion)).sort((a,b)=>Number(b.priority||0)-Number(a.priority||0));
       promoState.loaded=true;
       setupPromotionPanel(promoState.active);
+      // Merged only into the rolodex input: promoState stays purely promotions,
+      // so the deals panel and carousel are unaffected.
+      // Giveaways are kept out of promoState so the deals panel, carousel and
+      // vendor badges never see them. They are exposed separately and merged
+      // only by the announcement bar.
+      announcementGiveaways().then(gw=>{ promoState.giveawayAnnouncements=gw; });
       setupPromotionRolodex(promoState.active);
       setupDealCarousel(promoState.active);
       setupDealsPanel(promoState.all);
@@ -530,8 +539,43 @@
       return [];
     }
   }
+  // Giveaways can opt into the announcement bar, same two-surface model as
+  // deals. They live in their own data file, so they are fetched here and
+  // reshaped into the slide form the rolodex already renders.
+  async function announcementGiveaways(){
+    try{
+      const response=await fetch("/data/giveaways-public.json",{cache:"no-store"});
+      if(!response.ok) return [];
+      const data=await response.json();
+      const DAY=86400000;
+      const now=Date.now();
+      return (data.giveaways||[])
+        .filter(g=>g.show_in_announcement===true)
+        .filter(g=>{
+          const start=new Date(`${g.start_date}T00:00:00`).getTime();
+          const end=new Date(`${g.end_date}T00:00:00`).getTime()+DAY-1;
+          return Number.isFinite(start)&&Number.isFinite(end)&&now>=start&&now<=end;
+        })
+        .map(g=>({
+          vendor:g.host, display_vendor:g.host,
+          headline:g.title,
+          affiliate_url:g.entry_url,
+          rolodex_kicker:"Giveaway",
+          announce_tube:"Giveaway",
+          priority:g.featured?250:120,
+          show_in_announcement:true
+        }));
+    }catch{ return []; }
+  }
   const promotionsReady=loadPromotions();
-  window.MPPPromotions={ready:promotionsReady,active:activePromotions,forOffer:offerPromotions,forOfferAll:offerPromotionsAll,openPanel:openPromotionPanel};
+  // announcements() is what the announcement bar reads: promotions flagged for
+  // it, plus any giveaway that opted in. Deliberately separate from active(),
+  // which stays promotions-only.
+  const announcementSlides=()=>[
+    ...activePromotions().filter(p=>p.show_in_announcement===true),
+    ...(promoState.giveawayAnnouncements||[])
+  ];
+  window.MPPPromotions={ready:promotionsReady,active:activePromotions,announcements:announcementSlides,forOffer:offerPromotions,forOfferAll:offerPromotionsAll,openPanel:openPromotionPanel};
 
   initComplianceGate();
 })();
