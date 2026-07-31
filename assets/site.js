@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260730-aurora-sales-v31";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260731-absolute-dates-v33";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -704,31 +704,39 @@
     .replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;").replace(/'/g, "&#39;");
 
-  // Dates are plain YYYY-MM-DD and the end date is inclusive, so compare against
-  // the end of that day rather than midnight at its start.
-  function startOf(date){ const d = new Date(`${date}T00:00:00`); return Number.isNaN(d.getTime()) ? null : d.getTime(); }
-  function endOf(date){ const t = startOf(date); return t == null ? null : t + DAY - 1; }
-
+  // The dates are plain calendar days, not instants, so the state is worked out
+  // by comparing YYYY-MM-DD strings in the giveaway's own timezone. Parsing them
+  // into Date objects used the browser's timezone instead, so the same giveaway
+  // read as "upcoming" in New York and "live" in Sydney. String comparison on
+  // ISO dates sorts correctly and has no timezone maths to get wrong.
+  function dayKey(ms, zone){
+    return new Date(ms).toLocaleDateString("en-CA", { timeZone: zone || "America/New_York" });
+  }
   function bucket(giveaway, now){
-    const start = startOf(giveaway.start_date);
-    const end = endOf(giveaway.end_date);
-    if (start == null || end == null) return "ended";
-    if (now < start) return "upcoming";
-    if (now > end) return "ended";
-    return (end - now) <= 3 * DAY ? "ending" : "live";
+    const start = String(giveaway.start_date || "");
+    const end = String(giveaway.end_date || "");
+    if (!start || !end) return "ended";
+    const today = dayKey(now, giveaway.timezone);
+    if (start > today) return "upcoming";
+    if (end < today) return "ended";                 // end date is inclusive
+    // "Ending" means the last three days of the window, counted in whole days.
+    const soon = dayKey(now + 3 * DAY, giveaway.timezone);
+    return end <= soon ? "ending" : "live";
   }
 
-  function daysLeft(giveaway, now){
-    const end = endOf(giveaway.end_date);
-    if (end == null) return null;
-    return Math.max(0, Math.ceil((end - now) / DAY));
-  }
-
-  function cardMarkup(giveaway, state, now){
-    const left = daysLeft(giveaway, now);
+  function cardMarkup(giveaway, state){
+    // Always the actual date. The dates are plain calendar strings, not
+    // instants, so they are formatted from their parts: parsing "2026-08-01"
+    // and formatting it in another timezone shifted it to "Jul 31".
+    const pretty = date => {
+      const [y, m, d] = String(date || "").split("-").map(Number);
+      if (!y || !m || !d) return String(date || "");
+      return new Date(Date.UTC(y, m - 1, d))
+        .toLocaleDateString("en-US", { month: "short", day: "numeric", timeZone: "UTC" });
+    };
     const when = state === "upcoming"
-      ? `Opens ${esc(giveaway.start_date)}`
-      : (left === 0 ? "Ends today" : `${left} day${left === 1 ? "" : "s"} left`);
+      ? `Opens ${pretty(giveaway.start_date)}`
+      : `Ends ${pretty(giveaway.end_date)}`;
     const partner = giveaway.is_partner
       ? `<span class="gw-partner">With ${esc(giveaway.host)}</span>` : "";
     const prize = giveaway.prize ? `<span class="gw-prize">${esc(giveaway.prize)}</span>` : "";
@@ -752,7 +760,7 @@
   function panelMarkup(groups, now){
     const section = (title, list) => list.length
       ? `<section class="gw-group"><h4 class="gw-group-title">${title} <span>${list.length}</span></h4>
-          ${list.map(g => cardMarkup(g, g._state, now)).join("")}</section>` : "";
+          ${list.map(g => cardMarkup(g, g._state)).join("")}</section>` : "";
     return `<div class="gw-backdrop" data-gw-panel role="dialog" aria-modal="true" aria-label="Current giveaways">
       <div class="gw-panel">
         <header class="gw-panel-head">
