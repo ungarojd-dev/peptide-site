@@ -115,22 +115,6 @@
       "affiliate_url": "https://milehighcompounds.is/?ref=sammyc"
     },
     {
-      "chip_label": "Buy 3 Get 1 free",
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Instant Peptides",
-      "start_date": "2026-07-21",
-      "end_date": "2026-07-26",
-      "headline": "Buy 3 Get 1 Free, mix and match",
-      "timezone": "America/New_York",
-      "type": "conditional",
-      "id": "instant-peptides-b3g1-jul-2026",
-      "cta_text": "Shop sale",
-      "description": "Instant Peptides is running a Buy 3 Get 1 Free mix and match promotion from Monday July 21 through Sunday July 26, ending 11:59pm Eastern. Any 3 products qualify, they do not need to match, and the free item is applied automatically in the cart with no code required. Code SAMMYC still applies on top for its standing 15% off, which is the same rate it gives outside the sale. Every order placed during the sale is entered into the vendor Build-A-Kit giveaway, with 3 winners selected at random by Instant Peptides. Giveaway terms, eligibility and winner selection are handled entirely by the vendor.",
-      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC"
-    },
-    {
       "display_vendor": "Coffee & Peppers",
       "show_in": [
         "announcement",
@@ -165,25 +149,6 @@
       "cta_text": "Shop sale",
       "description": "Coffee & Peppers is running 15% off sitewide on Saturday July 25 to Sunday July 27. Code SAMMYC stacks for an additional 15% off the reduced price, for 27.75% off in total. First time customers can additionally stack code NEWCOFFEE20 for 20% off. Confirm eligibility at checkout.",
       "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc"
-    },
-    {
-      "flat_rate": 25,
-      "scope_categories": [
-        "GLP-1 & Incretin"
-      ],
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Disguised Alpha",
-      "start_date": "2026-07-24",
-      "end_date": "2026-07-26",
-      "headline": "25% off all GLP compounds",
-      "timezone": "America/Los_Angeles",
-      "type": "sitewide_sale",
-      "id": "disguised-alpha-glp-weekend-jul-2026",
-      "cta_text": "Shop sale",
-      "description": "Disguised Alpha is running 25% off all GLP compounds from Friday July 24 at 12:01am Pacific through Sunday July 26 at 11:59pm Pacific. The discount applies with any code, including SAMMYC. First time buyers additionally receive a free 3ml BAC water. This offer is limited to GLP compounds, so pricing shown here for their other products reflects their standard rate. Confirm eligibility and final pricing at checkout.",
-      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc"
     },
     {
       "priority": 400,
