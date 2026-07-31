@@ -299,6 +299,23 @@
       "cta_text": "Shop Aurora Peptides",
       "description": "Aurora Peptides is running 15% off sitewide for the whole of August. Code SAMMYC stacks on top for a further 15% off the reduced price. Confirm final pricing at checkout.",
       "affiliate_url": "https://aurora-peptides.com/?ref=102"
+    },
+    {
+      "priority": 300,
+      "show_in": [
+        "deals",
+        "announcement"
+      ],
+      "vendor": "Glacier Aminos",
+      "start_date": "2026-08-01",
+      "sale_percent": 12,
+      "code": "SAMMYC",
+      "end_date": "2026-08-15",
+      "code_percent": 10,
+      "headline": "12 MONTH ANNIVERSARY SALE! Use code 12MONTHS + SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "description": "Glacier Aminos 12-month anniversary sale kicks off 8/1. 12% off sitewide + stacks with code SAMMYC\nCode: 12MONTHS\n"
     }
   ],
   "version": "2026-07-30-aurora-sales"
