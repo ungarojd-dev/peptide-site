@@ -316,6 +316,23 @@
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "description": "Glacier Aminos 12-month anniversary sale kicks off 8/1. 12% off sitewide + stacks with code SAMMYC\nCode: 12MONTHS\n"
+    },
+    {
+      "priority": 500,
+      "show_in": [
+        "deals",
+        "announcement"
+      ],
+      "vendor": "Orbitrex Peptides",
+      "start_date": "2026-07-31",
+      "sale_percent": 15,
+      "code": "SAMMYC",
+      "end_date": "2026-08-02",
+      "code_percent": 15,
+      "headline": "Weekend Sale! use code MPP15 + SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "description": "Weekend Sale: MPP15 (15%) + SAMMYC(15%)"
     }
   ],
   "version": "2026-07-30-aurora-sales"
