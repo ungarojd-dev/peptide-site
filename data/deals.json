@@ -215,85 +215,87 @@
       "description": "Orbitrex Peptides is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 15% off using code SAMMYC."
     },
     {
-      "id": "instant-peptides-sitewide-15-aug-2026",
-      "vendor": "Instant Peptides",
-      "type": "sitewide_sale",
       "show_in": [
         "deals"
       ],
+      "vendor": "Instant Peptides",
       "start_date": "2026-07-29",
+      "sale_percent": 15,
       "end_date": "2026-08-02",
-      "timezone": "America/New_York",
+      "code_percent": 15,
       "headline": "15% off sitewide, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "id": "instant-peptides-sitewide-15-aug-2026",
       "cta_text": "Shop sale",
       "description": "Instant Peptides is running 15% off sitewide through Sunday August 2. The sale is applied automatically at checkout with no code needed, and it stacks with volume pricing. Code SAMMYC stacks on top for a further 15% off the reduced price. Confirm final pricing at checkout.",
-      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
-      "sale_percent": 15,
-      "code_percent": 15
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC"
     },
     {
-      "id": "instant-peptides-tampa-restock-aug-2026",
-      "vendor": "Instant Peptides",
-      "type": "new_partner",
+      "priority": 150,
       "show_in": [
         "announcement"
       ],
-      "strip_tube": "Vendor update",
-      "priority": 150,
+      "vendor": "Instant Peptides",
       "start_date": "2026-07-29",
+      "strip_tube": "Vendor update",
       "end_date": "2026-08-31",
-      "timezone": "America/New_York",
       "headline": "Now shipping from Tampa, new raw powders added",
+      "timezone": "America/New_York",
+      "type": "new_partner",
+      "id": "instant-peptides-tampa-restock-aug-2026",
       "description": "Instant Peptides has moved fulfillment in-house to a new Tampa, Florida warehouse, so orders now ship from Tampa rather than Tempe, Arizona. Three raw powders have been added to the catalog: GHK-Cu, AHK-Cu and Snap-8. Bacteriostatic Water 10ml is back in stock. The vendor states the raw powders each ship with a certificate of analysis and that the bacteriostatic water now includes test reports and a measured pH. Testing documentation is provided by the vendor and should be reviewed directly on their site.",
       "affiliate_url": "https://instantpeptides.com?ref=SAMMYC"
     },
     {
-      "id": "aurora-peptides-now-tracked-2026-07-31",
-      "vendor": "Aurora Peptides",
-      "type": "new_partner",
+      "priority": 200,
       "show_in": [
         "announcement"
       ],
+      "vendor": "Aurora Peptides",
+      "start_date": "2026-07-30",
       "strip_tube": "New partner",
-      "priority": 200,
-      "start_date": "2026-07-31",
       "end_date": "2026-08-31",
-      "timezone": "America/New_York",
       "headline": "Now tracked, 15% off with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "new_partner",
+      "id": "aurora-peptides-now-tracked-2026-07-31",
       "cta_text": "Shop now",
       "description": "Aurora Peptides is now tracked in the price comparison catalog. Code SAMMYC applies 15% off. Confirm final pricing and terms at checkout.",
       "affiliate_url": "https://aurora-peptides.com/?ref=102"
     },
     {
-      "id": "aurora-peptides-24-flash-2026-07-31",
-      "vendor": "Aurora Peptides",
-      "type": "sitewide_sale",
+      "flat_rate": "",
       "show_in": [
         "deals",
         "announcement"
       ],
-      "flat_rate": 24,
-      "start_date": "2026-07-31",
+      "vendor": "Aurora Peptides",
+      "start_date": "2026-07-30",
+      "sale_percent": 24,
       "end_date": "2026-07-31",
+      "code_percent": 15,
+      "headline": "August 31st: 24% off sitewide, 24 hours only",
       "timezone": "America/New_York",
-      "headline": "24% off sitewide, 24 hours only",
+      "type": "sitewide_sale",
+      "id": "aurora-peptides-24-flash-2026-07-31",
       "cta_text": "Shop the flash sale",
       "description": "Aurora Peptides is running 24% off sitewide for 24 hours, beginning 11:59pm on July 30. The vendor did not state whether code SAMMYC stacks on top of this one, so the price shown here reflects the 24% reduction only. Confirm final pricing at checkout.",
       "affiliate_url": "https://aurora-peptides.com/?ref=102"
     },
     {
-      "id": "aurora-peptides-august-15-stack-2026",
-      "vendor": "Aurora Peptides",
-      "type": "sitewide_sale",
       "show_in": [
         "deals"
       ],
-      "sale_percent": 15,
-      "code_percent": 15,
+      "vendor": "Aurora Peptides",
       "start_date": "2026-08-01",
+      "sale_percent": 15,
       "end_date": "2026-08-31",
-      "timezone": "America/New_York",
+      "code_percent": 15,
       "headline": "15% off sitewide, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "id": "aurora-peptides-august-15-stack-2026",
       "cta_text": "Shop Aurora Peptides",
       "description": "Aurora Peptides is running 15% off sitewide for the whole of August. Code SAMMYC stacks on top for a further 15% off the reduced price. Confirm final pricing at checkout.",
       "affiliate_url": "https://aurora-peptides.com/?ref=102"
