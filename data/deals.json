@@ -226,7 +226,24 @@
       "cta_text": "Shop Orbitrex Peptides",
       "description": "Orbitrex Peptides offers 20% off for verified veterans and first responders. Code SAMMYC applies 15% off for everyone else. Eligibility and verification are handled by the vendor. Confirm final pricing at checkout.",
       "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate"
+    },
+    {
+      "id": "instant-peptides-bogo-aug-2026",
+      "vendor": "Instant Peptides",
+      "type": "conditional",
+      "show_in": [
+        "deals",
+        "announcement"
+      ],
+      "start_date": "2026-08-03",
+      "end_date": "2026-08-09",
+      "timezone": "America/New_York",
+      "headline": "Buy 1 Get 1 Free, store wide",
+      "cta_text": "Shop the BOGO sale",
+      "chip_label": "BOGO",
+      "description": "Instant Peptides is running Buy 1 Get 1 Free store wide through Sunday August 9, mix and match, no code needed. Both items must be added to the cart, the free one is not added automatically, and the lower priced of the two is the one that comes off. Code SAMMYC stacks on top for a further 15% off. The listed prices on this page do not reflect the free item. Confirm final pricing at checkout.",
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC"
     }
   ],
-  "version": "2026-08-03-sheet-sync"
+  "version": "2026-08-03-instant-bogo"
 }

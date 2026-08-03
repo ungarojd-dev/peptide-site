@@ -1,6 +1,6 @@
 {
   "version": "deals-2026-08-03",
-  "updated_at": "2026-08-03T13:14:49.157Z",
+  "updated_at": "2026-08-03T15:11:58.883Z",
   "_generated": "Built from data/deals.json by scripts/build-promotions.mjs. Do not edit by hand.",
   "promotions": [
     {
@@ -365,6 +365,34 @@
       "show_in_rolodex": true,
       "show_in_deals": true,
       "show_in_announcement": false
+    },
+    {
+      "id": "instant-peptides-bogo-aug-2026",
+      "vendor": "Instant Peptides",
+      "display_vendor": "Instant Peptides",
+      "brand_color": "#d8c7a7",
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
+      "cta_text": "Shop the BOGO sale",
+      "headline": "Buy 1 Get 1 Free, store wide",
+      "short_detail": "Instant Peptides is running Buy 1 Get 1 Free store wide through Sunday August 9, mix and match, no code needed. Both items must be added to the cart, the free one is not added automatically, and the lower priced of the two is the one that comes off. Code SAMMYC stacks on top for a further 15% off. The listed prices on this page do not reflect the free item. Confirm final pricing at checkout.",
+      "full_detail": "Instant Peptides is running Buy 1 Get 1 Free store wide through Sunday August 9, mix and match, no code needed. Both items must be added to the cart, the free one is not added automatically, and the lower priced of the two is the one that comes off. Code SAMMYC stacks on top for a further 15% off. The listed prices on this page do not reflect the free item. Confirm final pricing at checkout.",
+      "priority": 300,
+      "start_at": "2026-08-03T00:00:00-04:00",
+      "end_at": "2026-08-09T23:59:00-04:00",
+      "conditional_deal": true,
+      "chip_label": "BOGO",
+      "show_in_strip": true,
+      "strip_tube": "Live now",
+      "strip_offer": "Buy 1 Get 1 Free, store wide",
+      "show_in_announce_bar": true,
+      "show_in_announcement_rolodex": true,
+      "badge": "LIMITED TIME",
+      "announce_tube": "Live now",
+      "announce_offer": "Buy 1 Get 1 Free, store wide",
+      "show_vendor_badge": true,
+      "show_in_rolodex": true,
+      "show_in_deals": true,
+      "show_in_announcement": true
     }
   ]
 }
