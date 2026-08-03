@@ -17,6 +17,9 @@
   #                       full vendor roster. Falls back to the committed
   #                       snapshot if coverage is short; never fails the build.
   # 3. build-catalog-seo  renders the crawlable catalog block from the snapshot
+  # 5. validate-site    static drift checks: vendor counts, CMS dropdowns, logo
+  #                       map, filter whitelists, cache-bust consistency, dead
+  #                       selectors. Warns by default; QA_STRICT=1 fails instead.
   # 4. build-programmatic-pages
   #                       regenerates compound pages, vendor pages, the vendor
   #                       directory and the sitemap from the snapshot
@@ -25,7 +28,7 @@
   # from data/catalog-fallback.json, a committed seed with no product URLs and
   # only 14 vendors, which reverted every static page to base affiliate URLs on
   # each deploy. It remains available for offline engine testing via `npm test`.
-  command = "node scripts/sync-cms-vendors.mjs && node scripts/build-promotions.mjs && node scripts/build-giveaways.mjs && node scripts/build-catalog-live.mjs && node scripts/build-catalog-seo.mjs && node scripts/build-programmatic-pages.mjs"
+  command = "node scripts/sync-cms-vendors.mjs && node scripts/build-promotions.mjs && node scripts/build-giveaways.mjs && node scripts/build-catalog-live.mjs && node scripts/build-catalog-seo.mjs && node scripts/build-programmatic-pages.mjs && node scripts/validate-site.mjs"
 
 [functions]
   node_bundler = "esbuild"

@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260731-absolute-dates-v33";
+const VER = "20260803-rules-link-v38";
 const TODAY = "July 2026";
 const VALID_UNTIL = "2026-08-31";
 const BASE = "https://mypeptideprice.com";
@@ -629,7 +629,9 @@ console.log("vendor pages written:", generated.vendors.length);
   const dir = [...generated.vendors].sort((a, b) => a.name.localeCompare(b.name));
   const cards = dir.map(v => {
     const logo = v.logo
-      ? `<img src="${esc(v.logo)}?v=${VER}" alt="${esc(v.name)} logo" loading="lazy"/>`
+      // Explicit dimensions: 15 logos without them made the directory reflow as
+      // they loaded.
+      ? `<img src="${esc(v.logo)}?v=${VER}" alt="${esc(v.name)} logo" width="48" height="48" loading="lazy" decoding="async"/>`
       : "";
     const discountLine = v.discount > 0
       ? `<p>${v.discount}% estimated discount with <span class="code-pill">${esc(vendorCfg.coupon_code || "SAMMYC")}</span></p>`

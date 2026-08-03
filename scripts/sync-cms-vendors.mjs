@@ -60,3 +60,56 @@ if (replaced) {
 } else {
   console.warn("sync-cms-vendors: nothing updated, check the marker comments in admin/config.yml");
 }
+
+// ---------------------------------------------------------------------------
+// The announcement bar's vendor logo lookup is a hardcoded map inside
+// index.html. Aurora was missing from it, so Aurora announcements rendered
+// without a logo. Same drift as the CMS dropdown, different copy of the list.
+// ---------------------------------------------------------------------------
+{
+  const INDEX = `${W}/index.html`;
+  let html = await readFile(INDEX, "utf8");
+  const open = "// LOGO-MAP-START";
+  const close = "// LOGO-MAP-END";
+  const start = html.indexOf(open);
+  const end = html.indexOf(close);
+  if (start === -1 || end === -1) {
+    console.warn("  sync-cms-vendors: logo map markers missing in index.html");
+  } else {
+    const lines = Object.entries(vendorConfig.vendors || {})
+      .filter(([, meta]) => meta.logo)
+      .map(([name, meta]) => `      ${JSON.stringify(name.toLowerCase())}:${JSON.stringify(meta.logo)},`)
+      .join("\n");
+    html = html.slice(0, start) + `${open}\n${lines}\n      ${close}` + html.slice(end + close.length);
+    await writeFile(INDEX, html);
+    console.log(`  announce logo map: ${Object.values(vendorConfig.vendors).filter(v => v.logo).length} vendors`);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Hand-built comparison pages carry a vendor count in their hero stats. They
+// are not generated, so they drifted to 13 while the roster reached 16.
+// ---------------------------------------------------------------------------
+{
+  const HAND_BUILT = [
+    "bpc-157-price-comparison.html", "semaglutide-price-comparison.html",
+    "tirzepatide-price-comparison.html", "retatrutide-price-comparison.html",
+    // index.html carries the roster count in its title, meta description and
+    // social tags. compounds.html is generated, so it is not listed here: its
+    // count comes from build-programmatic-pages, which derives it from the
+    // vendor pages it just wrote.
+    "index.html", "glp-weight-loss.html"
+  ];
+  const count = vendors.length;
+  for (const file of HAND_BUILT) {
+    const path = `${W}/${file}`;
+    let page;
+    try { page = await readFile(path, "utf8"); } catch { continue; }
+    const before = page;
+    // Matches "<span>Tracked vendors</span><strong>13</strong>" and the plain
+    // "<span>Vendors</span>" variant, plus prose like "across 13 vendors".
+    page = page.replace(/(<span>(?:Tracked )?[Vv]endors<\/span>\s*<strong>)\d+(<\/strong>)/g, `$1${count}$2`)
+               .replace(/across \d+ (?:verified |tracked )?vendors/gi, m => m.replace(/\d+/, count));
+    if (page !== before) { await writeFile(path, page); console.log(`  ${file}: vendor count -> ${count}`); }
+  }
+}

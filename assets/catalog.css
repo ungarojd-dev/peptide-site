@@ -1258,3 +1258,14 @@ a.seo-card-name:hover { text-decoration: underline; }
   /* Sort folds behind the toggle; rule lives above with the filter grid. */
 
 }
+
+/* Catalog controls sit below the 28px comfortable-tap floor on mobile.
+   Height is added via padding so the visual weight of the chips is unchanged. */
+@media (max-width: 700px) {
+  .supplier-code-copy { padding-top: 9px; padding-bottom: 9px; }
+  .variant-button { padding-top: 9px; padding-bottom: 9px; }
+  .variant-scroll-btn { width: 30px; height: 30px; }
+  .row-copy { padding-top: 7px; padding-bottom: 7px; }
+  .dc-dot { width: 12px; height: 12px; }
+  .crumbs a { display: inline-block; padding: 6px 0; }
+}

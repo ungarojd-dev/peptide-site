@@ -1519,7 +1519,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260731-absolute-dates-v33") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260803-rules-link-v38") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -1664,3 +1664,20 @@ body.deals-panel-open { overflow: hidden; }
 .gw-empty-note { margin: 0 auto; max-width: 300px; font-size: 12.5px; line-height: 1.55; color: rgba(244,241,232,.6); }
 .nav-gw-btn.is-empty { border-color: rgba(53,224,208,.26); background: rgba(53,224,208,.07); color: rgba(157,240,230,.78); }
 .nav-gw-btn.is-empty:hover { background: rgba(53,224,208,.16); color: var(--gw-neon-bright); }
+
+/* ============================================================
+   Mobile tap targets
+   Footer and inline links measured 15 to 21px tall on a phone,
+   well under the 44px guidance, on a site that takes 90% of its
+   traffic from mobile. Padding is added rather than font size so
+   nothing reflows.
+   ============================================================ */
+@media (max-width: 700px) {
+  .site-foot a,
+  .foot-col a,
+  .footer-links a { display: inline-block; padding: 7px 0; line-height: 1.35; }
+  .vendor-out { padding: 8px 0; }
+  .nav-gw-btn, .nav-deals-btn { padding-top: 8px; padding-bottom: 8px; }
+  .dc-nav-btn, .variant-scroll-btn { width: 32px; height: 32px; }
+  .announce-link { padding: 8px 12px; }
+}

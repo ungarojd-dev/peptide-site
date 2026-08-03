@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-30-aurora-giveaway",
+  "version": "2026-08-03-rules-link",
   "giveaways": [
     {
       "id": "aurora-peptides-august-prize-draw-2026",
@@ -16,7 +16,7 @@
       "timezone": "America/New_York",
       "entry_url": "https://aurora-peptides.com/?ref=102",
       "cta_text": "Shop to enter",
-      "rules_url": "",
+      "rules_url": "https://aurora-peptides.com/?ref=102",
       "image": "",
       "featured": true
     }
