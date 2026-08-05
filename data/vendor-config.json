@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-03-peptidology",
+  "version": "2026-08-05-peptidology-logo",
   "coupon_code": "SAMMYC",
   "vendors": {
     "Glacier Aminos": {
@@ -284,7 +284,7 @@
       "id": "peptidology",
       "discount_percent": 10,
       "affiliate_url": "https://peptidology.co/?ref=idifhsqu",
-      "logo": "",
+      "logo": "/assets/vendor-logos/peptidology.webp",
       "use_product_deep_links": true,
       "payment_methods": [
         "Apple Pay",
