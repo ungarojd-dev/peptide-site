@@ -113,3 +113,35 @@ if (replaced) {
     if (page !== before) { await writeFile(path, page); console.log(`  ${file}: vendor count -> ${count}`); }
   }
 }
+
+// ---------------------------------------------------------------------------
+// Stamp a fingerprint of vendor-config into catalog-engine.mjs.
+//
+// vendor-config.json is imported into the functions with { type: "json" }, so
+// it is baked into the bundle at build time. Editing the JSON alone leaves the
+// cached bundle in place and the change never reaches production. That is how
+// the Peptidology logo path was added, deployed, and still rendered as initials.
+//
+// Writing the fingerprint here means any vendor-config change also changes a
+// function .mjs, which forces the rebundle. Nobody has to remember.
+// ---------------------------------------------------------------------------
+{
+  const { createHash } = await import("node:crypto");
+  const ENGINE = `${W}/netlify/functions/_shared/catalog-engine.mjs`;
+  const raw = await readFile(`${W}/data/vendor-config.json`, "utf8");
+  const fingerprint = createHash("sha256").update(raw).digest("hex").slice(0, 16);
+  let engine = await readFile(ENGINE, "utf8");
+  const pattern = /export const VENDOR_CONFIG_FINGERPRINT = "[^"]*";/;
+  if (!pattern.test(engine)) {
+    console.warn("  sync-cms-vendors: fingerprint anchor missing in catalog-engine.mjs");
+  } else {
+    const next = `export const VENDOR_CONFIG_FINGERPRINT = "${fingerprint}";`;
+    if (!engine.includes(next)) {
+      engine = engine.replace(pattern, next);
+      await writeFile(ENGINE, engine);
+      console.log(`  vendor-config fingerprint: ${fingerprint} (engine touched, bundle will refresh)`);
+    } else {
+      console.log(`  vendor-config fingerprint: ${fingerprint} (unchanged)`);
+    }
+  }
+}
