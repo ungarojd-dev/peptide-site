@@ -204,6 +204,97 @@ function wooAdapter(options) {
   };
 }
 
+// Peptidology. Custom WordPress plugin feed, token in an X-Catalog-Token header
+// so it stays out of URLs and server logs.
+//
+// Every product is type "variable" with a variations array, and the size lives
+// in the variation label. The vendor said labels begin with the size in mg, but
+// a good share of them do not: sizes appear mid-string ("GHK-Cu 2.56mg"), in
+// mcg or ug, as blends ("10mg, 10mg, 50mg (70mg total)"), or not at all
+// ("Batch SLU0012026-01 - 60 capsules"). The label is cleaned rather than
+// trusted, and anything with no recoverable size falls through to the engine's
+// normal no-size handling instead of being dropped.
+function peptidologyCleanLabel(label) {
+  return compact(String(label || ""))
+    // Batch and purity noise. Their data uses both "|" and a capital "I" as the
+    // separator, so both are matched.
+    .replace(/\s*[|I]\s*Batch\s+[^|I]*/gi, " ")
+    .replace(/\s*[|I]\s*[\d.]+%\s*Purity\s*/gi, " ")
+    .replace(/\s*-\s*[A-Z]{2,}\d{4,}[-\d]*\s*/g, " ")
+    .replace(/\bBatch\s+[A-Z0-9-]+/gi, " ")
+    // "ug" is micrograms; the engine understands mcg, not ug.
+    .replace(/(\d)\s*ug\b/gi, "$1mcg")
+    // "552.18 mg" -> "552.18mg" so the dose regex sees one token.
+    .replace(/(\d)\s+(mcg|mg|g|ml)\b/gi, "$1$2")
+    .replace(/\s{2,}/g, " ")
+    // Stripping a batch code can leave a dangling separator, as in
+    // "Batch SLU0012026-01 - 60 capsules" -> "- 60 capsules".
+    .replace(/^[\s|,\-]+|[\s|,\-]+$/g, "")
+    .trim();
+}
+
+function peptidologyAdapter() {
+  const vendor = "Peptidology";
+  return {
+    vendor,
+    async load() {
+      const token = process.env.PEPTIDOLOGY_TOKEN;
+      if (!token) throw new Error("PEPTIDOLOGY_TOKEN not set");
+      const { data } = await fetchJson(
+        "https://peptidology.co/wp-json/pep-catalog/v1/products",
+        15000,
+        // fetchJson takes the headers object directly, not wrapped in options.
+        { "X-Catalog-Token": token }
+      );
+      const products = [];
+      let skippedNoPrice = 0;
+      for (const product of data.products || []) {
+        const name = compact(product.name);
+        if (!name) continue;
+        const variations = Array.isArray(product.variations) ? product.variations : [];
+        // A product with no variations has nothing priceable behind it.
+        for (const variation of variations) {
+          // Guard on the raw value: money() returns a formatted string or the
+          // sentinel "Contact for price", never null, so a null check here would
+          // never fire. Variations with an empty price are placeholders for
+          // sold-out sizes, and listing them would put a priceless row into a
+          // comparison whose whole job is ranking on price.
+          const rawPrice = compact(variation.price);
+          if (!rawPrice || !Number.isFinite(Number.parseFloat(rawPrice))) { skippedNoPrice += 1; continue; }
+          const price = money(rawPrice);
+          const size = peptidologyCleanLabel(variation.label);
+          const listing = size ? `${name} - ${size}` : name;
+          products.push({
+            company: vendor,
+            product: name,
+            listing,
+            raw_product: name,
+            raw_listing: listing,
+            sku: compact(variation.sku),
+            price,
+            regular_price: compact(variation.regular_price) ? money(variation.regular_price) : price,
+            in_stock: String(variation.stock_status || "").toLowerCase() !== "outofstock",
+            url: compact(product.url),
+            source_product_id: String(product.id || ""),
+            source_variation_id: String(variation.id || "")
+          });
+        }
+      }
+      return {
+        vendor,
+        products,
+        fetched_at: new Date().toISOString(),
+        metadata: {
+          source_type: "custom-json",
+          source_product_count: (data.products || []).length,
+          returned_rows: products.length,
+          skipped_unpriced_variations: skippedNoPrice
+        }
+      };
+    }
+  };
+}
+
 function instantAdapter() {
   const vendor = "Instant Peptides";
   return {
@@ -352,6 +443,7 @@ export const VENDOR_ADAPTERS = [
   // the repository is public, so ck_/cs_ pairs must never be committed.
   // Affiliate attribution is a numeric partner id rather than a code.
   wooAdapter({ vendor: "Aurora Peptides", base: "https://aurora-peptides.com/wp-json/wc/v3", ckEnv: "AURORA_CK", csEnv: "AURORA_CS", affiliateUrl: configUrl("Aurora Peptides"), affiliateParams: { ref: "102" } }),
+  peptidologyAdapter(),
   instantAdapter(),
   labSourcedAdapter(),
   wooAdapter({ vendor: "Solyn Labs", base: "https://solyn.com/wp-json/wc/v3", ckEnv: "SOLYN_CK", csEnv: "SOLYN_CS", affiliateUrl: configUrl("Solyn Labs"), alwaysUseAffiliateUrl: true }),

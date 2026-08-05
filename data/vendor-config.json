@@ -1,5 +1,5 @@
 {
-  "version": "2026-07-30-aurora-peptides-v1",
+  "version": "2026-08-03-peptidology",
   "coupon_code": "SAMMYC",
   "vendors": {
     "Glacier Aminos": {
@@ -279,6 +279,25 @@
       "brand_color": "#5b3fa8",
       "package_protection_required": false,
       "launch_date": "2026-07-31"
+    },
+    "Peptidology": {
+      "id": "peptidology",
+      "discount_percent": 10,
+      "affiliate_url": "https://peptidology.co/?ref=idifhsqu",
+      "logo": "",
+      "use_product_deep_links": true,
+      "payment_methods": [
+        "Apple Pay",
+        "Google Pay",
+        "Visa",
+        "Mastercard",
+        "American Express",
+        "Same Day Bank",
+        "Zelle"
+      ],
+      "brand_color": "#2f6f4f",
+      "package_protection_required": false,
+      "launch_date": "2026-08-04"
     }
   }
 }

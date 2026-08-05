@@ -56,6 +56,7 @@ only for offline engine testing.
 - `FLAWLESS_CS`
 - `GLOW_CK`
 - `GLOW_CS`
+- `PEPTIDOLOGY_TOKEN`
 - `AURORA_CK`
 - `AURORA_CS`
 - `MILEHIGH_CK`
