@@ -79,6 +79,20 @@ for (const vendor of vendors) {
 }
 
 // ---------------------------------------------------------------------------
+// 2b. Vendor logos: a missing path or a path pointing at no file renders as
+//     initials on every listing for that vendor, which reads as an oversight
+//     rather than a fault and can sit there for days.
+// ---------------------------------------------------------------------------
+{
+  const { access } = await import("node:fs/promises");
+  for (const [name, meta] of Object.entries(vendorConfig.vendors || {})) {
+    if (!meta.logo) { note(`vendor "${name}" has no logo path, its listings will show initials`); continue; }
+    try { await access(`${W}${meta.logo}`); }
+    catch { note(`vendor "${name}" points at ${meta.logo}, which does not exist`); }
+  }
+}
+
+// ---------------------------------------------------------------------------
 // 3. Vendor counts printed in HTML that disagree with the configured roster.
 // ---------------------------------------------------------------------------
 // Generated pages count the vendors actually present in the snapshot, which is
