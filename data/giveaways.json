@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-03-rules-link",
+  "version": "2026-08-05-coffee-anniversary-draw",
   "giveaways": [
     {
       "id": "aurora-peptides-august-prize-draw-2026",
@@ -17,6 +17,25 @@
       "entry_url": "https://aurora-peptides.com/?ref=102",
       "cta_text": "Shop to enter",
       "rules_url": "https://aurora-peptides.com/?ref=102",
+      "image": "",
+      "featured": true
+    },
+    {
+      "id": "coffee-peppers-1000-credit-aug-2026",
+      "title": "Win $1,000 in Coffee and Peppers store credit",
+      "host": "Coffee and Peppers",
+      "show_in": [
+        "panel",
+        "announcement"
+      ],
+      "description": "Every $100 spent during the Coffee and Peppers 1 Year Anniversary Sale earns one entry into a draw for $1,000 in store credit. The sale runs from August 14 through August 16 and entries accumulate across all three days. Entry terms and the draw are handled by the vendor.",
+      "prize": "$1,000 store credit",
+      "start_date": "2026-08-14",
+      "end_date": "2026-08-16",
+      "timezone": "America/New_York",
+      "entry_url": "https://coffeeandpeppers.com/?ref=SammyC",
+      "cta_text": "Shop to enter",
+      "rules_url": "https://coffeeandpeppers.com/?ref=SammyC",
       "image": "",
       "featured": true
     }
