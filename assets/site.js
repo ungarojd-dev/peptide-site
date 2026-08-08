@@ -198,7 +198,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260805-august-sales-v45";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260805-glacier-southern-v46";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{

@@ -1,5 +1,5 @@
 {
-  "version": "2026-08-05-coffee-anniversary-draw",
+  "version": "2026-08-05-southern-prizes",
   "giveaways": [
     {
       "id": "aurora-peptides-august-prize-draw-2026",
@@ -32,6 +32,24 @@
       "entry_url": "https://coffeeandpeppers.com/?ref=SammyC",
       "cta_text": "Shop to enter",
       "rules_url": "https://coffeeandpeppers.com/?ref=SammyC",
+      "image": "",
+      "featured": true,
+      "show_in_panel": true,
+      "show_in_announcement": true
+    },
+    {
+      "id": "southern-aminos-anniversary-prizes-2026",
+      "title": "Over $5,000 in Southern Aminos anniversary prizes",
+      "host": "Southern Aminos",
+      "is_partner": true,
+      "description": "Southern Aminos is giving away over $5,000 in prizes across their One Year Anniversary Celebration, running August 10 through August 30. Grand prizes are an Apple iPad Pro, an Apple Watch Series 11 and two pairs of Apple AirPods Pro 3. Gift card prizes include a $250 Amazon card, five $200 Visa or Mastercard cards, fifteen $100 cards, twenty $50 cards and ten $50 Starbucks cards. Entry terms and the draws are handled by the vendor.",
+      "prize": "iPad Pro, Apple Watch, AirPods Pro, plus gift cards",
+      "start_date": "2026-08-10",
+      "end_date": "2026-08-30",
+      "timezone": "America/New_York",
+      "entry_url": "https://southernaminos.com/?ref=SammyC",
+      "cta_text": "See the celebration",
+      "rules_url": "https://southernaminos.com/?ref=SammyC",
       "image": "",
       "featured": true,
       "show_in_panel": true,

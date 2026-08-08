@@ -188,7 +188,7 @@
       "start_date": "2026-08-01",
       "sale_percent": 12,
       "code": "SAMMYC",
-      "end_date": "2026-08-15",
+      "end_date": "2026-08-07",
       "code_percent": 10,
       "headline": "12 MONTH ANNIVERSARY SALE! Use code 12MONTHS + SAMMYC",
       "timezone": "America/New_York",
@@ -364,7 +364,63 @@
       "cta_text": "Shop the anniversary sale",
       "description": "Day three of the Coffee and Peppers 1 Year Anniversary Sale. Buy any two kits and get a third free, of equal or lesser value. 20% off sitewide with code ONEYEAR also applies and stacks with SAMMYC. Every $100 spent earns an entry into the $1,000 store credit draw. The prices shown here do not reflect the free third kit. Confirm final pricing at checkout.",
       "affiliate_url": "https://coffeeandpeppers.com/?ref=SammyC"
+    },
+    {
+      "priority": 300,
+      "show_in": [
+        "deals",
+        "announcement"
+      ],
+      "vendor": "Glacier Aminos",
+      "start_date": "2026-08-08",
+      "sale_percent": 12,
+      "code": "SAMMYC",
+      "end_date": "2026-08-09",
+      "code_percent": 20,
+      "headline": "Affiliate codes boosted to 20%, weekend only",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "description": "Glacier Aminos is boosting every affiliate code to 20% for Saturday and Sunday, up from the usual 10%, and it stacks with their ongoing 12% sitewide sale. The vendor advertises this as 32% total; the figure shown here is calculated by applying the code to the already reduced price, which is how their checkout applies it. Confirm final pricing at checkout.",
+      "id": "glacier-weekend-code-boost-aug-2026",
+      "cta_text": "Shop the code boost",
+      "affiliate_url": "https://glacieraminos.shop/?ref=SammyC"
+    },
+    {
+      "priority": 300,
+      "show_in": [
+        "deals",
+        "announcement"
+      ],
+      "vendor": "Glacier Aminos",
+      "start_date": "2026-08-10",
+      "sale_percent": 12,
+      "code": "SAMMYC",
+      "end_date": "2026-08-15",
+      "code_percent": 10,
+      "headline": "12 MONTH ANNIVERSARY SALE! Use code 12MONTHS + SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "description": "Glacier Aminos 12-month anniversary sale kicks off 8/1. 12% off sitewide + stacks with code SAMMYC\nCode: 12MONTHS\n",
+      "id": "glacier-12months-resume-aug-2026"
+    },
+    {
+      "id": "southern-aminos-anniversary-aug-2026",
+      "vendor": "Southern Aminos",
+      "type": "sitewide_sale",
+      "show_in": [
+        "deals",
+        "announcement"
+      ],
+      "sale_percent": 45,
+      "code_percent": 15,
+      "start_date": "2026-08-10",
+      "end_date": "2026-08-30",
+      "timezone": "America/New_York",
+      "headline": "45% off sitewide, One Year Anniversary",
+      "cta_text": "Shop the anniversary sale",
+      "description": "Southern Aminos is running their One Year Anniversary Celebration from August 10 through August 30. 45% off sitewide, with code SAMMYC stacking for a further 15% off the reduced price. The vendor states further stacking can reach up to 60% and that flash drops will run throughout the event with select products under $10; neither is reflected in the prices shown here. Over $5,000 in prizes is being given away separately. Confirm final pricing at checkout.",
+      "affiliate_url": "https://southernaminos.com/?ref=SammyC"
     }
   ],
-  "version": "2026-08-05-coffee-anniversary"
+  "version": "2026-08-05-southern-anniversary"
 }
