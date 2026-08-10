@@ -85,7 +85,6 @@
     {
       "display_vendor": "Coffee & Peppers",
       "show_in": [
-        "announcement",
         "deals"
       ],
       "vendor": "Coffee and Peppers",
