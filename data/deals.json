@@ -114,22 +114,6 @@
       "description": "Orbitrex Peptides is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 15% off using code SAMMYC."
     },
     {
-      "priority": 150,
-      "show_in": [
-        "announcement"
-      ],
-      "vendor": "Instant Peptides",
-      "start_date": "2026-07-29",
-      "strip_tube": "Vendor update",
-      "end_date": "2026-08-31",
-      "headline": "Now shipping from Tampa, new raw powders added",
-      "timezone": "America/New_York",
-      "type": "new_partner",
-      "id": "instant-peptides-tampa-restock-aug-2026",
-      "description": "Instant Peptides has moved fulfillment in-house to a new Tampa, Florida warehouse, so orders now ship from Tampa rather than Tempe, Arizona. Three raw powders have been added to the catalog: GHK-Cu, AHK-Cu and Snap-8. Bacteriostatic Water 10ml is back in stock. The vendor states the raw powders each ship with a certificate of analysis and that the bacteriostatic water now includes test reports and a measured pH. Testing documentation is provided by the vendor and should be reviewed directly on their site.",
-      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC"
-    },
-    {
       "priority": 200,
       "show_in": [
         "announcement"
@@ -418,6 +402,22 @@
       "headline": "15% off sitewide, stacks with SAMMYC",
       "timezone": "America/New_York",
       "type": "sitewide_sale"
+    },
+    {
+      "priority": 300,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Instant Peptides",
+      "start_date": "2026-08-10",
+      "sale_percent": 30,
+      "code": "SAMMYC",
+      "end_date": "2026-08-16",
+      "code_percent": 15,
+      "headline": "30% off sitewide, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "description": "30% off every product. Monday, August 10 through Sunday, August 16 at midnight EST. Volume pricing stacks on top. No code, no minimum, nothing excluded. Stacks with SAMMYC 15%"
     }
   ],
   "version": "2026-08-09-deal-corrections"
