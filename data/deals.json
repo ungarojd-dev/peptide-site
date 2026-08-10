@@ -16,7 +16,6 @@
     },
     {
       "show_in": [
-        "announcement",
         "deals"
       ],
       "vendor": "Glow Aminos",
@@ -197,8 +196,7 @@
     {
       "chip_label": "BOGO",
       "show_in": [
-        "deals",
-        "announcement"
+        "deals"
       ],
       "vendor": "Instant Peptides",
       "start_date": "2026-08-03",
@@ -247,8 +245,7 @@
     },
     {
       "show_in": [
-        "deals",
-        "announcement"
+        "deals"
       ],
       "vendor": "High Tide Compounds",
       "start_date": "2026-08-07",
@@ -266,7 +263,7 @@
     {
       "priority": 220,
       "show_in": [
-        "announcement"
+        "deals"
       ],
       "vendor": "Coffee and Peppers",
       "start_date": "2026-08-12",
