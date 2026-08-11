@@ -11,10 +11,12 @@
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
   <style>
     :root {
+      --black: #0D0D0D;
       --forest: #1F3A2D;
       --forest-2: #294a3a;
       --olive: #4E5D3C;
       --olive-2: #6A7D52;
+      --olive-soft: #8c9a61;
       --cream: #F7F3EA;
       --paper: #FFFFFF;
       --stone: #E3E1DC;
@@ -22,160 +24,305 @@
       --sand-2: #f0e5ce;
       --ink: #0D0D0D;
       --red: #b3402e;
+      --font-display: 'Manrope', Arial, sans-serif;
+      --font-body: 'Inter', system-ui, sans-serif;
+      --radius-card: 18px;
+      --radius-pill: 999px;
+      --shadow: 0 12px 35px rgba(13,13,13,.08), 0 1px 0 rgba(255,255,255,.75) inset;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      font-family: "Inter", system-ui, sans-serif;
-      background: var(--cream);
-      color: var(--ink);
-      min-height: 100vh;
+    body { font-family: var(--font-body); background: var(--cream); color: var(--ink); min-height: 100vh; }
+
+    /* ── Header: matches premium-top ── */
+    .site-top {
+      position: sticky; top: 0; z-index: 200;
+      background: rgba(13,13,13,.96);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(255,255,255,0.06);
     }
-    .topbar {
-      background: var(--forest);
-      color: var(--cream);
-      padding: 14px 18px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
+    .top-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      gap: 20px; max-width: 1280px; margin: 0 auto;
+      padding: 0 18px; height: 70px;
     }
-    .topbar a { color: var(--cream); text-decoration: none; font-weight: 800; font-family: "Manrope", sans-serif; letter-spacing: 0.02em; }
-    .topbar .tag { font-size: 12px; opacity: 0.75; font-weight: 600; }
-    .wrap { max-width: 640px; margin: 0 auto; padding: 18px 16px 60px; }
-    h1 { font-family: "Manrope", sans-serif; font-size: 26px; font-weight: 800; margin: 8px 0 4px; }
-    .sub { font-size: 14px; color: #4a4a44; margin-bottom: 18px; }
+    .brand { display: flex; flex-direction: row; align-items: center; gap: 12px; text-decoration: none; line-height: 1; }
+    .brand-mark-wrap {
+      display: grid; width: 44px; height: 44px; padding: 4px; place-items: center;
+      border: 1px solid rgba(216,199,167,.3); border-radius: 14px;
+      background: rgba(255,255,255,.06); box-shadow: 0 8px 20px rgba(0,0,0,.2);
+      flex: none;
+    }
+    .brand-mark { width: 34px; height: 34px; object-fit: contain; }
+    .brand-copy { display: grid; gap: 5px; }
+    .brand-wordmark { display: flex; align-items: baseline; white-space: nowrap; letter-spacing: -.8px; }
+    .brand-my, .brand-price, .brand-dot, .brand-peptide { font-family: var(--font-display); font-size: 22px; font-weight: 800; line-height: .9; }
+    .brand-my, .brand-price, .brand-dot { color: #fff; }
+    .brand-peptide { color: var(--olive-soft); }
+    .brand-tagline { display: block; color: rgba(216,199,167,.76); font-family: var(--font-body); font-size: 9px; font-weight: 700; letter-spacing: 2.6px; line-height: 1; text-transform: uppercase; }
+    .tool-pill {
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid rgba(216,199,167,.34); border-radius: var(--radius-pill);
+      background: rgba(78,93,60,.3); color: var(--sand);
+      padding: 6px 13px; font-size: 11px; font-weight: 800; letter-spacing: .5px;
+      text-transform: uppercase; white-space: nowrap;
+    }
+    .tool-pill .dot { width: 6px; height: 6px; border-radius: 50%; background: #b8341f; animation: pulse 1.8s ease-out infinite; }
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(184,52,31,.55); }
+      70% { box-shadow: 0 0 0 6px rgba(184,52,31,0); }
+      100% { box-shadow: 0 0 0 0 rgba(184,52,31,0); }
+    }
+
+    /* ── Dark hero band: matches premium-hero ── */
+    .hero {
+      position: relative; overflow: hidden;
+      background:
+        radial-gradient(circle at 76% 38%, rgba(216,199,167,.12), transparent 28%),
+        radial-gradient(circle at 18% 20%, rgba(78,93,60,.2), transparent 30%),
+        linear-gradient(135deg, #080a08 0%, #0d0d0d 48%, #10180f 100%);
+      padding: 44px 0 40px;
+    }
+    .hero::after {
+      content: ""; position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(255,255,255,.026) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size: 52px 52px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.55), transparent 80%);
+      pointer-events: none;
+    }
+    .hero-inner { position: relative; z-index: 1; max-width: 720px; margin: 0 auto; padding: 0 18px; }
+    .eyebrow {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(216,199,167,.18); border-radius: var(--radius-pill);
+      background: rgba(78,93,60,.28); color: #e7dcc4;
+      padding: 6px 13px; font-size: 10px; font-weight: 700;
+      letter-spacing: 1.7px; text-transform: uppercase; margin-bottom: 16px;
+    }
+    .eyebrow-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--sand); animation: pulse 2s ease-in-out infinite; }
+    .hero h1 {
+      font-family: var(--font-display);
+      font-size: clamp(34px, 6vw, 52px);
+      font-weight: 800; letter-spacing: -1.8px; line-height: 1;
+      color: #fff; margin-bottom: 14px;
+    }
+    .hero h1 em { font-style: normal; color: var(--olive-soft); }
+    .hero p { color: rgba(255,255,255,.72); font-size: 15px; line-height: 1.65; max-width: 560px; }
+
+    /* ── Cards ── */
+    .wrap { max-width: 720px; margin: 0 auto; padding: 26px 16px 70px; }
     .card {
       background: var(--paper);
-      border: 1px solid var(--stone);
-      border-radius: 14px;
-      padding: 16px;
-      margin-bottom: 14px;
+      border: 1px solid rgba(13,13,13,.06);
+      border-radius: var(--radius-card);
+      padding: 20px 18px;
+      margin-bottom: 16px;
+      box-shadow: var(--shadow);
     }
-    .card h2 { font-family: "Manrope", sans-serif; font-size: 15px; font-weight: 800; margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+    .card h2 {
+      font-family: var(--font-display); font-size: 15px; font-weight: 800;
+      letter-spacing: -.2px; margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px;
+    }
     .step-num {
-      background: var(--forest); color: var(--cream);
-      width: 22px; height: 22px; border-radius: 50%;
-      display: inline-flex; align-items: center; justify-content: center;
-      font-size: 12px; font-weight: 800; flex-shrink: 0;
+      display: inline-grid; place-items: center; flex: none;
+      width: 26px; height: 26px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--forest), var(--olive));
+      color: var(--sand); font-size: 12px; font-weight: 800;
+      box-shadow: inset 0 1px 0 rgba(216,199,167,.25);
     }
-    label { font-size: 13px; font-weight: 600; display: block; margin-bottom: 6px; }
+    label { font-size: 12px; font-weight: 700; letter-spacing: .2px; color: #5a5a50; display: block; margin-bottom: 7px; text-transform: uppercase; }
     input[type="text"] {
-      width: 100%; padding: 12px; font-size: 16px;
-      border: 1.5px solid var(--stone); border-radius: 10px;
+      width: 100%; padding: 13px 14px; font-size: 16px;
+      border: 1px solid var(--stone); border-radius: 12px;
       font-family: inherit; background: var(--cream);
+      transition: border-color .2s, box-shadow .2s;
     }
-    input[type="text"]:focus { outline: none; border-color: var(--olive); }
+    input[type="text"]:focus { outline: none; border-color: var(--olive); box-shadow: 0 0 0 3px rgba(78,93,60,.1); }
+
+    /* Dropzone */
     .drop {
-      border: 2px dashed var(--olive-2);
-      border-radius: 12px;
-      background: var(--sand-2);
-      padding: 26px 14px;
-      text-align: center;
-      cursor: pointer;
-      transition: background 0.15s;
-      font-size: 14px;
-      color: var(--forest);
-      font-weight: 600;
+      border: 1.5px dashed rgba(78,93,60,.45);
+      border-radius: 14px;
+      background: linear-gradient(135deg, rgba(216,199,167,.16), rgba(240,229,206,.4));
+      padding: 28px 16px; text-align: center; cursor: pointer;
+      transition: border-color .2s, background .2s;
+      font-family: var(--font-display); font-size: 14px; font-weight: 800;
+      letter-spacing: -.1px; color: var(--forest);
     }
-    .drop.dragover { background: var(--sand); }
-    .drop small { display: block; font-weight: 400; color: #6b6b60; margin-top: 6px; font-size: 12px; }
-    .thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
-    .thumb { position: relative; width: 58px; height: 58px; border-radius: 8px; overflow: hidden; border: 1px solid var(--stone); }
+    .drop:hover, .drop.dragover { border-color: var(--olive); background: var(--sand-2); }
+    .drop small { display: block; font-family: var(--font-body); font-weight: 500; color: #82826f; margin-top: 7px; font-size: 12px; line-height: 1.5; }
+    .thumbs { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .thumb { position: relative; width: 60px; height: 60px; border-radius: 12px; overflow: hidden; border: 1px solid var(--stone); box-shadow: 0 3px 10px rgba(13,13,13,.08); }
     .thumb img { width: 100%; height: 100%; object-fit: cover; }
     .thumb button {
-      position: absolute; top: 2px; right: 2px;
-      background: rgba(13,13,13,0.75); color: #fff; border: none;
+      position: absolute; top: 3px; right: 3px;
+      background: rgba(13,13,13,.78); color: #fff; border: none;
       width: 18px; height: 18px; border-radius: 50%; font-size: 11px;
       cursor: pointer; line-height: 1;
     }
+
+    /* Buttons */
     .btn {
       display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-      background: var(--forest); color: var(--cream);
-      border: none; border-radius: 10px;
-      padding: 13px 20px; font-size: 15px; font-weight: 700;
-      font-family: "Manrope", sans-serif;
+      border: none; border-radius: 12px;
+      background: var(--olive); color: #fff;
+      padding: 14px 20px; font-size: 14px; font-weight: 800;
+      font-family: var(--font-display); letter-spacing: .1px;
       cursor: pointer; width: 100%;
-      transition: background 0.15s;
+      transition: transform .16s ease, background .16s ease, box-shadow .16s ease;
+      box-shadow: 0 8px 20px rgba(78,93,60,.22);
     }
-    .btn:hover { background: var(--forest-2); }
-    .btn:disabled { background: #9aa694; cursor: not-allowed; }
-    .btn.secondary { background: var(--sand); color: var(--forest); }
-    .btn.secondary:hover { background: #cbb890; }
-    .btn.danger { background: var(--red); }
-    .btn-row { display: flex; gap: 10px; margin-top: 10px; }
+    .btn:hover { background: var(--forest); transform: translateY(-1px); }
+    .btn:disabled { background: #b6bcab; box-shadow: none; transform: none; cursor: not-allowed; }
+    .btn.secondary { background: rgba(216,199,167,.35); color: var(--forest); box-shadow: none; border: 1px solid rgba(216,199,167,.8); }
+    .btn.secondary:hover { background: var(--sand); transform: translateY(-1px); }
+    .btn.danger { background: transparent; color: var(--red); border: 1px solid rgba(179,64,46,.35); box-shadow: none; }
+    .btn.danger:hover { background: rgba(179,64,46,.07); transform: none; }
+    .btn-row { display: flex; gap: 10px; margin-top: 12px; }
     .btn-row .btn { width: auto; flex: 1; }
-    .status { font-size: 13px; margin-top: 10px; min-height: 18px; font-weight: 600; }
+
+    .status { font-size: 13px; margin-top: 10px; min-height: 18px; font-weight: 600; color: #6b6b60; }
     .status.err { color: var(--red); }
     .status.ok { color: var(--olive); }
     .spinner {
-      width: 16px; height: 16px; border: 2.5px solid rgba(247,243,234,0.35);
-      border-top-color: var(--cream); border-radius: 50%;
-      animation: spin 0.7s linear infinite; display: inline-block;
+      width: 15px; height: 15px; border: 2.5px solid rgba(255,255,255,.35);
+      border-top-color: #fff; border-radius: 50%;
+      animation: spin .7s linear infinite; display: inline-block;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
-    .chips { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 10px; }
+
+    /* Entry chips */
+    .chips { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chips:not(:empty) { margin-bottom: 14px; }
     .chip {
-      background: var(--cream); border: 1px solid var(--stone);
-      border-radius: 999px; padding: 6px 8px 6px 12px;
-      font-size: 13px; font-weight: 600;
-      display: inline-flex; align-items: center; gap: 6px;
+      display: inline-flex; align-items: center; gap: 7px;
+      border: 1px solid rgba(78,93,60,.22); border-radius: var(--radius-pill);
+      background: var(--cream); padding: 7px 9px 7px 13px;
+      font-size: 13px; font-weight: 650; color: #22301f;
     }
     .chip button {
-      background: var(--stone); border: none; border-radius: 50%;
-      width: 18px; height: 18px; font-size: 11px; cursor: pointer; line-height: 1;
-      color: var(--ink);
+      display: grid; place-items: center;
+      background: rgba(78,93,60,.14); border: none; border-radius: 50%;
+      width: 18px; height: 18px; font-size: 11px; cursor: pointer;
+      color: var(--forest); transition: background .15s;
     }
     .chip button:hover { background: var(--sand); }
     .count-pill {
-      background: var(--olive); color: var(--cream);
-      border-radius: 999px; padding: 3px 11px; font-size: 12px; font-weight: 800;
       margin-left: auto;
+      border: 1px solid rgba(216,199,167,.8); border-radius: var(--radius-pill);
+      background: linear-gradient(135deg, var(--sand-2), var(--sand));
+      color: var(--forest); padding: 4px 13px; font-size: 12px; font-weight: 800;
+      font-family: var(--font-display);
     }
-    .add-row { display: flex; gap: 8px; margin-top: 12px; }
+    .add-row { display: flex; gap: 8px; }
     .add-row input { flex: 1; }
-    .add-row .btn { width: auto; padding: 12px 18px; }
-    .wheel-box { text-align: center; padding: 10px 0 4px; position: relative; }
-    #wheelCanvas { max-width: 100%; height: auto; display: block; margin: 0 auto; }
-    .pointer {
-      width: 0; height: 0;
-      border-left: 14px solid transparent;
-      border-right: 14px solid transparent;
-      border-top: 24px solid var(--red);
-      margin: 0 auto -12px;
-      position: relative; z-index: 2;
-      filter: drop-shadow(0 2px 2px rgba(0,0,0,0.25));
+    .add-row .btn { width: auto; padding: 12px 20px; }
+
+    /* ── Wheel: dark visual panel like hero-visual ── */
+    .wheel-card { padding: 0; overflow: hidden; }
+    .wheel-card h2 { padding: 20px 18px 0; margin-bottom: 4px; }
+    .wheel-panel {
+      position: relative; margin: 14px; border-radius: 24px;
+      background:
+        radial-gradient(circle at 76% 20%, rgba(216,199,167,.1), transparent 34%),
+        radial-gradient(circle at 15% 80%, rgba(140,154,97,.12), transparent 36%),
+        linear-gradient(145deg, #0b0d0a 0%, #10180f 100%);
+      box-shadow: inset 0 0 0 1px rgba(216,199,167,.14), 0 18px 45px rgba(13,13,13,.18);
+      padding: 26px 14px 22px;
+      text-align: center;
     }
-    .empty-wheel { color: #8a8a80; font-size: 14px; padding: 40px 0; }
+    .wheel-panel::after {
+      content: ""; position: absolute; inset: 0; border-radius: 24px;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.02) 1px, transparent 1px);
+      background-size: 44px 44px;
+      mask-image: linear-gradient(to bottom, rgba(0,0,0,.6), transparent 85%);
+      pointer-events: none;
+    }
+    .pointer {
+      width: 0; height: 0; position: relative; z-index: 2;
+      border-left: 13px solid transparent;
+      border-right: 13px solid transparent;
+      border-top: 22px solid var(--sand);
+      margin: 0 auto -10px;
+      filter: drop-shadow(0 3px 4px rgba(0,0,0,.45));
+    }
+    #wheelCanvas { position: relative; z-index: 1; max-width: 100%; height: auto; display: block; margin: 0 auto; }
+    .empty-wheel { position: relative; z-index: 1; color: rgba(255,255,255,.45); font-size: 14px; font-weight: 600; padding: 52px 0; }
+    .wheel-actions { padding: 0 18px 20px; }
+
+    /* Winner modal */
     .modal-bg {
-      position: fixed; inset: 0; background: rgba(13,13,13,0.6);
+      position: fixed; inset: 0; background: rgba(8,10,8,.72);
+      backdrop-filter: blur(6px);
       display: none; align-items: center; justify-content: center;
       z-index: 50; padding: 20px;
     }
     .modal-bg.show { display: flex; }
     .modal {
-      background: var(--paper); border-radius: 18px;
-      padding: 30px 24px; text-align: center; max-width: 380px; width: 100%;
-      animation: pop 0.35s cubic-bezier(0.2, 1.4, 0.4, 1);
+      position: relative; overflow: hidden;
+      background: var(--paper); border-radius: 22px;
+      padding: 34px 26px 26px; text-align: center; max-width: 400px; width: 100%;
+      box-shadow: 0 30px 80px rgba(0,0,0,.4);
+      animation: pop .35s cubic-bezier(.2, 1.4, .4, 1);
     }
-    @keyframes pop { from { transform: scale(0.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
-    .modal .label { font-size: 13px; font-weight: 700; color: var(--olive); text-transform: uppercase; letter-spacing: 0.12em; }
+    .modal::before {
+      content: ""; position: absolute; top: 0; left: 0; right: 0; height: 5px;
+      background: linear-gradient(90deg, var(--forest), var(--olive-soft), var(--sand));
+    }
+    @keyframes pop { from { transform: scale(.6); opacity: 0; } to { transform: scale(1); opacity: 1; } }
+    .modal .label {
+      display: inline-flex; align-items: center; gap: 8px;
+      border: 1px solid rgba(216,199,167,.7); border-radius: var(--radius-pill);
+      background: var(--sand-2); color: var(--forest);
+      padding: 5px 14px; font-size: 10px; font-weight: 800;
+      letter-spacing: 1.7px; text-transform: uppercase;
+    }
     .modal .winner {
-      font-family: "Manrope", sans-serif; font-size: 32px; font-weight: 800;
-      margin: 10px 0 20px; word-break: break-word; color: var(--forest);
+      font-family: var(--font-display); font-size: 34px; font-weight: 800;
+      letter-spacing: -1.2px; margin: 14px 0 22px;
+      word-break: break-word; color: var(--forest);
     }
     #confettiCanvas { position: fixed; inset: 0; pointer-events: none; z-index: 60; }
-    .foot { text-align: center; font-size: 12px; color: #8a8a80; margin-top: 26px; }
+    .foot { text-align: center; font-size: 12px; color: #93937f; margin-top: 28px; }
+
+    @media (max-width: 480px) {
+      .brand-my, .brand-price, .brand-dot, .brand-peptide { font-size: 18px; }
+      .brand-tagline { display: none; }
+      .top-inner { height: 60px; }
+      .tool-pill { font-size: 10px; padding: 5px 10px; }
+      .card { padding: 16px 14px; }
+      .wheel-panel { margin: 10px; padding: 20px 8px 16px; }
+    }
   </style>
 </head>
 <body>
-  <header class="topbar">
-    <a href="/">MyPeptidePrice.com</a>
-    <span class="tag">LIVE Giveaway Wheel</span>
+  <header class="site-top">
+    <div class="top-inner">
+      <a class="brand" href="/" aria-label="MyPeptidePrice home">
+        <span class="brand-mark-wrap" aria-hidden="true">
+          <img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260809-deal-corrections-v47" alt="" width="34" height="34"/>
+        </span>
+        <span class="brand-copy">
+          <span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span>
+          <span class="brand-tagline">Research. Compare. Save.</span>
+        </span>
+      </a>
+      <span class="tool-pill"><span class="dot"></span>Live Tool</span>
+    </div>
   </header>
 
-  <main class="wrap">
-    <h1>TikTok LIVE Giveaway Wheel</h1>
-    <p class="sub">Screenshot the chat, upload it here, and everyone who typed the keyword goes on the wheel automatically.</p>
+  <section class="hero">
+    <div class="hero-inner">
+      <span class="eyebrow"><span class="eyebrow-dot"></span>SammyC on TikTok LIVE</span>
+      <h1>Giveaway <em>Wheel</em></h1>
+      <p>Screenshot the chat and upload it below. Everyone who typed the keyword lands on the wheel automatically, no typing names one by one.</p>
+    </div>
+  </section>
 
+  <main class="wrap">
     <section class="card">
       <h2><span class="step-num">1</span> Keyword</h2>
       <label for="keyword">Viewers enter by typing this in chat</label>
@@ -190,7 +337,7 @@
       </div>
       <input type="file" id="fileInput" accept="image/*" multiple hidden/>
       <div class="thumbs" id="thumbs"></div>
-      <div style="margin-top:12px">
+      <div style="margin-top:14px">
         <button class="btn" id="extractBtn" disabled>Extract names</button>
       </div>
       <div class="status" id="extractStatus"></div>
@@ -208,14 +355,16 @@
       </div>
     </section>
 
-    <section class="card">
+    <section class="card wheel-card">
       <h2><span class="step-num">4</span> Spin</h2>
-      <div class="wheel-box">
+      <div class="wheel-panel">
         <div class="pointer"></div>
         <canvas id="wheelCanvas" width="560" height="560"></canvas>
         <div class="empty-wheel" id="emptyWheel">Add at least 2 entries to spin</div>
       </div>
-      <button class="btn" id="spinBtn" disabled>Spin the wheel</button>
+      <div class="wheel-actions">
+        <button class="btn" id="spinBtn" disabled>Spin the wheel</button>
+      </div>
     </section>
 
     <p class="foot">MyPeptidePrice.com internal tool. For research use only branding applies sitewide.</p>
@@ -223,7 +372,7 @@
 
   <div class="modal-bg" id="modalBg">
     <div class="modal">
-      <div class="label">Winner</div>
+      <div class="label"><span>Winner</span></div>
       <div class="winner" id="winnerName"></div>
       <div class="btn-row">
         <button class="btn secondary" id="keepBtn">Keep on wheel</button>
