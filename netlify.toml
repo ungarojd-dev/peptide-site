@@ -50,6 +50,12 @@
     Cache-Control = "public, max-age=300, stale-while-revalidate=21600"
 
 [[headers]]
+  for = "/live-wheel.html"
+  [headers.values]
+    X-Robots-Tag = "noindex, nofollow"
+    Cache-Control = "no-store"
+
+[[headers]]
   for = "/admin/catalog-status.html"
   [headers.values]
     X-Robots-Tag = "noindex, nofollow"
