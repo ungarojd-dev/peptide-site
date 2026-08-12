@@ -21,7 +21,7 @@
       "vendor": "Glow Aminos",
       "start_date": "2026-07-06",
       "sale_percent": 30,
-      "end_date": "2026-08-31",
+      "end_date": "2026-08-11",
       "code_percent": 15,
       "headline": "30% off sitewide, stacks with SAMMYC",
       "timezone": "America/New_York",
@@ -38,7 +38,7 @@
       "vendor": "Flawless Compounds",
       "start_date": "2026-07-06",
       "sale_percent": 30,
-      "end_date": "2026-08-31",
+      "end_date": "2026-08-11",
       "code_percent": 15,
       "headline": "30% off sitewide, stacks with SAMMYC",
       "timezone": "America/New_York",
@@ -431,7 +431,43 @@
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "description": "15% off sitewide flash sale through Thursday, August 13 at midnight EST. Code SAMMYC is worth a full 20% at LabSourced, the biggest code discount on the board. Stacks with SAMMYC 20%"
+    },
+    {
+      "priority": 310,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Glow Aminos",
+      "start_date": "2026-08-12",
+      "sale_percent": 40,
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "40% off sitewide, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "id": "glow-aminos-40-open-ended",
+      "cta_text": "Shop Now",
+      "description": "Glow Aminos moved up to 40% off sitewide with no announced end date. Code SAMMYC stacks for an additional 15% off the reduced price, for 49% off in total. Free priority shipping over $150. Confirm final pricing at checkout.",
+      "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC"
+    },
+    {
+      "priority": 310,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Flawless Compounds",
+      "start_date": "2026-08-12",
+      "sale_percent": 40,
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "40% off sitewide, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "id": "flawless-40-open-ended",
+      "cta_text": "Shop Now",
+      "description": "Flawless Compounds moved up to 40% off sitewide with no announced end date. Code SAMMYC stacks for an additional 15% off the reduced price, for 49% off in total. Free priority shipping over $150. Confirm final pricing at checkout.",
+      "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC"
     }
   ],
-  "version": "2026-08-11-labsourced-flash"
+  "version": "2026-08-11-flawless-glow-40"
 }
