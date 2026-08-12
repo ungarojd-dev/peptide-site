@@ -702,10 +702,11 @@ body.mpp-compliance-open { overflow: hidden; }
   .mpp-compliance-header, .mpp-full-disclaimer-header { padding: 13px 14px; }
   .mpp-compliance-header h2, .mpp-full-disclaimer-header h2 { font-size: 15.5px; }
   .mpp-compliance-content { padding: 12px 14px; }
-  .mpp-compliance-footer { flex-direction: column-reverse; align-items: stretch; gap: 8px; padding: 12px 14px; }
-  .mpp-compliance-footer button { width: 100%; padding: 11px 12px; font-size: 12.5px; margin-right: 0 !important; order: initial; }
-  .mpp-compliance-primary { order: -1; }
-  .mpp-compliance-decline { text-decoration: underline; }
+  .mpp-compliance-footer { flex-direction: column; align-items: stretch; gap: 8px; padding: 12px 14px max(12px, env(safe-area-inset-bottom)); }
+  .mpp-compliance-footer button { width: 100%; padding: 13px 12px; font-size: 13.5px; margin-right: 0 !important; }
+  .mpp-compliance-footer .mpp-compliance-secondary { order: 1; border-color: var(--olive) !important; background: var(--olive) !important; color: #fff !important; font-size: 14.5px; padding: 15px 12px; }
+  .mpp-compliance-footer .mpp-compliance-primary { order: 2; }
+  .mpp-compliance-footer .mpp-compliance-decline { order: 3; padding: 6px 12px !important; font-size: 12px; text-decoration: underline; }
 }
 @media (max-width: 420px) {
   .skool-sticky-text { font-size: 9.5px; }

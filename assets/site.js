@@ -100,7 +100,7 @@
             <p class="mpp-compliance-helper">If you do not agree to these terms, you must exit the website. Access is not permitted without acceptance.</p>
             <button class="mpp-compliance-link" type="button" data-compliance-full-open><span aria-hidden="true">▣</span> View full disclaimers</button>
           </div>
-          <div class="mpp-compliance-scroll-hint" data-compliance-scroll-hint><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2v10M4 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Scroll for required checkboxes</div>
+          <div class="mpp-compliance-scroll-hint" data-compliance-scroll-hint><svg viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 2v10M4 8l4 4 4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg> Scroll to review, or tap Accept all</div>
           <footer class="mpp-compliance-footer">
             <button class="mpp-compliance-secondary" type="button" data-compliance-accept-all><span aria-hidden="true">✓</span> Accept all</button>
             <button class="mpp-compliance-decline" type="button" data-compliance-decline>Decline &amp; exit</button>
@@ -180,16 +180,23 @@
     }
     const update=()=>{submit.disabled=!checks.every(input=>input.checked)};
     checks.forEach(input=>input.addEventListener("change",update));
-    root.querySelector("[data-compliance-accept-all]").addEventListener("click",()=>{checks.forEach(input=>input.checked=true);update();submit.focus()});
-    root.querySelector("[data-compliance-decline]").addEventListener("click",()=>window.location.replace("about:blank"));
-    submit.addEventListener("click",()=>{
-      if(submit.disabled) return;
+    const enterSite=method=>{
       saveAcceptance();
       document.body.classList.remove("mpp-compliance-open");
       root.remove();
       window.dataLayer=window.dataLayer||[];
-      window.dataLayer.push({event:"compliance_gate_accepted",gate_version:COMPLIANCE_VERSION,acceptance_scope:"browser_session"});
+      window.dataLayer.push({event:"compliance_gate_accepted",gate_version:COMPLIANCE_VERSION,acceptance_scope:"browser_session",acceptance_method:method});
       document.dispatchEvent(new CustomEvent("mpp:compliance-accepted"));
+    };
+    root.querySelector("[data-compliance-accept-all]").addEventListener("click",()=>{
+      checks.forEach(input=>input.checked=true);
+      update();
+      if(checks.every(input=>input.checked)) enterSite("accept_all");
+    });
+    root.querySelector("[data-compliance-decline]").addEventListener("click",()=>window.location.replace("about:blank"));
+    submit.addEventListener("click",()=>{
+      if(submit.disabled) return;
+      enterSite("checkboxes");
     });
     const openFull=()=>{card.hidden=true;full.hidden=false;full.querySelector("[data-compliance-full-close]")?.focus()};
     const closeFull=()=>{full.hidden=true;card.hidden=false;root.querySelector("[data-compliance-full-open]")?.focus()};
