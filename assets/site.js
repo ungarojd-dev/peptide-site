@@ -50,9 +50,28 @@
     }
   }
 
-  function hasAcceptedCompliance(){
+  // In-app browsers (X, Instagram, Facebook) and private modes can block or
+  // partition sessionStorage, which silently dropped acceptance and re-gated
+  // the visitor on the next tap. Acceptance is therefore also written to a
+  // session cookie, which expires with the browser session and so preserves the
+  // session-scoped acceptance model. The in-memory flag covers a single page
+  // load where every persistent store is unavailable.
+  let acceptedInMemory=false;
+
+  function readCookieAcceptance(){
     try{
-      const raw=sessionStorage.getItem(COMPLIANCE_KEY);
+      return document.cookie.split(";").some(part=>{
+        const [name,value]=part.split("=");
+        return (name||"").trim()===COMPLIANCE_KEY&&(value||"").trim()===COMPLIANCE_VERSION;
+      });
+    }catch(error){
+      return false;
+    }
+  }
+
+  function readStoreAcceptance(store){
+    try{
+      const raw=store.getItem(COMPLIANCE_KEY);
       if(!raw) return false;
       const parsed=JSON.parse(raw);
       return parsed&&parsed.version===COMPLIANCE_VERSION&&parsed.accepted===true;
@@ -61,12 +80,21 @@
     }
   }
 
+  function hasAcceptedCompliance(){
+    if(acceptedInMemory) return true;
+    try{ if(readStoreAcceptance(sessionStorage)) return true; }catch(error){}
+    if(readCookieAcceptance()) return true;
+    return false;
+  }
+
   function saveAcceptance(){
+    acceptedInMemory=true;
+    const payload=JSON.stringify({accepted:true,version:COMPLIANCE_VERSION,accepted_at:new Date().toISOString()});
+    try{ sessionStorage.setItem(COMPLIANCE_KEY,payload); }catch(error){}
     try{
-      sessionStorage.setItem(COMPLIANCE_KEY,JSON.stringify({accepted:true,version:COMPLIANCE_VERSION,accepted_at:new Date().toISOString()}));
-    }catch(error){
-      // If storage is unavailable, allow access for the current page load only.
-    }
+      const secure=location.protocol==="https:"?"; Secure":"";
+      document.cookie=COMPLIANCE_KEY+"="+COMPLIANCE_VERSION+"; path=/; SameSite=Lax"+secure;
+    }catch(error){}
     clearLegacyAcceptance();
   }
 
