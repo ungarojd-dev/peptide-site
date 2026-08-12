@@ -15,74 +15,6 @@
       "affiliate_url": "https://www.skool.com/sammycs-skool/about"
     },
     {
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Glow Aminos",
-      "start_date": "2026-07-06",
-      "sale_percent": 30,
-      "end_date": "2026-08-11",
-      "code_percent": 15,
-      "headline": "30% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "glow-aminos-birthday-sale-40",
-      "cta_text": "Shop Now",
-      "description": "Glow Aminos is running 30% off sitewide. Code SAMMYC stacks for an additional 15% off the reduced price, for 40.5% off in total. Confirm final pricing at checkout.",
-      "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC"
-    },
-    {
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Flawless Compounds",
-      "start_date": "2026-07-06",
-      "sale_percent": 30,
-      "end_date": "2026-08-11",
-      "code_percent": 15,
-      "headline": "30% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "flawless-birthday-sale-40",
-      "cta_text": "Shop Now",
-      "description": "Flawless Compounds is running 30% off sitewide. Code SAMMYC stacks for an additional 15% off the reduced price, for 40.5% off in total. Confirm final pricing at checkout.",
-      "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC"
-    },
-    {
-      "priority": 450,
-      "show_in": [
-        "announcement",
-        "deals"
-      ],
-      "vendor": "Oneday Compounds",
-      "sale_percent": 35,
-      "end_date": "2026-08-03",
-      "code_percent": 10,
-      "headline": "35% off, extended to Aug 3",
-      "timezone": "America/Denver",
-      "type": "sitewide_sale",
-      "id": "oneday-mix-and-match-lto",
-      "cta_text": "Shop Now",
-      "description": "Oneday Compounds Christmas in July sale is extended through August 3. 35% off all lyophilized research materials, applied automatically at checkout, no code needed. Excludes sprays, capsules, and reconstitution solution. Free shipping over $250 after discounts.",
-      "affiliate_url": ""
-    },
-    {
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Southern Aminos",
-      "sale_percent": 30,
-      "end_date": "2026-08-09",
-      "code_percent": 15,
-      "headline": "30% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "southern-aminos-25-stack",
-      "cta_text": "Shop Now",
-      "description": "Southern Aminos is running 30% off sitewide. Code SAMMYC stacks for an additional 15% off the reduced price, for 40.5% off in total.",
-      "affiliate_url": "https://southernaminos.com/?coupon=sammyc"
-    },
-    {
       "display_vendor": "Coffee & Peppers",
       "show_in": [
         "deals"
@@ -97,7 +29,8 @@
       "id": "coffee-first-order-evergreen",
       "cta_text": "Shop now",
       "description": "New to Coffee and Peppers? Code NEWCOFFEE20 takes 20% off your first order, and SAMMYC stacks another 15% on top at checkout.",
-      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc"
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "ongoing": true
     },
     {
       "code": "SAMMYC",
@@ -146,23 +79,6 @@
       "affiliate_url": "https://aurora-peptides.com/?ref=102"
     },
     {
-      "priority": 300,
-      "show_in": [
-        "deals",
-        "announcement"
-      ],
-      "vendor": "Glacier Aminos",
-      "start_date": "2026-08-01",
-      "sale_percent": 12,
-      "code": "SAMMYC",
-      "end_date": "2026-08-07",
-      "code_percent": 10,
-      "headline": "12 MONTH ANNIVERSARY SALE! Use code 12MONTHS + SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "description": "Glacier Aminos 12-month anniversary sale kicks off 8/1. 12% off sitewide + stacks with code SAMMYC\nCode: 12MONTHS\n"
-    },
-    {
       "show_in": [
         "deals"
       ],
@@ -175,7 +91,8 @@
       "id": "solyn-labs-solyn15-stack",
       "cta_text": "Shop Solyn Labs",
       "description": "Solyn Labs offers 25% off for verified military and first responders, and code SAMMYC stacks on top. Eligibility and verification are handled by the vendor, so the prices shown here reflect the standing SAMMYC discount only. Confirm final pricing at checkout.",
-      "affiliate_url": "https://solyn.com/?ref=SammyC"
+      "affiliate_url": "https://solyn.com/?ref=SammyC",
+      "ongoing": true
     },
     {
       "show_in": [
@@ -190,23 +107,8 @@
       "id": "orbitrex-veterans-first-responders",
       "cta_text": "Shop Orbitrex Peptides",
       "description": "Orbitrex Peptides offers 20% off for verified veterans and first responders. Code SAMMYC applies 15% off for everyone else. Eligibility and verification are handled by the vendor. Confirm final pricing at checkout.",
-      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate"
-    },
-    {
-      "chip_label": "BOGO",
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Instant Peptides",
-      "start_date": "2026-08-03",
-      "end_date": "2026-08-09",
-      "headline": "Buy 1 Get 1 Free, store wide",
-      "timezone": "America/New_York",
-      "type": "conditional",
-      "id": "instant-peptides-bogo-aug-2026",
-      "cta_text": "Shop the BOGO sale",
-      "description": "Instant Peptides is running Buy 1 Get 1 Free store wide through Sunday August 9, mix and match, no code needed. Both items must be added to the cart, the free one is not added automatically, and the lower priced of the two is the one that comes off. Code SAMMYC stacks on top for a further 15% off. The listed prices on this page do not reflect the free item. Confirm final pricing at checkout.",
-      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC"
+      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
+      "ongoing": true
     },
     {
       "show_in": [
@@ -224,41 +126,6 @@
       "cta_text": "Shop Peptidology",
       "description": "Peptidology is running 20% off all compounds with code AUGUST20. Code SAMMYC stacks on top for a further 10% off the reduced price. Bulk orders carry an additional tiered discount of up to 15%, which varies by quantity and is not reflected in the prices shown here. Confirm final pricing at checkout.",
       "affiliate_url": "https://peptidology.co/?ref=idifhsqu"
-    },
-    {
-      "flat_rate": 30,
-      "show_in": [
-        "deals",
-        "announcement"
-      ],
-      "vendor": "Mile High Peptides",
-      "start_date": "2026-08-06",
-      "end_date": "2026-08-10",
-      "code_percent": 30,
-      "headline": "30% off with SAMMYC, Ends tonight!",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "mile-high-30-off-aug-2026",
-      "cta_text": "Shop the 48 hour sale",
-      "description": "Mile High Peptides is running 30% off with code SAMMYC ENDS TONIGHT",
-      "affiliate_url": "https://milehighcompounds.is/?ref=sammyc"
-    },
-    {
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "High Tide Compounds",
-      "start_date": "2026-08-07",
-      "sale_percent": 40,
-      "end_date": "2026-08-09",
-      "code_percent": 10,
-      "headline": "40% off individual vials, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "high-tide-40-off-aug-2026",
-      "cta_text": "Shop High Tide Compounds",
-      "description": "High Tide Compounds is running 40% off individual pricing from August 7 through August 9, which the vendor describes as bringing individual vials down to their kit price. Code SAMMYC stacks for a further 10% off the reduced price, and paying by Zelle stacks an additional 5% that is not reflected in the prices shown here. Confirm final pricing at checkout.",
-      "affiliate_url": "https://hightidecompounds.com/?ref=SammyC"
     },
     {
       "priority": 220,
@@ -328,26 +195,6 @@
       "cta_text": "Shop the anniversary sale",
       "description": "Day three of the Coffee and Peppers 1 Year Anniversary Sale. Buy any two kits and get a third free, of equal or lesser value. 20% off sitewide with code ONEYEAR also applies and stacks with SAMMYC. Every $100 spent earns an entry into the $1,000 store credit draw. The prices shown here do not reflect the free third kit. Confirm final pricing at checkout.",
       "affiliate_url": "https://coffeeandpeppers.com/?ref=SammyC"
-    },
-    {
-      "priority": 300,
-      "show_in": [
-        "deals",
-        "announcement"
-      ],
-      "vendor": "Glacier Aminos",
-      "start_date": "2026-08-08",
-      "sale_percent": 12,
-      "code": "SAMMYC",
-      "end_date": "2026-08-09",
-      "code_percent": 20,
-      "headline": "Affiliate codes boosted to 20%, weekend only",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "glacier-weekend-code-boost-aug-2026",
-      "cta_text": "Shop the code boost",
-      "description": "Glacier Aminos is boosting every affiliate code to 20% for Saturday and Sunday, up from the usual 10%, and it stacks with their ongoing 12% sitewide sale. The vendor advertises this as 32% total; the figure shown here is calculated by applying the code to the already reduced price, which is how their checkout applies it. Confirm final pricing at checkout.",
-      "affiliate_url": "https://glacieraminos.shop/?ref=SammyC"
     },
     {
       "priority": 300,
@@ -467,7 +314,26 @@
       "cta_text": "Shop Now",
       "description": "Flawless Compounds moved up to 40% off sitewide with no announced end date. Code SAMMYC stacks for an additional 15% off the reduced price, for 49% off in total. Free priority shipping over $150. Confirm final pricing at checkout.",
       "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC"
+    },
+    {
+      "priority": 300,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Disguised Alpha",
+      "start_date": "2026-08-14",
+      "end_date": "2026-08-16",
+      "sale_percent": 20,
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "20% off sitewide, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "id": "disguised-alpha-weekend-20",
+      "cta_text": "Shop Now",
+      "description": "20% off sitewide at Disguised Alpha starting Friday, August 14. Code SAMMYC stacks for an additional 10% off the reduced price. New Exenatide aerosol and Semaglutide and Retatrutide pens just launched. Confirm final pricing at checkout.",
+      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc"
     }
   ],
-  "version": "2026-08-11-flawless-glow-40"
+  "version": "2026-08-12-da-weekend-prune"
 }

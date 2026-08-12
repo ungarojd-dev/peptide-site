@@ -293,7 +293,7 @@
   function dealBuckets(all){
     const now=Date.now();
     const HOUR=3.6e6;
-    const b={ending:[],live:[],upcoming:[],standing:[]};
+    const b={ending:[],live:[],upcoming:[],ongoing:[],announcements:[]};
     for(const p of all){
       const offer=p.strip_offer||p.announce_offer||p.headline||p.short_detail||"";
       if(!offer && p.discount_override_percent==null && !p.show_in_strip) continue;
@@ -319,7 +319,11 @@
         // Everything with a real offer, including special first-order codes,
         // belongs in the live deal buckets.
         const isAnnouncement=p.show_in_announcement===true&&p.show_in_deals!==true;
-        (isAnnouncement?b.standing:b.live).push(item);
+        if(isAnnouncement) b.announcements.push(item);
+        // Evergreen programs are separated so a visitor scanning for something
+        // to act on today is not reading a military rate that is always there.
+        else if(p.ongoing===true) b.ongoing.push(item);
+        else b.live.push(item);
       }
     }
     return b;
@@ -335,8 +339,8 @@
   const dealsPanelMarkup=all=>{
     const b=dealBuckets(all);
     const section=(title,cls,items)=> items.length?`<div class="deals-group ${cls}"><h3>${title} <span class="deals-group-n">${items.length}</span></h3>${items.map(dealLineHtml).join("")}</div>`:"";
-    const total=b.ending.length+b.live.length+b.upcoming.length;
-    return `<div class="deals-panel-backdrop" data-deals-backdrop hidden><section class="deals-panel" role="dialog" aria-modal="true" aria-labelledby="deals-panel-title"><header class="deals-panel-header"><div><span class="deals-eyebrow">Live roundup</span><h2 id="deals-panel-title">Today's Deals</h2></div><button class="deals-close" type="button" data-deals-close aria-label="Close deals">×</button></header><div class="deals-panel-scroll">${section("Ending soon","is-ending",b.ending)}${section("Live now","is-live",b.live)}${section("Upcoming","is-upcoming",b.upcoming)}${total===0?'<p class="deals-empty">No active deals right now. Check back soon.</p>':""}</div><footer class="deals-panel-footer">Prices and stacking are set by each vendor and can change. Confirm at checkout.</footer></section></div>`;
+    const total=b.ending.length+b.live.length+b.upcoming.length+b.ongoing.length;
+    return `<div class="deals-panel-backdrop" data-deals-backdrop hidden><section class="deals-panel" role="dialog" aria-modal="true" aria-labelledby="deals-panel-title"><header class="deals-panel-header"><div><span class="deals-eyebrow">Live roundup</span><h2 id="deals-panel-title">Today's Deals</h2></div><button class="deals-close" type="button" data-deals-close aria-label="Close deals">×</button></header><div class="deals-panel-scroll">${section("Ending soon","is-ending",b.ending)}${section("Live now","is-live",b.live)}${section("Always on","is-ongoing",b.ongoing)}${section("Upcoming","is-upcoming",b.upcoming)}${total===0?'<p class="deals-empty">No active deals right now. Check back soon.</p>':""}</div><footer class="deals-panel-footer">Prices and stacking are set by each vendor and can change. Confirm at checkout.</footer></section></div>`;
   };
   let dealsPanelRoot=null;
   const openDealsPanel=()=>{ if(dealsPanelRoot){ dealsPanelRoot.hidden=false; document.body.classList.add("deals-panel-open"); dealsPanelRoot.querySelector("[data-deals-close]")?.focus(); } };

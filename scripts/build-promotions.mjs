@@ -157,6 +157,11 @@ function expand(deal) {
   // Explicit surface flags replacing the old string sniffing in site.js.
   out.show_in_deals = show.has("__deals") === true;
   out.show_in_announcement = show.has("__announcement") === true;
+  // Evergreen offers that never expire (military and first responder rates,
+  // standing first-order codes). Flagged in deals.json rather than inferred
+  // from a missing end_date, because a sale with no announced end date is
+  // still a sale, not a permanent program.
+  if (deal.ongoing === true) out.ongoing = true;
 
   if (deal.type === "new_partner") {
     if (deal.start_date) out.partner_since = String(deal.start_date).slice(0, 10);
