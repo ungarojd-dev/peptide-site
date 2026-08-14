@@ -1683,3 +1683,15 @@ body.deals-panel-open { overflow: hidden; }
   .dc-nav-btn, .variant-scroll-btn { width: 32px; height: 32px; }
   .announce-link { padding: 8px 12px; }
 }
+
+/* Privacy page analytics opt-out control */
+.privacy-optout { border: 1px solid var(--stone, #E3E1DC); border-radius: 14px; background: #fff; padding: 18px; margin: 18px 0 6px; }
+.privacy-optout-row { display: flex; align-items: center; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.privacy-optout-title { font-family: var(--font-display); font-size: 15px; font-weight: 800; color: var(--black, #0D0D0D); }
+.privacy-optout-state { font-size: 13.5px; color: #5f5f56; margin-top: 3px; }
+.privacy-optout-state.is-off { color: #2f6b3f; font-weight: 600; }
+.privacy-optout-btn { flex: none; border: 1px solid var(--olive, #4E5D3C); border-radius: 10px; background: var(--olive, #4E5D3C); color: #fff; font-family: var(--font-display); font-size: 13.5px; font-weight: 800; padding: 11px 18px; cursor: pointer; transition: background .15s, transform .15s; }
+.privacy-optout-btn:hover { background: var(--forest, #1F3A2D); transform: translateY(-1px); }
+.privacy-optout-btn.is-optedout { background: #fff; color: var(--forest, #1F3A2D); }
+.privacy-optout-note { font-size: 12.5px; color: #7a7a70; margin: 10px 0 0; min-height: 16px; }
+@media (max-width: 520px) { .privacy-optout-btn { width: 100%; } }

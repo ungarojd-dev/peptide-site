@@ -884,3 +884,45 @@
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", init);
   else init();
 })();
+
+/* Analytics opt-out control on the privacy page.
+   The guard script in each page head reads this same key before GTM or the Meta
+   Pixel load, so a change here takes effect on the next page load. Opting out
+   cannot retroactively remove data already collected, which the note states. */
+(function(){
+  const root=document.querySelector("[data-analytics-optout]");
+  if(!root) return;
+  const KEY="mpp_analytics_opt_out_v1";
+  const stateEl=root.querySelector("[data-optout-state]");
+  const btn=root.querySelector("[data-optout-toggle]");
+  const note=root.querySelector("[data-optout-note]");
+  const gpc=navigator.globalPrivacyControl===true;
+
+  function read(){ try{ return localStorage.getItem(KEY); }catch(e){ return null; } }
+  function write(value){
+    try{ value===null?localStorage.removeItem(KEY):localStorage.setItem(KEY,value); return true; }
+    catch(e){ return false; }
+  }
+  function isOptedOut(){ const v=read(); return v==="1"||(gpc&&v!=="0"); }
+
+  function render(message){
+    const off=isOptedOut();
+    stateEl.textContent=off?"Off. No analytics or advertising scripts are loading.":"On. Analytics and advertising scripts are loading.";
+    stateEl.classList.toggle("is-off",off);
+    btn.textContent=off?"Turn analytics on":"Turn analytics off";
+    btn.classList.toggle("is-optedout",off);
+    let hint="";
+    if(gpc&&read()!=="0") hint="Your browser is sending a Global Privacy Control signal, so this was switched off automatically.";
+    if(message) hint=message;
+    note.textContent=hint;
+  }
+
+  btn.addEventListener("click",()=>{
+    const off=isOptedOut();
+    const ok=write(off?"0":"1");
+    if(!ok){ render("Your browser is blocking site storage, so this setting cannot be saved. Blocking storage already prevents most tracking."); return; }
+    render(off?"Analytics is back on. It will start on your next page load.":"Analytics is off. Scripts already loaded on this page will stop on your next page load. This does not delete data collected before now.");
+  });
+
+  render();
+})();
