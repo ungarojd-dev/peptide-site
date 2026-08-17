@@ -306,7 +306,7 @@
       "logo": "/assets/vendor-logos/iron-protocol.webp",
       "use_product_deep_links": false,
       "payment_methods": [],
-      "brand_color": "#4E5D3C",
+      "brand_color": "#c0392b",
       "package_protection_required": false,
       "launch_date": "2026-08-17"
     }
