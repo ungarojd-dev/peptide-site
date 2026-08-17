@@ -264,22 +264,6 @@
       "description": "30% off every product. Monday, August 10 through Sunday, August 16 at midnight EST. Volume pricing stacks on top. No code, no minimum, nothing excluded. Stacks with SAMMYC 15%"
     },
     {
-      "priority": 320,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "LabSourced Peptides",
-      "start_date": "2026-08-11",
-      "sale_percent": 15,
-      "code": "SAMMYC",
-      "end_date": "2026-08-13",
-      "code_percent": 20,
-      "headline": "15% flash sale, SAMMYC takes 20% here",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "description": "15% off sitewide flash sale through Thursday, August 13 at midnight EST. Code SAMMYC is worth a full 20% at LabSourced, the biggest code discount on the board. Stacks with SAMMYC 20%"
-    },
-    {
       "priority": 310,
       "show_in": [
         "deals"
@@ -388,7 +372,25 @@
       "cta_text": "Shop Now",
       "description": "One Year Anniversary Week 3. 20% off sitewide, and code SAMMYC stacks for another 15% off, as do volume discounts. Orders also earn Instant Rewards store credit based on the merchandise subtotal after all discounts: 25% back at $250 or more, 50% back at $500 or more, and 100% back at $750 or more. Rewards are added after the promotion ends on August 23 and can be redeemed for up to 50% of the product value of a future order. Rewards are store credit with no cash value. Confirm final pricing and rewards terms at checkout.",
       "affiliate_url": "https://instantpeptides.com/?ref=sammyc"
+    },
+    {
+      "priority": 315,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "LabSourced Peptides",
+      "start_date": "2026-08-17",
+      "end_date": "2026-08-31",
+      "code": "SAMMYC",
+      "code_percent": 20,
+      "headline": "BOGO sitewide, SAMMYC takes 20% here",
+      "timezone": "America/New_York",
+      "type": "code_only",
+      "id": "labsourced-bogo-august",
+      "cta_text": "Shop Now",
+      "description": "Buy one get one free sitewide at LabSourced through August 31. Code SAMMYC is worth a full 20% here, the biggest code rate on the board. Paying by Zelle takes another 5% off, and bulk pricing adds up to 10% more. Confirm final pricing at checkout.",
+      "affiliate_url": "https://labsourcedpeptides.com/?ref=sammyc"
     }
   ],
-  "version": "2026-08-14-instant-week-3"
+  "version": "2026-08-17-labsourced-bogo"
 }

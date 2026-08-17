@@ -298,6 +298,17 @@
       "brand_color": "#2f6f4f",
       "package_protection_required": false,
       "launch_date": "2026-08-04"
+    },
+    "Iron Protocol": {
+      "id": "iron-protocol",
+      "discount_percent": 15,
+      "affiliate_url": "https://ironprotocol.com/ref/samcolao2296/",
+      "logo": "/assets/vendor-logos/iron-protocol.webp",
+      "use_product_deep_links": false,
+      "payment_methods": [],
+      "brand_color": "#4E5D3C",
+      "package_protection_required": false,
+      "launch_date": "2026-08-17"
     }
   }
 }
