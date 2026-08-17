@@ -33,35 +33,6 @@
       "ongoing": true
     },
     {
-      "code": "SAMMYC",
-      "timezone": "America/New_York",
-      "show_in": [
-        "announcement"
-      ],
-      "priority": 200,
-      "vendor": "Orbitrex Peptides",
-      "type": "new_partner",
-      "headline": "Now tracked, 15% off with SAMMYC",
-      "description": "Orbitrex Peptides is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 15% off using code SAMMYC."
-    },
-    {
-      "priority": 200,
-      "show_in": [
-        "announcement"
-      ],
-      "vendor": "Aurora Peptides",
-      "start_date": "2026-07-30",
-      "strip_tube": "New partner",
-      "end_date": "2026-08-31",
-      "headline": "Now tracked, 15% off with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "new_partner",
-      "id": "aurora-peptides-now-tracked-2026-07-31",
-      "cta_text": "Shop now",
-      "description": "Aurora Peptides is now tracked in the price comparison catalog. Code SAMMYC applies 15% off. Confirm final pricing and terms at checkout.",
-      "affiliate_url": "https://aurora-peptides.com/?ref=102"
-    },
-    {
       "show_in": [
         "deals"
       ],
@@ -128,93 +99,6 @@
       "affiliate_url": "https://peptidology.co/?ref=idifhsqu"
     },
     {
-      "priority": 220,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Coffee and Peppers",
-      "start_date": "2026-08-12",
-      "strip_tube": "Coming up",
-      "end_date": "2026-08-13",
-      "headline": "1 Year Anniversary Sale starts Friday",
-      "timezone": "America/New_York",
-      "type": "new_partner",
-      "id": "coffee-peppers-anniversary-teaser",
-      "cta_text": "See what's coming",
-      "description": "Coffee and Peppers is running a three day 1 Year Anniversary Sale from August 14 through August 16, with a different offer each day and a $1,000 store credit draw running throughout.",
-      "affiliate_url": "https://coffeeandpeppers.com/?ref=SammyC"
-    },
-    {
-      "show_in": [
-        "deals",
-        "announcement"
-      ],
-      "vendor": "Coffee and Peppers",
-      "start_date": "2026-08-14",
-      "sale_percent": 20,
-      "end_date": "2026-08-14",
-      "code_percent": 15,
-      "headline": "20% off sitewide with ONEYEAR, day 1 of 3",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "coffee-peppers-anniversary-fri",
-      "cta_text": "Shop the anniversary sale",
-      "description": "Day one of the Coffee and Peppers 1 Year Anniversary Sale. 20% off sitewide with code ONEYEAR, and code SAMMYC stacks for a further 15% off the reduced price. Orders over $350 include a free anniversary gift, an R10 or T10 kit, with free two day shipping. Every $100 spent earns an entry into the $1,000 store credit draw. Confirm final pricing at checkout.",
-      "affiliate_url": "https://coffeeandpeppers.com/?ref=SammyC"
-    },
-    {
-      "chip_label": "BOGO",
-      "show_in": [
-        "deals",
-        "announcement"
-      ],
-      "vendor": "Coffee and Peppers",
-      "start_date": "2026-08-15",
-      "end_date": "2026-08-15",
-      "headline": "BOGO on kits, day 2 of 3",
-      "timezone": "America/New_York",
-      "type": "conditional",
-      "id": "coffee-peppers-anniversary-sat",
-      "cta_text": "Shop the anniversary sale",
-      "description": "Day two of the Coffee and Peppers 1 Year Anniversary Sale. For the first two hours, buy any one kit and get an R10 or T10 kit free. For the rest of the day, buy any one kit and get a second kit at 50% off. Every $100 spent earns an entry into the $1,000 store credit draw. The prices shown here do not reflect the free or discounted second kit. Confirm final pricing at checkout.",
-      "affiliate_url": "https://coffeeandpeppers.com/?ref=SammyC"
-    },
-    {
-      "chip_label": "Buy 2 get 1",
-      "show_in": [
-        "deals",
-        "announcement"
-      ],
-      "vendor": "Coffee and Peppers",
-      "start_date": "2026-08-16",
-      "end_date": "2026-08-16",
-      "headline": "Buy 2 kits get the 3rd free, day 3 of 3",
-      "timezone": "America/New_York",
-      "type": "conditional",
-      "id": "coffee-peppers-anniversary-sun",
-      "cta_text": "Shop the anniversary sale",
-      "description": "Day three of the Coffee and Peppers 1 Year Anniversary Sale. Buy any two kits and get a third free, of equal or lesser value. 20% off sitewide with code ONEYEAR also applies and stacks with SAMMYC. Every $100 spent earns an entry into the $1,000 store credit draw. The prices shown here do not reflect the free third kit. Confirm final pricing at checkout.",
-      "affiliate_url": "https://coffeeandpeppers.com/?ref=SammyC"
-    },
-    {
-      "priority": 300,
-      "show_in": [
-        "deals",
-        "announcement"
-      ],
-      "vendor": "Glacier Aminos",
-      "start_date": "2026-08-10",
-      "sale_percent": 12,
-      "code": "SAMMYC",
-      "end_date": "2026-08-15",
-      "code_percent": 10,
-      "headline": "12 MONTH ANNIVERSARY SALE! Use code 12MONTHS + SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "glacier-12months-resume-aug-2026",
-      "description": "Glacier Aminos 12-month anniversary sale kicks off 8/1. 12% off sitewide + stacks with code SAMMYC\nCode: 12MONTHS\n"
-    },
-    {
       "show_in": [
         "deals",
         "announcement"
@@ -231,37 +115,6 @@
       "cta_text": "Shop the anniversary sale",
       "description": "Southern Aminos is running their One Year Anniversary Celebration from August 10 through August 30. 45% off sitewide, with code SAMMYC stacking for a further 15% off the reduced price. The vendor states further stacking can reach up to 60% and that flash drops will run throughout the event with select products under $10; neither is reflected in the prices shown here. Over $5,000 in prizes is being given away separately. Confirm final pricing at checkout.",
       "affiliate_url": "https://southernaminos.com/?ref=SammyC"
-    },
-    {
-      "priority": 300,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Coffee and Peppers",
-      "start_date": "2026-08-09",
-      "sale_percent": 15,
-      "code": "SAMMYC",
-      "end_date": "2026-08-14",
-      "code_percent": 15,
-      "headline": "15% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale"
-    },
-    {
-      "priority": 300,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Instant Peptides",
-      "start_date": "2026-08-10",
-      "sale_percent": 30,
-      "code": "SAMMYC",
-      "end_date": "2026-08-16",
-      "code_percent": 15,
-      "headline": "30% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "description": "30% off every product. Monday, August 10 through Sunday, August 16 at midnight EST. Volume pricing stacks on top. No code, no minimum, nothing excluded. Stacks with SAMMYC 15%"
     },
     {
       "priority": 310,
@@ -298,25 +151,6 @@
       "cta_text": "Shop Now",
       "description": "Flawless Compounds moved up to 40% off sitewide with no announced end date. Code SAMMYC stacks for an additional 15% off the reduced price, for 49% off in total. Free priority shipping over $150. Confirm final pricing at checkout.",
       "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC"
-    },
-    {
-      "priority": 300,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Disguised Alpha",
-      "start_date": "2026-08-14",
-      "end_date": "2026-08-16",
-      "sale_percent": 20,
-      "code": "SAMMYC",
-      "code_percent": 10,
-      "headline": "20% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "disguised-alpha-weekend-20",
-      "cta_text": "Shop Now",
-      "description": "20% off sitewide at Disguised Alpha starting Friday, August 14. Code SAMMYC stacks for an additional 10% off the reduced price. New Exenatide aerosol and Semaglutide and Retatrutide pens just launched. Confirm final pricing at checkout.",
-      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc"
     },
     {
       "priority": 305,
@@ -390,7 +224,22 @@
       "cta_text": "Shop Now",
       "description": "Buy one get one free sitewide at LabSourced through August 31. Code SAMMYC is worth a full 20% here, the biggest code rate on the board. Paying by Zelle takes another 5% off, and bulk pricing adds up to 10% more. Confirm final pricing at checkout.",
       "affiliate_url": "https://labsourcedpeptides.com/?ref=sammyc"
+    },
+    {
+      "code": "SAMMYC",
+      "timezone": "America/New_York",
+      "show_in": [
+        "announcement"
+      ],
+      "priority": 200,
+      "vendor": "Iron Protocol",
+      "type": "new_partner",
+      "start_date": "2026-08-17",
+      "end_date": "2026-09-17",
+      "id": "iron-protocol-now-tracked-2026-08-17",
+      "headline": "Now tracked, 15% off with SAMMYC",
+      "description": "Iron Protocol is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 15% off using code SAMMYC."
     }
   ],
-  "version": "2026-08-17-labsourced-bogo"
+  "version": "2026-08-17-iron-protocol-announcement"
 }
