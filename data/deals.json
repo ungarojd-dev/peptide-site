@@ -27,10 +27,10 @@
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "id": "coffee-first-order-evergreen",
-      "ongoing": true,
       "cta_text": "Shop now",
       "description": "New to Coffee and Peppers? Code NEWCOFFEE20 takes 20% off your first order, and SAMMYC stacks another 15% on top at checkout.",
-      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc"
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "ongoing": true
     },
     {
       "code": "SAMMYC",
@@ -89,10 +89,10 @@
       "timezone": "America/New_York",
       "type": "conditional",
       "id": "solyn-labs-solyn15-stack",
-      "ongoing": true,
       "cta_text": "Shop Solyn Labs",
       "description": "Solyn Labs offers 25% off for verified military and first responders, and code SAMMYC stacks on top. Eligibility and verification are handled by the vendor, so the prices shown here reflect the standing SAMMYC discount only. Confirm final pricing at checkout.",
-      "affiliate_url": "https://solyn.com/?ref=SammyC"
+      "affiliate_url": "https://solyn.com/?ref=SammyC",
+      "ongoing": true
     },
     {
       "show_in": [
@@ -105,10 +105,10 @@
       "timezone": "America/New_York",
       "type": "conditional",
       "id": "orbitrex-veterans-first-responders",
-      "ongoing": true,
       "cta_text": "Shop Orbitrex Peptides",
       "description": "Orbitrex Peptides offers 20% off for verified veterans and first responders. Code SAMMYC applies 15% off for everyone else. Eligibility and verification are handled by the vendor. Confirm final pricing at checkout.",
-      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate"
+      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
+      "ongoing": true
     },
     {
       "show_in": [
@@ -322,9 +322,9 @@
       ],
       "vendor": "Disguised Alpha",
       "start_date": "2026-08-14",
+      "end_date": "2026-08-16",
       "sale_percent": 20,
       "code": "SAMMYC",
-      "end_date": "2026-08-16",
       "code_percent": 10,
       "headline": "20% off sitewide, stacks with SAMMYC",
       "timezone": "America/New_York",
@@ -341,8 +341,8 @@
       ],
       "vendor": "Mile High Peptides",
       "start_date": "2026-08-14",
-      "code": "SAMMYC",
       "end_date": "2026-08-23",
+      "code": "SAMMYC",
       "code_percent": 25,
       "headline": "Back to School, SAMMYC boosted to 25% off sitewide",
       "timezone": "America/Denver",
@@ -373,16 +373,22 @@
     {
       "priority": 300,
       "show_in": [
-        "announcement"
+        "deals"
       ],
-      "vendor": "Aurora Peptides",
-      "start_date": "2026-08-14",
+      "vendor": "Instant Peptides",
+      "start_date": "2026-08-17",
+      "end_date": "2026-08-23",
+      "sale_percent": 20,
       "code": "SAMMYC",
-      "end_date": "2026-08-16",
-      "headline": "Code SAMMYC boosted to 20% this weekend!",
+      "code_percent": 15,
+      "headline": "Week 3: 20% off sitewide plus up to 100% back in rewards",
       "timezone": "America/New_York",
-      "type": "new_partner"
+      "type": "sitewide_sale",
+      "id": "instant-anniversary-week-3",
+      "cta_text": "Shop Now",
+      "description": "One Year Anniversary Week 3. 20% off sitewide, and code SAMMYC stacks for another 15% off, as do volume discounts. Orders also earn Instant Rewards store credit based on the merchandise subtotal after all discounts: 25% back at $250 or more, 50% back at $500 or more, and 100% back at $750 or more. Rewards are added after the promotion ends on August 23 and can be redeemed for up to 50% of the product value of a future order. Rewards are store credit with no cash value. Confirm final pricing and rewards terms at checkout.",
+      "affiliate_url": "https://instantpeptides.com/?ref=sammyc"
     }
   ],
-  "version": "2026-08-14-mile-high-oneday"
+  "version": "2026-08-14-instant-week-3"
 }
