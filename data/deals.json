@@ -239,7 +239,26 @@
       "id": "iron-protocol-now-tracked-2026-08-17",
       "headline": "Now tracked, 15% off with SAMMYC",
       "description": "Iron Protocol is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 15% off using code SAMMYC."
+    },
+    {
+      "priority": 310,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Ion Peptide",
+      "start_date": "2026-08-21",
+      "end_date": "2026-08-23",
+      "sale_percent": 25,
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "25% off sitewide weekend sale, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "id": "ion-peptide-weekend-25",
+      "cta_text": "Shop Now",
+      "description": "25% off all products from Friday, August 21 at 8:00 PM EST through Sunday, August 23 at 11:59 PM EST. Code SAMMYC stacks for another 15% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
+      "affiliate_url": "https://ionpeptide.com?ref=SammyC"
     }
   ],
-  "version": "2026-08-17-iron-protocol-announcement"
+  "version": "2026-08-20-ion-weekend"
 }

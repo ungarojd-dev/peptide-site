@@ -1,6 +1,6 @@
 {
-  "version": "deals-2026-08-17",
-  "updated_at": "2026-08-17T23:07:00.781Z",
+  "version": "deals-2026-08-20",
+  "updated_at": "2026-08-20T14:10:10.513Z",
   "_generated": "Built from data/deals.json by scripts/build-promotions.mjs. Do not edit by hand.",
   "promotions": [
     {
@@ -359,6 +359,34 @@
       "show_in_announcement": true,
       "partner_since": "2026-08-17",
       "keep_after_window": false
+    },
+    {
+      "id": "ion-peptide-weekend-25",
+      "vendor": "Ion Peptide",
+      "display_vendor": "Ion Peptide",
+      "brand_color": "#5484e4",
+      "affiliate_url": "https://ionpeptide.com?ref=SammyC",
+      "cta_text": "Shop Now",
+      "headline": "25% off sitewide weekend sale, stacks with SAMMYC",
+      "short_detail": "25% off all products from Friday, August 21 at 8:00 PM EST through Sunday, August 23 at 11:59 PM EST. Code SAMMYC stacks for another 15% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
+      "full_detail": "25% off all products from Friday, August 21 at 8:00 PM EST through Sunday, August 23 at 11:59 PM EST. Code SAMMYC stacks for another 15% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
+      "priority": 310,
+      "start_at": "2026-08-21T00:00:00-04:00",
+      "end_at": "2026-08-23T23:59:00-04:00",
+      "sale_percent": 25,
+      "code_percent": 15,
+      "discount_override_percent": 36.25,
+      "strip_stack": "SAMMYC",
+      "show_in_announce_bar": true,
+      "show_in_announcement_rolodex": true,
+      "badge": "LIMITED TIME",
+      "announce_tube": "Live now",
+      "announce_offer": "25% off sitewide weekend sale, stacks with SAMMYC",
+      "announce_note": "plus 15% with",
+      "show_vendor_badge": true,
+      "show_in_rolodex": true,
+      "show_in_deals": true,
+      "show_in_announcement": false
     }
   ]
 }
