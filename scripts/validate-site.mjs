@@ -128,6 +128,15 @@ for (const file of await readdir(W)) {
   const html = await read(file);
   for (const match of (html || "").matchAll(/\?v=(\d{8}-[a-z0-9-]+)/g)) versions.add(match[1]);
 }
+// Asset JS carries its own hardcoded ?v= strings on the promotions and catalog
+// fetches. These were missed for fifteen releases because this check only read
+// HTML, so the deals feed stayed pinned to an old cache key while every page
+// moved on. Scan them too.
+for (const file of await readdir(`${W}/assets`)) {
+  if (!file.endsWith(".js")) continue;
+  const js = await read(`assets/${file}`);
+  for (const match of (js || "").matchAll(/\?v=(\d{8}-[a-z0-9-]+)/g)) versions.add(match[1]);
+}
 if (versions.size > 1) note(`${versions.size} different cache-bust strings in use: ${[...versions].join(", ")}`);
 
 // ---------------------------------------------------------------------------

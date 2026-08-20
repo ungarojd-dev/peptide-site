@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260809-deal-corrections-v47";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260820-audit-fixes-v63";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -459,29 +459,10 @@
   // deal. Announcements live only in the rotating strip; deals live only in the
   // Deals panel and the carousel. One job per surface, nothing duplicated.
 
-  function setupDealsStrip(promotions){
-    const scroll=document.querySelector("[data-deals-strip-scroll]");
-    if(!scroll) return;
-    const boardDeals=promotions.filter(promotion=>promotion.show_in_deals===true);
-    if(!boardDeals.length){
-      const section=document.querySelector(".deals-strip");
-      if(section) section.hidden=true;
-      return;
-    }
-    const isStackable=deal=>{
-      const haystack=((deal.short_detail||"")+" "+(deal.full_detail||"")).toLowerCase();
-      return haystack.includes("stackable")||haystack.includes("sammyc");
-    };
-    scroll.innerHTML=boardDeals.map(deal=>{
-      const {text:headline}=splitHeadlineBadge(deal.headline);
-      const stackChip=isStackable(deal)?`<span class="deals-pill-stack">+SAMMYC</span>`:"";
-      return `<a class="deals-pill" href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-deal-pill data-vendor="${escapeHtml(deal.vendor)}"><span class="deals-pill-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span><span class="deals-pill-sep">·</span><span class="deals-pill-headline">${escapeHtml(headline)}</span>${stackChip}</a>`;
-    }).join("");
-    scroll.querySelectorAll("[data-deal-pill]").forEach(pill=>pill.addEventListener("click",()=>{
-      window.dataLayer=window.dataLayer||[];
-      window.dataLayer.push({event:"affiliate_click",product_name:"Deals strip pill",product_category:"promotion",button_text:"View deal",button_location:"deals_strip",affiliate_network:"direct_vendor",vendor_name:pill.dataset.vendor||"",affiliate_url:pill.href});
-    }));
-  }
+  // setupDealsStrip was removed in the August 2026 audit. It rendered a deals
+  // strip that no page has contained since the Deals panel replaced it, so the
+  // function was never called and its selector never existed. Recover from git
+  // history if the strip ever comes back.
 
   const dealLogoPath=vendor=>{
     const key=String(vendor||"").toLowerCase();
