@@ -1,6 +1,6 @@
 {
   "version": "deals-2026-08-21",
-  "updated_at": "2026-08-21T13:31:44.196Z",
+  "updated_at": "2026-08-21T13:47:25.963Z",
   "_generated": "Built from data/deals.json by scripts/build-promotions.mjs. Do not edit by hand.",
   "promotions": [
     {
@@ -387,6 +387,29 @@
       "show_in_rolodex": true,
       "show_in_deals": true,
       "show_in_announcement": false
+    },
+    {
+      "id": "peptira-now-tracked-2026-08-20",
+      "vendor": "Peptira",
+      "display_vendor": "Peptira",
+      "brand_color": "#4E5D3C",
+      "affiliate_url": "https://peptira.com/?ref=SAMMYC",
+      "cta_text": "Shop now",
+      "headline": "Now tracked, 10% off with SAMMYC",
+      "short_detail": "Peptira is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 10% off using code SAMMYC.",
+      "full_detail": "Peptira is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 10% off using code SAMMYC.",
+      "priority": 210,
+      "start_at": "2026-08-20T00:00:00-04:00",
+      "end_at": "2026-09-20T23:59:00-04:00",
+      "show_in_strip": true,
+      "strip_tube": "New partner",
+      "strip_offer": "Now tracked, 10% off with SAMMYC",
+      "show_vendor_badge": false,
+      "show_in_rolodex": false,
+      "show_in_deals": false,
+      "show_in_announcement": true,
+      "partner_since": "2026-08-20",
+      "keep_after_window": false
     }
   ]
 }

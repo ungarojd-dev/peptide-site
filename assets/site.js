@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260820-peptira-v64";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260820-peptira-launch-v65";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -906,4 +906,161 @@
   });
 
   render();
+})();
+
+/* ---------------------------------------------------------------------------
+   Partner launch popup.
+   Shown once per visitor, only after they have scrolled far enough to be
+   reading rather than landing, and never while the compliance gate is still up.
+   To retire it, set enabled:false. To run it for a future partner, change
+   campaignId, which is what the seen-flag is keyed on.
+--------------------------------------------------------------------------- */
+(function(){
+  const CAMPAIGN = {
+    enabled: true,
+    campaignId: "peptira-launch-2026-08",
+    eyebrow: "New Partner",
+    logo: "/assets/vendor-logos/peptira.webp",
+    logoAlt: "Peptira",
+    heading: "Peptira is now on the board",
+    body: "Their full catalog is tracked and normalized to cost per mg, so you can see exactly where they land against every other vendor.",
+    code: "SAMMYC",
+    codeLabel: "10% off with code",
+    ctaText: "Compare Peptira pricing",
+    ctaHref: "/vendors/peptira.html",
+    dismissText: "Not now"
+  };
+
+  // Internal tools and the admin CMS never show marketing interruptions.
+  const path = location.pathname;
+  if (!CAMPAIGN.enabled) return;
+  if (/\/(live-wheel|admin)/.test(path)) return;
+
+  const KEY = "mpp_partner_pop_" + CAMPAIGN.campaignId;
+  function seen(){ try { return localStorage.getItem(KEY) === "1"; } catch(e){ return false; } }
+  function markSeen(){ try { localStorage.setItem(KEY, "1"); } catch(e){} }
+  if (seen()) return;
+
+  const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  let shown = false;
+
+  function gateOpen(){ return !!document.querySelector(".mpp-compliance-backdrop"); }
+
+  function build(){
+    const wrap = document.createElement("div");
+    wrap.className = "partner-pop-backdrop";
+    wrap.setAttribute("role", "dialog");
+    wrap.setAttribute("aria-modal", "true");
+    wrap.setAttribute("aria-label", CAMPAIGN.heading);
+    wrap.innerHTML =
+      '<div class="partner-pop">' +
+        '<button type="button" class="partner-pop-close" aria-label="Close">\u00d7</button>' +
+        '<div class="partner-pop-top">' +
+          '<span class="partner-pop-eyebrow">' + CAMPAIGN.eyebrow + '</span>' +
+          '<span class="partner-pop-logoplate"><img class="partner-pop-logo" src="' + CAMPAIGN.logo + '" alt="' + CAMPAIGN.logoAlt + '"/></span>' +
+        '</div>' +
+        '<div class="partner-pop-body">' +
+          '<h2>' + CAMPAIGN.heading + '</h2>' +
+          '<p>' + CAMPAIGN.body + '</p>' +
+          '<div class="partner-pop-code"><span>' + CAMPAIGN.codeLabel + '</span><strong>' + CAMPAIGN.code + '</strong></div>' +
+          '<div class="partner-pop-actions">' +
+            '<a class="partner-pop-cta" href="' + CAMPAIGN.ctaHref + '">' + CAMPAIGN.ctaText + '</a>' +
+            '<button type="button" class="partner-pop-secondary">' + CAMPAIGN.dismissText + '</button>' +
+          '</div>' +
+          '<p class="partner-pop-note">Prices are set by the vendor and can change. Confirm at checkout.</p>' +
+        '</div>' +
+      '</div>';
+    return wrap;
+  }
+
+  function confetti(){
+    if (reduceMotion) return;
+    const canvas = document.createElement("canvas");
+    canvas.id = "partnerPopConfetti";
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+    document.body.appendChild(canvas);
+    const ctx = canvas.getContext("2d");
+    const colors = ["#1F3A2D", "#4E5D3C", "#D8C7A7", "#6A7D52", "#f0e5ce", "#1a3fb8"];
+    const pieces = [];
+    for (let i = 0; i < 120; i++) {
+      pieces.push({
+        x: Math.random() * canvas.width,
+        y: -20 - Math.random() * canvas.height * 0.45,
+        w: 6 + Math.random() * 6,
+        h: 8 + Math.random() * 8,
+        vy: 2.2 + Math.random() * 3.2,
+        vx: -1.4 + Math.random() * 2.8,
+        rot: Math.random() * Math.PI,
+        vr: -0.12 + Math.random() * 0.24,
+        color: colors[Math.floor(Math.random() * colors.length)]
+      });
+    }
+    const start = performance.now();
+    (function tick(now){
+      const elapsed = now - start;
+      ctx.clearRect(0, 0, canvas.width, canvas.height);
+      pieces.forEach(p => {
+        p.x += p.vx; p.y += p.vy; p.rot += p.vr;
+        ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.fillStyle = p.color; ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
+      });
+      if (elapsed < 3600) requestAnimationFrame(tick);
+      else canvas.remove();
+    })(start);
+  }
+
+  function show(){
+    if (shown || seen() || gateOpen()) return;
+    shown = true;
+    markSeen();
+    const wrap = build();
+    document.body.appendChild(wrap);
+    requestAnimationFrame(() => wrap.classList.add("is-in"));
+    confetti();
+
+    const close = () => {
+      wrap.classList.remove("is-in");
+      setTimeout(() => wrap.remove(), 300);
+      document.removeEventListener("keydown", onKey);
+    };
+    function onKey(e){ if (e.key === "Escape") close(); }
+    wrap.querySelector(".partner-pop-close").addEventListener("click", close);
+    wrap.querySelector(".partner-pop-secondary").addEventListener("click", close);
+    wrap.addEventListener("click", e => { if (e.target === wrap) close(); });
+    document.addEventListener("keydown", onKey);
+    wrap.querySelector(".partner-pop-cta").focus({ preventScroll: true });
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ event: "partner_popup_shown", partner: CAMPAIGN.logoAlt, campaign_id: CAMPAIGN.campaignId });
+    wrap.querySelector(".partner-pop-cta").addEventListener("click", () => {
+      window.dataLayer.push({ event: "partner_popup_click", partner: CAMPAIGN.logoAlt, campaign_id: CAMPAIGN.campaignId });
+    });
+  }
+
+  // Trigger: a bit over one screen of scrolling, so it never fires on landing.
+  // The listener stays attached until the popup has actually rendered. Detaching
+  // on the first qualifying scroll would burn the trigger when a visitor scrolls
+  // while the compliance gate is still up, which is the common case for anyone
+  // reading the disclosures before accepting.
+  let scrolledEnough = false;
+  function attempt(){
+    if (shown || seen()) { detach(); return; }
+    if (!scrolledEnough || gateOpen()) return;
+    show();
+    if (shown) detach();
+  }
+  function detach(){
+    window.removeEventListener("scroll", onScroll);
+    document.removeEventListener("mpp:compliance-accepted", onAccepted);
+  }
+  function onScroll(){
+    if (window.scrollY > window.innerHeight * 1.15) {
+      scrolledEnough = true;
+      setTimeout(attempt, 350);
+    }
+  }
+  function onAccepted(){ setTimeout(attempt, 700); }
+  window.addEventListener("scroll", onScroll, { passive: true });
+  document.addEventListener("mpp:compliance-accepted", onAccepted);
 })();

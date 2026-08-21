@@ -258,7 +258,23 @@
       "cta_text": "Shop Now",
       "description": "25% off all products from Friday, August 21 at 8:00 PM EST through Sunday, August 23 at 11:59 PM EST. Code SAMMYC stacks for another 15% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
       "affiliate_url": "https://ionpeptide.com?ref=SammyC"
+    },
+    {
+      "code": "SAMMYC",
+      "timezone": "America/New_York",
+      "show_in": [
+        "announcement"
+      ],
+      "priority": 210,
+      "vendor": "Peptira",
+      "type": "new_partner",
+      "start_date": "2026-08-20",
+      "end_date": "2026-09-20",
+      "id": "peptira-now-tracked-2026-08-20",
+      "headline": "Now tracked, 10% off with SAMMYC",
+      "description": "Peptira is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 10% off using code SAMMYC.",
+      "affiliate_url": "https://peptira.com/?ref=SAMMYC"
     }
   ],
-  "version": "2026-08-20-ion-weekend"
+  "version": "2026-08-20-peptira-launch"
 }
