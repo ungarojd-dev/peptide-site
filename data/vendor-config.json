@@ -309,6 +309,17 @@
       "brand_color": "#c0392b",
       "package_protection_required": false,
       "launch_date": "2026-08-17"
+    },
+    "Peptira": {
+      "id": "peptira",
+      "discount_percent": 10,
+      "affiliate_url": "https://peptira.com/?ref=SAMMYC",
+      "logo": "/assets/vendor-logos/peptira.webp",
+      "use_product_deep_links": true,
+      "payment_methods": [],
+      "brand_color": "#4E5D3C",
+      "package_protection_required": false,
+      "launch_date": "2026-08-20"
     }
   }
 }

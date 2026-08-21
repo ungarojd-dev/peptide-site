@@ -428,7 +428,8 @@ export const WOO_VENDOR_API_CONFIG = [
   { vendor: "Bioedge Research Labs", base: "https://bioedgeresearchlabs.com/wp-json/wc/v3", ckEnv: "BIOEDGE_CK", csEnv: "BIOEDGE_CS" },
   { vendor: "High Tide Compounds", base: "https://hightidecompounds.com/wp-json/wc/v3", ckEnv: "HIGHTIDE_CK", csEnv: "HIGHTIDE_CS" },
   { vendor: "Disguised Alpha", base: "https://disguisedalpha.com/wp-json/wc/v3", ckEnv: "DISGUISEDALPHA_CK", csEnv: "DISGUISEDALPHA_CS" },
-  { vendor: "Iron Protocol", base: `${(process.env.IRON_PROTOCOL_BASE_URL || "https://ironprotocol.com").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "IRON_PROTOCOL_CK", csEnv: "IRON_PROTOCOL_CS" }
+  { vendor: "Iron Protocol", base: `${(process.env.IRON_PROTOCOL_BASE_URL || "https://ironprotocol.com").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "IRON_PROTOCOL_CK", csEnv: "IRON_PROTOCOL_CS" },
+  { vendor: "Peptira", base: `${(process.env.PEPTIRA_BASE_URL || "https://peptira.com").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "PEPTIRA_CK", csEnv: "PEPTIRA_CS" }
 ];
 
 export { wooAuth, wooParams, fetchJson };
@@ -457,6 +458,9 @@ export const VENDOR_ADAPTERS = [
   // (/ref/<partner-id>/) rather than a query parameter, so product deep links
   // cannot carry attribution. Every outbound click uses the referral URL.
   wooAdapter({ vendor: "Iron Protocol", base: `${(process.env.IRON_PROTOCOL_BASE_URL || "https://ironprotocol.com").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "IRON_PROTOCOL_CK", csEnv: "IRON_PROTOCOL_CS", affiliateUrl: process.env.IRON_PROTOCOL_AFFILIATE_URL || configUrl("Iron Protocol"), alwaysUseAffiliateUrl: true }),
+  // Peptira attributes with a ?ref= query parameter, so product deep links keep
+  // attribution and buyers land on the exact product rather than the homepage.
+  wooAdapter({ vendor: "Peptira", base: `${(process.env.PEPTIRA_BASE_URL || "https://peptira.com").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "PEPTIRA_CK", csEnv: "PEPTIRA_CS", affiliateUrl: process.env.PEPTIRA_AFFILIATE_URL || configUrl("Peptira"), affiliateParams: { ref: "SAMMYC" } }),
   // Orbitrex Peptides runs a custom JSON feed with Bearer auth, not
   // WooCommerce. Stays silent until ORBITREX_API_KEY is set in Netlify.
   orbitrexAdapter()
