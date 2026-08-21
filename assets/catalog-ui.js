@@ -182,7 +182,73 @@
     return cardVariants(card).some(variant=>variant.id===chosen)?chosen:ALL_VARIANTS;
   }
   function activeVariant(card){const selected=selectedVariantId(card);const list=cardVariants(card);return list.find(variant=>variant.id===selected)||list[0]||{id:"",label:"Standard listing",suppliers:[]};}
-  function searchText(card){return [card.name,card.category,cardFormatLabels(card).join(" "),...(card.variants||[]).flatMap(variant=>(variant.suppliers||[]).flatMap(supplier=>[supplier.vendor_name,supplier.raw_product,supplier.raw_listing,supplier.sku]))].join(" ").toLowerCase();}
+  // ---- Search ----------------------------------------------------------
+  // The old implementation joined every field into one blob and ran a single
+  // substring test. That made "bpc 157" unable to match "BPC-157" (hyphen),
+  // "semaglutide 5mg" match nothing (terms not adjacent), and ranked results by
+  // price rather than relevance, so an exact name match could sit below noise
+  // from an unrelated vendor SKU. This scores fields by weight instead.
+  function normalizeText(value){return String(value||"").toLowerCase().replace(/[^a-z0-9]+/g," ").trim();}
+  function compactText(value){return normalizeText(value).replace(/ /g,"");}
+  // Normalized text is space separated, so a leading space makes this a
+  // start-of-word test without needing a regex per card per keystroke.
+  function startsWord(haystack,term){return (" "+haystack).includes(" "+term);}
+
+  // Normalized fields are built once per card and cached, so typing does not
+  // rebuild strings for every card and supplier on each keystroke.
+  function searchFields(card){
+    if(card.__search) return card.__search;
+    const suppliers=(card.variants||[]).flatMap(variant=>(variant.suppliers||[]).flatMap(supplier=>[supplier.vendor_name,supplier.raw_product,supplier.raw_listing,supplier.sku]));
+    const fields={
+      name:normalizeText(card.name),
+      nameCompact:compactText(card.name),
+      meta:normalizeText([card.category,cardFormatLabels(card).join(" ")].join(" ")),
+      suppliers:normalizeText(suppliers.join(" ")),
+      // Compact forms let a vendor typed as two words ("lab sourced", "one day")
+      // match a name stored as one ("LabSourced", "Oneday").
+      suppliersCompact:compactText(suppliers.join(" "))
+    };
+    try{Object.defineProperty(card,"__search",{value:fields,enumerable:false});}catch(error){card.__search=fields;}
+    return fields;
+  }
+
+  // Returns a relevance score, or null when the card does not match. Every term
+  // must land somewhere, so extra words narrow results instead of widening them.
+  function searchScore(card,query){
+    const q=normalizeText(query);
+    if(!q) return 0;
+    const qc=compactText(query);
+    const f=searchFields(card);
+    let score=0;
+    if(f.name===q) score+=1000;
+    else if(f.name.startsWith(q+" ")||f.name.startsWith(q)) score+=600;
+    else if(f.nameCompact.startsWith(qc)) score+=520;
+    else if(f.name.includes(" "+q)||f.name.includes(q)) score+=380;
+    else if(f.nameCompact.includes(qc)) score+=320;
+
+    // A multi-word vendor name typed against a single-word brand, "lab sourced"
+    // for LabSourced, only resolves once the whole query is compared compacted.
+    const compactVendorHit=qc.length>=6&&f.suppliersCompact.includes(qc);
+    const terms=q.split(" ").filter(Boolean);
+    for(const term of terms){
+      const wide=term.length>=3;
+      // Terms of four characters or more may match anywhere in a product name,
+      // so "glutide" still finds Semaglutide. Shorter terms must start a word,
+      // otherwise "ion" matches reconstitution, solution and protection and
+      // returns a third of the catalogue. Vendor and supplier text always
+      // matches at word starts, being long and noisy.
+      const nameHit=term.length>=4?f.name.includes(term):startsWord(f.name,term);
+      if(nameHit) score+=90;
+      else if(term.length>=4&&f.nameCompact.includes(term)) score+=70;
+      else if(wide&&startsWord(f.meta,term)) score+=25;
+      else if(wide&&startsWord(f.suppliers,term)) score+=10;
+      else if(compactVendorHit) score+=10;
+      else return null; // a term matched nothing, so this card is not a result
+    }
+    // Prefer the plain compound over longer blend names carrying the same word.
+    score-=Math.min(60,f.name.length*0.6);
+    return score;
+  }
   function cardVendors(card){return new Set((card.variants||[]).flatMap(variant=>(variant.suppliers||[]).map(supplier=>String(supplier.vendor_name||"").trim())).filter(Boolean));}
   function cardHasVendor(card,vendor){return vendor==="All"||Array.from(cardVendors(card)).some(name=>matchesFilterValue(name,vendor));}
   function offerMatchesVendor(offer){return state.vendor==="All"||matchesFilterValue(offer?.supplier?.vendor_name,state.vendor);}
@@ -204,8 +270,19 @@
   }
 
   function cards(){
-    const query=state.query.trim().toLowerCase();
-    const filtered=state.cards.filter(card=>categoryMatches(card)&&cardHasFormat(card,state.format)&&cardHasVendor(card,state.vendor)&&(!query||searchText(card).includes(query)));
+    const query=state.query.trim();
+    const scores=new Map();
+    const filtered=state.cards.filter(card=>{
+      if(!(categoryMatches(card)&&cardHasFormat(card,state.format)&&cardHasVendor(card,state.vendor))) return false;
+      if(!query) return true;
+      const score=searchScore(card,query);
+      if(score===null) return false;
+      scores.set(card,score);
+      return true;
+    });
+    // With a query active, relevance wins over the chosen sort. Without one the
+    // user's sort is the only ordering, exactly as before.
+    if(query) return filtered.sort((a,b)=>(scores.get(b)-scores.get(a))||String(a.name||"").localeCompare(String(b.name||"")));
     return filtered.sort((a,b)=>{
       if(state.sort==="vendors") return Number(b.supplier_count||0)-Number(a.supplier_count||0)||String(a.name||"").localeCompare(String(b.name||""));
       if(state.sort==="name") return String(a.name||"").localeCompare(String(b.name||""));
@@ -609,8 +686,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260820-peptira-launch-v65",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260820-peptira-launch-v65",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260821-search-and-build-v67",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260821-search-and-build-v67",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

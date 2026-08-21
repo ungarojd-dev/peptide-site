@@ -76,7 +76,7 @@ const configured = VENDOR_ADAPTERS.map(a => a.vendor);
 const minVendors = Number.parseInt(process.env.CATALOG_MIN_VENDORS || "", 10)
   || (configured.length - allowMissing.size);
 
-console.log(`build-catalog-live: pulling ${configured.length} vendor feeds`);
+console.log(`build-catalog-live: pulling ${configured.length} vendor feeds (expected ${minVendors})`);
 
 // Promise.allSettled, never a sequential loop: one slow vendor must not
 // serialize the whole build.
@@ -121,11 +121,31 @@ if (!rows.length) {
   process.exit(0);
 }
 
-if (loaded.length < minVendors) {
-  keepCommitted(`only ${loaded.length} of ${configured.length} vendors loaded, minimum is ${minVendors}`);
+// A single flaky feed used to discard the entire live pull, so every static page
+// regenerated from a months-old committed snapshot. That is how Aurora,
+// Peptidology, Iron Protocol and Peptira ended up with no vendor pages while
+// their feeds were healthy: one unrelated vendor failed on each deploy and took
+// the whole snapshot down with it. A small number of failures is now tolerated,
+// which costs that vendor its static pages for one deploy rather than costing
+// every vendor three weeks of freshness. The serverless catalog still serves the
+// failed vendor from its own retained rows, so the live comparison is unaffected.
+const maxFailures = Number.parseInt(process.env.CATALOG_MAX_FAILURES || "", 10);
+const failureBudget = Number.isFinite(maxFailures) ? maxFailures : 2;
+// Below this share of vendors the pull looks like an outage rather than a bad
+// minute, and a stale complete snapshot really is the better answer.
+const coverageFloor = Math.ceil(configured.length * 0.8);
+
+if (loaded.length < coverageFloor || missingBlocking.length > failureBudget) {
+  keepCommitted(`only ${loaded.length} of ${configured.length} vendors loaded, need at least ${coverageFloor} and no more than ${failureBudget} blocking failures`);
   if (missingBlocking.length) console.warn(`  missing: ${missingBlocking.join(", ")}`);
   console.log(`  Committed snapshot: ${await committedSummary()}`);
   process.exit(0);
+}
+
+if (missingBlocking.length) {
+  console.warn(`\n  build-catalog-live: proceeding without ${missingBlocking.length} vendor(s): ${missingBlocking.join(", ")}`);
+  console.warn("  Their static pages keep the previously committed content this deploy.");
+  console.warn("  A vendor appearing here on repeated deploys has a genuinely broken feed.\n");
 }
 
 const catalog = buildCatalog(rows, { vendor_status: vendorStatus, warnings });
