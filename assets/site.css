@@ -1521,7 +1521,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260809-deal-corrections-v47") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260821-mobile-overflow-v69") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -1544,7 +1544,17 @@ body.deals-panel-open { overflow: hidden; }
 }
 /* Widths below are the measured budget at each size: content box, minus the
    two pills, the burger and three 10px gaps, minus the 34px mark and its gap. */
-@media (max-width: 389px) { .brand-wordmark { width: 86px; height: 12px; } }
+/* Measured at 390px: brand 141 + Deals 76 + Giveaways 97 + burger 44, plus
+   30px of gaps and 24px padding, is 412px of content in a 390px bar. Every item
+   but the burger had flex-shrink 0, so the burger was pushed 19px off the right
+   edge and the browser widened the layout viewport to compensate, which is what
+   made the page look cut off. Tightening starts at 430 rather than 389 so the
+   common 390 to 414 phone sizes are covered. */
+@media (max-width: 430px) {
+  .premium-top .top-inner { gap: 6px; }
+  .brand-wordmark { width: 86px; height: 12px; }
+  .nav-deals-btn, .nav-gw-btn { margin-left: 4px; }
+}
 @media (max-width: 374px) { .brand-wordmark { width: 74px; height: 10px; } .premium-brand { gap: 5px; } }
 @media (max-width: 349px) { .brand-wordmark { display: none; } }
 @media (max-width: 360px) {
@@ -1744,4 +1754,43 @@ body.deals-panel-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .partner-pop-backdrop, .partner-pop { transition: none; }
   .partner-pop { transform: none; }
+}
+
+/* ============================================================
+   Deal carousel nav on small screens
+   The dots render one per deal. At 14 deals the row measured 371px inside a
+   342px nav, and because the arrows were shrinkable they collapsed from 26px
+   to 7px and spilled past both edges of the screen. The arrows are now fixed,
+   and the dot row sizes to its content so it stays centred, shrinking and
+   scrolling rather than pushing anything off-screen once the deal count grows
+   past what the width allows.
+   ============================================================ */
+@media (max-width: 520px) {
+  .deal-carousel-nav .dc-nav-btn { flex: 0 0 auto; }
+  .deal-carousel-dots {
+    flex: 0 1 auto; min-width: 0; gap: 10px;
+    overflow-x: auto; scrollbar-width: none; -ms-overflow-style: none;
+    scroll-snap-type: x proximity;
+  }
+  .deal-carousel-dots::-webkit-scrollbar { display: none; }
+  .dc-dot { flex: 0 0 auto; scroll-snap-align: center; }
+}
+@media (max-width: 360px) {
+  .deal-carousel-dots { gap: 7px; }
+  .deal-carousel-nav { gap: 10px; }
+}
+
+/* ============================================================
+   Announcement bar copy on small screens
+   The rotating headline was clipped mid-word with no ellipsis, so
+   "45% off sitewide, One Year Anniversary" read as "45% off sitewide, One"
+   and looked like a rendering fault rather than truncation. Two lines with a
+   proper ellipsis, and the text is allowed to shrink so the CTA keeps its size.
+   ============================================================ */
+@media (max-width: 520px) {
+  .premium-announce .announce-text {
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical;
+    overflow: hidden; text-overflow: ellipsis;
+    min-width: 0; flex: 1 1 auto;
+  }
 }

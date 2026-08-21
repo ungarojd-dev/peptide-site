@@ -133,9 +133,11 @@ for (const file of await readdir(W)) {
 // HTML, so the deals feed stayed pinned to an old cache key while every page
 // moved on. Scan them too.
 for (const file of await readdir(`${W}/assets`)) {
-  if (!file.endsWith(".js")) continue;
-  const js = await read(`assets/${file}`);
-  for (const match of (js || "").matchAll(/\?v=(\d{8}-[a-z0-9-]+)/g)) versions.add(match[1]);
+  // CSS as well as JS: a background-image URL in site.css carried its own
+  // ?v= string and drifted for the same reason the JS constants did.
+  if (!file.endsWith(".js") && !file.endsWith(".css")) continue;
+  const asset = await read(`assets/${file}`);
+  for (const match of (asset || "").matchAll(/\?v=(\d{8}-[a-z0-9-]+)/g)) versions.add(match[1]);
 }
 if (versions.size > 1) note(`${versions.size} different cache-bust strings in use: ${[...versions].join(", ")}`);
 

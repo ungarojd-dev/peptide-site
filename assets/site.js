@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260821-search-and-build-v67";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260821-mobile-overflow-v69";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -918,14 +918,14 @@
 (function(){
   const CAMPAIGN = {
     enabled: true,
-    campaignId: "peptira-launch-2026-08",
+    campaignId: "peptira-launch-2026-08b",
     eyebrow: "New Partner",
     logo: "/assets/vendor-logos/peptira.webp",
     logoAlt: "Peptira",
     heading: "Peptira is now on the board",
-    body: "Their full catalog is tracked and normalized to cost per mg, so you can see exactly where they land against every other vendor.",
+    body: "They are running 35% off most products right now. Code SAMMYC stacks another 10% on top, and paying by ACH takes a further 5% off. Their full catalog is tracked and normalized to cost per mg.",
     code: "SAMMYC",
-    codeLabel: "10% off with code",
+    codeLabel: "stacks 10% on top",
     ctaText: "Compare Peptira pricing",
     ctaHref: "/vendors/peptira.html",
     dismissText: "Not now"
