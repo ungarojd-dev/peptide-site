@@ -483,25 +483,21 @@
         </div>
       </header>
       ${multiFormat?`<div class="variant-wrap format-wrap">
-        <span class="variant-label">Format</span>
-        <div class="variant-pills-shell" data-variant-shell="fmt-${attr(card.id)}">
-          <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="-1" data-card="fmt-${attr(card.id)}" aria-label="Scroll formats left">&lsaquo;</button>
-          <div class="variant-pills" data-variant-pills="fmt-${attr(card.id)}">
-            <button type="button" class="variant-button all${formatId===ALL_FORMATS?" active":""}" data-action="format" data-card="${attr(card.id)}" data-format="${ALL_FORMATS}">All formats (${esc(card.offer_count||0)})</button>
-            ${formats.map(item=>`<button type="button" class="variant-button${formatId===item.id?" active":""}" data-action="format" data-card="${attr(card.id)}" data-format="${attr(item.id)}" data-fmt-tone="${attr(formatSlug(item.label))}">${formatIcon(item.label)}${esc(item.label)} (${esc(item.offer_count)})</button>`).join("")}
-          </div>
-          <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="1" data-card="fmt-${attr(card.id)}" aria-label="Scroll formats right">&rsaquo;</button>
+        <label class="variant-label" for="fmt-${attr(card.id)}">Format</label>
+        <div class="variant-select-shell">
+          <select class="variant-select" id="fmt-${attr(card.id)}" data-action="format" data-card="${attr(card.id)}">
+            <option value="${ALL_FORMATS}"${formatId===ALL_FORMATS?" selected":""}>All formats (${esc(card.offer_count||0)})</option>
+            ${formats.map(item=>`<option value="${attr(item.id)}"${formatId===item.id?" selected":""}>${esc(item.label)} (${esc(item.offer_count)})</option>`).join("")}
+          </select>
         </div>
       </div>`:""}
       ${sizeRowUseful?`<div class="variant-wrap">
-        <span class="variant-label">Compare size or listing</span>
-        <div class="variant-pills-shell" data-variant-shell="${attr(card.id)}">
-          <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="-1" data-card="${attr(card.id)}" aria-label="Scroll sizes left">‹</button>
-          <div class="variant-pills" data-variant-pills="${attr(card.id)}">
-            <button type="button" class="variant-button all${isAll?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${ALL_VARIANTS}">All listings${totalListings?` (${esc(totalListings)})`:""}</button>
-            ${scopedVariants.map(item=>`<button type="button" class="variant-button${!isAll&&item.id===variant.id?" active":""}" data-action="variant" data-card="${attr(card.id)}" data-variant="${attr(item.id)}">${esc(multiFormat&&formatId===ALL_FORMATS?(isUnsized(item.label)?`${sizeLabel(item.label)}, ${item.format||""}`.replace(/,\s*$/,""):(item.full_label||item.label)):sizeLabel(item.label))}${item.all_offer_count?` (${esc(item.all_offer_count)})`:""}</button>`).join("")}
-          </div>
-          <button type="button" class="variant-scroll-btn" data-action="variant-scroll" data-dir="1" data-card="${attr(card.id)}" aria-label="Scroll sizes right">›</button>
+        <label class="variant-label" for="size-${attr(card.id)}">Compare size or listing</label>
+        <div class="variant-select-shell">
+          <select class="variant-select" id="size-${attr(card.id)}" data-action="variant" data-card="${attr(card.id)}">
+            <option value="${ALL_VARIANTS}"${isAll?" selected":""}>All listings${totalListings?` (${esc(totalListings)})`:""}</option>
+            ${scopedVariants.map(item=>`<option value="${attr(item.id)}"${!isAll&&item.id===variant.id?" selected":""}>${esc(multiFormat&&formatId===ALL_FORMATS?(isUnsized(item.label)?`${sizeLabel(item.label)}, ${item.format||""}`.replace(/,\s*$/,""):(item.full_label||item.label)):sizeLabel(item.label))}${item.all_offer_count?` (${esc(item.all_offer_count)})`:""}</option>`).join("")}
+          </select>
         </div>
       </div>`:""}
       ${bestValue?`<a class="best-value-row" href="${attr(bestValue.supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(bestValue.supplier.vendor_name)}" data-code="${attr(bestValue.supplier.coupon_code||"")}">
@@ -544,8 +540,12 @@
       gridEl.insertAdjacentElement("afterend",btn);
       gridEl.dataset.toggleReady="1";
     })();
-    document.querySelectorAll('[data-action="format"]').forEach(button=>button.onclick=()=>{state.activeFormats[button.dataset.card]=button.dataset.format;delete state.activeVariants[button.dataset.card];renderCards(false);});
-    document.querySelectorAll('[data-action="variant"]').forEach(button=>button.onclick=()=>{state.activeVariants[button.dataset.card]=button.dataset.variant;state.expanded[button.dataset.card]=true;renderCards(false);});
+    // Format and size are native selects rather than scrolling chip rows: the
+    // chips needed their own left and right scroll buttons on mobile, stacked
+    // two rows deep before a visitor reached any price, and rendered a button
+    // per option across every card. A select opens the OS picker instead.
+    document.querySelectorAll('select[data-action="format"]').forEach(select=>select.onchange=()=>{state.activeFormats[select.dataset.card]=select.value;delete state.activeVariants[select.dataset.card];renderCards(false);});
+    document.querySelectorAll('select[data-action="variant"]').forEach(select=>select.onchange=()=>{state.activeVariants[select.dataset.card]=select.value;state.expanded[select.dataset.card]=true;renderCards(false);});
     document.querySelectorAll('[data-action="expand"]').forEach(button=>button.onclick=()=>{
       const cardId=button.dataset.card;
       const wasExpanding=!state.expanded[cardId];
@@ -563,22 +563,9 @@
         }
       }
     });
-    document.querySelectorAll('[data-action="variant-scroll"]').forEach(button=>button.onclick=()=>{
-      const pills=document.querySelector(`[data-variant-pills="${button.dataset.card}"]`);
-      if(pills) pills.scrollBy({left:Number(button.dataset.dir)*140,behavior:"smooth"});
-    });
     document.querySelectorAll('[data-affiliate="1"]').forEach(link=>link.onclick=()=>{global.dataLayer=global.dataLayer||[];global.dataLayer.push({event:"affiliate_click",product_name:link.dataset.product,product_category:link.dataset.category,lab_result:"tracked_vendor",button_text:link.dataset.cta||"View deal",button_location:"comparison_card",affiliate_network:"direct_vendor",vendor_name:link.dataset.vendor,discount_code:link.dataset.code,affiliate_url:link.href});});
-    document.querySelectorAll('[data-variant-shell]').forEach(shell=>{
-      const pills=shell.querySelector('[data-variant-pills]');
-      if(!pills) return;
-      const update=()=>{
-        const overflow=pills.scrollWidth>pills.clientWidth+2;
-        shell.classList.toggle("has-overflow",overflow);
-      };
-      update();
-      pills.addEventListener("scroll",update,{passive:true});
-      if(global.ResizeObserver) new ResizeObserver(update).observe(pills);
-    });
+    // The chip overflow observers were removed with the chip rows themselves;
+    // a native select has no horizontal scroll to shade.
   }
 
   function renderCards(scroll){
@@ -686,8 +673,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260821-mobile-overflow-v69",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260821-mobile-overflow-v69",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260822-variant-dropdowns-v70",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260822-variant-dropdowns-v70",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}

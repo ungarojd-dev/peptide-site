@@ -1269,3 +1269,40 @@ a.seo-card-name:hover { text-decoration: underline; }
   .dc-dot { width: 12px; height: 12px; }
   .crumbs a { display: inline-block; padding: 6px 0; }
 }
+
+/* ============================================================
+   Card format and size selectors
+   These were horizontally scrolling chip rows with their own left and right
+   arrow buttons. On a phone that meant two stacked scrollers to work through
+   before reaching a single price, tap targets that moved under the finger, and
+   a rendered button for every option on every card. Native selects open the OS
+   picker, which is one tap and far easier one-handed.
+   Colours follow the card surface, which is light, not the dark page chrome.
+   ============================================================ */
+.variant-select-shell { position: relative; display: block; }
+.variant-select-shell::after {
+  content: ""; position: absolute; right: 14px; top: 50%;
+  width: 7px; height: 7px; margin-top: -5px;
+  border-right: 2px solid rgba(31,58,45,.55);
+  border-bottom: 2px solid rgba(31,58,45,.55);
+  transform: rotate(45deg); pointer-events: none;
+}
+.variant-select {
+  -webkit-appearance: none; -moz-appearance: none; appearance: none;
+  display: block; width: 100%;
+  padding: 11px 34px 11px 12px;
+  border: 1.5px solid rgba(31,58,45,.16);
+  border-radius: 10px;
+  background: #fff;
+  color: #1f2a24;
+  font-family: inherit; font-size: 13.5px; font-weight: 700;
+  line-height: 1.25; cursor: pointer;
+  text-overflow: ellipsis;
+  transition: border-color .16s ease, box-shadow .16s ease;
+}
+.variant-select:hover { border-color: rgba(78,93,60,.55); }
+.variant-select:focus-visible { outline: none; border-color: var(--olive); box-shadow: 0 0 0 3px rgba(78,93,60,.18); }
+/* The picker is drawn by the OS, so options carry their own colours. */
+.variant-select option { background: #fff; color: #1f2a24; }
+.variant-wrap .variant-label { display: block; margin-bottom: 6px; }
+@media (max-width: 520px) { .variant-select { font-size: 14px; padding: 12px 34px 12px 12px; } }
