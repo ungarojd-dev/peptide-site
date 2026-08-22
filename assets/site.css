@@ -1521,7 +1521,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260822-popup-session-v73") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260822-hero-gap-v74") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -1826,4 +1826,20 @@ body.deals-panel-open { overflow: hidden; }
   .dsm-count:empty { display: none; }
   .dsm-go { flex: none; font-size: 20px; color: rgba(238,244,226,.6); line-height: 1; }
   .deal-carousel .deal-carousel-wrap { padding-top: 4px; padding-bottom: 4px; }
+}
+
+/* ============================================================
+   Hero dead space on mobile
+   The Jump-to chip row and the proof row are hidden on phones, but both were
+   only collapsed to zero height, so their margins survived and left a void
+   between the last line of copy and the certification strip. Measured at 390px
+   that was about 48px of empty hero. Hiding them outright removes the margins,
+   and the surrounding padding is tightened to match.
+   ============================================================ */
+@media (max-width: 720px) {
+  .premium-hero .hero-search-wrap,
+  .premium-hero .hero-proof-row { display: none; }
+  .premium-hero .hero-inner { padding-bottom: 4px; }
+  .premium-hero .hero-copy p { margin-bottom: 4px; }
+  .premium-hero .hero-cert-strip { padding-top: 2px; }
 }
