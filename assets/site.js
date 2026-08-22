@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260822-variant-dropdowns-v70";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260822-deals-strip-v71";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -371,6 +371,17 @@
       const badge=btn.querySelector("[data-deals-count]");
       if(badge){ if(count>0){ badge.textContent=String(count); badge.hidden=false; } else { badge.hidden=true; } }
     });
+    // Mobile deals strip: same count as the header pill, plus a one line teaser
+    // naming the strongest live offer so the row says something specific
+    // rather than just "we have deals".
+    const stripCount=document.querySelector("[data-deals-strip-count]");
+    if(stripCount){ if(count>0){ stripCount.textContent=String(count); } else { stripCount.textContent=""; } }
+    const stripSub=document.querySelector("[data-deals-strip-sub]");
+    if(stripSub){
+      const headline=[...b.ending,...b.live].map(item=>({vendor:item.vendor,sale:Number(item.sale)}))
+        .filter(item=>Number.isFinite(item.sale)).sort((a,b2)=>b2.sale-a.sale)[0];
+      if(headline) stripSub.textContent=`${headline.vendor} ${headline.sale}% off, plus ${count-1} more`;
+    }
     document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeDealsPanel(); });
   }
   function setupPromotionRolodex(promotions){
