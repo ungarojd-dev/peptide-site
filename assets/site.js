@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260822-neon-popup-v75";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260822-popup-cooldown-v76";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -931,6 +931,8 @@
   const CAMPAIGN = {
     enabled: true,
     campaignId: "peptira-launch-2026-08b",
+    // After this date the popup stops showing without needing a code change.
+    runUntil: "2026-09-20",
     eyebrow: "New Partner",
     logo: "/assets/vendor-logos/peptira.webp",
     logoAlt: "Peptira",
@@ -946,37 +948,54 @@
   // Internal tools and the admin CMS never show marketing interruptions.
   const path = location.pathname;
   if (!CAMPAIGN.enabled) return;
+  if (CAMPAIGN.runUntil && Date.now() > Date.parse(CAMPAIGN.runUntil + "T23:59:59-04:00")) return;
   if (/\/(live-wheel|admin)/.test(path)) return;
 
-  // Once per browser session rather than once per visitor, so a returning
-  // reader sees the partner announcement again on their next visit.
-  // sessionStorage is blocked outright in some in-app browsers, and treating a
-  // storage failure as "not seen" would fire this on every single page load
-  // there. A session cookie carries the same expire-with-the-session meaning,
-  // and the in-memory flag covers a page load where neither is available.
+  // Shows again after COOLDOWN_HOURS rather than once per session. Session
+  // timing proved untestable and unreliable: Chrome and Edge restore session
+  // cookies and sessionStorage when "continue where you left off" is on, so a
+  // session can outlive several browser restarts, and on mobile a tab can hold
+  // one open for weeks. A stored timestamp behaves the same everywhere.
+  const COOLDOWN_HOURS = 24;
   const KEY = "mpp_partner_pop_" + CAMPAIGN.campaignId;
-  let seenInMemory = false;
-  function cookieSeen(){
+  let shownAtInMemory = 0;
+
+  // ?popup=1 forces it open and ?popup=reset clears the timer, so the campaign
+  // can be checked on a real device without clearing browser data.
+  const override = new URLSearchParams(location.search).get("popup");
+
+  function readStamp(){
+    if (shownAtInMemory) return shownAtInMemory;
+    try { const v = Number(localStorage.getItem(KEY)); if (v) return v; } catch(e){}
     try {
-      return document.cookie.split(";").some(part => {
-        const [name, value] = part.split("=");
-        return (name||"").trim() === KEY && (value||"").trim() === "1";
-      });
-    } catch(e){ return false; }
-  }
-  function seen(){
-    if (seenInMemory) return true;
-    try { if (sessionStorage.getItem(KEY) === "1") return true; } catch(e){}
-    return cookieSeen();
+      const hit = document.cookie.split(";").map(part => part.trim()).find(part => part.indexOf(KEY + "=") === 0);
+      if (hit) return Number(hit.slice(KEY.length + 1)) || 0;
+    } catch(e){}
+    return 0;
   }
   function markSeen(){
-    seenInMemory = true;
-    try { sessionStorage.setItem(KEY, "1"); } catch(e){}
+    const now = Date.now();
+    shownAtInMemory = now;
+    try { localStorage.setItem(KEY, String(now)); } catch(e){}
     try {
       const secure = location.protocol === "https:" ? "; Secure" : "";
-      document.cookie = KEY + "=1; path=/; SameSite=Lax" + secure;
+      // Cookie mirrors the timestamp for browsers that block localStorage.
+      document.cookie = KEY + "=" + now + "; path=/; max-age=" + (COOLDOWN_HOURS * 3600) + "; SameSite=Lax" + secure;
     } catch(e){}
   }
+  function clearSeen(){
+    shownAtInMemory = 0;
+    try { localStorage.removeItem(KEY); } catch(e){}
+    try { document.cookie = KEY + "=; path=/; max-age=0; SameSite=Lax"; } catch(e){}
+  }
+  function seen(){
+    if (override === "1") return false;
+    const last = readStamp();
+    if (!last) return false;
+    return (Date.now() - last) < COOLDOWN_HOURS * 3600 * 1000;
+  }
+
+  if (override === "reset") clearSeen();
   if (seen()) return;
 
   const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1104,4 +1123,9 @@
   function onAccepted(){ setTimeout(attempt, 700); }
   window.addEventListener("scroll", onScroll, { passive: true });
   document.addEventListener("mpp:compliance-accepted", onAccepted);
+  // Browsers restore scroll position on reload, back navigation and tab
+  // restore, so the visitor can already be well down the page with no scroll
+  // event ever firing. Without this check the popup silently never appeared for
+  // anyone in that state.
+  onScroll();
 })();
