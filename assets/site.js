@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260822-hero-gap-v74";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260822-neon-popup-v75";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -1019,7 +1019,9 @@
     canvas.height = window.innerHeight;
     document.body.appendChild(canvas);
     const ctx = canvas.getContext("2d");
-    const colors = ["#1F3A2D", "#4E5D3C", "#D8C7A7", "#6A7D52", "#f0e5ce", "#1a3fb8"];
+    // Neon palette to match the popup: lime, gold and cream rather than the
+    // muted forest tones, which disappeared against the near-black card.
+    const colors = ["#a9d13a", "#d3f26a", "#e0b443", "#f0d178", "#eaffb0", "#fffdf8"];
     const pieces = [];
     for (let i = 0; i < 120; i++) {
       pieces.push({
@@ -1041,6 +1043,7 @@
       pieces.forEach(p => {
         p.x += p.vx; p.y += p.vy; p.rot += p.vr;
         ctx.save(); ctx.translate(p.x, p.y); ctx.rotate(p.rot);
+        ctx.shadowColor = p.color; ctx.shadowBlur = 10;
         ctx.fillStyle = p.color; ctx.fillRect(-p.w/2, -p.h/2, p.w, p.h); ctx.restore();
       });
       if (elapsed < 3600) requestAnimationFrame(tick);
