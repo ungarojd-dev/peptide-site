@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260822-deals-strip-v71";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260822-popup-session-v73";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -374,8 +374,9 @@
     // Mobile deals strip: same count as the header pill, plus a one line teaser
     // naming the strongest live offer so the row says something specific
     // rather than just "we have deals".
-    const stripCount=document.querySelector("[data-deals-strip-count]");
-    if(stripCount){ if(count>0){ stripCount.textContent=String(count); } else { stripCount.textContent=""; } }
+    // The strip carries data-deals-open and data-deals-count, so the click
+    // handler and badge above wire it exactly like the header pill. It opens the
+    // styled Today's Deals drawer, not the older promotions panel.
     const stripSub=document.querySelector("[data-deals-strip-sub]");
     if(stripSub){
       const headline=[...b.ending,...b.live].map(item=>({vendor:item.vendor,sale:Number(item.sale)}))
@@ -947,9 +948,35 @@
   if (!CAMPAIGN.enabled) return;
   if (/\/(live-wheel|admin)/.test(path)) return;
 
+  // Once per browser session rather than once per visitor, so a returning
+  // reader sees the partner announcement again on their next visit.
+  // sessionStorage is blocked outright in some in-app browsers, and treating a
+  // storage failure as "not seen" would fire this on every single page load
+  // there. A session cookie carries the same expire-with-the-session meaning,
+  // and the in-memory flag covers a page load where neither is available.
   const KEY = "mpp_partner_pop_" + CAMPAIGN.campaignId;
-  function seen(){ try { return localStorage.getItem(KEY) === "1"; } catch(e){ return false; } }
-  function markSeen(){ try { localStorage.setItem(KEY, "1"); } catch(e){} }
+  let seenInMemory = false;
+  function cookieSeen(){
+    try {
+      return document.cookie.split(";").some(part => {
+        const [name, value] = part.split("=");
+        return (name||"").trim() === KEY && (value||"").trim() === "1";
+      });
+    } catch(e){ return false; }
+  }
+  function seen(){
+    if (seenInMemory) return true;
+    try { if (sessionStorage.getItem(KEY) === "1") return true; } catch(e){}
+    return cookieSeen();
+  }
+  function markSeen(){
+    seenInMemory = true;
+    try { sessionStorage.setItem(KEY, "1"); } catch(e){}
+    try {
+      const secure = location.protocol === "https:" ? "; Secure" : "";
+      document.cookie = KEY + "=1; path=/; SameSite=Lax" + secure;
+    } catch(e){}
+  }
   if (seen()) return;
 
   const reduceMotion = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
