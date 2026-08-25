@@ -271,7 +271,7 @@
     },
     "Aurora Peptides": {
       "id": "aurora-peptides",
-      "discount_percent": 15,
+      "discount_percent": 20,
       "affiliate_url": "https://aurora-peptides.com/?ref=102",
       "logo": "/assets/vendor-logos/aurora-peptides.webp",
       "use_product_deep_links": true,

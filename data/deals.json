@@ -40,14 +40,15 @@
       "start_date": "2026-08-01",
       "sale_percent": 15,
       "end_date": "2026-08-31",
-      "code_percent": 15,
-      "headline": "15% off sitewide, stacks with SAMMYC",
+      "code_percent": 20,
+      "headline": "SAMMYC permanently boosted to 20%, stacks with 15% off sitewide",
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "id": "aurora-peptides-august-15-stack-2026",
       "cta_text": "Shop Aurora Peptides",
-      "description": "Aurora Peptides is running 15% off sitewide for the whole of August. Code SAMMYC stacks on top for a further 15% off the reduced price. Confirm final pricing at checkout.",
-      "affiliate_url": "https://aurora-peptides.com/?ref=102"
+      "description": "Aurora Peptides has permanently raised code SAMMYC from 15% to 20% off. Through August 31 it stacks on top of their 15% sitewide sale. After the sale ends the 20% code stays for good. Confirm final pricing at checkout.",
+      "affiliate_url": "https://aurora-peptides.com/?ref=102",
+      "priority": 240
     },
     {
       "show_in": [
@@ -294,5 +295,5 @@
       "affiliate_url": "https://peptira.com/?ref=SAMMYC"
     }
   ],
-  "version": "2026-08-21-peptira-warehouse"
+  "version": "2026-08-25-aurora-code-20"
 }
