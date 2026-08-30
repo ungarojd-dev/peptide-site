@@ -324,7 +324,7 @@
     "Zenith Bioscience": {
       "id": "zenith-bioscience",
       "discount_percent": 10,
-      "affiliate_url": "https://zenithbioscience.com/?ref=SAMMYC",
+      "affiliate_url": "https://www.zenithbioscience.com/?ref=SAMMYC",
       "logo": "/assets/vendor-logos/zenith-bioscience.webp",
       "use_product_deep_links": true,
       "payment_methods": [],
