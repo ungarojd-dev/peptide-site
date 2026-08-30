@@ -421,7 +421,11 @@ function zenithAdapter() {
       if (!key) throw new Error("ZENITH_API_KEY not set");
       const { data } = await fetchJson(
         process.env.ZENITH_FEED_URL || "https://api.zenithbioscience.com/api/public/catalog",
-        15000,
+        // Zenith returns the entire catalog in one unpaginated response and has
+        // measured slower than 15s on a cold endpoint, which aborted the pull.
+        // Raised deliberately rather than trimming the request, since their
+        // contract offers no pagination or filtering to shrink the payload.
+        Number(process.env.ZENITH_TIMEOUT_MS) || 30000,
         { Authorization: `Bearer ${key}`, Accept: "application/json" }
       );
       const rows = Array.isArray(data?.products) ? data.products : [];
