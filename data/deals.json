@@ -154,22 +154,23 @@
       "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC"
     },
     {
-      "priority": 300,
+      "priority": 305,
       "show_in": [
         "deals"
       ],
       "vendor": "Oneday Compounds",
-      "start_date": "2026-08-14",
-      "sale_percent": 30,
+      "start_date": "2026-08-27",
+      "sale_percent": 35,
+      "end_date": "2026-09-07",
       "code": "SAMMYC",
       "code_percent": 10,
-      "headline": "30% off sitewide, stacks with SAMMYC",
+      "headline": "Labor Day event, 35% off sitewide, stacks with SAMMYC",
       "timezone": "America/New_York",
       "type": "sitewide_sale",
-      "id": "oneday-30-open-ended",
       "cta_text": "Shop Now",
-      "description": "30% off sitewide at Oneday Compounds with no announced end date. Code SAMMYC stacks for an additional 10% off the reduced price. Confirm final pricing at checkout.",
-      "affiliate_url": "https://onedaycompounds.net/?ref=subileue"
+      "description": "Oneday Compounds is running a Labor Day event with 35% off sitewide, no code needed, through September 7. Code SAMMYC stacks for an additional 10% off the reduced price. Confirm final pricing at checkout.",
+      "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
+      "id": "oneday-labor-day-35-2026-09"
     },
     {
       "priority": 315,
@@ -258,5 +259,5 @@
       "id": "high-tide-40-weekend-2026-08"
     }
   ],
-  "version": "2026-08-27-high-tide-40"
+  "version": "2026-08-27-oneday-labor-day"
 }

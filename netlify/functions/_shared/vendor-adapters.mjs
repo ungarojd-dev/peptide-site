@@ -412,6 +412,54 @@ function orbitrexAdapter() {
   };
 }
 
+function zenithAdapter() {
+  const vendor = "Zenith Bioscience";
+  return {
+    vendor,
+    async load() {
+      const key = process.env.ZENITH_API_KEY;
+      if (!key) throw new Error("ZENITH_API_KEY not set");
+      const { data } = await fetchJson(
+        process.env.ZENITH_FEED_URL || "https://api.zenithbioscience.com/api/public/catalog",
+        15000,
+        { Authorization: `Bearer ${key}`, Accept: "application/json" }
+      );
+      const rows = Array.isArray(data?.products) ? data.products : [];
+      const products = [];
+      for (const item of rows) {
+        const name = compact(item.name);
+        if (!name || !item.productUrl) continue;
+        const size = compact(item.size);
+        const listing = size ? `${name} - ${size}` : name;
+        // The feed sends the regular price in `price` and only includes
+        // `salePrice` when a sale is actually running, so the effective
+        // charged price is salePrice when present. Every other vendor feed is
+        // already sale-inclusive, so taking `price` here would overstate
+        // Zenith against the rest of the catalog.
+        const effective = item.salePrice != null ? item.salePrice : item.price;
+        products.push({
+          company: vendor,
+          product: name,
+          listing,
+          raw_product: name,
+          raw_listing: listing,
+          price: money(effective),
+          category: compact(item.category),
+          sku: compact(item.sku) || null,
+          in_stock: item.inStock === true,
+          // appendQuery uses the URL API, which places the query string before
+          // the hash. Zenith variant links carry a #size= fragment and need
+          // ?ref= ahead of it, so this ordering is required, not incidental.
+          url: appendQuery(item.productUrl || VENDOR_CONFIG[vendor]?.affiliate_url, { ref: "SAMMYC" }),
+          source: "api",
+          source_type: "custom-json"
+        });
+      }
+      return { vendor, fetched_at: new Date().toISOString(), products, metadata: { source_type: "custom-json", returned_rows: products.length } };
+    }
+  };
+}
+
 // WooCommerce-only vendor list (excludes Instant Peptides and LabSourced Peptides,
 // which run custom JSON APIs and have no payment_gateways endpoint).
 // Reused by scripts/refresh-payment-methods.mjs.
@@ -463,5 +511,8 @@ export const VENDOR_ADAPTERS = [
   wooAdapter({ vendor: "Peptira", base: `${(process.env.PEPTIRA_BASE_URL || "https://peptira.com").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "PEPTIRA_CK", csEnv: "PEPTIRA_CS", affiliateUrl: process.env.PEPTIRA_AFFILIATE_URL || configUrl("Peptira"), affiliateParams: { ref: "SAMMYC" } }),
   // Orbitrex Peptides runs a custom JSON feed with Bearer auth, not
   // WooCommerce. Stays silent until ORBITREX_API_KEY is set in Netlify.
-  orbitrexAdapter()
+  orbitrexAdapter(),
+  // Zenith Bioscience also runs a custom JSON feed with Bearer auth. Stays
+  // silent until ZENITH_API_KEY is set in Netlify.
+  zenithAdapter()
 ];

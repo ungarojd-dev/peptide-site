@@ -320,6 +320,17 @@
       "brand_color": "#4E5D3C",
       "package_protection_required": false,
       "launch_date": "2026-08-20"
+    },
+    "Zenith Bioscience": {
+      "id": "zenith-bioscience",
+      "discount_percent": 10,
+      "affiliate_url": "https://zenithbioscience.com/?ref=SAMMYC",
+      "logo": "/assets/vendor-logos/zenith-bioscience.webp",
+      "use_product_deep_links": true,
+      "payment_methods": [],
+      "brand_color": "#2E5A6B",
+      "package_protection_required": false,
+      "launch_date": "2026-08-27"
     }
   }
 }
