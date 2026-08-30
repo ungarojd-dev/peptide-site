@@ -1521,7 +1521,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260830-zenith-timeout-v83") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260830-coffee-flash-v84") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept

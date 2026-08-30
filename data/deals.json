@@ -257,7 +257,27 @@
       "description": "High Tide Compounds is running 40% off sitewide through Sunday night. Code SAMMYC stacks for an additional 10% off the reduced price. Confirm final pricing at checkout.",
       "affiliate_url": "https://hightidecompounds.com/?aff=44",
       "id": "high-tide-40-weekend-2026-08"
+    },
+    {
+      "priority": 318,
+      "display_vendor": "Coffee & Peppers",
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Coffee and Peppers",
+      "start_date": "2026-08-30",
+      "sale_percent": 15,
+      "end_date": "2026-08-30",
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Today only, 15% off sitewide, stacks with SAMMYC",
+      "timezone": "America/Denver",
+      "type": "sitewide_sale",
+      "cta_text": "Shop now",
+      "description": "Coffee and Peppers is running 15% off sitewide today only, through midnight Mountain time. Code SAMMYC stacks for an additional 15% off the reduced price. Confirm final pricing at checkout.",
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "id": "coffee-flash-15-2026-08-30"
     }
   ],
-  "version": "2026-08-27-oneday-labor-day"
+  "version": "2026-08-30-coffee-flash-15"
 }

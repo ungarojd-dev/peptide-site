@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260830-zenith-timeout-v83";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260830-coffee-flash-v84";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -293,6 +293,18 @@
   function dealBuckets(all){
     const now=Date.now();
     const HOUR=3.6e6;
+    // start_at/end_at are full instants carrying the vendor's own offset, e.g.
+    // "2026-08-30T23:59:00-06:00". Formatting that instant in a fixed zone
+    // rolled Mountain deals into the next Eastern day, so a deal ending
+    // tonight in Denver read "ENDS AUG 31". The label should be the calendar
+    // day the vendor actually authored, so it is read straight off the string
+    // rather than converted. Instant comparisons below are unaffected.
+    const localDayLabel=iso=>{
+      const m=String(iso||"").match(/^(\d{4})-(\d{2})-(\d{2})/);
+      if(!m) return "";
+      return new Date(Date.UTC(+m[1],+m[2]-1,+m[3]))
+        .toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"UTC"});
+    };
     const b={ending:[],live:[],upcoming:[],ongoing:[],announcements:[]};
     for(const p of all){
       const offer=p.strip_offer||p.announce_offer||p.headline||p.short_detail||"";
@@ -308,8 +320,8 @@
         stack:p.strip_stack||"SAMMYC",
         url:p.affiliate_url||"#",
         vendorKey:p.vendor||"",
-        endLabel:end?new Date(end).toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"America/New_York"}):"",
-        startLabel:start?new Date(start).toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"America/New_York"}):""
+        endLabel:end?localDayLabel(p.end_at):"",
+        startLabel:start?localDayLabel(p.start_at):""
       };
       if(start&&start>now){ b.upcoming.push(item); }
       else if(active&&end){ ((end-now)<=48*HOUR ? b.ending : b.live).push(item); }
