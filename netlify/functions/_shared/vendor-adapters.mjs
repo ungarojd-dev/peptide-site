@@ -412,6 +412,32 @@ function orbitrexAdapter() {
   };
 }
 
+// Zenith ships in-house product codes rather than compound names, so nothing
+// matched the catalog and 28 rows sat unmapped. Mappings confirmed by the
+// vendor, not inferred. Anything not listed here is left as-is so an unknown
+// code stays visibly unmapped instead of being guessed into the wrong
+// comparison, which is the same call made for Orbitrex's Orbitzen blend.
+const ZENITH_PRODUCT_ALIASES = {
+  "zb tes": "Tesamorelin",
+  "zlp sem": "Semaglutide",
+  "zb sem": "Semaglutide",
+  "zb-31": "SS-31",
+  "zb 31": "SS-31",
+  "zb-blend-3": "GLOW Blend",
+  "zb-blend-4": "KLOW Blend"
+};
+
+// Kit variants arrive as "ZB TES (10 Vial Kit)". The suffix has to stay on the
+// listing because that is where vial count is parsed from, but it must come
+// off the product name or every kit size groups as its own product.
+function zenithNames(rawName) {
+  const m = String(rawName).match(/^(.*?)\s*(\((?:\d+[\s-])?vial\s*kit\)|\(\d+[\s-]vial\s*kit\))\s*$/i);
+  const base = (m ? m[1] : rawName).trim();
+  const suffix = m ? ` ${m[2].trim()}` : "";
+  const canonical = ZENITH_PRODUCT_ALIASES[base.toLowerCase()] || base;
+  return { product: canonical, kitted: `${canonical}${suffix}` };
+}
+
 function zenithAdapter() {
   const vendor = "Zenith Bioscience";
   return {
@@ -434,7 +460,9 @@ function zenithAdapter() {
         const name = compact(item.name);
         if (!name || !item.productUrl) continue;
         const size = compact(item.size);
-        const listing = size ? `${name} - ${size}` : name;
+        const { product, kitted } = zenithNames(name);
+        const listing = size ? `${kitted} - ${size}` : kitted;
+        const rawListing = size ? `${name} - ${size}` : name;
         // The feed sends the regular price in `price` and only includes
         // `salePrice` when a sale is actually running, so the effective
         // charged price is salePrice when present. Every other vendor feed is
@@ -443,10 +471,10 @@ function zenithAdapter() {
         const effective = item.salePrice != null ? item.salePrice : item.price;
         products.push({
           company: vendor,
-          product: name,
+          product,
           listing,
           raw_product: name,
-          raw_listing: listing,
+          raw_listing: rawListing,
           price: money(effective),
           category: compact(item.category),
           sku: compact(item.sku) || null,

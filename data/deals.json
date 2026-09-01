@@ -100,42 +100,6 @@
       "affiliate_url": "https://peptidology.co/?ref=idifhsqu"
     },
     {
-      "priority": 310,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Glow Aminos",
-      "start_date": "2026-08-12",
-      "sale_percent": 40,
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "40% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "glow-aminos-40-open-ended",
-      "cta_text": "Shop Now",
-      "description": "Glow Aminos moved up to 40% off sitewide with no announced end date. Code SAMMYC stacks for an additional 15% off the reduced price, for 49% off in total. Free priority shipping over $150. Confirm final pricing at checkout.",
-      "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC"
-    },
-    {
-      "priority": 310,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Flawless Compounds",
-      "start_date": "2026-08-12",
-      "sale_percent": 40,
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "40% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "flawless-40-open-ended",
-      "cta_text": "Shop Now",
-      "description": "Flawless Compounds moved up to 40% off sitewide with no announced end date. Code SAMMYC stacks for an additional 15% off the reduced price, for 49% off in total. Free priority shipping over $150. Confirm final pricing at checkout.",
-      "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC"
-    },
-    {
       "priority": 305,
       "show_in": [
         "deals"
@@ -278,5 +242,5 @@
       "id": "aurora-labor-day-20-2026-09"
     }
   ],
-  "version": "2026-08-31-ion-flash-aurora-labor"
+  "version": "2026-08-31-zenith-aliases"
 }
