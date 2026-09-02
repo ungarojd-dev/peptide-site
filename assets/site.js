@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260901-labor-day-v88";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260901-labor-day-v89";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -951,17 +951,15 @@
     runUntil: "2026-09-09",
     eyebrow: "Labor Day Weekend",
     heading: "Labor Day sales are live",
-    body: "Seven vendor sales running through the long weekend, all tracked and normalized to cost per mg. Every one stacks with SAMMYC.",
+    body: "Seven sales across six vendors this weekend, all tracked and normalized to cost per mg.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board.
     rows: [
-      { vendor: "Glow Aminos", offer: "35% to 50% by cart size, SAMMYC 15%", when: "Sep 2 to 7" },
-      { vendor: "Flawless Compounds", offer: "35% to 50% by cart size, SAMMYC 15%", when: "Sep 2 to 7" },
+      { vendor: "Glow and Flawless", offer: "35% to 50% by cart size, SAMMYC 15%", when: "Sep 2 to 7" },
       { vendor: "Mile High Compounds", offer: "SAMMYC boosted to 35%", when: "Sep 3 to 9" },
-      { vendor: "Aurora Peptides", offer: "Buy 2 get 1 free, SAMMYC 20%", when: "Sep 4 to 6" },
-      { vendor: "Oneday Compounds", offer: "35% off, SAMMYC 10%", when: "through Sep 7" },
-      { vendor: "Peptira", offer: "35% off most, SAMMYC 15%", when: "through Sep 7" },
-      { vendor: "Aurora Peptides", offer: "20% off sitewide, SAMMYC 20%", when: "Sep 7 only" }
+      { vendor: "Aurora Peptides", offer: "Buy 2 get 1 free, then 20% off, SAMMYC 20%", when: "Sep 4 to 7" },
+      { vendor: "Oneday Compounds", offer: "35% off sitewide, SAMMYC 10%", when: "through Sep 7" },
+      { vendor: "Peptira", offer: "35% off most products, SAMMYC 15%", when: "through Sep 7" }
     ],
     code: "SAMMYC",
     codeLabel: "stacks on every sale",
@@ -1037,8 +1035,8 @@
     const rowsHtml = (CAMPAIGN.rows || []).map(function(r){
       return '<li class="ld-row">' +
         '<span class="ld-row-vendor">' + r.vendor + '</span>' +
-        '<span class="ld-row-offer">' + r.offer + '</span>' +
         '<span class="ld-row-when">' + r.when + '</span>' +
+        '<span class="ld-row-offer">' + r.offer + '</span>' +
       '</li>';
     }).join("");
     wrap.innerHTML =

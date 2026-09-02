@@ -1521,7 +1521,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260901-labor-day-v88") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260901-labor-day-v89") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -2006,12 +2006,35 @@ body.deals-panel-open { overflow: hidden; }
   color: #fff; box-shadow: 0 0 12px rgba(200,50,45,.6);
 }
 
+/* Caps the card at the viewport and lets only the deal list scroll, so the
+   code and the CTA stay on screen. Seven rows overflowed a phone and pushed
+   the heading off the top edge, which meant the primary action was unreachable
+   without scrolling a modal most people do not realise scrolls. */
+.partner-pop--laborday {
+  max-height: 92dvh;
+  display: flex; flex-direction: column;
+}
+.partner-pop--laborday .partner-pop-body {
+  display: flex; flex-direction: column; min-height: 0; overflow: hidden;
+}
+.partner-pop--laborday .ld-rows {
+  overflow-y: auto; min-height: 0;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: thin;
+}
+
 @media (max-width: 480px) {
-  .partner-pop--laborday { max-width: 100%; }
-  .partner-pop--laborday .partner-pop-body h2 { font-size: 20px; }
+  .partner-pop--laborday { max-width: 100%; max-height: 88dvh; }
+  .partner-pop--laborday .partner-pop-top { padding: 18px 18px 2px; }
+  .partner-pop--laborday .partner-pop-body { padding: 14px 18px 18px; }
+  .partner-pop--laborday .partner-pop-body h2 { font-size: 19px; margin-bottom: 6px; }
+  .partner-pop--laborday .partner-pop-body p { font-size: 13px; margin-bottom: 12px; }
+  .ld-rows { gap: 5px; margin-bottom: 12px; }
   .ld-row { padding: 8px 10px; }
   .ld-row-vendor { font-size: 12.5px; }
-  .ld-row-offer { font-size: 12px; }
+  .ld-row-offer { font-size: 11.5px; }
+  .ld-row-when { font-size: 10px; }
+  .partner-pop--laborday .partner-pop-note { font-size: 10.5px; margin-top: 10px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ld-sweep { animation: none; opacity: .5; }
