@@ -300,7 +300,45 @@
       "description": "Solyn Labs is taking 30% off automatically from September 3 through September 7, no code needed. Code SAMMYC stacks for an additional 10% off the reduced price. Confirm final pricing at checkout.",
       "affiliate_url": "https://solyn.com/?ref=SammyC",
       "id": "solyn-labor-day-30-2026-09"
+    },
+    {
+      "priority": 317,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "LabSourced Peptides",
+      "start_date": "2026-09-02",
+      "sale_percent": 30,
+      "end_date": "2026-09-08",
+      "code": "SAMMYC",
+      "code_percent": 20,
+      "headline": "Labor Day, 30% off sitewide, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "LabSourced Peptides is running 30% off sitewide from September 2 through September 8. Code SAMMYC is boosted to 20% for the sale and stacks on the reduced price, and paying by Zelle takes a further 5% off. Confirm final pricing at checkout.",
+      "affiliate_url": "https://labsourced.com/?ref=SammyC",
+      "id": "labsourced-labor-day-30-2026-09"
+    },
+    {
+      "priority": 304,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Coffee and Peppers",
+      "start_date": "2026-09-03",
+      "sale_percent": 10,
+      "end_date": "2026-09-07",
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Labor Day, 10% to 25% off by cart size, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Coffee and Peppers is running a Labor Day sale from September 3 through September 7. The sitewide discount scales with cart subtotal: 10% off to start, 15% over $150, 20% plus free shipping at $350, and 25% plus free shipping over $500. Code SAMMYC stacks for an additional 15% off on every tier. Confirm final pricing at checkout.",
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "id": "coffee-labor-day-tiered-2026-09"
     }
   ],
-  "version": "2026-09-02-labor-day-full"
+  "version": "2026-09-02-labor-day-labsourced-coffee"
 }
