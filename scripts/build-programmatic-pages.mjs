@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260901-labor-day-v89";
+const VER = "20260902-labor-day-v90";
 const TODAY = "July 2026";
 const VALID_UNTIL = "2026-08-31";
 const BASE = "https://mypeptideprice.com";

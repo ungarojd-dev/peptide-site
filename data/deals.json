@@ -36,24 +36,6 @@
       "show_in": [
         "deals"
       ],
-      "vendor": "Aurora Peptides",
-      "start_date": "2026-08-01",
-      "sale_percent": 15,
-      "end_date": "2026-08-31",
-      "code_percent": 20,
-      "headline": "SAMMYC permanently boosted to 20%, stacks with 15% off sitewide",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "aurora-peptides-august-15-stack-2026",
-      "cta_text": "Shop Aurora Peptides",
-      "description": "Aurora Peptides has permanently raised code SAMMYC from 15% to 20% off. Through August 31 it stacks on top of their 15% sitewide sale. After the sale ends the 20% code stays for good. Confirm final pricing at checkout.",
-      "affiliate_url": "https://aurora-peptides.com/?ref=102",
-      "priority": 240
-    },
-    {
-      "show_in": [
-        "deals"
-      ],
       "vendor": "Solyn Labs",
       "start_date": "",
       "end_date": "",
@@ -119,24 +101,6 @@
       "id": "oneday-labor-day-35-2026-09"
     },
     {
-      "priority": 315,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "LabSourced Peptides",
-      "start_date": "2026-08-17",
-      "end_date": "2026-08-31",
-      "code": "SAMMYC",
-      "code_percent": 20,
-      "headline": "BOGO sitewide, SAMMYC takes 20% here",
-      "timezone": "America/New_York",
-      "type": "code_only",
-      "id": "labsourced-bogo-august",
-      "cta_text": "Shop Now",
-      "description": "Buy one get one free sitewide at LabSourced through August 31. Code SAMMYC is worth a full 20% here, the biggest code rate on the board. Paying by Zelle takes another 5% off, and bulk pricing adds up to 10% more. Confirm final pricing at checkout.",
-      "affiliate_url": "https://labsourcedpeptides.com/?ref=sammyc"
-    },
-    {
       "code": "SAMMYC",
       "timezone": "America/New_York",
       "show_in": [
@@ -185,25 +149,6 @@
       "description": "Peptira is running 35% off most products through September 7. Code SAMMYC stacks for an additional 15% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
       "affiliate_url": "https://peptira.com/?ref=SAMMYC",
       "end_date": "2026-09-07"
-    },
-    {
-      "priority": 318,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Ion Peptide",
-      "start_date": "2026-08-30",
-      "sale_percent": 20,
-      "end_date": "2026-08-31",
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Flash sale, 20% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Ion Peptide is running an end of month flash sale, 20% off sitewide through Monday night. Code SAMMYC stacks for another 15% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
-      "affiliate_url": "https://ionpeptide.com?ref=SammyC",
-      "id": "ion-flash-20-2026-08-31"
     },
     {
       "priority": 312,
@@ -298,7 +243,64 @@
       "description": "Flawless Compounds is running a Labor Day sale from September 2 through September 7. The sitewide discount applies automatically at checkout based on cart subtotal: 35% off up to $299, 45% off from $300 to $399, and 50% off at $400 and above. Code SAMMYC stacks for an additional 15% off the reduced price. Confirm final pricing at checkout.",
       "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
       "id": "flawless-labor-day-tiered-2026-09"
+    },
+    {
+      "priority": 322,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Southern Aminos",
+      "start_date": "2026-09-05",
+      "sale_percent": 50,
+      "end_date": "2026-09-07",
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Labor Day, 50% off sitewide, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Southern Aminos is running 50% off sitewide from September 5 through September 7. Code SAMMYC stacks for an additional 15% off the reduced price, and bulk tiered discounts apply on top. Confirm final pricing at checkout.",
+      "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
+      "id": "southern-labor-day-50-2026-09"
+    },
+    {
+      "priority": 316,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Iron Protocol",
+      "start_date": "2026-09-02",
+      "sale_percent": 35,
+      "end_date": "2026-09-07",
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Labor Day sale, 35% to 50% off by cart size, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Iron Protocol is running a Labor Day sale from September 2 through September 7. The sitewide discount applies automatically at checkout based on cart subtotal: 35% off up to $299, 45% off from $300 to $399, and 50% off at $400 and above. Code SAMMYC stacks for an additional 15% off the reduced price. Confirm final pricing at checkout.",
+      "affiliate_url": "https://ironprotocol.com/ref/samcolao2296/",
+      "id": "iron-labor-day-tiered-2026-09"
+    },
+    {
+      "priority": 306,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Solyn Labs",
+      "start_date": "2026-09-03",
+      "sale_percent": 30,
+      "end_date": "2026-09-07",
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "Labor Day, 30% off automatically, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Solyn Labs is taking 30% off automatically from September 3 through September 7, no code needed. Code SAMMYC stacks for an additional 10% off the reduced price. Confirm final pricing at checkout.",
+      "affiliate_url": "https://solyn.com/?ref=SammyC",
+      "id": "solyn-labor-day-30-2026-09"
     }
   ],
-  "version": "2026-09-01-labor-day-glow-flawless"
+  "version": "2026-09-02-labor-day-full"
 }

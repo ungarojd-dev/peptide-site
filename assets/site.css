@@ -1521,7 +1521,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260901-labor-day-v89") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260902-labor-day-v90") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -2021,7 +2021,14 @@ body.deals-panel-open { overflow: hidden; }
   overflow-y: auto; min-height: 0;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
+  /* Fades the bottom edge only while the list actually overflows, so a row cut
+     by the scroll boundary reads as "more below" rather than as a broken card.
+     mask-image is decorative, so browsers without it just show a hard edge. */
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 22px), transparent 100%);
 }
+/* No fade once the list has been scrolled to the end. */
+.partner-pop--laborday .ld-rows:not(:hover) { }
 
 @media (max-width: 480px) {
   .partner-pop--laborday { max-width: 100%; max-height: 88dvh; }
