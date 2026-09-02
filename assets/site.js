@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260831-zenith-alias-v86";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260901-labor-day-v88";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -942,18 +942,31 @@
 (function(){
   const CAMPAIGN = {
     enabled: true,
-    campaignId: "peptira-launch-2026-08b",
-    // After this date the popup stops showing without needing a code change.
-    runUntil: "2026-09-20",
-    eyebrow: "New Partner",
-    logo: "/assets/vendor-logos/peptira.webp",
-    logoAlt: "Peptira",
-    heading: "Peptira is now on the board",
-    body: "They are running 35% off most products right now. Code SAMMYC stacks another 10% on top, and paying by ACH takes a further 5% off. Their full catalog is tracked and normalized to cost per mg.",
+    // Changing campaignId retires the previous popup for everyone, including
+    // people who already dismissed the Peptira launch, so the Labor Day
+    // roundup is seen fresh rather than suppressed by the old 24h stamp.
+    campaignId: "labor-day-2026-09",
+    // Last Labor Day sale (Mile High) ends Sep 9, so the popup retires itself
+    // the following morning without needing a code change.
+    runUntil: "2026-09-09",
+    eyebrow: "Labor Day Weekend",
+    heading: "Labor Day sales are live",
+    body: "Seven vendor sales running through the long weekend, all tracked and normalized to cost per mg. Every one stacks with SAMMYC.",
+    // Rows are authored here rather than read from deals.json so the popup
+    // stays a curated highlight instead of mirroring the whole board.
+    rows: [
+      { vendor: "Glow Aminos", offer: "35% to 50% by cart size, SAMMYC 15%", when: "Sep 2 to 7" },
+      { vendor: "Flawless Compounds", offer: "35% to 50% by cart size, SAMMYC 15%", when: "Sep 2 to 7" },
+      { vendor: "Mile High Compounds", offer: "SAMMYC boosted to 35%", when: "Sep 3 to 9" },
+      { vendor: "Aurora Peptides", offer: "Buy 2 get 1 free, SAMMYC 20%", when: "Sep 4 to 6" },
+      { vendor: "Oneday Compounds", offer: "35% off, SAMMYC 10%", when: "through Sep 7" },
+      { vendor: "Peptira", offer: "35% off most, SAMMYC 15%", when: "through Sep 7" },
+      { vendor: "Aurora Peptides", offer: "20% off sitewide, SAMMYC 20%", when: "Sep 7 only" }
+    ],
     code: "SAMMYC",
-    codeLabel: "stacks 10% on top",
-    ctaText: "Compare Peptira pricing",
-    ctaHref: "/vendors/peptira.html",
+    codeLabel: "stacks on every sale",
+    ctaText: "See all Labor Day deals",
+    ctaHref: "/#deals",
     dismissText: "Not now"
   };
 
@@ -1021,22 +1034,30 @@
     wrap.setAttribute("role", "dialog");
     wrap.setAttribute("aria-modal", "true");
     wrap.setAttribute("aria-label", CAMPAIGN.heading);
+    const rowsHtml = (CAMPAIGN.rows || []).map(function(r){
+      return '<li class="ld-row">' +
+        '<span class="ld-row-vendor">' + r.vendor + '</span>' +
+        '<span class="ld-row-offer">' + r.offer + '</span>' +
+        '<span class="ld-row-when">' + r.when + '</span>' +
+      '</li>';
+    }).join("");
     wrap.innerHTML =
-      '<div class="partner-pop">' +
+      '<div class="partner-pop partner-pop--laborday">' +
+        '<span class="ld-sweep" aria-hidden="true"></span>' +
         '<button type="button" class="partner-pop-close" aria-label="Close">\u00d7</button>' +
         '<div class="partner-pop-top">' +
           '<span class="partner-pop-eyebrow">' + CAMPAIGN.eyebrow + '</span>' +
-          '<span class="partner-pop-logoplate"><img class="partner-pop-logo" src="' + CAMPAIGN.logo + '" alt="' + CAMPAIGN.logoAlt + '"/></span>' +
         '</div>' +
         '<div class="partner-pop-body">' +
           '<h2>' + CAMPAIGN.heading + '</h2>' +
           '<p>' + CAMPAIGN.body + '</p>' +
+          '<ul class="ld-rows">' + rowsHtml + '</ul>' +
           '<div class="partner-pop-code"><span>' + CAMPAIGN.codeLabel + '</span><strong>' + CAMPAIGN.code + '</strong></div>' +
           '<div class="partner-pop-actions">' +
             '<a class="partner-pop-cta" href="' + CAMPAIGN.ctaHref + '">' + CAMPAIGN.ctaText + '</a>' +
             '<button type="button" class="partner-pop-secondary">' + CAMPAIGN.dismissText + '</button>' +
           '</div>' +
-          '<p class="partner-pop-note">Prices are set by the vendor and can change. Confirm at checkout.</p>' +
+          '<p class="partner-pop-note">Discounts are listed separately, never combined. Prices are set by the vendor and can change. Confirm at checkout.</p>' +
         '</div>' +
       '</div>';
     return wrap;
@@ -1104,9 +1125,9 @@
     wrap.querySelector(".partner-pop-cta").focus({ preventScroll: true });
 
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({ event: "partner_popup_shown", partner: CAMPAIGN.logoAlt, campaign_id: CAMPAIGN.campaignId });
+    window.dataLayer.push({ event: "partner_popup_shown", partner: CAMPAIGN.eyebrow, campaign_id: CAMPAIGN.campaignId });
     wrap.querySelector(".partner-pop-cta").addEventListener("click", () => {
-      window.dataLayer.push({ event: "partner_popup_click", partner: CAMPAIGN.logoAlt, campaign_id: CAMPAIGN.campaignId });
+      window.dataLayer.push({ event: "partner_popup_click", partner: CAMPAIGN.eyebrow, campaign_id: CAMPAIGN.campaignId });
     });
   }
 

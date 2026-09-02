@@ -176,14 +176,15 @@
       "start_date": "2026-08-21",
       "sale_percent": 35,
       "code": "SAMMYC",
-      "code_percent": 10,
-      "headline": "35% off most products, stacks with SAMMYC",
+      "code_percent": 15,
+      "headline": "Warehouse sale, 35% off most products, stacks with SAMMYC",
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "id": "peptira-warehouse-35",
       "cta_text": "Shop Now",
-      "description": "35% off most products at Peptira while supplies last. Code SAMMYC stacks for another 10% off the reduced price, and paying by ACH takes a further 5% off. Applied in sequence that works out to roughly 44% off before shipping. Not every product is included in the 35% tier, so confirm final pricing at checkout.",
-      "affiliate_url": "https://peptira.com/?ref=SAMMYC"
+      "description": "Peptira is running 35% off most products through September 7. Code SAMMYC stacks for an additional 15% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
+      "affiliate_url": "https://peptira.com/?ref=SAMMYC",
+      "end_date": "2026-09-07"
     },
     {
       "priority": 318,
@@ -240,7 +241,64 @@
       "description": "Aurora Peptides is running 20% off sitewide on September 7 to close out their Labor Day sale. Code SAMMYC is worth a full 20% here and stacks on top of the sale price. Confirm final pricing at checkout.",
       "affiliate_url": "https://aurora-peptides.com/?ref=102",
       "id": "aurora-labor-day-20-2026-09"
+    },
+    {
+      "priority": 308,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Mile High Peptides",
+      "display_vendor": "Mile High Compounds",
+      "start_date": "2026-09-03",
+      "end_date": "2026-09-09",
+      "code": "SAMMYC",
+      "code_percent": 35,
+      "headline": "SAMMYC boosted to 35% off for Labor Day",
+      "timezone": "America/Denver",
+      "type": "code_only",
+      "cta_text": "Shop Now",
+      "description": "Mile High Compounds is boosting code SAMMYC to 35% off from September 3 through September 9. Confirm final pricing at checkout.",
+      "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
+      "id": "mile-high-labor-day-35-2026-09"
+    },
+    {
+      "priority": 316,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Glow Aminos",
+      "start_date": "2026-09-02",
+      "sale_percent": 35,
+      "end_date": "2026-09-07",
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Labor Day sale, 35% to 50% off by cart size, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Glow Aminos is running a Labor Day sale from September 2 through September 7. The sitewide discount applies automatically at checkout based on cart subtotal: 35% off up to $299, 45% off from $300 to $399, and 50% off at $400 and above. Code SAMMYC stacks for an additional 15% off the reduced price. Confirm final pricing at checkout.",
+      "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
+      "id": "glow-labor-day-tiered-2026-09"
+    },
+    {
+      "priority": 316,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Flawless Compounds",
+      "start_date": "2026-09-02",
+      "sale_percent": 35,
+      "end_date": "2026-09-07",
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Labor Day sale, 35% to 50% off by cart size, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Flawless Compounds is running a Labor Day sale from September 2 through September 7. The sitewide discount applies automatically at checkout based on cart subtotal: 35% off up to $299, 45% off from $300 to $399, and 50% off at $400 and above. Code SAMMYC stacks for an additional 15% off the reduced price. Confirm final pricing at checkout.",
+      "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
+      "id": "flawless-labor-day-tiered-2026-09"
     }
   ],
-  "version": "2026-08-31-zenith-aliases"
+  "version": "2026-09-01-labor-day-glow-flawless"
 }
