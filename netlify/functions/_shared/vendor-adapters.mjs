@@ -505,7 +505,6 @@ export const WOO_VENDOR_API_CONFIG = [
   { vendor: "Solyn Labs", base: "https://solyn.com/wp-json/wc/v3", ckEnv: "SOLYN_CK", csEnv: "SOLYN_CS" },
   { vendor: "Oneday Compounds", base: `${(process.env.ONEDAY_BASE_URL || "https://onedaycompounds.net").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "ONEDAY_CK", csEnv: "ONEDAY_CS" },
   { vendor: "Coffee and Peppers", base: "https://coffeeandpeppers.com/wp-json/wc/v3", ckEnv: "COFFEEANDPEPPERS_CK", csEnv: "COFFEEANDPEPPERS_CS" },
-  { vendor: "Bioedge Research Labs", base: "https://bioedgeresearchlabs.com/wp-json/wc/v3", ckEnv: "BIOEDGE_CK", csEnv: "BIOEDGE_CS" },
   { vendor: "High Tide Compounds", base: "https://hightidecompounds.com/wp-json/wc/v3", ckEnv: "HIGHTIDE_CK", csEnv: "HIGHTIDE_CS" },
   { vendor: "Disguised Alpha", base: "https://disguisedalpha.com/wp-json/wc/v3", ckEnv: "DISGUISEDALPHA_CK", csEnv: "DISGUISEDALPHA_CS" },
   { vendor: "Iron Protocol", base: `${(process.env.IRON_PROTOCOL_BASE_URL || "https://ironprotocol.com").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "IRON_PROTOCOL_CK", csEnv: "IRON_PROTOCOL_CS" },
@@ -531,7 +530,6 @@ export const VENDOR_ADAPTERS = [
   wooAdapter({ vendor: "Solyn Labs", base: "https://solyn.com/wp-json/wc/v3", ckEnv: "SOLYN_CK", csEnv: "SOLYN_CS", affiliateUrl: configUrl("Solyn Labs"), alwaysUseAffiliateUrl: true }),
   wooAdapter({ vendor: "Oneday Compounds", base: `${(process.env.ONEDAY_BASE_URL || "https://onedaycompounds.net").replace(/\/+$/, "")}/wp-json/wc/v3`, ckEnv: "ONEDAY_CK", csEnv: "ONEDAY_CS", affiliateUrl: process.env.ONEDAY_AFFILIATE_URL || configUrl("Oneday Compounds"), alwaysUseAffiliateUrl: true }),
   wooAdapter({ vendor: "Coffee and Peppers", base: "https://coffeeandpeppers.com/wp-json/wc/v3", ckEnv: "COFFEEANDPEPPERS_CK", csEnv: "COFFEEANDPEPPERS_CS", affiliateUrl: configUrl("Coffee and Peppers"), affiliateParams: { coupon: "sammyc" } }),
-  wooAdapter({ vendor: "Bioedge Research Labs", base: "https://bioedgeresearchlabs.com/wp-json/wc/v3", ckEnv: "BIOEDGE_CK", csEnv: "BIOEDGE_CS", affiliateUrl: configUrl("Bioedge Research Labs"), affiliateParams: { aff: "1005717" } }),
   wooAdapter({ vendor: "High Tide Compounds", base: "https://hightidecompounds.com/wp-json/wc/v3", ckEnv: "HIGHTIDE_CK", csEnv: "HIGHTIDE_CS", affiliateUrl: configUrl("High Tide Compounds"), affiliateParams: { aff: "44" } }),
   wooAdapter({ vendor: "Disguised Alpha", base: "https://disguisedalpha.com/wp-json/wc/v3", ckEnv: "DISGUISEDALPHA_CK", csEnv: "DISGUISEDALPHA_CS", affiliateUrl: configUrl("Disguised Alpha"), affiliateParams: { coupon: "sammyc" } }),
   // Iron Protocol attributes through a path-based referral link

@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260903-ticker-merge-v97";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260903-eo-api-v2-v100";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -414,7 +414,7 @@
     if(subline)subline.innerHTML=`<button class="sale-view-all" type="button" data-deals-scroll>View all deals →</button>`;
     const scrollToDeals=event=>{
       event.preventDefault();
-      const target=document.querySelector("#deals");
+      const target=document.querySelector("#compare");
       if(target){
         const sticky=document.querySelector(".sticky-stack");
         const stickyHeight=sticky?sticky.getBoundingClientRect().height:0;
@@ -429,22 +429,14 @@
     // show_in_announcement_rolodex, which was set by ticking "Deal carousel",
     // so ticking "Announcement strip" did nothing and only entries whose tube
     // happened to be "New partner" or whose vendor matched "skool" ever showed.
-    // Now also rotates live deals, because the deal carousel was removed and
-    // this bar is the only always-visible deals surface left. Without this the
-    // Labor Day entries, which are flagged show_in_deals rather than
-    // show_in_announcement, would appear nowhere until someone opened the
-    // drawer. Deduped by id so an entry ticked for both does not repeat.
-    const announcementPromos=promotions
-      .filter(p=>p.show_in_announcement===true||p.show_in_deals===true)
-      .filter((p,i,arr)=>arr.findIndex(q=>(q.id||q.headline)===(p.id||p.headline))===i)
-      .sort((a,b)=>Number(b.priority||0)-Number(a.priority||0));
+    const announcementPromos=promotions.filter(p=>p.show_in_announcement===true).sort((a,b)=>Number(b.priority||0)-Number(a.priority||0));
     const slides=[{static:true},...announcementPromos];
     let current=0;let autoTimer;
     const render=()=>{
       const slide=slides[current];
       saleCard.classList.toggle("sale-deal-card--promo",!slide.static);
       if(slide.static){
-        saleCard.href="#deals";
+        saleCard.href="#compare";
         saleCard.removeAttribute("target");
         saleCard.removeAttribute("rel");
         saleCard.removeAttribute("data-vendor");
@@ -977,7 +969,7 @@
     code: "SAMMYC",
     codeLabel: "stacks on every sale",
     ctaText: "See all Labor Day deals",
-    ctaHref: "/#deals",
+    ctaHref: "/#compare",
     dismissText: "Not now"
   };
 

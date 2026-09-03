@@ -202,22 +202,6 @@
       },
       "package_protection_required": false
     },
-    "Bioedge Research Labs": {
-      "id": "bioedge-research-labs",
-      "discount_percent": 15,
-      "affiliate_url": "https://bioedgeresearchlabs.com/?aff=1005717",
-      "logo": "/assets/vendor-logos/bioedge-research-labs.webp",
-      "use_product_deep_links": true,
-      "payment_methods": [
-        "Visa",
-        "Discover",
-        "American Express",
-        "ACH",
-        "Cash App"
-      ],
-      "brand_color": "#1462d7",
-      "package_protection_required": false
-    },
     "High Tide Compounds": {
       "id": "high-tide-compounds",
       "discount_percent": 10,

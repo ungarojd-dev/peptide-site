@@ -22,15 +22,15 @@
   <meta name="twitter:title" content="Peptide Price Comparison Tool | Compare $/mg Across 19 Vendors"/>
   <meta name="twitter:description" content="Free peptide price comparison tool. Compare research peptide prices and cost per mg across 19 verified vendors, with live pricing and after-code totals. Updated continuously."/>
   <meta name="twitter:image" content="https://mypeptideprice.com/og-image-2026-rebrand.png"/>
-  <link rel="icon" href="/favicon.ico?v=20260903-ticker-merge-v97" sizes="any"/>
-  <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260903-ticker-merge-v97"/>
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260903-ticker-merge-v97"/>
+  <link rel="icon" href="/favicon.ico?v=20260903-eo-api-v2-v100" sizes="any"/>
+  <link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260903-eo-api-v2-v100"/>
+  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260903-eo-api-v2-v100"/>
   <link rel="manifest" href="/site.webmanifest"/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
   <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="/assets/site.css?v=20260903-ticker-merge-v97"/>
-  <link rel="stylesheet" href="/assets/catalog.css?v=20260903-ticker-merge-v97"/>
+  <link rel="stylesheet" href="/assets/site.css?v=20260903-eo-api-v2-v100"/>
+  <link rel="stylesheet" href="/assets/catalog.css?v=20260903-eo-api-v2-v100"/>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"WebSite","name":"MyPeptidePrice.com","url":"https://mypeptideprice.com/","description":"Independent research peptide price comparison across tracked vendors.","potentialAction":{"@type":"SearchAction","target":"https://mypeptideprice.com/?q={search_term_string}","query-input":"required name=search_term_string"}}</script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"Organization","@id":"https://mypeptideprice.com/#organization","name":"MyPeptidePrice.com","url":"https://mypeptideprice.com/","logo":{"@type":"ImageObject","url":"https://mypeptideprice.com/assets/brand/logo-full-lockup.png"},"description":"MyPeptidePrice.com is an independent research peptide price comparison website. It compares research peptide pricing and cost per mg across tracked vendors. It does not sell products or process orders.","email":"contact@mypeptideprice.com","foundingDate":"2025","knowsAbout":["research peptide price comparison","cost per mg comparison","peptide vendor pricing","GLP-1 research compounds"],"contactPoint":{"@type":"ContactPoint","email":"contact@mypeptideprice.com","contactType":"customer support"}}</script>
   <!-- Google Tag Manager -->
@@ -51,7 +51,7 @@
   <div class="top-inner">
     <a class="brand premium-brand" href="/" aria-label="MyPeptidePrice home">
       <span class="brand-mark-wrap" aria-hidden="true">
-        <img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260903-ticker-merge-v97" alt="" width="34" height="34" style="width:100%;height:100%;object-fit:contain;"/>
+        <img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260903-eo-api-v2-v100" alt="" width="34" height="34" style="width:100%;height:100%;object-fit:contain;"/>
       </span>
       <span class="brand-copy">
         <span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span>
@@ -90,7 +90,7 @@
     <span class="announce-vendor" data-announce-vendor-name hidden></span>
     <span class="announce-sep" data-announce-sep hidden></span>
     <span class="announce-text" data-announce-text>Current vendor deals active</span>
-    <button class="announce-link" type="button" data-deals-open aria-haspopup="dialog">View deals</button>
+    <a class="announce-link" href="#compare" data-fathers-day-scroll>View deals</a>
   </div>
 </div>
 </div>
@@ -313,7 +313,7 @@
   <div class="footer-inner">
     <div>
       <div class="footer-brand premium-footer-brand">
-        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260903-ticker-merge-v97" alt="" width="34" height="34" loading="lazy" style="width:100%;height:100%;object-fit:contain;"/></span>
+        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260903-eo-api-v2-v100" alt="" width="34" height="34" loading="lazy" style="width:100%;height:100%;object-fit:contain;"/></span>
         <div><div class="footer-wordmark"><span class="footer-brand-my">my</span><span class="footer-brand-peptide">peptide</span><span class="footer-brand-price">price</span><span class="footer-brand-dot">.com</span></div><div class="footer-tagline">Research. Compare. Save.</div></div>
       </div>
       <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
@@ -325,8 +325,8 @@
   <div class="footer-bottom">© <span data-year></span> MyPeptidePrice.com. For research comparison purposes only. Not medical advice.</div>
 </footer>
 
-<script src="/assets/site.js?v=20260903-ticker-merge-v97"></script>
-<script src="/assets/catalog-ui.js?v=20260903-ticker-merge-v97"></script>
+<script src="/assets/site.js?v=20260903-eo-api-v2-v100"></script>
+<script src="/assets/catalog-ui.js?v=20260903-eo-api-v2-v100"></script>
 <script>
 (function(){
   var heroInput=document.getElementById('heroSearch');
@@ -424,7 +424,11 @@
       // hardcode strip_tube==='New partner' or a vendor name matching skool,
       // which meant nothing ticked in the admin portal could ever reach this
       // bar: only Orbitrex and Skool satisfied those two accidents.
-      return p.show_in_announcement===true;
+      // Also accepts deals now. The deal carousel was removed, so this bar is
+      // the only always-visible deals surface left, and the Labor Day entries
+      // are flagged show_in_deals rather than show_in_announcement. Without
+      // this they appear nowhere until someone opens the drawer.
+      return p.show_in_announcement===true||p.show_in_deals===true;
     });
     // Urgent deals always earn a slot. Remaining slots go to the biggest
     // verified discounts so evergreen deals are not permanently excluded.
@@ -476,7 +480,7 @@
       if(nameEl){ nameEl.textContent=s.vendor||''; nameEl.hidden=!s.vendor; }
       if(sepEl){ sepEl.hidden=!s.vendor; }
       if(s.scroll){
-        linkEl.setAttribute('href','#deals');
+        linkEl.setAttribute('href','#compare');
         linkEl.setAttribute('data-fathers-day-scroll','');
         linkEl.removeAttribute('target');linkEl.removeAttribute('rel');linkEl.removeAttribute('data-announce-vendor');
       }else{
@@ -505,7 +509,7 @@
       var s=announceState.slides[announceState.i];
       if(s.scroll){
         event.preventDefault();
-        var target=document.querySelector('#deals');
+        var target=document.querySelector('#compare');
         if(target){
           var offset=window.matchMedia('(max-width: 700px)').matches?86:98;
           var top=target.getBoundingClientRect().top+window.pageYOffset-offset;
@@ -523,7 +527,7 @@
     document.querySelectorAll('[data-fathers-day-scroll]').forEach(function(link){
       link.addEventListener('click',function(event){
         event.preventDefault();
-        var target=document.querySelector('#deals');
+        var target=document.querySelector('#compare');
         if(target){
           var offset=window.matchMedia('(max-width: 700px)').matches?86:98;
           var top=target.getBoundingClientRect().top+window.pageYOffset-offset;

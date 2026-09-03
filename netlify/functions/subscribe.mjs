@@ -1,20 +1,24 @@
 // Subscribes an address to the EmailOctopus list.
 //
+// Uses API v2. v1.6 is legacy and rejects the newer eo_ prefixed keys, which
+// surfaced as a misleading "invalid email address" because the old code mapped
+// the upstream parameter error onto the email field. v2 takes the key as a
+// Bearer header and lowercase status values.
+//
 // Double opt-in on purpose: EmailOctopus does not prohibit our category, but
 // its acceptable use policy turns on consent rather than industry, and
 // affiliate senders get extra scrutiny at account review. A confirmed opt-in is
-// the record that survives that review, and it keeps the list clean enough to
-// stay deliverable. Single opt-in would convert better and is not worth it here.
+// the record that survives that review, and it keeps the list deliverable.
 //
 // Credentials live in Netlify env vars only. The repo is public.
 //   EMAILOCTOPUS_API_KEY
 //   EMAILOCTOPUS_LIST_ID
 
 const TIMEOUT_MS = 10000;
+const API_BASE = "https://api.emailoctopus.com";
 
 // Deliberately permissive. Address validity is proven by the confirmation
-// click, not by a clever regex, so this only catches obvious typos and keeps
-// junk out of the API call.
+// click, not by a clever regex, so this only catches obvious typos.
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
 
 function json(statusCode, body) {
@@ -43,7 +47,7 @@ export async function handler(event) {
   }
 
   // Honeypot. Real people never fill a hidden field, bots fill everything.
-  // Returns success rather than an error so the bot has nothing to learn from.
+  // Returns success so the bot has nothing to learn from the response.
   if (payload.company) return json(200, { ok: true });
 
   const email = String(payload.email || "").trim().toLowerCase();
@@ -58,31 +62,46 @@ export async function handler(event) {
   const timer = setTimeout(() => controller.abort(), TIMEOUT_MS);
   try {
     const res = await fetch(
-      `https://emailoctopus.com/api/1.6/lists/${encodeURIComponent(listId)}/contacts`,
+      `${API_BASE}/lists/${encodeURIComponent(listId)}/contacts`,
       {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
         signal: controller.signal,
+        headers: {
+          "Content-Type": "application/json",
+          Accept: "application/json",
+          Authorization: `Bearer ${apiKey}`
+        },
         body: JSON.stringify({
-          api_key: apiKey,
           email_address: email,
-          // PENDING triggers EmailOctopus's own confirmation email, so the
-          // double opt-in is handled by them rather than reimplemented here.
-          status: "PENDING",
+          // Lowercase in v2. Triggers EmailOctopus's own confirmation email, so
+          // the double opt-in is handled by them rather than rebuilt here.
+          status: "pending",
           fields: { Source: String(payload.source || "site").slice(0, 60) }
         })
       }
     );
-    const data = await res.json().catch(() => ({}));
 
     if (res.ok) return json(200, { ok: true });
 
-    const code = data?.error?.code || "";
-    // An already-subscribed address is not an error worth surfacing. Telling a
-    // stranger whether a given address is on the list would leak membership, so
-    // both cases get the same confirmation copy.
-    if (code === "MEMBER_EXISTS_WITH_EMAIL_ADDRESS") return json(200, { ok: true });
-    if (code === "INVALID_PARAMETERS") return json(400, { error: "Please enter a valid email address." });
+    const data = await res.json().catch(() => ({}));
+    const code = String(data?.error?.code || data?.code || "");
+
+    // Already on the list is not a real failure. Telling a stranger whether a
+    // given address is subscribed would leak membership, so this returns the
+    // same confirmation copy as a new signup.
+    if (res.status === 409 || /CONFLICT|MEMBER_EXISTS/i.test(code)) {
+      return json(200, { ok: true });
+    }
+    // Only a genuine validation rejection should blame the email field. Auth
+    // and config failures previously fell through to this message and sent
+    // people re-typing a perfectly good address.
+    if (res.status === 422 || /INVALID_PARAMETERS|VALIDATION/i.test(code)) {
+      return json(400, { error: "Please enter a valid email address." });
+    }
+    if (res.status === 401 || res.status === 403) {
+      console.error("subscribe: auth rejected by EmailOctopus", res.status, code);
+      return json(502, { error: "Signup is temporarily unavailable. Please try again later." });
+    }
 
     console.error("subscribe: EmailOctopus error", res.status, code);
     return json(502, { error: "Signup is temporarily unavailable. Please try again later." });
