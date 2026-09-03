@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260903-subscribe-logging-v102";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260903-instant-labor-day-v103";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -952,7 +952,7 @@
     runUntil: "2026-09-09",
     eyebrow: "Labor Day Weekend",
     heading: "Labor Day sales are live",
-    body: "Eleven sales across ten vendors this weekend, all tracked and normalized to cost per mg.",
+    body: "Twelve sales across eleven vendors this weekend, all tracked and normalized to cost per mg.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board.
     rows: [
@@ -964,7 +964,12 @@
       { vendor: "Oneday Compounds", offer: "35% off sitewide, SAMMYC 10%", when: "through Sep 7" },
       { vendor: "Peptira", offer: "35% off most products, SAMMYC 15%", when: "through Sep 7" },
       { vendor: "Solyn Labs", offer: "30% off automatically, SAMMYC 10%", when: "Sep 3 to 7" },
-      { vendor: "Coffee and Peppers", offer: "10% to 25% by cart size, SAMMYC 15%", when: "Sep 3 to 7" }
+      { vendor: "Coffee and Peppers", offer: "10% to 25% by cart size, SAMMYC 15%", when: "Sep 3 to 7" },
+      // Quantity tiers, not a percentage off, so this row states the tiers and
+      // omits a code figure. Whether SAMMYC survives a buy-more-get-more promo
+      // is vendor specific and unconfirmed here, and the shared codeLabel below
+      // already carries the code message for the sales that do stack.
+      { vendor: "Instant Peptides", offer: "Buy 4 get 1 free, buy 10 get 10 free", when: "Sep 4 to 7" }
     ],
     code: "SAMMYC",
     codeLabel: "stacks on every sale",
