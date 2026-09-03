@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260903-eo-api-v2-v100";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260903-honeypot-fix-v101";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -1254,7 +1254,7 @@ function renderSignupProof(promotions){
         body: JSON.stringify({
           email,
           consent: true,
-          company: form.querySelector('input[name="company"]').value,
+          hp: (form.querySelector('input[name="mpp_hp"]')||{}).value||"",
           source: "homepage"
         })
       });

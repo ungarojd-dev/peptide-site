@@ -48,7 +48,14 @@ export async function handler(event) {
 
   // Honeypot. Real people never fill a hidden field, bots fill everything.
   // Returns success so the bot has nothing to learn from the response.
-  if (payload.company) return json(200, { ok: true });
+  //
+  // Logged before returning, because when this fired silently on autofilled
+  // "company" values there was no trace of why a signup vanished: the function
+  // returned 200, wrote nothing, and no contact was ever created.
+  if (payload.hp) {
+    console.warn("subscribe: honeypot triggered, request dropped");
+    return json(200, { ok: true });
+  }
 
   const email = String(payload.email || "").trim().toLowerCase();
   if (!EMAIL_RE.test(email) || email.length > 254) {
