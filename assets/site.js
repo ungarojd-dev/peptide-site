@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260903-email-logos-v107";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260903-price-alerts-page-v110";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -1261,7 +1261,10 @@ function renderSignupProof(promotions){
           email,
           consent: true,
           hp: (form.querySelector('input[name="mpp_hp"]')||{}).value||"",
-          source: "homepage"
+          // Read from the form rather than hardcoded, so the dedicated alerts
+          // page and any future placement are distinguishable in EmailOctopus
+          // instead of every contact arriving labelled "homepage".
+          source: form.dataset.source || "homepage"
         })
       });
       const data = await res.json().catch(() => ({}));

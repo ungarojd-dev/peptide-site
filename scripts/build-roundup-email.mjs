@@ -88,6 +88,13 @@ function dayLabel(iso) {
   return p ? `${MONTHS[p.m - 1]} ${p.d}` : "";
 }
 
+const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+function weekday(iso) {
+  const p = parts(iso);
+  if (!p) return "";
+  return DAYS[new Date(Date.UTC(p.y, p.m - 1, p.d)).getUTCDay()];
+}
+
 function todayIso() {
   const now = new Date();
   const pad = n => String(n).padStart(2, "0");
@@ -222,7 +229,21 @@ async function compareUrl(deal) {
 // proportionally instead of being squashed into an assumed ratio. Outlook
 // scales from the width attribute, which is why it is an attribute and not
 // only a style.
-const LOGO_W = 132;
+// Constrained to a box, not to a width. The two files in the repo are 420x160
+// wordmarks, but Aurora's is a round badge, so anything sized by width alone
+// renders one of them three times the height of the other. max-width and
+// max-height together fit any ratio inside the same slot and keep the rows
+// even. Both are CSS rather than attributes because the attribute form cannot
+// express "whichever limit is hit first".
+// Every logo sits in an identical slot: same width, same height, same tinted
+// panel, same corner radius. The image inside is capped smaller than the slot
+// so a round badge and a wide wordmark both float in the same frame rather
+// than defining their own. That is what makes fourteen files drawn by fourteen
+// different people read as one set.
+const SLOT_W = 64;
+const SLOT_H = 44;
+const LOGO_W = 52;
+const LOGO_H = 32;
 function logoUrl(meta) {
   if (!meta || !meta.logo) return null;
   return SITE + (meta.logo.startsWith("/") ? meta.logo : `/${meta.logo}`);
@@ -321,16 +342,23 @@ async function card(d, last) {
                       <td valign="top">
                         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                           <tr>
-                            <!-- align left is explicit because the page wrapper cell is
-                                 align="center", and that maps to a centering mode which
-                                 pulls any block level child with a fixed width, such as
-                                 this logo, into the middle of the row. -->
-                            <td valign="middle" align="left" style="padding:1px 0 0 0;text-align:left;">${logo
-                              // The alt text is styled to match the heading it stands in for, so a
-                              // blocked or unsupported image renders as the vendor name in the same
-                              // weight and colour rather than as a placeholder icon.
-                              ? `<img src="${esc(logo)}" width="${LOGO_W}" alt="${name}" style="display:block;margin:0;width:${LOGO_W}px;height:auto;max-width:${LOGO_W}px;border:0;outline:none;text-decoration:none;font:800 16px/1.3 ${FONT};color:${C.ink};"/>`
-                              : `<div style="font:800 16px/1.3 ${FONT};color:${C.ink};">${name}</div>`}</td>
+                            ${logo ? `<td width="${SLOT_W}" valign="middle" style="width:${SLOT_W}px;padding:0 12px 0 0;">
+                              <table role="presentation" width="${SLOT_W}" cellpadding="0" cellspacing="0" border="0" style="width:${SLOT_W}px;">
+                                <tr>
+                                  <!-- align center on the slot only. The page wrapper cell is
+                                       align="center" and that centering mode leaks into any block
+                                       child with a fixed width, so alignment is stated explicitly
+                                       at every level rather than left to inheritance. -->
+                                  <td align="center" valign="middle" height="${SLOT_H}" bgcolor="${C.cream}" style="height:${SLOT_H}px;background:${C.cream};border:1px solid ${C.stone};border-radius:10px;text-align:center;">
+                                    <!-- alt is empty on purpose. The company name is real text in
+                                         the next cell now, so alt text here would print it twice
+                                         whenever images are blocked. -->
+                                    <img src="${esc(logo)}" alt="" style="display:inline-block;margin:0;width:auto;height:auto;max-width:${LOGO_W}px;max-height:${LOGO_H}px;border:0;outline:none;"/>
+                                  </td>
+                                </tr>
+                              </table>
+                            </td>` : ""}
+                            <td valign="middle" align="left" style="text-align:left;font:800 16px/1.3 ${FONT};color:${C.ink};">${name}</td>
                             ${badge(d) ? `<td align="right" valign="middle" style="padding:1px 0 0 8px;">
                               <span style="display:inline-block;background:${brand};color:${chipInk};${chipEdge}font:800 10px/1 ${FONT};letter-spacing:.7px;text-transform:uppercase;padding:6px 9px;border-radius:999px;white-space:nowrap;">${esc(badge(d))}</span>
                             </td>` : ""}
@@ -338,7 +366,7 @@ async function card(d, last) {
                         </table>
                         <div style="font:400 14px/1.5 ${FONT};color:${C.ink};padding:7px 0 0 0;">${esc(d.headline || "")}</div>
                         <div style="font:400 12px/1.6 ${FONT};color:${C.muted};padding:6px 0 0 0;">${figures(d)}</div>
-                        ${flag ? `<div style="font:700 11px/1.4 ${FONT};color:${C.danger};letter-spacing:.6px;text-transform:uppercase;padding:6px 0 0 0;">${esc(flag)}</div>` : ""}
+                        ${flag ? `<div style="font:700 11px/1.4 ${FONT};color:${T.urgent};letter-spacing:.6px;text-transform:uppercase;padding:6px 0 0 0;">${esc(flag)}</div>` : ""}
                         <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="padding:12px 0 0 0;">
                           <tr>
                             ${shop ? `<td style="padding:0 14px 0 0;">
@@ -371,6 +399,72 @@ function heading(text) {
               </tr>`;
 }
 
+// The date most of the limited time deals close on. Nine of fourteen ending
+// the same night is the single most useful fact in this send and it is not
+// something anyone should be counting by hand each week. If no date carries a
+// majority the copy drops the claim rather than rounding it into one.
+const endTally = new Map();
+for (const d of timed) {
+  const e = ord(d.end_date);
+  if (e != null) endTally.set(d.end_date, (endTally.get(d.end_date) || 0) + 1);
+}
+let closeDate = null, closeCount = 0;
+for (const [iso, n] of endTally) if (n > closeCount) { closeDate = iso; closeCount = n; }
+const majorityCloses = closeDate && closeCount * 2 > timed.length;
+const closeDay = majorityCloses ? weekday(closeDate) : null;
+
+// ---------------------------------------------------------------------------
+// Seasonal themes.
+//
+// A theme only swaps the masthead, the intro copy and the accent colour. The
+// deal rows, the figures logic and the compliance footer are untouched by it,
+// so a themed send cannot accidentally become a differently regulated send.
+//
+// The Labor Day palette matches the site popup, navy with a red and blue
+// bunting rule, so somebody who saw the popup and then opens the email
+// recognises the same campaign rather than two unrelated ones.
+// ---------------------------------------------------------------------------
+const THEMES = {
+  default: {
+    eyebrow: "Price alerts",
+    headerBg: C.forest,
+    footerBg: C.forest2,
+    accent: C.olive,
+    urgent: C.danger,
+    bunting: null,
+    title: d => dayLabel(d),
+    intro: "Every figure below is stated the way it is applied at checkout. The sale and the code stay separate numbers, never added together, because a combined rate does not survive the cart.",
+    subject: line => `${line.charAt(0).toUpperCase()}${line.slice(1)}`,
+    preheader: "Every tracked vendor, normalized to cost per mg, with the sale and the code stated separately."
+  },
+  "labor-day": {
+    eyebrow: "Labor Day weekend",
+    headerBg: "#1B2A4A",
+    footerBg: "#16233D",
+    accent: "#B23A34",
+    urgent: "#B23A34",
+    bunting: ["#B23A34", C.cream, "#2F4B7C"],
+    // The headline carries the deadline and the line under it carries the
+    // scale, so neither repeats the other or the subject line.
+    title: () => closeDay ? `Most of these end ${closeDay}` : "Labor Day sales are live",
+    intro: `${vendorCount} vendors are running Labor Day sales at the same time${closeDay ? `, and most of them close ${closeDay} night` : ""}. Every rate below is written the way it applies at checkout. The sitewide sale and the SAMMYC code stay separate numbers, because the combined figure vendors advertise is not what the cart charges you.`,
+    subject: line => closeDay ? `Labor Day: ${live.length} sales live, most end ${closeDay}` : `Labor Day: ${line}`,
+    preheader: closeDay ? `Labor Day sales are live. Most end ${closeDay}.` : "Labor Day sales are live."
+  }
+};
+
+// Theme selection. The flag wins. Without one, a send where most of the live
+// deals are named for the same event picks that event's theme, so the weekly
+// run does not depend on remembering to pass it.
+const themeArg = argOf("--theme");
+const laborish = live.filter(d => /labor day/i.test(`${d.headline || ""} ${d.description || ""}`)).length;
+const themeKey = themeArg || (laborish * 2 > live.length ? "labor-day" : "default");
+const T = THEMES[themeKey] || THEMES.default;
+if (themeArg && !THEMES[themeArg]) {
+  console.error(`build-roundup-email: unknown theme "${themeArg}", expected one of ${Object.keys(THEMES).join(", ")}`);
+  process.exit(1);
+}
+
 const timedCards = (await Promise.all(timed.map((d, i) => card(d, i === timed.length - 1 && !ongoing.length)))).join("");
 const ongoingCards = (await Promise.all(ongoing.map((d, i) => card(d, i === ongoing.length - 1)))).join("");
 
@@ -378,8 +472,8 @@ const countLine = live.length === 1
   ? "1 sale live right now"
   : `${live.length} sales live right now across ${vendorCount} vendor${vendorCount === 1 ? "" : "s"}`;
 
-const subject = `${countLine.charAt(0).toUpperCase()}${countLine.slice(1)}`;
-const preheader = "Every tracked vendor, normalized to cost per mg, with the sale and the code stated separately.";
+const subject = T.subject(countLine);
+const preheader = T.preheader;
 
 const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -401,18 +495,42 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;">
 
         <tr>
-          <td style="background:${C.forest};border-radius:16px 16px 0 0;padding:28px 28px 24px 28px;">
-            <div style="font:800 11px/1 ${FONT};color:${C.sand};text-transform:uppercase;letter-spacing:2px;">Price alerts</div>
-            <div style="font:800 22px/1.2 ${FONT};color:${C.cream};padding:12px 0 0 0;letter-spacing:-.2px;">MyPeptidePrice<span style="color:${C.sand};">.com</span></div>
+          <td style="background:${T.headerBg};border-radius:16px 16px 0 0;padding:28px 28px 24px 28px;">
+            <div style="font:800 11px/1 ${FONT};color:${C.sand};text-transform:uppercase;letter-spacing:2px;">${esc(T.eyebrow)}</div>
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="padding:12px 0 0 0;">
+              <tr>
+                <!-- Height is deliberately not set. Setting both dimensions on a
+                     mark that is not square is what squashed it, and the site
+                     itself uses object-fit:contain here, which is a tell that
+                     the source is not square. object-fit does not exist in
+                     email, so the only safe move is to fix one dimension and
+                     let the other follow. -->
+                <td valign="middle" style="padding:0 10px 0 0;"><img src="${SITE}/assets/brand/logo-symbol.png" width="36" alt="" style="display:block;width:36px;height:auto;max-height:40px;border:0;outline:none;"/></td>
+                <td valign="middle" style="font:800 22px/1.2 ${FONT};color:${C.cream};letter-spacing:-.2px;">MyPeptidePrice<span style="color:${C.sand};">.com</span></td>
+              </tr>
+            </table>
             <div style="font:400 13px/1.5 ${FONT};color:${C.sand};padding:7px 0 0 0;">Live vendor pricing, normalized to cost per mg</div>
           </td>
         </tr>
+        ${T.bunting ? `<tr>
+          <!-- Three flat bands rather than a repeating graphic. An image here
+               would be the one decorative element the layout could not do
+               without, and it is the first thing a client blocks. -->
+          <td style="padding:0;font-size:0;line-height:0;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="height:5px;">
+              <tr>
+                ${T.bunting.map(c => `<td width="33%" bgcolor="${c}" style="height:5px;background:${c};font-size:0;line-height:0;">&nbsp;</td>`).join("")}
+              </tr>
+            </table>
+          </td>
+        </tr>` : ""}
 
         <tr>
           <td style="background:${C.paper};padding:30px 28px 0 28px;">
-            <div style="font:800 26px/1.2 ${FONT};color:${C.ink};letter-spacing:-.4px;">${esc(dayLabel(sendDate))}</div>
-            <div style="font:700 15px/1.4 ${FONT};color:${C.olive};padding:6px 0 0 0;">${esc(countLine)}</div>
-            <div style="font:400 14px/1.65 ${FONT};color:${C.muted};padding:12px 0 0 0;">Every figure below is stated the way it is applied at checkout. The sale and the code stay separate numbers, never added together, because a combined rate does not survive the cart.</div>
+            ${T.bunting ? `<div style="font:800 11px/1 ${FONT};color:${T.accent};text-transform:uppercase;letter-spacing:1.6px;padding:0 0 10px 0;">${esc(dayLabel(sendDate))}</div>` : ""}
+            <div style="font:800 26px/1.2 ${FONT};color:${C.ink};letter-spacing:-.4px;">${esc(T.title(sendDate))}</div>
+            <div style="font:700 15px/1.4 ${FONT};color:${T.accent};padding:6px 0 0 0;">${esc(countLine)}</div>
+            <div style="font:400 14px/1.65 ${FONT};color:${C.muted};padding:12px 0 0 0;">${esc(T.intro)}</div>
           </td>
         </tr>
 
@@ -427,7 +545,7 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
 
         <tr>
           <td style="background:${C.paper};padding:26px 28px 32px 28px;" align="center">
-            <a href="${esc(tagged(SITE + "/#compare", sendDate))}" target="_blank" style="display:inline-block;background:${C.olive};color:${C.cream};font:700 14px/1 ${FONT};text-decoration:none;padding:15px 30px;border-radius:999px;white-space:nowrap;">Compare every vendor</a>
+            <a href="${esc(tagged(SITE + "/#compare", sendDate))}" target="_blank" style="display:inline-block;background:${T.accent};color:${C.cream};font:700 14px/1 ${FONT};text-decoration:none;padding:15px 30px;border-radius:999px;white-space:nowrap;">Compare every vendor</a>
             <div style="font:400 12px/1.6 ${FONT};color:${C.muted};padding:14px 0 0 0;">Prices update live from each vendor's own feed.</div>
           </td>
         </tr>
@@ -440,7 +558,7 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
         </tr>
 
         <tr>
-          <td style="background:${C.forest2};border-radius:0 0 16px 16px;padding:22px 28px 26px 28px;">
+          <td style="background:${T.footerBg};border-radius:0 0 16px 16px;padding:22px 28px 26px 28px;">
             <div style="font:400 12px/1.65 ${FONT};color:${C.sand};">Outbound vendor links are affiliate links. If you buy through one, we may earn a commission at no additional cost to you.</div>
             <div style="font:400 12px/1.65 ${FONT};color:${C.sand};padding:11px 0 0 0;">You are receiving this because you confirmed a subscription to price alerts at MyPeptidePrice.com.</div>
             <div style="font:400 12px/1.65 ${FONT};color:${C.sand};padding:11px 0 0 0;"><a href="{{UnsubscribeURL}}" style="color:${C.cream};text-decoration:underline;">Unsubscribe</a></div>
@@ -506,6 +624,7 @@ await writeFile(out, html);
 
 console.log(`build-roundup-email: wrote ${outArg}`);
 console.log(`  send date     ${sendDate}`);
+console.log(`  theme         ${themeKey}${themeArg ? "" : " (auto)"}`);
 console.log(`  deals         ${live.length} across ${vendorCount} vendors (${timed.length} limited time, ${ongoing.length} ongoing)`);
 if (suppressed) console.log(`  suppressed    ${suppressed} duplicate vendor entr${suppressed === 1 ? "y" : "ies"}`);
 console.log(`  subject       ${subject}`);
