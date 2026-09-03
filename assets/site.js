@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260902-labor-day-v91";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260903-signup-restyle-v93";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -1163,4 +1163,59 @@
   // event ever firing. Without this check the popup silently never appeared for
   // anyone in that state.
   onScroll();
+})();
+
+/* Email capture. Posts to the subscribe function, which holds the API key.
+   Nothing here knows the credential. */
+(function setupSignup(){
+  const form = document.getElementById("signup-form");
+  if (!form) return;
+  const emailEl = document.getElementById("signup-email");
+  const consentEl = document.getElementById("signup-consent");
+  const statusEl = document.getElementById("signup-status");
+  const btn = form.querySelector(".signup-submit");
+  let sending = false;
+
+  const say = (msg, ok) => {
+    statusEl.textContent = msg;
+    statusEl.className = "signup-status " + (ok ? "is-ok" : "is-err");
+  };
+
+  form.addEventListener("submit", async e => {
+    e.preventDefault();
+    if (sending) return;
+
+    const email = (emailEl.value || "").trim();
+    if (!email) return say("Please enter your email address.", false);
+    if (!consentEl.checked) return say("Please check the box to confirm.", false);
+
+    sending = true; btn.disabled = true; say("Subscribing...", true);
+    try {
+      const res = await fetch("/.netlify/functions/subscribe", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          email,
+          consent: true,
+          company: form.querySelector('input[name="company"]').value,
+          source: "homepage"
+        })
+      });
+      const data = await res.json().catch(() => ({}));
+      if (res.ok && data.ok) {
+        form.reset();
+        say("Almost there. Check your inbox for a confirmation link.", true);
+        // GTM is the only analytics source, so this rides dataLayer rather
+        // than calling gtag directly. Fires on confirmed handoff, not on the
+        // confirmation click, which happens off-site.
+        if (window.dataLayer) window.dataLayer.push({ event: "newsletter_signup", source: "homepage" });
+      } else {
+        say(data.error || "Something went wrong. Please try again.", false);
+      }
+    } catch {
+      say("Could not reach the server. Please try again.", false);
+    } finally {
+      sending = false; btn.disabled = false;
+    }
+  });
 })();

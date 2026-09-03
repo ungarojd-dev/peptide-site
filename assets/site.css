@@ -1521,7 +1521,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260902-labor-day-v91") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260903-signup-restyle-v93") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -2045,4 +2045,107 @@ body.deals-panel-open { overflow: hidden; }
 }
 @media (prefers-reduced-motion: reduce) {
   .ld-sweep { animation: none; opacity: .5; }
+}
+
+
+/* ---------------------------------------------------------------------------
+   Email capture. Light card on the cream page rather than the dark neon used
+   by the popup and wheel, because this sits in the normal reading flow and a
+   dark block there read as a banner ad and got skipped. Centred single column
+   so it works the same at every width without a layout switch.
+--------------------------------------------------------------------------- */
+.signup-panel {
+  max-width: 660px; margin: 0 auto; text-align: center;
+  padding: 40px 34px 32px; border-radius: 18px;
+  background: var(--paper, #fff);
+  border: 1px solid var(--line, #E3E1DC);
+  box-shadow: 0 1px 2px rgba(31,58,45,.04), 0 12px 32px rgba(31,58,45,.06);
+}
+.signup-eyebrow {
+  display: inline-block; font-size: 11px; font-weight: 800;
+  letter-spacing: .18em; text-transform: uppercase;
+  color: var(--olive, #4E5D3C); margin-bottom: 12px;
+}
+.signup-head {
+  font-family: "Playfair Display", Georgia, serif; font-weight: 700;
+  font-size: 30px; line-height: 1.15; color: var(--forest, #1F3A2D); margin: 0 0 10px;
+}
+.signup-sub {
+  font-size: 15px; line-height: 1.6; color: var(--muted, #66706A);
+  margin: 0 auto 22px; max-width: 50ch;
+}
+
+.signup-form { display: grid; gap: 12px; }
+/* Input and button share a row on desktop and stack on narrow screens. */
+.signup-row { display: grid; grid-template-columns: 1fr auto; gap: 10px; }
+.signup-field { display: block; }
+.signup-field input {
+  width: 100%; box-sizing: border-box; padding: 14px 15px;
+  border-radius: 10px; border: 1px solid var(--stone, #E3E1DC);
+  background: #fcfbf8; color: var(--ink, #161616);
+  font-family: inherit; font-size: 15px;
+}
+.signup-field input::placeholder { color: #9aa39c; }
+.signup-field input:focus-visible {
+  outline: none; border-color: var(--olive, #4E5D3C);
+  box-shadow: 0 0 0 3px rgba(78,93,60,.14);
+}
+.signup-submit {
+  padding: 14px 24px; border-radius: 10px; border: 1px solid var(--forest, #1F3A2D);
+  background: var(--forest, #1F3A2D); color: #F7F3EA;
+  font-family: inherit; font-weight: 800; font-size: 15px;
+  letter-spacing: .2px; cursor: pointer; white-space: nowrap;
+  transition: background .16s ease;
+}
+.signup-submit:hover { background: #16291f; }
+.signup-submit[disabled] { opacity: .55; cursor: default; }
+.signup-honeypot { position: absolute; left: -9999px; width: 1px; height: 1px; overflow: hidden; }
+.signup-consent {
+  display: inline-grid; grid-template-columns: auto 1fr; gap: 9px; align-items: start;
+  text-align: left; font-size: 13px; color: var(--muted, #66706A);
+  line-height: 1.45; cursor: pointer; margin: 0 auto;
+}
+.signup-consent input { margin: 1px 0 0; accent-color: var(--forest, #1F3A2D); width: 16px; height: 16px; }
+.signup-status { margin: 0; font-size: 13.5px; font-weight: 700; }
+.signup-status.is-ok { color: var(--olive, #4E5D3C); }
+.signup-status.is-err { color: var(--danger, #a4473e); }
+.signup-fine {
+  margin: 0; font-size: 11.5px; line-height: 1.55; color: #8b938c; max-width: 56ch;
+  margin-inline: auto;
+}
+.signup-fine a { color: var(--olive, #4E5D3C); }
+
+/* Proof strip. Logos are muted so they read as evidence rather than as a
+   second row of adverts competing with the form above them. */
+.signup-proof { margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--line, #E3E1DC); }
+.signup-proof-label {
+  display: block; font-size: 11px; font-weight: 800; letter-spacing: .14em;
+  text-transform: uppercase; color: #9aa39c; margin-bottom: 16px;
+}
+.signup-logos {
+  display: flex; flex-wrap: wrap; justify-content: center; align-items: center;
+  gap: 14px 26px;
+}
+.signup-logos img {
+  height: 26px; width: auto; max-width: 108px; object-fit: contain;
+  opacity: .5; filter: grayscale(1);
+  transition: opacity .18s ease, filter .18s ease;
+}
+.signup-logos img:hover { opacity: .9; filter: grayscale(0); }
+
+.sr-only {
+  position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0;
+}
+
+@media (max-width: 620px) {
+  .signup-panel { padding: 30px 20px 26px; border-radius: 14px; }
+  .signup-head { font-size: 24px; }
+  .signup-sub { font-size: 14px; margin-bottom: 18px; }
+  .signup-row { grid-template-columns: 1fr; }
+  .signup-logos { gap: 12px 18px; }
+  .signup-logos img { height: 22px; max-width: 92px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .signup-submit, .signup-logos img { transition: none; }
 }
