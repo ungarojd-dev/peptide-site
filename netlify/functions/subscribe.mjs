@@ -57,6 +57,11 @@ export async function handler(event) {
     return json(200, { ok: true });
   }
 
+  // Entry log. Confirms the request reached the current build and shows which
+  // fields arrived, without ever writing the address itself.
+  console.log("subscribe: request received, hp:", payload.hp ? "filled" : "empty",
+              "consent:", payload.consent === true);
+
   const email = String(payload.email || "").trim().toLowerCase();
   if (!EMAIL_RE.test(email) || email.length > 254) {
     return json(400, { error: "Please enter a valid email address." });
@@ -88,7 +93,14 @@ export async function handler(event) {
       }
     );
 
-    if (res.ok) return json(200, { ok: true });
+    // Logged on success too. Two paths previously returned 200 while writing
+    // nothing at all, a real create and a 409 duplicate, so an empty log could
+    // not distinguish "it worked" from "it silently did nothing". Every branch
+    // now leaves a trace.
+    if (res.ok) {
+      console.log("subscribe: created contact, status", res.status, "list", String(listId).slice(0, 8));
+      return json(200, { ok: true });
+    }
 
     const data = await res.json().catch(() => ({}));
     const code = String(data?.error?.code || data?.code || "");
@@ -97,6 +109,7 @@ export async function handler(event) {
     // given address is subscribed would leak membership, so this returns the
     // same confirmation copy as a new signup.
     if (res.status === 409 || /CONFLICT|MEMBER_EXISTS/i.test(code)) {
+      console.log("subscribe: contact already on list, status", res.status, code);
       return json(200, { ok: true });
     }
     // Only a genuine validation rejection should blame the email field. Auth
