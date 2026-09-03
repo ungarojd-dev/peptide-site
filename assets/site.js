@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260903-signup-restyle-v93";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260903-signup-live-deals-v95";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -573,6 +573,7 @@
       setupPromotionRolodex(promoState.active);
       setupDealCarousel(promoState.active);
       setupDealsPanel(promoState.all);
+      renderSignupProof(promoState.all);
       addVendorDirectoryBadges(promoState.active);
       document.dispatchEvent(new CustomEvent("mpp:promotions-ready"));
       return promoState.active;
@@ -1164,6 +1165,62 @@
   // anyone in that state.
   onScroll();
 })();
+
+/* Live deals teaser inside the signup panel. Reads promoState, which the deals
+   drawer already populated, so there is no second fetch and the two surfaces
+   can never disagree. Stays hidden until there is something real to show:
+   an empty or stale teaser is worse than no teaser, because it advertises that
+   the alerts have nothing to send. */
+function renderSignupProof(promotions){
+  const wrap=document.getElementById("signup-proof");
+  const label=document.getElementById("signup-proof-label");
+  const list=document.getElementById("signup-proof-list");
+  if(!wrap||!label||!list) return;
+
+  const now=Date.now();
+  const t=v=>v?new Date(v).getTime():null;
+  const live=(promotions||[]).filter(p=>{
+    const s=t(p.start_at), e=t(p.end_at);
+    if(s!=null&&now<s) return false;
+    if(e!=null&&now>e) return false;
+    // Announcements and community entries are not price events, so they would
+    // inflate the count without being the thing anyone signed up for.
+    return p.sale_percent!=null||p.code_percent!=null;
+  });
+  if(!live.length) return;
+
+  const vendors=new Set(live.map(p=>p.display_vendor||p.vendor).filter(Boolean));
+  label.textContent=live.length===1
+    ? "1 sale live right now"
+    : `${live.length} sales live right now across ${vendors.size} vendor${vendors.size===1?"":"s"}`;
+
+  // Strongest first, then soonest to expire, so the teaser leads with the best
+  // offer and the one most likely to be missed.
+  const pct=p=>Number(p.sale_percent||p.code_percent||0);
+  const top=live.slice().sort((a,b)=>{
+    const d=pct(b)-pct(a);
+    if(d) return d;
+    const ae=t(a.end_at), be=t(b.end_at);
+    if(ae==null) return 1;
+    if(be==null) return -1;
+    return ae-be;
+  }).slice(0,3);
+
+  list.innerHTML=top.map(p=>{
+    const name=escapeHtml(p.display_vendor||p.vendor||"");
+    const detail=escapeHtml(p.short_detail||p.headline||"");
+    const ends=t(p.end_at);
+    let when="";
+    if(ends!=null){
+      const days=Math.ceil((ends-now)/86400000);
+      when=days<=0?"ends today":days===1?"ends tomorrow":`${days} days left`;
+    }
+    return `<li class="signup-proof-row"><span class="spr-vendor">${name}</span>`+
+           `<span class="spr-detail">${detail}</span>`+
+           (when?`<span class="spr-when">${escapeHtml(when)}</span>`:"")+`</li>`;
+  }).join("");
+  wrap.hidden=false;
+}
 
 /* Email capture. Posts to the subscribe function, which holds the API key.
    Nothing here knows the credential. */

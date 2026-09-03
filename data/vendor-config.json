@@ -58,6 +58,7 @@
     },
     "Mile High Peptides": {
       "id": "mile-high-peptides",
+      "display_name": "Mile High Compounds",
       "discount_percent": 10,
       "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
       "logo": "/assets/vendor-logos/mile-high-peptides.webp",
@@ -71,7 +72,6 @@
         "Zelle",
         "ACH"
       ],
-      "display_name": "Mile High Compounds",
       "brand_color": "#4175aa",
       "package_protection_required": false
     },
