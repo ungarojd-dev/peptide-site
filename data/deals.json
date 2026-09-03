@@ -338,7 +338,44 @@
       "description": "Coffee and Peppers is running a Labor Day sale from September 3 through September 7. The sitewide discount scales with cart subtotal: 10% off to start, 15% over $150, 20% plus free shipping at $350, and 25% plus free shipping over $500. Code SAMMYC stacks for an additional 15% off on every tier. Confirm final pricing at checkout.",
       "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
       "id": "coffee-labor-day-tiered-2026-09"
+    },
+    {
+      "priority": 314,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Instant Peptides",
+      "start_date": "2026-09-04",
+      "end_date": "2026-09-07",
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Labor Day, buy more get more, buy 10 get 10 free at the top",
+      "timezone": "America/New_York",
+      "type": "conditional",
+      "cta_text": "Shop Now",
+      "description": "Instant Peptides is running a buy more get more Labor Day sale from September 4 through September 7. Four tiers apply: buy 2 and get a third at 50% off, buy 4 and get 1 free, buy 5 and get 5 at 75% off, or buy 10 and get 10 free. These are quantity tiers rather than a sitewide percentage, so the per-unit prices shown here do not reflect them. Code SAMMYC applies 15% off. Confirm final pricing at checkout.",
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
+      "id": "instant-labor-day-bogo-2026-09"
+    },
+    {
+      "priority": 313,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Ion Peptide",
+      "start_date": "2026-09-04",
+      "end_date": "2026-09-07",
+      "sale_percent": 20,
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Labor Day, 20% off sitewide with deeper cuts on select categories, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Ion Peptide is running a Labor Day sale from September 4 through September 7. The base discount is 20% off sitewide, applied automatically. Several categories go deeper: ION-1, ION-2 and ION-3 are 25% off, GHK-Cu 50mg and 100mg, Wolverine, MOTS-c, NAD+, Tesamorelin and BPC-157 with TB-500 are 30% off, and all cosmetics and all drops are 50% off. Code SAMMYC stacks for an additional 15% off the reduced price, and paying by ACH takes a further 5% off. Free shipping on orders over $250. Prices shown here reflect the 20% sitewide rate, so the deeper category discounts are not included. Confirm final pricing at checkout.",
+      "affiliate_url": "https://ionpeptide.com?ref=SammyC",
+      "id": "ion-labor-day-2026-09"
     }
   ],
-  "version": "2026-09-02-labor-day-labsourced-coffee"
+  "version": "2026-09-03-labor-day-ion"
 }
