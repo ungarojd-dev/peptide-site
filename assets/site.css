@@ -159,6 +159,11 @@ button, input, select { font: inherit; }
 .announce-text.announce-fading { opacity: 0; }
 .announce-text strong { color: var(--sand); font-weight: 700; }
 .announce-link {
+  /* Now a button rather than an anchor, since it opens the deals drawer instead
+     of jumping to a section. Buttons do not inherit font or background, so both
+     are reset here to keep it visually identical. */
+  font-family: inherit;
+  border: 0; background: none; cursor: pointer; padding: 0;
   font-size: 11px;
   font-weight: 700;
   color: var(--sand);
@@ -1521,7 +1526,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260903-signup-live-deals-v95") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260903-ticker-merge-v97") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
