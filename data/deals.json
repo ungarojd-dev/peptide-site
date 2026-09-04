@@ -140,13 +140,13 @@
       "start_date": "2026-08-21",
       "sale_percent": 35,
       "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Warehouse sale, 35% off most products, stacks with SAMMYC",
+      "code_percent": 10,
+      "headline": "Warehouse sale, 35% off sitewide, stacks with SAMMYC",
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "id": "peptira-warehouse-35",
       "cta_text": "Shop Now",
-      "description": "Peptira is running 35% off most products through September 7. Code SAMMYC stacks for an additional 15% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
+      "description": "Peptira is running 35% off sitewide through September 7. Code SAMMYC stacks for an additional 10% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
       "affiliate_url": "https://peptira.com/?ref=SAMMYC",
       "end_date": "2026-09-07"
     },
@@ -375,7 +375,25 @@
       "description": "Ion Peptide is running a Labor Day sale from September 4 through September 7. The base discount is 20% off sitewide, applied automatically. Several categories go deeper: ION-1, ION-2 and ION-3 are 25% off, GHK-Cu 50mg and 100mg, Wolverine, MOTS-c, NAD+, Tesamorelin and BPC-157 with TB-500 are 30% off, and all cosmetics and all drops are 50% off. Code SAMMYC stacks for an additional 15% off the reduced price, and paying by ACH takes a further 5% off. Free shipping on orders over $250. Prices shown here reflect the 20% sitewide rate, so the deeper category discounts are not included. Confirm final pricing at checkout.",
       "affiliate_url": "https://ionpeptide.com?ref=SammyC",
       "id": "ion-labor-day-2026-09"
+    },
+    {
+      "priority": 313,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Peptidology",
+      "start_date": "2026-09-03",
+      "end_date": "2026-09-07",
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "Labor Day, buy 2 get 1 free automatically, stacks with SAMMYC",
+      "timezone": "America/Phoenix",
+      "type": "conditional",
+      "cta_text": "Shop Now",
+      "description": "Peptidology is running a Labor Day sale from September 3 through September 7, applied automatically with no sale code needed. Buy two qualifying vials or capsules and the third is free, with the lowest priced qualifying item discounted. There is no cap: six qualifying items give three free, nine give four. Selected 7x tested clearance compounds are reduced by a further 10%. Code SAMMYC stacks for an additional 10% off. This is a quantity offer rather than a sitewide percentage, so the per unit prices shown here do not reflect it. The sale ends 11:59pm Arizona time on September 7. Confirm final pricing at checkout.",
+      "affiliate_url": "https://peptidology.co/?ref=idifhsqu",
+      "id": "peptidology-labor-day-2026-09"
     }
   ],
-  "version": "2026-09-03-labor-day-ion"
+  "version": "2026-09-03-labor-day-peptidology"
 }

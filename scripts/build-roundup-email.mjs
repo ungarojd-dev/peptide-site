@@ -235,11 +235,22 @@ async function compareUrl(deal) {
 // max-height together fit any ratio inside the same slot and keep the rows
 // even. Both are CSS rather than attributes because the attribute form cannot
 // express "whichever limit is hit first".
-// Every logo sits in an identical slot: same width, same height, same tinted
-// panel, same corner radius. The image inside is capped smaller than the slot
-// so a round badge and a wide wordmark both float in the same frame rather
-// than defining their own. That is what makes fourteen files drawn by fourteen
-// different people read as one set.
+// Logos are off.
+//
+// The files are 420x160 wordmarks. Fitting mixed aspect ratios into one even
+// slot caps them near 52x20, which is too small to read as anything, and
+// several have dark artwork that fights the tinted panel behind it. The first
+// live send confirmed it: fourteen rows each spending 44px of height on an
+// illegible smudge.
+//
+// Flip this back on if someone produces square marks at roughly 88px drawn to
+// sit on a light background. Everything needed to render them is still here.
+const SHOW_LOGOS = false;
+
+// Masthead wordmark. Swap this path if a lockup drawn specifically for a dark
+// background gets pushed to the repo, since the header sits on navy.
+const BRAND_LOCKUP = "/assets/brand/logo-full-lockup.png";
+const LOCKUP_W = 240;
 const SLOT_W = 64;
 const SLOT_H = 44;
 const LOGO_W = 52;
@@ -324,7 +335,7 @@ async function card(d, last) {
   const brand = /^#[0-9a-fA-F]{6}$/.test(meta.brand_color || "") ? meta.brand_color : C.olive;
   const chipInk = readableOn(brand);
   const chipEdge = chipInk === C.ink ? `border:1px solid ${darken(brand, 0.82)};` : "";
-  const logo = logoUrl(meta);
+  const logo = SHOW_LOGOS ? logoUrl(meta) : null;
   const shop = d.affiliate_url ? esc(d.affiliate_url) : null;
   const compare = esc(tagged(await compareUrl(d), sendDate));
   const flag = urgency(d);
@@ -495,21 +506,20 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" border="0" style="width:100%;max-width:600px;">
 
         <tr>
-          <td style="background:${T.headerBg};border-radius:16px 16px 0 0;padding:28px 28px 24px 28px;">
-            <div style="font:800 11px/1 ${FONT};color:${C.sand};text-transform:uppercase;letter-spacing:2px;">${esc(T.eyebrow)}</div>
-            <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="padding:12px 0 0 0;">
-              <tr>
-                <!-- Height is deliberately not set. Setting both dimensions on a
-                     mark that is not square is what squashed it, and the site
-                     itself uses object-fit:contain here, which is a tell that
-                     the source is not square. object-fit does not exist in
-                     email, so the only safe move is to fix one dimension and
-                     let the other follow. -->
-                <td valign="middle" style="padding:0 10px 0 0;"><img src="${SITE}/assets/brand/logo-symbol.png" width="36" alt="" style="display:block;width:36px;height:auto;max-height:40px;border:0;outline:none;"/></td>
-                <td valign="middle" style="font:800 22px/1.2 ${FONT};color:${C.cream};letter-spacing:-.2px;">MyPeptidePrice<span style="color:${C.sand};">.com</span></td>
-              </tr>
-            </table>
-            <div style="font:400 13px/1.5 ${FONT};color:${C.sand};padding:7px 0 0 0;">Live vendor pricing, normalized to cost per mg</div>
+          <!-- The whole masthead is centred. align on the cell handles the text,
+               and the lockup gets auto side margins because a block level image
+               with a fixed width ignores text-align in most clients. -->
+          <td align="center" style="background:${T.headerBg};border-radius:16px 16px 0 0;padding:28px 28px 26px 28px;text-align:center;">
+            <div style="font:800 11px/1 ${FONT};color:${C.sand};text-transform:uppercase;letter-spacing:2px;text-align:center;">${esc(T.eyebrow)}</div>
+            <!-- The wordmark is an image because email has no web fonts. Gmail
+                 strips the font link the site uses, so any text version of the
+                 brand name falls back to Arial and reads as a generic block
+                 font. Type inside an image is type, no loading required.
+                 Width only, so the lockup cannot be squashed the way the
+                 square-sized symbol was. The alt text is styled to match what
+                 it replaces, so a blocked image still reads as the brand. -->
+            <div style="padding:14px 0 0 0;text-align:center;"><img src="${SITE}${BRAND_LOCKUP}" width="${LOCKUP_W}" alt="MyPeptidePrice.com" style="display:block;margin:0 auto;width:${LOCKUP_W}px;height:auto;max-width:${LOCKUP_W}px;border:0;outline:none;text-decoration:none;font:800 22px/1.2 ${FONT};color:${C.cream};letter-spacing:-.2px;text-align:center;"/></div>
+            <div style="font:400 13px/1.5 ${FONT};color:${C.sand};padding:9px 0 0 0;text-align:center;">Live vendor pricing, normalized to cost per mg</div>
           </td>
         </tr>
         ${T.bunting ? `<tr>
