@@ -393,7 +393,26 @@
       "description": "Peptidology is running a Labor Day sale from September 3 through September 7, applied automatically with no sale code needed. Buy two qualifying vials or capsules and the third is free, with the lowest priced qualifying item discounted. There is no cap: six qualifying items give three free, nine give four. Selected 7x tested clearance compounds are reduced by a further 10%. Code SAMMYC stacks for an additional 10% off. This is a quantity offer rather than a sitewide percentage, so the per unit prices shown here do not reflect it. The sale ends 11:59pm Arizona time on September 7. Confirm final pricing at checkout.",
       "affiliate_url": "https://peptidology.co/?ref=idifhsqu",
       "id": "peptidology-labor-day-2026-09"
+    },
+    {
+      "priority": 318,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "High Tide Compounds",
+      "start_date": "2026-09-05",
+      "end_date": "2026-09-07",
+      "sale_percent": 40,
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "Labor Day, 40% off sitewide, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "High Tide Compounds is running 40% off sitewide from September 5 through September 7. Code SAMMYC stacks for an additional 10% off the reduced price. The sale ends at midnight on September 7. Confirm final pricing at checkout.",
+      "affiliate_url": "https://hightidecompounds.com/?aff=44",
+      "id": "high-tide-labor-day-2026-09"
     }
   ],
-  "version": "2026-09-03-labor-day-peptidology"
+  "version": "2026-09-04-labor-day-high-tide"
 }

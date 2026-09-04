@@ -34,17 +34,26 @@ const SITE = "https://mypeptideprice.com";
 // Outlook ignores anything that is not an inline style on the element itself.
 // ---------------------------------------------------------------------------
 const C = {
-  forest: "#1F3A2D",
-  forest2: "#294A3A",
-  olive: "#4E5D3C",
-  cream: "#F7F3EA",
-  paper: "#FFFFFF",
-  sand: "#D8C7A7",
-  sand2: "#f0e5ce",
-  stone: "#E3E1DC",
-  ink: "#1A1A1A",
-  muted: "#66706A",
-  danger: "#a4473e"
+  // Taken from site.css and flattened. The site layers rgba(255,255,255,.05)
+  // panels over --black; email cannot rely on alpha compositing, so each of
+  // those is resolved to the solid hex it actually renders as.
+  black:   "#0D0D0D",
+  panel:   "#161816",
+  panel2:  "#1C1F1C",
+  line:    "#232622",
+  olive:   "#4E5D3C",
+  oliveSoft: "#8C9A61",
+  forest:  "#1F3A2D",
+  cream:   "#F7F3EA",
+  sand:    "#D8C7A7",
+  muted:   "#9AA096",
+  dim:     "#6F766D",
+  danger:  "#E8412A",
+  ink:     "#F7F3EA",
+  paper:   "#161816",
+  stone:   "#232622",
+  sand2:   "#1C1F1C",
+  forest2: "#101210"
 };
 
 // Named fonts first for clients that happen to have them, then the web safe
@@ -52,6 +61,14 @@ const C = {
 // Outlook never supported it, so relying on one guarantees an inconsistent
 // email rather than a branded one.
 const FONT = "'Manrope','Inter',Arial,Helvetica,sans-serif";
+
+// Headings use a serif, and the reason is that email has no web fonts. Asking
+// Arial to be a display face by setting it to 800 is what produced the blocky
+// look: it is a UI typeface being shouted. Georgia ships on Windows, macOS and
+// iOS, needs no loading, and is an actual text face with real contrast, so it
+// reads as typography rather than as bold sans. It also sits closer to the
+// Playfair Display the site uses than any weight of Arial ever will.
+const SERIF = FONT;
 
 const args = process.argv.slice(2);
 const argOf = name => {
@@ -173,13 +190,51 @@ for (const d of all) {
 const live = [...byVendor.values()];
 const suppressed = all.length - live.length;
 
-// Limited time first, because those are the ones a reader can miss. Within
-// that group, soonest to expire leads. Ongoing offers sort by priority, which
-// is the editorial ordering the board already uses.
-const timed = live.filter(d => ord(d.end_date) != null)
-  .sort((a, b) => (ord(a.end_date) - ord(b.end_date)) || (Number(b.priority || 0) - Number(a.priority || 0)));
-const ongoing = live.filter(d => ord(d.end_date) == null)
-  .sort((a, b) => Number(b.priority || 0) - Number(a.priority || 0));
+// Identical promos collapse into one entry.
+//
+// Glow, Flawless and Iron Protocol run the same sale on the same dates with the
+// same copy, so the email printed the same paragraph three times in a row and
+// looked like a bug. The popup already groups them into one line. Grouping on
+// the offer itself, not on a hand maintained list, means any future shared
+// promo groups automatically and a divergence in dates or rate splits them back
+// apart on its own.
+function offerKey(d) {
+  return [d.headline || "", d.sale_percent ?? "", d.code_percent ?? "", d.code || "",
+          d.start_date || "", d.end_date || "", d.type || ""].join("|");
+}
+const groups = new Map();
+for (const d of live) {
+  const k = offerKey(d);
+  if (!groups.has(k)) groups.set(k, { lead: d, members: [] });
+  groups.get(k).members.push(d);
+}
+const entries = [...groups.values()];
+
+// Ranked by the sale rate, then the code rate. Never by the two added together:
+// the ordering would then be built on exactly the combined figure the rest of
+// this file refuses to print. Editorial priority is the final tiebreak.
+function rank(g) {
+  return [Number(g.lead.sale_percent || 0), Number(g.lead.code_percent || 0), Number(g.lead.priority || 0)];
+}
+function byRank(a, b) {
+  const x = rank(a), y = rank(b);
+  return (y[0] - x[0]) || (y[1] - x[1]) || (y[2] - x[2]);
+}
+
+// Everything looking equally important is the same as nothing looking
+// important. The strongest few get the full card, the rest get one line each,
+// which halves the height and tells the eye where to land.
+const FEATURED = 3;
+const timedGroups = entries.filter(g => ord(g.lead.end_date) != null).sort(byRank);
+const ongoingGroups = entries.filter(g => ord(g.lead.end_date) == null).sort(byRank);
+const featured = timedGroups.slice(0, FEATURED);
+// Below the fold the deadline matters more than the rate, so the remainder
+// sorts by what expires first rather than by what is biggest.
+const rest = timedGroups.slice(FEATURED)
+  .sort((a, b) => (ord(a.lead.end_date) - ord(b.lead.end_date)) || byRank(a, b));
+
+const timed = timedGroups.map(g => g.lead);
+const ongoing = ongoingGroups.map(g => g.lead);
 
 // Counted on the vendor key for the same reason the dedupe is: two spellings
 // of one vendor must not read as two vendors.
@@ -295,16 +350,28 @@ function badge(d) {
   return null;
 }
 
-// The figures line. This function is the whole reason the generator exists:
+// The detail block. This function is the whole reason the generator exists:
 // there is no code path here that adds two percentages together, so a combined
 // rate cannot reach a subscriber even when a vendor's own graphic advertises
-// one. The separator is a middot, never an em-dash.
-function figures(d) {
-  const bits = [];
-  if (d.sale_percent != null) bits.push(`<strong style="color:${C.forest};font-weight:700;">${d.sale_percent}% off</strong> automatically`);
-  if (d.code_percent != null) bits.push(`<strong style="color:${C.forest};font-weight:700;">${esc(d.code || "SAMMYC")} ${d.code_percent}%</strong> off the reduced price`);
-  bits.push(esc(window_(d)));
-  return bits.join(' <span style="color:' + C.sand + ';">&middot;</span> ');
+// one.
+//
+// Labelled rows rather than a run-on sentence. Sale, Code, Starts and Ends
+// always appear in that order and always in the same column, so a reader
+// comparing two cards is comparing the same position on both. Rows that do not
+// apply are omitted rather than filled with a dash, and the label column is a
+// fixed width so nothing shifts between cards.
+function detailRows(d) {
+  const rows = [];
+  if (d.sale_percent != null) rows.push(["Sale", `<strong style="color:${C.cream};font-weight:700;">${d.sale_percent}% off</strong>, applied automatically`]);
+  if (d.code_percent != null) rows.push(["Code", `<strong style="color:${C.cream};font-weight:700;">${esc(d.code || "SAMMYC")} ${d.code_percent}%</strong> off the reduced price`]);
+  if (d.start_date) rows.push(["Starts", esc(dayLabel(d.start_date))]);
+  if (d.end_date) rows.push(["Ends", esc(dayLabel(d.end_date))]);
+  if (!d.start_date && !d.end_date) rows.push(["Runs", "Ongoing, no end date announced"]);
+  return rows.map(([k, v]) => `
+                      <tr>
+                        <td width="52" valign="top" style="width:52px;padding:0 12px 6px 0;font:700 10px/1.7 ${FONT};color:${C.dim};text-transform:uppercase;letter-spacing:1px;white-space:nowrap;">${k}</td>
+                        <td valign="top" style="padding:0 0 6px 0;font:400 13px/1.55 ${FONT};color:${C.muted};">${v}</td>
+                      </tr>`).join("");
 }
 
 function window_(d) {
@@ -327,11 +394,21 @@ function urgency(d) {
   return "";
 }
 
-async function card(d, last) {
+async function card(g, last) {
+  const d = g.lead;
+  const members = g.members;
   // Config display_name wins over the CMS field so a vendor renamed once in
   // vendor-config cannot be spelled a second way by a deal author.
+  const nameOf = x => {
+    const m = vendors[x.vendor] || {};
+    return m.display_name || x.display_vendor || x.vendor;
+  };
+  // "Glow Aminos, Flawless Compounds and Iron Protocol" reads as one offer,
+  // which is what it is, instead of as three coincidences.
+  const names = members.map(nameOf);
+  const name = esc(names.length === 1 ? names[0]
+    : names.slice(0, -1).join(", ") + " and " + names[names.length - 1]);
   const meta = vendors[d.vendor] || {};
-  const name = esc(meta.display_name || d.display_vendor || d.vendor);
   const brand = /^#[0-9a-fA-F]{6}$/.test(meta.brand_color || "") ? meta.brand_color : C.olive;
   const chipInk = readableOn(brand);
   const chipEdge = chipInk === C.ink ? `border:1px solid ${darken(brand, 0.82)};` : "";
@@ -347,7 +424,9 @@ async function card(d, last) {
   // nothing anyway.
   return `
               <tr>
-                <td style="padding:20px 0 18px 0;${last ? "" : `border-bottom:1px solid ${C.stone};`}">
+                <td style="padding:0 0 12px 0;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.panel};border:1px solid ${C.line};border-radius:16px;">
+                    <tr><td style="padding:18px 20px 16px 20px;">
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                       <td valign="top">
@@ -369,25 +448,67 @@ async function card(d, last) {
                                 </tr>
                               </table>
                             </td>` : ""}
-                            <td valign="middle" align="left" style="text-align:left;font:800 16px/1.3 ${FONT};color:${C.ink};">${name}</td>
-                            ${badge(d) ? `<td align="right" valign="middle" style="padding:1px 0 0 8px;">
-                              <span style="display:inline-block;background:${brand};color:${chipInk};${chipEdge}font:800 10px/1 ${FONT};letter-spacing:.7px;text-transform:uppercase;padding:6px 9px;border-radius:999px;white-space:nowrap;">${esc(badge(d))}</span>
+                            <td valign="middle" align="left" style="text-align:left;font:800 17px/1.3 ${FONT};color:${C.cream};letter-spacing:-.2px;">${name}</td>
+                            ${badge(d) ? `<td align="right" valign="middle" style="padding:1px 0 0 10px;white-space:nowrap;">
+                              <span style="font:800 22px/1 ${FONT};color:${C.cream};letter-spacing:-.4px;">${esc(badge(d).replace(/ .*$/, ""))}</span><span style="font:700 10px/1 ${FONT};color:${C.oliveSoft};letter-spacing:1px;text-transform:uppercase;padding-left:5px;">${esc(badge(d).replace(/^\S+\s*/, "")) || "off"}</span>
                             </td>` : ""}
                           </tr>
                         </table>
-                        <div style="font:400 14px/1.5 ${FONT};color:${C.ink};padding:7px 0 0 0;">${esc(d.headline || "")}</div>
-                        <div style="font:400 12px/1.6 ${FONT};color:${C.muted};padding:6px 0 0 0;">${figures(d)}</div>
-                        ${flag ? `<div style="font:700 11px/1.4 ${FONT};color:${T.urgent};letter-spacing:.6px;text-transform:uppercase;padding:6px 0 0 0;">${esc(flag)}</div>` : ""}
-                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="padding:12px 0 0 0;">
-                          <tr>
-                            ${shop ? `<td style="padding:0 14px 0 0;">
-                              <a href="${shop}" target="_blank" rel="nofollow sponsored noopener" style="display:inline-block;background:${C.forest};color:${C.cream};font:700 12px/1 ${FONT};text-decoration:none;padding:10px 16px;border-radius:999px;white-space:nowrap;">Shop now</a>
-                            </td>` : ""}
-                            <td>
-                              <a href="${compare}" target="_blank" style="font:700 12px/1 ${FONT};color:${C.olive};text-decoration:none;border-bottom:1px solid ${C.sand};white-space:nowrap;">Compare $/mg &rsaquo;</a>
-                            </td>
-                          </tr>
+                        <div style="font:400 14px/1.55 ${FONT};color:${C.sand};padding:10px 0 0 0;">${esc(d.headline || "")}</div>
+                        <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="padding:14px 0 0 0;">${detailRows(d)}
                         </table>
+                        ${flag ? `<div style="font:700 10px/1.4 ${FONT};color:${T.urgent};letter-spacing:1px;text-transform:uppercase;padding:4px 0 0 0;">${esc(flag)}</div>` : ""}
+                        <!-- Buttons and the compare link share one cell so they flow and
+                             wrap together. In separate cells a three vendor group stacked
+                             its buttons in a column with the compare link stranded
+                             alongside the middle one. -->
+                        <div style="padding:12px 0 0 0;">${members.filter(m => m.affiliate_url).map((m, i) =>
+                              // Grouped offers get a button per vendor. Labelled with
+                              // the vendor name only when there is more than one, since
+                              // a lone "Shop Peptidology" under a heading that already
+                              // says Peptidology is just noise, and long labels were
+                              // what pushed the layout past a phone's width before.
+                              `<a href="${esc(m.affiliate_url)}" target="_blank" rel="nofollow sponsored noopener" style="display:inline-block;background:${C.oliveSoft};color:${C.black};font:700 12px/1 ${FONT};letter-spacing:.2px;text-decoration:none;padding:11px 20px;border-radius:999px;margin:0 8px 6px 0;">${members.length === 1 ? "Shop now" : esc(nameOf(m))}</a>`
+                            ).join("")}<a href="${compare}" target="_blank" style="display:inline-block;font:400 12px/1 ${FONT};color:${C.muted};text-decoration:none;border-bottom:1px solid ${C.line};white-space:nowrap;padding:11px 0;margin:0 0 6px 6px;">Compare $/mg &rsaquo;</a></div>
+                      </td>
+                    </tr>
+                  </table>
+                    </td></tr>
+                  </table>
+                </td>
+              </tr>`;
+}
+
+
+// The compact row. Same information as a card, a fifth of the height. The
+// vendor name is the shop link, which is what lets a grouped offer give each
+// vendor its own destination without a row of buttons.
+async function row(g, last) {
+  const d = g.lead;
+  const nameOf = x => {
+    const m = vendors[x.vendor] || {};
+    return m.display_name || x.display_vendor || x.vendor;
+  };
+  const brandMeta = vendors[d.vendor] || {};
+  const brand = /^#[0-9a-fA-F]{6}$/.test(brandMeta.brand_color || "") ? brandMeta.brand_color : C.olive;
+  const links = g.members.map(m => m.affiliate_url
+    ? `<a href="${esc(m.affiliate_url)}" target="_blank" rel="nofollow sponsored noopener" style="color:${C.ink};text-decoration:none;border-bottom:1px solid ${C.stone};">${esc(nameOf(m))}</a>`
+    : esc(nameOf(m))).join('<span style="color:' + C.sand + ';"> &middot; </span>');
+  const flag = urgency(d);
+  // Same vocabulary as the cards above, inline to keep a row to two lines.
+  const bits = [];
+  if (d.sale_percent != null) bits.push(`<span style="color:${C.cream};font-weight:700;">${d.sale_percent}% off</span>`);
+  if (d.code_percent != null) bits.push(`<span style="color:${C.cream};font-weight:700;">${esc(d.code || "SAMMYC")} ${d.code_percent}%</span>`);
+  bits.push(d.end_date ? `Ends ${esc(dayLabel(d.end_date))}` : "Ongoing");
+
+  return `
+              <tr>
+                <td style="padding:0 0 8px 0;">
+                  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.panel};border:1px solid ${C.line};border-radius:12px;">
+                    <tr>
+                      <td style="padding:13px 18px;">
+                        <div style="font:700 15px/1.35 ${FONT};color:${C.cream};">${links}</div>
+                        <div style="font:400 12px/1.6 ${FONT};color:${C.muted};padding:3px 0 0 0;">${bits.join(' <span style="color:' + C.sand + ';">&middot;</span> ')}${flag ? ` <span style="color:${T.urgent};font-weight:700;">${esc(flag)}</span>` : ""}</div>
                       </td>
                     </tr>
                   </table>
@@ -402,7 +523,7 @@ function heading(text) {
                   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
                     <tr>
                       <td width="20" style="width:20px;padding:0 8px 0 0;"><div style="height:2px;background:${C.sand};font-size:0;line-height:0;">&nbsp;</div></td>
-                      <td style="font:800 11px/1 ${FONT};color:${C.olive};text-transform:uppercase;letter-spacing:1.6px;white-space:nowrap;">${esc(text)}</td>
+                      <td style="font:600 10px/1 ${FONT};color:${C.muted};text-transform:uppercase;letter-spacing:2px;white-space:nowrap;">${esc(text)}</td>
                       <td style="padding:0 0 0 8px;"><div style="height:1px;background:${C.stone};font-size:0;line-height:0;">&nbsp;</div></td>
                     </tr>
                   </table>
@@ -438,9 +559,9 @@ const closeDay = majorityCloses ? weekday(closeDate) : null;
 const THEMES = {
   default: {
     eyebrow: "Price alerts",
-    headerBg: C.forest,
+    headerBg: C.panel2,
     footerBg: C.forest2,
-    accent: C.olive,
+    accent: C.oliveSoft,
     urgent: C.danger,
     bunting: null,
     title: d => dayLabel(d),
@@ -450,10 +571,10 @@ const THEMES = {
   },
   "labor-day": {
     eyebrow: "Labor Day weekend",
-    headerBg: "#1B2A4A",
-    footerBg: "#16233D",
-    accent: "#B23A34",
-    urgent: "#B23A34",
+    headerBg: C.panel2,
+    footerBg: C.forest2,
+    accent: C.oliveSoft,
+    urgent: C.danger,
     bunting: ["#B23A34", C.cream, "#2F4B7C"],
     // The headline carries the deadline and the line under it carries the
     // scale, so neither repeats the other or the subject line.
@@ -476,8 +597,27 @@ if (themeArg && !THEMES[themeArg]) {
   process.exit(1);
 }
 
-const timedCards = (await Promise.all(timed.map((d, i) => card(d, i === timed.length - 1 && !ongoing.length)))).join("");
-const ongoingCards = (await Promise.all(ongoing.map((d, i) => card(d, i === ongoing.length - 1)))).join("");
+const featuredCards = (await Promise.all(featured.map((g, i) => card(g, i === featured.length - 1)))).join("");
+const restRows = (await Promise.all(rest.map((g, i) => row(g, i === rest.length - 1)))).join("");
+const ongoingRows = (await Promise.all(ongoingGroups.map((g, i) => row(g, i === ongoingGroups.length - 1)))).join("");
+
+// One announcement slot, rendered after the deals.
+//
+// After, not before: people opened for the sales, so putting anything above
+// them costs the thing they came for. Below, it catches the reader who scrolled,
+// which is the engaged one anyway. Classic P.S. position.
+//
+// One slot on purpose. The moment this becomes a list of three things it stops
+// being read. To turn it on, fill in all four fields. Leave it null to omit the
+// block entirely.
+const ANNOUNCEMENT = null;
+// const ANNOUNCEMENT = {
+//   label: "Community",
+//   heading: "SammyC's Skool is now free to join",
+//   body: "Protocols, vendor talk and testing results, with no monthly fee.",
+//   cta: "Join free",
+//   url: "https://www.skool.com/..."
+// };
 
 const countLine = live.length === 1
   ? "1 sale live right now"
@@ -493,11 +633,11 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
 <title>MyPeptidePrice roundup</title>
 </head>
-<body style="margin:0;padding:0;background:${C.cream};">
+<body style="margin:0;padding:0;background:${C.black};">
 <!-- Preview text. Sits in the inbox line after the subject. The spacer run
      after it stops the client from pulling body copy in behind it. -->
-<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:${C.cream};opacity:0;">${esc(preheader)}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.cream};">
+<div style="display:none;max-height:0;overflow:hidden;font-size:1px;line-height:1px;color:${C.black};opacity:0;">${esc(preheader)}&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;</div>
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.black};">
   <tr>
     <td align="center" style="padding:28px 12px;">
       <!-- width attribute for Outlook, which ignores max-width, and a percentage
@@ -509,7 +649,7 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
           <!-- The whole masthead is centred. align on the cell handles the text,
                and the lockup gets auto side margins because a block level image
                with a fixed width ignores text-align in most clients. -->
-          <td align="center" style="background:${T.headerBg};border-radius:16px 16px 0 0;padding:28px 28px 26px 28px;text-align:center;">
+          <td align="center" style="background:${T.headerBg};border-radius:16px 16px 0 0;padding:28px 24px 26px 24px;text-align:center;">
             <div style="font:800 11px/1 ${FONT};color:${C.sand};text-transform:uppercase;letter-spacing:2px;text-align:center;">${esc(T.eyebrow)}</div>
             <!-- The wordmark is an image because email has no web fonts. Gmail
                  strips the font link the site uses, so any text version of the
@@ -518,7 +658,7 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
                  Width only, so the lockup cannot be squashed the way the
                  square-sized symbol was. The alt text is styled to match what
                  it replaces, so a blocked image still reads as the brand. -->
-            <div style="padding:14px 0 0 0;text-align:center;"><img src="${SITE}${BRAND_LOCKUP}" width="${LOCKUP_W}" alt="MyPeptidePrice.com" style="display:block;margin:0 auto;width:${LOCKUP_W}px;height:auto;max-width:${LOCKUP_W}px;border:0;outline:none;text-decoration:none;font:800 22px/1.2 ${FONT};color:${C.cream};letter-spacing:-.2px;text-align:center;"/></div>
+            <div style="padding:14px 0 0 0;text-align:center;"><img src="${SITE}${BRAND_LOCKUP}" width="${LOCKUP_W}" alt="MyPeptidePrice.com" style="display:block;margin:0 auto;width:100%;height:auto;max-width:${LOCKUP_W}px;border:0;outline:none;text-decoration:none;font:800 24px/1.2 ${FONT};color:${C.cream};letter-spacing:-.4px;text-align:center;"/></div>
             <div style="font:400 13px/1.5 ${FONT};color:${C.sand};padding:9px 0 0 0;text-align:center;">Live vendor pricing, normalized to cost per mg</div>
           </td>
         </tr>
@@ -536,43 +676,58 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
         </tr>` : ""}
 
         <tr>
-          <td style="background:${C.paper};padding:30px 28px 0 28px;">
+          <td style="background:${C.paper};padding:28px 24px 0 24px;">
             ${T.bunting ? `<div style="font:800 11px/1 ${FONT};color:${T.accent};text-transform:uppercase;letter-spacing:1.6px;padding:0 0 10px 0;">${esc(dayLabel(sendDate))}</div>` : ""}
-            <div style="font:800 26px/1.2 ${FONT};color:${C.ink};letter-spacing:-.4px;">${esc(T.title(sendDate))}</div>
-            <div style="font:700 15px/1.4 ${FONT};color:${T.accent};padding:6px 0 0 0;">${esc(countLine)}</div>
+            <div style="font:800 30px/1.2 ${FONT};color:${C.cream};letter-spacing:-.6px;">${esc(T.title(sendDate))}</div>
+            <div style="font:700 15px/1.5 ${FONT};color:${C.oliveSoft};padding:8px 0 0 0;">${esc(countLine)}</div>
             <div style="font:400 14px/1.65 ${FONT};color:${C.muted};padding:12px 0 0 0;">${esc(T.intro)}</div>
           </td>
         </tr>
 
         <tr>
-          <td style="background:${C.paper};padding:0 28px;">
+          <td style="background:${C.paper};padding:0 24px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-              ${timedCards ? heading("Limited time") + timedCards : ""}
-              ${ongoingCards ? heading("Ongoing") + ongoingCards : ""}
+              ${featuredCards ? heading("Biggest this weekend") + featuredCards : ""}
+              ${restRows ? heading("Also live") + restRows : ""}
+              ${ongoingRows ? heading("Ongoing") + ongoingRows : ""}
             </table>
           </td>
         </tr>
 
+        ${ANNOUNCEMENT ? `<tr>
+          <td style="background:${C.paper};padding:8px 24px 0 24px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:${C.panel};border:1px solid ${C.line};border-radius:16px;">
+              <tr>
+                <td style="padding:18px 20px;">
+                  <div style="font:800 10px/1 ${FONT};color:${T.accent};text-transform:uppercase;letter-spacing:1.4px;">${esc(ANNOUNCEMENT.label)}</div>
+                  <div style="font:800 17px/1.35 ${FONT};color:${C.cream};padding:8px 0 0 0;">${esc(ANNOUNCEMENT.heading)}</div>
+                  <div style="font:400 13px/1.6 ${FONT};color:${C.muted};padding:6px 0 0 0;">${esc(ANNOUNCEMENT.body)}</div>
+                  <div style="padding:12px 0 0 0;"><a href="${esc(ANNOUNCEMENT.url)}" target="_blank" style="display:inline-block;background:${C.oliveSoft};color:${C.black};font:700 12px/1 ${FONT};letter-spacing:.2px;text-decoration:none;padding:11px 20px;border-radius:999px;">${esc(ANNOUNCEMENT.cta)}</a></div>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>` : ""}
         <tr>
-          <td style="background:${C.paper};padding:26px 28px 32px 28px;" align="center">
-            <a href="${esc(tagged(SITE + "/#compare", sendDate))}" target="_blank" style="display:inline-block;background:${T.accent};color:${C.cream};font:700 14px/1 ${FONT};text-decoration:none;padding:15px 30px;border-radius:999px;white-space:nowrap;">Compare every vendor</a>
+          <td style="background:${C.paper};padding:26px 24px 32px 24px;" align="center">
+            <a href="${esc(tagged(SITE + "/#compare", sendDate))}" target="_blank" style="display:inline-block;background:${C.oliveSoft};color:${C.black};font:700 13px/1 ${FONT};letter-spacing:.3px;text-decoration:none;padding:15px 34px;border-radius:999px;white-space:nowrap;">Compare every vendor</a>
             <div style="font:400 12px/1.6 ${FONT};color:${C.muted};padding:14px 0 0 0;">Prices update live from each vendor's own feed.</div>
           </td>
         </tr>
 
         <tr>
-          <td style="background:${C.sand2};padding:20px 28px;">
-            <div style="font:800 10px/1 ${FONT};color:${C.forest};text-transform:uppercase;letter-spacing:1.4px;">Research use only</div>
-            <div style="font:400 12px/1.65 ${FONT};color:${C.ink};padding:9px 0 0 0;">All compounds referenced are sold by third party vendors for laboratory research use only. Not for human consumption. MyPeptidePrice.com does not sell products. Discounts, stock and final pricing are set by each vendor and change without notice, so confirm final pricing at checkout.</div>
+          <td style="background:${C.panel};padding:20px 24px;border-top:1px solid ${C.line};">
+            <div style="font:800 10px/1 ${FONT};color:${C.oliveSoft};text-transform:uppercase;letter-spacing:1.4px;">Research use only</div>
+            <div style="font:400 12px/1.65 ${FONT};color:${C.muted};padding:9px 0 0 0;">All compounds referenced are sold by third party vendors for laboratory research use only. Not for human consumption. MyPeptidePrice.com does not sell products. Discounts, stock and final pricing are set by each vendor and change without notice, so confirm final pricing at checkout.</div>
           </td>
         </tr>
 
         <tr>
-          <td style="background:${T.footerBg};border-radius:0 0 16px 16px;padding:22px 28px 26px 28px;">
-            <div style="font:400 12px/1.65 ${FONT};color:${C.sand};">Outbound vendor links are affiliate links. If you buy through one, we may earn a commission at no additional cost to you.</div>
-            <div style="font:400 12px/1.65 ${FONT};color:${C.sand};padding:11px 0 0 0;">You are receiving this because you confirmed a subscription to price alerts at MyPeptidePrice.com.</div>
-            <div style="font:400 12px/1.65 ${FONT};color:${C.sand};padding:11px 0 0 0;"><a href="{{UnsubscribeURL}}" style="color:${C.cream};text-decoration:underline;">Unsubscribe</a></div>
-            <div style="font:400 12px/1.65 ${FONT};color:${C.sand};padding:11px 0 0 0;">{{SenderInfo}}</div>
+          <td style="background:${T.footerBg};border-radius:0 0 16px 16px;padding:22px 24px 26px 24px;">
+            <div style="font:400 12px/1.65 ${FONT};color:${C.dim};">Outbound vendor links are affiliate links. If you buy through one, we may earn a commission at no additional cost to you.</div>
+            <div style="font:400 12px/1.65 ${FONT};color:${C.dim};padding:11px 0 0 0;">You are receiving this because you confirmed a subscription to price alerts at MyPeptidePrice.com.</div>
+            <div style="font:400 12px/1.65 ${FONT};color:${C.dim};padding:11px 0 0 0;"><a href="{{UnsubscribeURL}}" style="color:${C.muted};text-decoration:underline;">Unsubscribe</a></div>
+            <div style="font:400 12px/1.65 ${FONT};color:${C.dim};padding:11px 0 0 0;">{{SenderInfo}}</div>
           </td>
         </tr>
 
@@ -635,7 +790,9 @@ await writeFile(out, html);
 console.log(`build-roundup-email: wrote ${outArg}`);
 console.log(`  send date     ${sendDate}`);
 console.log(`  theme         ${themeKey}${themeArg ? "" : " (auto)"}`);
-console.log(`  deals         ${live.length} across ${vendorCount} vendors (${timed.length} limited time, ${ongoing.length} ongoing)`);
+console.log(`  deals         ${live.length} across ${vendorCount} vendors`);
+console.log(`  layout        ${featured.length} featured, ${rest.length} compact, ${ongoingGroups.length} ongoing`);
+if (entries.length < live.length) console.log(`  grouped       ${live.length - entries.length} deal(s) folded into a shared offer`);
 if (suppressed) console.log(`  suppressed    ${suppressed} duplicate vendor entr${suppressed === 1 ? "y" : "ies"}`);
 console.log(`  subject       ${subject}`);
 console.log(`  preview text  ${preheader}`);
