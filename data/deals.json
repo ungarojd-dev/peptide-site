@@ -412,7 +412,25 @@
       "description": "High Tide Compounds is running 40% off sitewide from September 5 through September 7. Code SAMMYC stacks for an additional 10% off the reduced price. The sale ends at midnight on September 7. Confirm final pricing at checkout.",
       "affiliate_url": "https://hightidecompounds.com/?aff=44",
       "id": "high-tide-labor-day-2026-09"
+    },
+    {
+      "priority": 315,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Disguised Alpha",
+      "start_date": "2026-09-05",
+      "end_date": "2026-09-07",
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "Labor Day, free Retatrutide 10mg over $200, plus 10% back in store credit",
+      "timezone": "America/New_York",
+      "type": "conditional",
+      "cta_text": "Shop Now",
+      "description": "Disguised Alpha is running a Labor Day offer from September 5 through September 7. Orders over $200 include a free Retatrutide 10mg and 3ml bacteriostatic water. Orders over $150 include free FedEx 2 day shipping. Every order earns 10% of the purchase total back as store credit toward a future purchase. The store credit is credit for a later order rather than a discount on this one, so the prices shown here do not reflect it. Code SAMMYC applies 10% off. Confirm final pricing and qualifying thresholds at checkout.",
+      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
+      "id": "disguised-alpha-labor-day-2026-09"
     }
   ],
-  "version": "2026-09-04-labor-day-high-tide"
+  "version": "2026-09-04-labor-day-disguised-alpha"
 }
