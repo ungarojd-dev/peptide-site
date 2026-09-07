@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260907-orbitrex-v121";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260907-glacier-v122";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -966,7 +966,7 @@
     runUntil: "2026-09-09",
     eyebrow: "Labor Day Weekend",
     heading: "Labor Day sales are live",
-    body: "Seventeen sales across sixteen vendors this weekend, all tracked and normalized to cost per mg.",
+    body: "Eighteen sales across seventeen vendors this weekend, all tracked and normalized to cost per mg.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board.
     rows: [
@@ -974,6 +974,7 @@
       { vendor: "High Tide Compounds", offer: "40% off sitewide, SAMMYC 10%", when: "Sep 5 to 7" },
       { vendor: "Disguised Alpha", offer: "Free Retatrutide over $200, 10% back in credit", when: "Sep 5 to 7" },
       { vendor: "Orbitrex Peptides", offer: "25% off with LABORDAY25, SAMMYC 15%", when: "ends Sep 7" },
+      { vendor: "Glacier Aminos", offer: "Buy 2 get 1 free on vials, 30% off sprays and caps, SAMMYC 10%", when: "ends Sep 7" },
       { vendor: "Glow, Flawless and Iron", offer: "35% to 50% by cart size, SAMMYC 15%", when: "Sep 2 to 7" },
       { vendor: "LabSourced Peptides", offer: "30% off sitewide, SAMMYC boosted to 20%", when: "Sep 2 to 8" },
       { vendor: "Mile High Compounds", offer: "SAMMYC boosted to 35%", when: "Sep 3 to 9" },

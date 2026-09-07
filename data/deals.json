@@ -448,7 +448,24 @@
       "description": "Orbitrex Peptides is running a Labor Day sale through the end of September 7. Code LABORDAY25 takes 25% off, and code SAMMYC stacks for a further 15% off the reduced price. The sale ends at 11:59pm Eastern on September 7. Confirm final pricing at checkout.",
       "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
       "id": "orbitrex-labor-day-2026-09"
+    },
+    {
+      "priority": 314,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Glacier Aminos",
+      "end_date": "2026-09-07",
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "Labor Day, buy 2 get 1 free on vials, 30% off sprays and caps, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "conditional",
+      "cta_text": "Shop Now",
+      "description": "Glacier Aminos is running a Labor Day sale through the end of September 7. Peptide vials are buy 2 get 1 free, mix and match. Sprays and capsules are 30% off. Five and ten pack kits are 15% off. Orders also earn double Glacier Rewards points. Code SAMMYC stacks for an additional 10% off. The rates differ by product type and the vial offer is a quantity deal, so the per unit prices shown here do not reflect them. Confirm final pricing at checkout.",
+      "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
+      "id": "glacier-labor-day-2026-09"
     }
   ],
-  "version": "2026-09-07-labor-day-orbitrex"
+  "version": "2026-09-07-labor-day-glacier"
 }
