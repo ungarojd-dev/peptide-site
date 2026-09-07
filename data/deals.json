@@ -430,7 +430,25 @@
       "description": "Disguised Alpha is running a Labor Day offer from September 5 through September 7. Orders over $200 include a free Retatrutide 10mg and 3ml bacteriostatic water. Orders over $150 include free FedEx 2 day shipping. Every order earns 10% of the purchase total back as store credit toward a future purchase. The store credit is credit for a later order rather than a discount on this one, so the prices shown here do not reflect it. Code SAMMYC applies 10% off. Confirm final pricing and qualifying thresholds at checkout.",
       "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
       "id": "disguised-alpha-labor-day-2026-09"
+    },
+    {
+      "priority": 316,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Orbitrex Peptides",
+      "end_date": "2026-09-07",
+      "sale_percent": 25,
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Labor Day, 25% off with LABORDAY25, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Orbitrex Peptides is running a Labor Day sale through the end of September 7. Code LABORDAY25 takes 25% off, and code SAMMYC stacks for a further 15% off the reduced price. The sale ends at 11:59pm Eastern on September 7. Confirm final pricing at checkout.",
+      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
+      "id": "orbitrex-labor-day-2026-09"
     }
   ],
-  "version": "2026-09-04-labor-day-disguised-alpha"
+  "version": "2026-09-07-labor-day-orbitrex"
 }

@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260904-disguised-alpha-v119";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260907-orbitrex-v121";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -315,8 +315,13 @@
       const item={
         vendor:p.display_vendor||p.vendor||"",
         offer,
-        sale:Number.isFinite(Number(p.sale_percent))?Number(p.sale_percent):null,
-        code:Number.isFinite(Number(p.code_percent))?Number(p.code_percent):null,
+        // Number(null) is 0, which is finite, so a promotions entry carrying an
+        // explicit null rather than omitting the key rendered as "0% off". The
+        // generator happens to omit them today, which is the only reason this
+        // has never shown up on the site. Checking for null first makes the
+        // rendering independent of that.
+        sale:(p.sale_percent!=null&&Number.isFinite(Number(p.sale_percent)))?Number(p.sale_percent):null,
+        code:(p.code_percent!=null&&Number.isFinite(Number(p.code_percent)))?Number(p.code_percent):null,
         stack:p.strip_stack||"SAMMYC",
         url:p.affiliate_url||"#",
         vendorKey:p.vendor||"",
@@ -345,7 +350,16 @@
     let rate="";
     if(it.sale!=null&&it.code!=null){ rate=`<span class="deal-rate">${it.sale}% off <span class="deal-rate-plus">+ ${it.code}% with ${escapeHtml(it.stack)}</span></span>`; }
     else if(it.code!=null){ rate=`<span class="deal-rate">${it.code}% with ${escapeHtml(it.stack)}</span>`; }
-    const when = it.endLabel?`<span class="deal-when">ends ${escapeHtml(it.endLabel)}</span>` : (it.startLabel?`<span class="deal-when">starts ${escapeHtml(it.startLabel)}</span>`:"");
+    // Show the full window, not just the end. A deal reading "ends Sep 7" tells
+    // a visitor nothing about whether it has started, which matters most for
+    // the upcoming bucket and for anything added mid-weekend. Falls back to a
+    // single labelled date when only one end of the window is authored, and to
+    // nothing at all for evergreen offers that have neither.
+    const when = (it.startLabel && it.endLabel)
+      ? `<span class="deal-when">${escapeHtml(it.startLabel)} to ${escapeHtml(it.endLabel)}</span>`
+      : it.endLabel
+        ? `<span class="deal-when">ends ${escapeHtml(it.endLabel)}</span>`
+        : (it.startLabel ? `<span class="deal-when">starts ${escapeHtml(it.startLabel)}</span>` : "");
     return `<a class="deal-line" href="${escapeHtml(it.url)}" target="_blank" rel="nofollow sponsored noopener" data-deal-affiliate="1" data-deal-vendor="${escapeHtml(it.vendorKey)}"><span class="deal-line-main"><strong>${escapeHtml(it.vendor)}</strong> <span class="deal-offer">${escapeHtml(it.offer)}</span></span>${rate||""}${when}</a>`;
   }
   const dealsPanelMarkup=all=>{
@@ -952,13 +966,14 @@
     runUntil: "2026-09-09",
     eyebrow: "Labor Day Weekend",
     heading: "Labor Day sales are live",
-    body: "Sixteen sales across fifteen vendors this weekend, all tracked and normalized to cost per mg.",
+    body: "Seventeen sales across sixteen vendors this weekend, all tracked and normalized to cost per mg.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board.
     rows: [
       { vendor: "Southern Aminos", offer: "50% off sitewide, SAMMYC 15%", when: "Sep 5 to 7" },
       { vendor: "High Tide Compounds", offer: "40% off sitewide, SAMMYC 10%", when: "Sep 5 to 7" },
       { vendor: "Disguised Alpha", offer: "Free Retatrutide over $200, 10% back in credit", when: "Sep 5 to 7" },
+      { vendor: "Orbitrex Peptides", offer: "25% off with LABORDAY25, SAMMYC 15%", when: "ends Sep 7" },
       { vendor: "Glow, Flawless and Iron", offer: "35% to 50% by cart size, SAMMYC 15%", when: "Sep 2 to 7" },
       { vendor: "LabSourced Peptides", offer: "30% off sitewide, SAMMYC boosted to 20%", when: "Sep 2 to 8" },
       { vendor: "Mile High Compounds", offer: "SAMMYC boosted to 35%", when: "Sep 3 to 9" },
