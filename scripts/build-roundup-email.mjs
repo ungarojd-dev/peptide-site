@@ -132,8 +132,15 @@ const esc = s => String(s == null ? "" : s)
 // appending our own analytics junk to a partner URL risks breaking attribution
 // on their side, which is the one thing that must not break.
 function tagged(url, sendDate) {
-  const sep = url.includes("?") ? "&" : "?";
-  return `${url}${sep}utm_source=email&utm_medium=newsletter&utm_campaign=roundup-${sendDate}`;
+  // The fragment has to stay last. Appending the query after a "#compare"
+  // anchor put the parameters inside the fragment, which is never sent to the
+  // server, so the busiest internal link in the email was untrackable and its
+  // campaign never reached GA4 at all.
+  const hash = url.indexOf("#");
+  const base = hash === -1 ? url : url.slice(0, hash);
+  const frag = hash === -1 ? "" : url.slice(hash);
+  const sep = base.includes("?") ? "&" : "?";
+  return `${base}${sep}utm_source=email&utm_medium=newsletter&utm_campaign=roundup-${sendDate}${frag}`;
 }
 
 // ---------------------------------------------------------------------------
@@ -495,6 +502,7 @@ async function row(g, last) {
     ? `<a href="${esc(m.affiliate_url)}" target="_blank" rel="nofollow sponsored noopener" style="color:${C.ink};text-decoration:none;border-bottom:1px solid ${C.stone};">${esc(nameOf(m))}</a>`
     : esc(nameOf(m))).join('<span style="color:' + C.sand + ';"> &middot; </span>');
   const flag = urgency(d);
+  const back = esc(tagged(await compareUrl(d), sendDate));
   // Same vocabulary as the cards above, inline to keep a row to two lines.
   const bits = [];
   if (d.sale_percent != null) bits.push(`<span style="color:${C.cream};font-weight:700;">${d.sale_percent}% off</span>`);
@@ -515,6 +523,10 @@ async function row(g, last) {
                              which is exactly the kind of deal that has no sale_percent. -->
                         <div style="font:400 13px/1.5 ${FONT};color:${C.sand};padding:4px 0 0 0;">${esc(d.headline || "")}</div>
                         <div style="font:400 12px/1.6 ${FONT};color:${C.muted};padding:4px 0 0 0;">${bits.join(' <span style="color:' + C.sand + ';">&middot;</span> ')}${flag ? ` <span style="color:${T.urgent};font-weight:700;">${esc(flag)}</span>` : ""}</div>
+                        <!-- Every row gets a route back to the site. Thirteen of eighteen
+                             deals previously had none, so the only internal links in the
+                             whole email were the three featured cards and the closing button. -->
+                        <div style="padding:7px 0 0 0;"><a href="${back}" target="_blank" style="font:700 12px/1 ${FONT};color:${C.oliveSoft};text-decoration:none;">Compare $/mg &rsaquo;</a></div>
                       </td>
                     </tr>
                   </table>
