@@ -508,7 +508,13 @@ async function row(g, last) {
                     <tr>
                       <td style="padding:13px 18px;">
                         <div style="font:700 15px/1.35 ${FONT};color:${C.cream};">${links}</div>
-                        <div style="font:400 12px/1.6 ${FONT};color:${C.muted};padding:3px 0 0 0;">${bits.join(' <span style="color:' + C.sand + ';">&middot;</span> ')}${flag ? ` <span style="color:${T.urgent};font-weight:700;">${esc(flag)}</span>` : ""}</div>
+                        <!-- The headline was missing from compact rows entirely, so any
+                             offer without a percentage rendered as nothing but a code.
+                             Glacier's buy 2 get 1 free read as "SAMMYC 10%". The figures
+                             line cannot carry a quantity or threshold offer on its own,
+                             which is exactly the kind of deal that has no sale_percent. -->
+                        <div style="font:400 13px/1.5 ${FONT};color:${C.sand};padding:4px 0 0 0;">${esc(d.headline || "")}</div>
+                        <div style="font:400 12px/1.6 ${FONT};color:${C.muted};padding:4px 0 0 0;">${bits.join(' <span style="color:' + C.sand + ';">&middot;</span> ')}${flag ? ` <span style="color:${T.urgent};font-weight:700;">${esc(flag)}</span>` : ""}</div>
                       </td>
                     </tr>
                   </table>
@@ -543,7 +549,17 @@ for (const d of timed) {
 let closeDate = null, closeCount = 0;
 for (const [iso, n] of endTally) if (n > closeCount) { closeDate = iso; closeCount = n; }
 const majorityCloses = closeDate && closeCount * 2 > timed.length;
-const closeDay = majorityCloses ? weekday(closeDate) : null;
+// On the closing day itself, naming the weekday is the weakest possible
+// phrasing: "most of these end Monday" read on Monday morning sounds like a
+// future date. Same day becomes "tonight", the day before becomes "tomorrow".
+const daysOut = closeDate && majorityCloses
+  ? Math.round((Date.UTC(parts(closeDate).y, parts(closeDate).m - 1, parts(closeDate).d)
+              - Date.UTC(parts(sendDate).y, parts(sendDate).m - 1, parts(sendDate).d)) / 86400000)
+  : null;
+const closeDay = !majorityCloses ? null
+  : daysOut === 0 ? "tonight"
+  : daysOut === 1 ? "tomorrow"
+  : weekday(closeDate);
 
 // ---------------------------------------------------------------------------
 // Seasonal themes.
@@ -579,7 +595,7 @@ const THEMES = {
     // The headline carries the deadline and the line under it carries the
     // scale, so neither repeats the other or the subject line.
     title: () => closeDay ? `Most of these end ${closeDay}` : "Labor Day sales are live",
-    intro: `${vendorCount} vendors are running Labor Day sales at the same time${closeDay ? `, and most of them close ${closeDay} night` : ""}. Every rate below is written the way it applies at checkout. The sitewide sale and the SAMMYC code stay separate numbers, because the combined figure vendors advertise is not what the cart charges you.`,
+    intro: `${vendorCount} vendors are running Labor Day sales at the same time${closeDay ? `, and most of them close ${closeDay}${/tonight|tomorrow/.test(closeDay) ? "" : " night"}` : ""}. Every rate below is written the way it applies at checkout. The sitewide sale and the SAMMYC code stay separate numbers, because the combined figure vendors advertise is not what the cart charges you.`,
     subject: line => closeDay ? `Labor Day: ${live.length} sales live, most end ${closeDay}` : `Labor Day: ${line}`,
     preheader: closeDay ? `Labor Day sales are live. Most end ${closeDay}.` : "Labor Day sales are live."
   }

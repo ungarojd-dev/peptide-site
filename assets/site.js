@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260907-glacier-v122";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260908-disguised-alpha-labor-v126";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -964,35 +964,18 @@
     // Last Labor Day sale (Mile High) ends Sep 9, so the popup retires itself
     // the following morning without needing a code change.
     runUntil: "2026-09-09",
-    eyebrow: "Labor Day Weekend",
-    heading: "Labor Day sales are live",
-    body: "Eighteen sales across seventeen vendors this weekend, all tracked and normalized to cost per mg.",
+    eyebrow: "Still live",
+    heading: "Last of the Labor Day sales",
+    body: "Three sales still running, all tracked and normalized to cost per mg.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board.
     rows: [
-      { vendor: "Southern Aminos", offer: "50% off sitewide, SAMMYC 15%", when: "Sep 5 to 7" },
-      { vendor: "High Tide Compounds", offer: "40% off sitewide, SAMMYC 10%", when: "Sep 5 to 7" },
-      { vendor: "Disguised Alpha", offer: "Free Retatrutide over $200, 10% back in credit", when: "Sep 5 to 7" },
-      { vendor: "Orbitrex Peptides", offer: "25% off with LABORDAY25, SAMMYC 15%", when: "ends Sep 7" },
-      { vendor: "Glacier Aminos", offer: "Buy 2 get 1 free on vials, 30% off sprays and caps, SAMMYC 10%", when: "ends Sep 7" },
-      { vendor: "Glow, Flawless and Iron", offer: "35% to 50% by cart size, SAMMYC 15%", when: "Sep 2 to 7" },
-      { vendor: "LabSourced Peptides", offer: "30% off sitewide, SAMMYC boosted to 20%", when: "Sep 2 to 8" },
-      { vendor: "Mile High Compounds", offer: "SAMMYC boosted to 35%", when: "Sep 3 to 9" },
-      { vendor: "Aurora Peptides", offer: "Buy 2 get 1 free, then 20% off, SAMMYC 20%", when: "Sep 4 to 7" },
-      { vendor: "Oneday Compounds", offer: "35% off sitewide, SAMMYC 10%", when: "through Sep 7" },
-      { vendor: "Peptira", offer: "35% off sitewide, SAMMYC 10%", when: "through Sep 7" },
-      { vendor: "Solyn Labs", offer: "30% off automatically, SAMMYC 10%", when: "Sep 3 to 7" },
-      { vendor: "Coffee and Peppers", offer: "10% to 25% by cart size, SAMMYC 15%", when: "Sep 3 to 7" },
-      // Quantity tiers, not a percentage off, so this row states the tiers and
-      // omits a code figure. Whether SAMMYC survives a buy-more-get-more promo
-      // is vendor specific and unconfirmed here, and the shared codeLabel below
-      // already carries the code message for the sales that do stack.
-      { vendor: "Instant Peptides", offer: "Buy 4 get 1 free, buy 10 get 10 free", when: "Sep 4 to 7" },
-      { vendor: "Ion Peptide", offer: "20% off sitewide, more on select categories, SAMMYC 15%", when: "Sep 4 to 7" },
-      { vendor: "Peptidology", offer: "Buy 2 get 1 free automatically, SAMMYC 10%", when: "Sep 3 to 7" }
+      { vendor: "LabSourced Peptides", offer: "30% off sitewide, SAMMYC boosted to 20%", when: "ends today" },
+      { vendor: "Mile High Compounds", offer: "SAMMYC boosted to 35%", when: "ends Sep 9" },
+      { vendor: "Disguised Alpha", offer: "Sale pricing plus 10% with code LABOR", when: "Sep 7 to 9" }
     ],
     code: "SAMMYC",
-    codeLabel: "stacks on every sale",
+    codeLabel: "stacks on most sales",
     ctaText: "See all Labor Day deals",
     ctaHref: "/#compare",
     dismissText: "Not now"
