@@ -580,6 +580,21 @@
     if(scroll&&grid) grid.scrollIntoView({behavior:"smooth",block:"start"});
   }
 
+  // ?vendor= is read in applyInitialFilters before any cards exist, so it holds
+  // whatever the URL said. Once the catalog is in, resolve it against the
+  // vendors actually present: canonicalize "coffee-and-peppers" to "Coffee and
+  // Peppers" so the filter chip reads properly, and drop back to All if the
+  // vendor is not in this catalog, rather than showing an empty grid with no
+  // explanation. That case matters because these links go in paid ads, where a
+  // blank page is a wasted click.
+  function resolveVendorFilter(){
+    if(!state.vendor || state.vendor === "All") return;
+    const known = allVendorNames();
+    const hit = known.find(name => matchesFilterValue(name, state.vendor)
+      || matchesFilterValue(name, String(state.vendor).replace(/-+/g, " ")));
+    state.vendor = hit || "All";
+  }
+
   function applyInitialFilters(){
     const params=new URLSearchParams(location.search);
     state.category=params.get("cat")||params.get("category")||document.body.dataset.defaultCategory||"All";
@@ -653,9 +668,11 @@
     state.cards=products;
     state.source=source;
     updateStats();
+    resolveVendorFilter();
     renderFilters();
     renderCards(false);
   }
+
 
   function clear(){
     state.query="";
@@ -673,8 +690,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260908-email-utm-fix-v127",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260908-email-utm-fix-v127",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260908-vendor-filter-v134",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260908-vendor-filter-v134",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
