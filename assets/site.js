@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260908-vendor-filter-v134";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260909-retire-stale-v137";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -960,19 +960,19 @@
     // Changing campaignId retires the previous popup for everyone, including
     // people who already dismissed the Peptira launch, so the Labor Day
     // roundup is seen fresh rather than suppressed by the old 24h stamp.
-    campaignId: "labor-day-2026-09",
+    campaignId: "ff40-2026-09",
     // Last Labor Day sale (Mile High) ends Sep 9, so the popup retires itself
     // the following morning without needing a code change.
-    runUntil: "2026-09-09",
-    eyebrow: "Still live",
-    heading: "Last of the Labor Day sales",
-    body: "Three sales still running, all tracked and normalized to cost per mg.",
+    runUntil: "2026-09-23",
+    eyebrow: "New this week",
+    heading: "40% off at Glow and Flawless",
+    body: "Two weeks of 40% off at Glow and Flawless, plus Aurora every Friday.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board.
     rows: [
-      { vendor: "LabSourced Peptides", offer: "30% off sitewide, SAMMYC boosted to 20%", when: "ends today" },
-      { vendor: "Mile High Compounds", offer: "SAMMYC boosted to 35%", when: "ends Sep 9" },
-      { vendor: "Disguised Alpha", offer: "Sale pricing plus 10% with code LABOR", when: "Sep 7 to 9" }
+      { vendor: "Glow Aminos", offer: "40% off sitewide with code FF40, SAMMYC 15%", when: "to Sep 23" },
+      { vendor: "Flawless Compounds", offer: "40% off sitewide with code FF40, SAMMYC 15%", when: "to Sep 23" },
+      { vendor: "Aurora Peptides", offer: "15% off sitewide every Friday, SAMMYC 20%", when: "Fridays" }
     ],
     code: "SAMMYC",
     codeLabel: "stacks on most sales",

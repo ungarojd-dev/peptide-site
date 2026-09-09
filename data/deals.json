@@ -65,129 +65,6 @@
       "ongoing": true
     },
     {
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Peptidology",
-      "start_date": "",
-      "sale_percent": 20,
-      "end_date": "",
-      "code_percent": 10,
-      "headline": "20% off with AUGUST20, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "peptidology-august20-2026",
-      "cta_text": "Shop Peptidology",
-      "description": "Peptidology is running 20% off all compounds with code AUGUST20. Code SAMMYC stacks on top for a further 10% off the reduced price. Bulk orders carry an additional tiered discount of up to 15%, which varies by quantity and is not reflected in the prices shown here. Confirm final pricing at checkout.",
-      "affiliate_url": "https://peptidology.co/?ref=idifhsqu"
-    },
-    {
-      "priority": 305,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Oneday Compounds",
-      "start_date": "2026-08-27",
-      "sale_percent": 35,
-      "end_date": "2026-09-07",
-      "code": "SAMMYC",
-      "code_percent": 10,
-      "headline": "Labor Day event, 35% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Oneday Compounds is running a Labor Day event with 35% off sitewide, no code needed, through September 7. Code SAMMYC stacks for an additional 10% off the reduced price. Confirm final pricing at checkout.",
-      "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
-      "id": "oneday-labor-day-35-2026-09"
-    },
-    {
-      "code": "SAMMYC",
-      "timezone": "America/New_York",
-      "show_in": [
-        "announcement"
-      ],
-      "priority": 200,
-      "vendor": "Iron Protocol",
-      "type": "new_partner",
-      "start_date": "2026-08-17",
-      "end_date": "2026-09-17",
-      "id": "iron-protocol-now-tracked-2026-08-17",
-      "headline": "Now tracked, 15% off with SAMMYC",
-      "description": "Iron Protocol is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 15% off using code SAMMYC."
-    },
-    {
-      "code": "SAMMYC",
-      "timezone": "America/New_York",
-      "show_in": [
-        "announcement"
-      ],
-      "priority": 210,
-      "vendor": "Peptira",
-      "type": "new_partner",
-      "start_date": "2026-08-20",
-      "end_date": "2026-09-20",
-      "id": "peptira-now-tracked-2026-08-20",
-      "headline": "Now tracked, 10% off with SAMMYC",
-      "description": "Peptira is now tracked on MyPeptidePrice. Compare their pricing per mg against every other vendor, with 10% off using code SAMMYC.",
-      "affiliate_url": "https://peptira.com/?ref=SAMMYC"
-    },
-    {
-      "priority": 315,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Peptira",
-      "start_date": "2026-08-21",
-      "sale_percent": 35,
-      "code": "SAMMYC",
-      "code_percent": 10,
-      "headline": "Warehouse sale, 35% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "id": "peptira-warehouse-35",
-      "cta_text": "Shop Now",
-      "description": "Peptira is running 35% off sitewide through September 7. Code SAMMYC stacks for an additional 10% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
-      "affiliate_url": "https://peptira.com/?ref=SAMMYC",
-      "end_date": "2026-09-07"
-    },
-    {
-      "priority": 312,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Aurora Peptides",
-      "start_date": "2026-09-04",
-      "end_date": "2026-09-06",
-      "code": "SAMMYC",
-      "code_percent": 20,
-      "headline": "Labor Day, buy 2 get 1 free mix and match, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "code_only",
-      "cta_text": "Shop Now",
-      "description": "Aurora Peptides is running buy two get one free, mix and match, from September 4 through September 6. Code SAMMYC is worth a full 20% here and stacks on top. Confirm final pricing at checkout.",
-      "affiliate_url": "https://aurora-peptides.com/?ref=102",
-      "id": "aurora-labor-day-b2g1-2026-09"
-    },
-    {
-      "priority": 311,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Aurora Peptides",
-      "start_date": "2026-09-07",
-      "sale_percent": 20,
-      "end_date": "2026-09-07",
-      "code": "SAMMYC",
-      "code_percent": 20,
-      "headline": "Labor Day, 20% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Aurora Peptides is running 20% off sitewide on September 7 to close out their Labor Day sale. Code SAMMYC is worth a full 20% here and stacks on top of the sale price. Confirm final pricing at checkout.",
-      "affiliate_url": "https://aurora-peptides.com/?ref=102",
-      "id": "aurora-labor-day-20-2026-09"
-    },
-    {
       "priority": 308,
       "show_in": [
         "deals"
@@ -205,213 +82,6 @@
       "description": "Mile High Compounds is boosting code SAMMYC to 35% off from September 3 through September 9. Confirm final pricing at checkout.",
       "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
       "id": "mile-high-labor-day-35-2026-09"
-    },
-    {
-      "priority": 316,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Glow Aminos",
-      "start_date": "2026-09-02",
-      "sale_percent": 35,
-      "end_date": "2026-09-07",
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Labor Day sale, 35% to 50% off by cart size, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Glow Aminos is running a Labor Day sale from September 2 through September 7. The sitewide discount applies automatically at checkout based on cart subtotal: 35% off up to $299, 45% off from $300 to $399, and 50% off at $400 and above. Code SAMMYC stacks for an additional 15% off the reduced price. Confirm final pricing at checkout.",
-      "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
-      "id": "glow-labor-day-tiered-2026-09"
-    },
-    {
-      "priority": 316,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Flawless Compounds",
-      "start_date": "2026-09-02",
-      "sale_percent": 35,
-      "end_date": "2026-09-07",
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Labor Day sale, 35% to 50% off by cart size, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Flawless Compounds is running a Labor Day sale from September 2 through September 7. The sitewide discount applies automatically at checkout based on cart subtotal: 35% off up to $299, 45% off from $300 to $399, and 50% off at $400 and above. Code SAMMYC stacks for an additional 15% off the reduced price. Confirm final pricing at checkout.",
-      "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
-      "id": "flawless-labor-day-tiered-2026-09"
-    },
-    {
-      "priority": 322,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Southern Aminos",
-      "start_date": "2026-09-05",
-      "sale_percent": 50,
-      "end_date": "2026-09-07",
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Labor Day, 50% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Southern Aminos is running 50% off sitewide from September 5 through September 7. Code SAMMYC stacks for an additional 15% off the reduced price, and bulk tiered discounts apply on top. Confirm final pricing at checkout.",
-      "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
-      "id": "southern-labor-day-50-2026-09"
-    },
-    {
-      "priority": 316,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Iron Protocol",
-      "start_date": "2026-09-02",
-      "sale_percent": 35,
-      "end_date": "2026-09-07",
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Labor Day sale, 35% to 50% off by cart size, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Iron Protocol is running a Labor Day sale from September 2 through September 7. The sitewide discount applies automatically at checkout based on cart subtotal: 35% off up to $299, 45% off from $300 to $399, and 50% off at $400 and above. Code SAMMYC stacks for an additional 15% off the reduced price. Confirm final pricing at checkout.",
-      "affiliate_url": "https://ironprotocol.com/ref/samcolao2296/",
-      "id": "iron-labor-day-tiered-2026-09"
-    },
-    {
-      "priority": 306,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Solyn Labs",
-      "start_date": "2026-09-03",
-      "sale_percent": 30,
-      "end_date": "2026-09-07",
-      "code": "SAMMYC",
-      "code_percent": 10,
-      "headline": "Labor Day, 30% off automatically, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Solyn Labs is taking 30% off automatically from September 3 through September 7, no code needed. Code SAMMYC stacks for an additional 10% off the reduced price. Confirm final pricing at checkout.",
-      "affiliate_url": "https://solyn.com/?ref=SammyC",
-      "id": "solyn-labor-day-30-2026-09"
-    },
-    {
-      "priority": 317,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "LabSourced Peptides",
-      "start_date": "2026-09-02",
-      "sale_percent": 30,
-      "end_date": "2026-09-08",
-      "code": "SAMMYC",
-      "code_percent": 20,
-      "headline": "Labor Day, 30% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "LabSourced Peptides is running 30% off sitewide from September 2 through September 8. Code SAMMYC is boosted to 20% for the sale and stacks on the reduced price, and paying by Zelle takes a further 5% off. Confirm final pricing at checkout.",
-      "affiliate_url": "https://labsourced.com/?ref=SammyC",
-      "id": "labsourced-labor-day-30-2026-09"
-    },
-    {
-      "priority": 304,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Coffee and Peppers",
-      "start_date": "2026-09-03",
-      "sale_percent": 10,
-      "end_date": "2026-09-07",
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Labor Day, 10% to 25% off by cart size, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Coffee and Peppers is running a Labor Day sale from September 3 through September 7. The sitewide discount scales with cart subtotal: 10% off to start, 15% over $150, 20% plus free shipping at $350, and 25% plus free shipping over $500. Code SAMMYC stacks for an additional 15% off on every tier. Confirm final pricing at checkout.",
-      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
-      "id": "coffee-labor-day-tiered-2026-09"
-    },
-    {
-      "priority": 314,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Instant Peptides",
-      "start_date": "2026-09-04",
-      "end_date": "2026-09-07",
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Labor Day, buy more get more, buy 10 get 10 free at the top",
-      "timezone": "America/New_York",
-      "type": "conditional",
-      "cta_text": "Shop Now",
-      "description": "Instant Peptides is running a buy more get more Labor Day sale from September 4 through September 7. Four tiers apply: buy 2 and get a third at 50% off, buy 4 and get 1 free, buy 5 and get 5 at 75% off, or buy 10 and get 10 free. These are quantity tiers rather than a sitewide percentage, so the per-unit prices shown here do not reflect them. Code SAMMYC applies 15% off. Confirm final pricing at checkout.",
-      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
-      "id": "instant-labor-day-bogo-2026-09"
-    },
-    {
-      "priority": 313,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Ion Peptide",
-      "start_date": "2026-09-04",
-      "end_date": "2026-09-07",
-      "sale_percent": 20,
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Labor Day, 20% off sitewide with deeper cuts on select categories, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Ion Peptide is running a Labor Day sale from September 4 through September 7. The base discount is 20% off sitewide, applied automatically. Several categories go deeper: ION-1, ION-2 and ION-3 are 25% off, GHK-Cu 50mg and 100mg, Wolverine, MOTS-c, NAD+, Tesamorelin and BPC-157 with TB-500 are 30% off, and all cosmetics and all drops are 50% off. Code SAMMYC stacks for an additional 15% off the reduced price, and paying by ACH takes a further 5% off. Free shipping on orders over $250. Prices shown here reflect the 20% sitewide rate, so the deeper category discounts are not included. Confirm final pricing at checkout.",
-      "affiliate_url": "https://ionpeptide.com?ref=SammyC",
-      "id": "ion-labor-day-2026-09"
-    },
-    {
-      "priority": 313,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Peptidology",
-      "start_date": "2026-09-03",
-      "end_date": "2026-09-07",
-      "code": "SAMMYC",
-      "code_percent": 10,
-      "headline": "Labor Day, buy 2 get 1 free automatically, stacks with SAMMYC",
-      "timezone": "America/Phoenix",
-      "type": "conditional",
-      "cta_text": "Shop Now",
-      "description": "Peptidology is running a Labor Day sale from September 3 through September 7, applied automatically with no sale code needed. Buy two qualifying vials or capsules and the third is free, with the lowest priced qualifying item discounted. There is no cap: six qualifying items give three free, nine give four. Selected 7x tested clearance compounds are reduced by a further 10%. Code SAMMYC stacks for an additional 10% off. This is a quantity offer rather than a sitewide percentage, so the per unit prices shown here do not reflect it. The sale ends 11:59pm Arizona time on September 7. Confirm final pricing at checkout.",
-      "affiliate_url": "https://peptidology.co/?ref=idifhsqu",
-      "id": "peptidology-labor-day-2026-09"
-    },
-    {
-      "priority": 318,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "High Tide Compounds",
-      "start_date": "2026-09-05",
-      "end_date": "2026-09-07",
-      "sale_percent": 40,
-      "code": "SAMMYC",
-      "code_percent": 10,
-      "headline": "Labor Day, 40% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "High Tide Compounds is running 40% off sitewide from September 5 through September 7. Code SAMMYC stacks for an additional 10% off the reduced price. The sale ends at midnight on September 7. Confirm final pricing at checkout.",
-      "affiliate_url": "https://hightidecompounds.com/?aff=44",
-      "id": "high-tide-labor-day-2026-09"
     },
     {
       "priority": 315,
@@ -432,40 +102,60 @@
       "code_percent": 10
     },
     {
-      "priority": 316,
+      "priority": 320,
       "show_in": [
         "deals"
       ],
-      "vendor": "Orbitrex Peptides",
-      "end_date": "2026-09-07",
-      "sale_percent": 25,
+      "vendor": "Glow Aminos",
+      "start_date": "2026-09-09",
+      "end_date": "2026-09-23",
+      "sale_percent": 40,
       "code": "SAMMYC",
       "code_percent": 15,
-      "headline": "Labor Day, 25% off with LABORDAY25, stacks with SAMMYC",
+      "headline": "40% off sitewide with code FF40, stacks with SAMMYC",
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "cta_text": "Shop Now",
-      "description": "Orbitrex Peptides is running a Labor Day sale through the end of September 7. Code LABORDAY25 takes 25% off, and code SAMMYC stacks for a further 15% off the reduced price. The sale ends at 11:59pm Eastern on September 7. Confirm final pricing at checkout.",
-      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
-      "id": "orbitrex-labor-day-2026-09"
+      "description": "Glow Aminos is running 40% off sitewide through September 23 with code FF40. The site advertises 30% off publicly, and entering FF40 at checkout takes the discount to 40% instead. Code SAMMYC stacks for an additional 15% off the reduced price. Both codes are needed. Confirm final pricing at checkout.",
+      "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
+      "id": "glow-ff40-2026-09"
     },
     {
-      "priority": 314,
+      "priority": 320,
       "show_in": [
         "deals"
       ],
-      "vendor": "Glacier Aminos",
-      "end_date": "2026-09-07",
+      "vendor": "Flawless Compounds",
+      "start_date": "2026-09-09",
+      "end_date": "2026-09-23",
+      "sale_percent": 40,
       "code": "SAMMYC",
-      "code_percent": 10,
-      "headline": "Labor Day, buy 2 get 1 free on vials, 30% off sprays and caps, stacks with SAMMYC",
+      "code_percent": 15,
+      "headline": "40% off sitewide with code FF40, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Flawless Compounds is running 40% off sitewide through September 23 with code FF40. The site advertises 30% off publicly, and entering FF40 at checkout takes the discount to 40% instead. Code SAMMYC stacks for an additional 15% off the reduced price. Both codes are needed. Confirm final pricing at checkout.",
+      "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
+      "id": "flawless-ff40-2026-09"
+    },
+    {
+      "priority": 306,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Aurora Peptides",
+      "start_date": "2026-09-11",
+      "code": "SAMMYC",
+      "code_percent": 20,
+      "headline": "Flash Sale Friday, 15% off sitewide every Friday, stacks with SAMMYC",
       "timezone": "America/New_York",
       "type": "conditional",
       "cta_text": "Shop Now",
-      "description": "Glacier Aminos is running a Labor Day sale through the end of September 7. Peptide vials are buy 2 get 1 free, mix and match. Sprays and capsules are 30% off. Five and ten pack kits are 15% off. Orders also earn double Glacier Rewards points. Code SAMMYC stacks for an additional 10% off. The rates differ by product type and the vial offer is a quantity deal, so the per unit prices shown here do not reflect them. Confirm final pricing at checkout.",
-      "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
-      "id": "glacier-labor-day-2026-09"
+      "description": "Aurora Peptides is running Flash Sale Friday every Friday starting September 11. The sale is 15% off sitewide, excluding brand goods, and it is only valid on Fridays. Code SAMMYC stacks for an additional 20% off. Because the sale runs one day a week, the prices shown here do not include the 15% and reflect the code only. Confirm final pricing at checkout.",
+      "affiliate_url": "https://aurora-peptides.com/?ref=102",
+      "id": "aurora-flash-friday-2026-09"
     }
   ],
-  "version": "2026-09-08-disguised-alpha-labor"
+  "version": "2026-09-09-retire-stale-entries"
 }
