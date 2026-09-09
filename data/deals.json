@@ -110,6 +110,7 @@
       "start_date": "2026-09-09",
       "end_date": "2026-09-23",
       "sale_percent": 40,
+      "sale_code": "FF40",
       "code": "SAMMYC",
       "code_percent": 15,
       "headline": "40% off sitewide with code FF40, stacks with SAMMYC",
@@ -129,6 +130,7 @@
       "start_date": "2026-09-09",
       "end_date": "2026-09-23",
       "sale_percent": 40,
+      "sale_code": "FF40",
       "code": "SAMMYC",
       "code_percent": 15,
       "headline": "40% off sitewide with code FF40, stacks with SAMMYC",
@@ -157,5 +159,5 @@
       "id": "aurora-flash-friday-2026-09"
     }
   ],
-  "version": "2026-09-09-retire-stale-entries"
+  "version": "2026-09-09-sale-code-field"
 }

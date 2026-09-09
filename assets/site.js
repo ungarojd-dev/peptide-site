@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260909-retire-stale-v137";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260909-autumn-popup-v139";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -958,11 +958,11 @@
   const CAMPAIGN = {
     enabled: true,
     // Changing campaignId retires the previous popup for everyone, including
-    // people who already dismissed the Peptira launch, so the Labor Day
-    // roundup is seen fresh rather than suppressed by the old 24h stamp.
+    // people who already dismissed the Labor Day one, so this campaign is seen
+    // fresh rather than suppressed by the old 24h stamp.
     campaignId: "ff40-2026-09",
-    // Last Labor Day sale (Mile High) ends Sep 9, so the popup retires itself
-    // the following morning without needing a code change.
+    // The FF40 sale at Glow and Flawless ends Sep 23, so the popup retires
+    // itself the following morning without needing a code change.
     runUntil: "2026-09-23",
     eyebrow: "New this week",
     heading: "40% off at Glow and Flawless",
@@ -976,7 +976,7 @@
     ],
     code: "SAMMYC",
     codeLabel: "stacks on most sales",
-    ctaText: "See all Labor Day deals",
+    ctaText: "See all live deals",
     ctaHref: "/#compare",
     dismissText: "Not now"
   };
@@ -1053,7 +1053,7 @@
       '</li>';
     }).join("");
     wrap.innerHTML =
-      '<div class="partner-pop partner-pop--laborday">' +
+      '<div class="partner-pop partner-pop--autumn">' +
         '<span class="ld-sweep" aria-hidden="true"></span>' +
         '<button type="button" class="partner-pop-close" aria-label="Close">\u00d7</button>' +
         '<div class="partner-pop-top">' +
@@ -1084,7 +1084,7 @@
     const ctx = canvas.getContext("2d");
     // Neon palette to match the popup: lime, gold and cream rather than the
     // muted forest tones, which disappeared against the near-black card.
-    const colors = ["#a9d13a", "#d3f26a", "#e0b443", "#f0d178", "#eaffb0", "#fffdf8"];
+    const colors = ["#C47830", "#E0A25C", "#8C9A61", "#A8632A", "#D8C7A7", "#F7F3EA"];
     const pieces = [];
     for (let i = 0; i < 120; i++) {
       pieces.push({

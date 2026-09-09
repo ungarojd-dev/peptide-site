@@ -369,7 +369,7 @@ function badge(d) {
 // fixed width so nothing shifts between cards.
 function detailRows(d) {
   const rows = [];
-  if (d.sale_percent != null) rows.push(["Sale", `<strong style="color:${C.cream};font-weight:700;">${d.sale_percent}% off</strong>, applied automatically`]);
+  if (d.sale_percent != null) rows.push(["Sale", `<strong style="color:${C.cream};font-weight:700;">${d.sale_percent}% off</strong>${d.sale_code ? ` with code <strong style="color:${C.cream};font-weight:700;">${esc(d.sale_code)}</strong>` : ", applied automatically"}`]);
   if (d.code_percent != null) rows.push(["Code", `<strong style="color:${C.cream};font-weight:700;">${esc(d.code || "SAMMYC")} ${d.code_percent}%</strong> off the reduced price`]);
   if (d.start_date) rows.push(["Starts", esc(dayLabel(d.start_date))]);
   if (d.end_date) rows.push(["Ends", esc(dayLabel(d.end_date))]);
@@ -461,7 +461,13 @@ async function card(g, last) {
                             </td>` : ""}
                           </tr>
                         </table>
-                        <div class="s-sand" style="font:400 14px/1.55 ${FONT};color:${C.sand};padding:10px 0 0 0;">${esc(d.headline || "")}</div>
+                        <!-- Featured cards run the full description, not the one line headline.
+                             deals.json has always carried the detail and the email only ever
+                             showed the summary, so a threshold offer or a tiered rate arrived
+                             stripped of the terms that make it usable. Compact rows below keep
+                             the headline, since at fifteen deals full copy on every one is
+                             unreadable. -->
+                        <div class="s-sand" style="font:400 14px/1.65 ${FONT};color:${C.sand};padding:10px 0 0 0;">${esc(members.length > 1 ? (d.headline || "") : (d.description || d.headline || ""))}</div>
                         <table role="presentation" cellpadding="0" cellspacing="0" border="0" style="padding:14px 0 0 0;">${detailRows(d)}
                         </table>
                         ${flag ? `<div style="font:700 10px/1.4 ${FONT};color:${T.urgent};letter-spacing:1px;text-transform:uppercase;padding:4px 0 0 0;">${esc(flag)}</div>` : ""}
