@@ -21,6 +21,7 @@
       ],
       "vendor": "Coffee and Peppers",
       "sale_percent": 20,
+      "sale_code": "NEWCOFFEE20",
       "code": "SAMMYC",
       "code_percent": 15,
       "headline": "20% off first order with NEWCOFFEE20, stacks with SAMMYC",
@@ -157,7 +158,25 @@
       "description": "Aurora Peptides is running Flash Sale Friday every Friday starting September 11. The sale is 15% off sitewide, excluding brand goods, and it is only valid on Fridays. Code SAMMYC stacks for an additional 20% off. Because the sale runs one day a week, the prices shown here do not include the 15% and reflect the code only. Confirm final pricing at checkout.",
       "affiliate_url": "https://aurora-peptides.com/?ref=102",
       "id": "aurora-flash-friday-2026-09"
+    },
+    {
+      "priority": 312,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Coffee and Peppers",
+      "display_vendor": "Coffee & Peppers",
+      "ongoing": true,
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Build your own kit, 5% off 5 vials or 15% off 10, stacks with SAMMYC",
+      "timezone": "America/Phoenix",
+      "type": "conditional",
+      "cta_text": "Build a kit",
+      "description": "Coffee and Peppers lets you build your own kit from any combination of eligible single vials, with the discount applied automatically at checkout. A half kit of 5 vials saves 5% and a full kit of 10 vials saves 15%. Original product names are kept on every vial. Code SAMMYC stacks for an additional 15% off the reduced price. The saving depends on kit size, so the per unit prices shown here do not include it. This offer has no end date. Confirm final pricing at checkout.",
+      "affiliate_url": "https://coffeeandpeppers.com/build-your-own-kit/?coupon=sammyc",
+      "id": "coffee-build-your-own-kit"
     }
   ],
-  "version": "2026-09-09-sale-code-field"
+  "version": "2026-09-10-coffee-build-your-own-kit"
 }

@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260909-autumn-popup-v139";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260910-popup-per-session-v145";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -323,6 +323,7 @@
         sale:(p.sale_percent!=null&&Number.isFinite(Number(p.sale_percent)))?Number(p.sale_percent):null,
         code:(p.code_percent!=null&&Number.isFinite(Number(p.code_percent)))?Number(p.code_percent):null,
         stack:p.strip_stack||"SAMMYC",
+        saleCode:p.sale_code||null,
         url:p.affiliate_url||"#",
         vendorKey:p.vendor||"",
         endLabel:end?localDayLabel(p.end_at):"",
@@ -348,7 +349,12 @@
   function dealLineHtml(it){
     // Show both parts when a sitewide sale stacks with a code, else the single rate.
     let rate="";
-    if(it.sale!=null&&it.code!=null){ rate=`<span class="deal-rate">${it.sale}% off <span class="deal-rate-plus">+ ${it.code}% with ${escapeHtml(it.stack)}</span></span>`; }
+    // "20% off" with no qualifier reads as automatic. Coffee and Peppers needs
+    // code NEWCOFFEE20 to get its 20%, so where a sale carries its own code the
+    // board has to say so rather than implying the discount applies on its own.
+    const saleTxt=it.sale!=null?`${it.sale}% off${it.saleCode?` with ${escapeHtml(it.saleCode)}`:""}`:"";
+    if(it.sale!=null&&it.code!=null){ rate=`<span class="deal-rate">${saleTxt} <span class="deal-rate-plus">+ ${it.code}% with ${escapeHtml(it.stack)}</span></span>`; }
+    else if(it.sale!=null){ rate=`<span class="deal-rate">${saleTxt}</span>`; }
     else if(it.code!=null){ rate=`<span class="deal-rate">${it.code}% with ${escapeHtml(it.stack)}</span>`; }
     // Show the full window, not just the end. A deal reading "ends Sep 7" tells
     // a visitor nothing about whether it has started, which matters most for
@@ -958,26 +964,29 @@
   const CAMPAIGN = {
     enabled: true,
     // Changing campaignId retires the previous popup for everyone, including
-    // people who already dismissed the Labor Day one, so this campaign is seen
+    // people who already dismissed the FF40 one, so this campaign is seen
     // fresh rather than suppressed by the old 24h stamp.
-    campaignId: "ff40-2026-09",
-    // The FF40 sale at Glow and Flawless ends Sep 23, so the popup retires
-    // itself the following morning without needing a code change.
-    runUntil: "2026-09-23",
-    eyebrow: "New this week",
-    heading: "40% off at Glow and Flawless",
-    body: "Two weeks of 40% off at Glow and Flawless, plus Aurora every Friday.",
+    campaignId: "coffee-kit-2026-09",
+    // No end date on this promo, so the popup is given a horizon rather than
+    // running forever. Move it out or retire it when it stops being news.
+    runUntil: "2026-10-31",
+    eyebrow: "New at Coffee & Peppers",
+    heading: "Build your own kit",
+    body: "Mix any 5 or 10 eligible single vials and the discount applies at checkout.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board.
     rows: [
-      { vendor: "Glow Aminos", offer: "40% off sitewide with code FF40, SAMMYC 15%", when: "to Sep 23" },
-      { vendor: "Flawless Compounds", offer: "40% off sitewide with code FF40, SAMMYC 15%", when: "to Sep 23" },
-      { vendor: "Aurora Peptides", offer: "15% off sitewide every Friday, SAMMYC 20%", when: "Fridays" }
+      { vendor: "Half kit", offer: "Any 5 vials, 5% off, then SAMMYC 15%", when: "no end date" },
+      { vendor: "Full kit", offer: "Any 10 vials, 15% off, then SAMMYC 15%", when: "best value" },
+      { vendor: "57 singles eligible", offer: "Mix and match, original product names kept", when: "" }
     ],
     code: "SAMMYC",
-    codeLabel: "stacks on most sales",
-    ctaText: "See all live deals",
-    ctaHref: "/#compare",
+    codeLabel: "stacks on the kit price",
+    ctaText: "Build a kit",
+    // Straight to the builder with the affiliate coupon attached, rather than
+    // back to our own catalog. The popup is the ad, so the click should land on
+    // the thing it advertises.
+    ctaHref: "https://coffeeandpeppers.com/build-your-own-kit/?coupon=sammyc",
     dismissText: "Not now"
   };
 
@@ -987,48 +996,48 @@
   if (CAMPAIGN.runUntil && Date.now() > Date.parse(CAMPAIGN.runUntil + "T23:59:59-04:00")) return;
   if (/\/(live-wheel|admin)/.test(path)) return;
 
-  // Shows again after COOLDOWN_HOURS rather than once per session. Session
-  // timing proved untestable and unreliable: Chrome and Edge restore session
-  // cookies and sessionStorage when "continue where you left off" is on, so a
-  // session can outlive several browser restarts, and on mobile a tab can hold
-  // one open for weeks. A stored timestamp behaves the same everywhere.
-  const COOLDOWN_HOURS = 24;
+  // Once per session, changed deliberately from the previous 24 hour stamp.
+  //
+  // The caveat that drove the old choice still stands and is worth keeping on
+  // record: Chrome and Edge restore sessionStorage when "continue where you
+  // left off" is enabled, so a session can survive several browser restarts,
+  // and a mobile tab left open can hold one for weeks. For those visitors this
+  // will behave closer to "once, until they properly close the browser" than
+  // to "once per visit". Everyone else gets it every session as intended.
+  // Once per browser session rather than once per day.
+  //
+  // sessionStorage is the whole mechanism: it clears when the tab or browser
+  // closes, which is exactly "every session" and needs no timestamp arithmetic.
+  // The old version kept a 24 hour stamp in localStorage plus a mirrored
+  // cookie, both of which outlive the session by design, so a visitor who came
+  // back twice in an afternoon saw nothing the second time.
+  //
+  // Note this is the same model the compliance gate uses, so the two now expire
+  // together rather than the gate resetting while the popup stays suppressed.
   const KEY = "mpp_partner_pop_" + CAMPAIGN.campaignId;
-  let shownAtInMemory = 0;
+  let shownInMemory = false;
 
-  // ?popup=1 forces it open and ?popup=reset clears the timer, so the campaign
+  // ?popup=1 forces it open and ?popup=reset clears the flag, so the campaign
   // can be checked on a real device without clearing browser data.
   const override = new URLSearchParams(location.search).get("popup");
 
-  function readStamp(){
-    if (shownAtInMemory) return shownAtInMemory;
-    try { const v = Number(localStorage.getItem(KEY)); if (v) return v; } catch(e){}
-    try {
-      const hit = document.cookie.split(";").map(part => part.trim()).find(part => part.indexOf(KEY + "=") === 0);
-      if (hit) return Number(hit.slice(KEY.length + 1)) || 0;
-    } catch(e){}
-    return 0;
-  }
   function markSeen(){
-    const now = Date.now();
-    shownAtInMemory = now;
-    try { localStorage.setItem(KEY, String(now)); } catch(e){}
-    try {
-      const secure = location.protocol === "https:" ? "; Secure" : "";
-      // Cookie mirrors the timestamp for browsers that block localStorage.
-      document.cookie = KEY + "=" + now + "; path=/; max-age=" + (COOLDOWN_HOURS * 3600) + "; SameSite=Lax" + secure;
-    } catch(e){}
+    shownInMemory = true;
+    // No cookie fallback. A cookie survives the session, which would reintroduce
+    // exactly the persistence being removed. Where sessionStorage is blocked,
+    // the in-memory flag still prevents a second show on the same page, and the
+    // popup simply reappears on the next navigation. That is the safer failure
+    // for a private-mode visitor than suppressing it for a day.
+    try { sessionStorage.setItem(KEY, "1"); } catch(e){}
   }
   function clearSeen(){
-    shownAtInMemory = 0;
-    try { localStorage.removeItem(KEY); } catch(e){}
-    try { document.cookie = KEY + "=; path=/; max-age=0; SameSite=Lax"; } catch(e){}
+    shownInMemory = false;
+    try { sessionStorage.removeItem(KEY); } catch(e){}
   }
   function seen(){
     if (override === "1") return false;
-    const last = readStamp();
-    if (!last) return false;
-    return (Date.now() - last) < COOLDOWN_HOURS * 3600 * 1000;
+    if (shownInMemory) return true;
+    try { return sessionStorage.getItem(KEY) === "1"; } catch(e){ return false; }
   }
 
   if (override === "reset") clearSeen();
@@ -1065,7 +1074,12 @@
           '<ul class="ld-rows">' + rowsHtml + '</ul>' +
           '<div class="partner-pop-code"><span>' + CAMPAIGN.codeLabel + '</span><strong>' + CAMPAIGN.code + '</strong></div>' +
           '<div class="partner-pop-actions">' +
-            '<a class="partner-pop-cta" href="' + CAMPAIGN.ctaHref + '">' + CAMPAIGN.ctaText + '</a>' +
+            // An outbound affiliate destination needs the same attributes every
+            // other monetized link on the site carries. Internal hrefs keep the
+            // plain form so in-page anchors still work.
+            '<a class="partner-pop-cta" href="' + CAMPAIGN.ctaHref + '"' +
+              (/^https?:/i.test(CAMPAIGN.ctaHref) ? ' target="_blank" rel="nofollow sponsored noopener"' : '') +
+            '>' + CAMPAIGN.ctaText + '</a>' +
             '<button type="button" class="partner-pop-secondary">' + CAMPAIGN.dismissText + '</button>' +
           '</div>' +
           '<p class="partner-pop-note">Discounts are listed separately, never combined. Prices are set by the vendor and can change. Confirm at checkout.</p>' +

@@ -388,6 +388,24 @@ function window_(d) {
   return "Ongoing";
 }
 
+// Days since a deal opened, or null if it has no start date. Computed in UTC
+// off the authored calendar strings, same as everything else in this file.
+function daysSinceStart(d) {
+  const p = parts(d.start_date), q = parts(sendDate);
+  if (!p || !q) return null;
+  return Math.round((Date.UTC(q.y, q.m - 1, q.d) - Date.UTC(p.y, p.m - 1, p.d)) / 86400000);
+}
+const NEW_FOR_DAYS = 2;
+function isNew(d) {
+  const n = daysSinceStart(d);
+  if (n === null || n < 0 || n > NEW_FOR_DAYS) return false;
+  // A short run can be both freshly started and closing tonight. Disguised
+  // Alpha opened on the 7th and ends on the 9th, and carrying NEW next to ENDS
+  // TODAY reads as a contradiction. When both apply, the deadline is the more
+  // useful signal, so the star stands down.
+  return !urgency(d);
+}
+
 function urgency(d) {
   const e = ord(d.end_date);
   if (e == null) return "";
@@ -664,9 +682,92 @@ if (themeArg && !THEMES[themeArg]) {
   process.exit(1);
 }
 
-const featuredCards = (await Promise.all(featured.map((g, i) => card(g, i === featured.length - 1)))).join("");
-const restRows = (await Promise.all(rest.map((g, i) => row(g, i === rest.length - 1)))).join("");
-const ongoingRows = (await Promise.all(ongoingGroups.map((g, i) => row(g, i === ongoingGroups.length - 1)))).join("");
+
+// ---------------------------------------------------------------------------
+// Table layout.
+//
+// One row per offer, three columns, a real header row. Cards gave each deal a
+// lot of vertical space and made scanning eight of them a scroll; a table puts
+// every rate in the same column so they can be read down rather than hunted
+// for. Both exits survive: the vendor name is the affiliate link and the
+// compare link sits under it, so nothing that earns is lost to the layout.
+//
+// Still tables all the way down, as email requires, but now the table means
+// something instead of only being a positioning device.
+// ---------------------------------------------------------------------------
+async function dealTable(groups) {
+  const nameOf = x => {
+    const m = vendors[x.vendor] || {};
+    return m.display_name || x.display_vendor || x.vendor;
+  };
+
+  const rows = [];
+  for (let i = 0; i < groups.length; i++) {
+    const g = groups[i];
+    const d = g.lead;
+    const last = i === groups.length - 1;
+    const compare = esc(tagged(await compareUrl(d), sendDate));
+    const flag = urgency(d);
+
+    // Vendor cell. Each member links separately so a shared promo still gives
+    // every vendor in it a tracked destination.
+    const names = g.members.map(m => m.affiliate_url
+      ? `<a href="${esc(m.affiliate_url)}" target="_blank" rel="nofollow sponsored noopener" style="color:${C.cream};text-decoration:none;border-bottom:1px solid ${C.olive};">${esc(nameOf(m))}</a>`
+      : esc(nameOf(m))).join('<br/>');
+
+    // Offer cell. The sale and the code stay on separate lines, which is the
+    // house rule the whole file exists to enforce, and a table enforces it
+    // structurally rather than by phrasing.
+    const offer = [];
+    if (d.sale_percent != null) {
+      offer.push(`<strong style="color:${C.cream};font-weight:700;">${d.sale_percent}% off</strong>${d.sale_code ? ` with ${esc(d.sale_code)}` : ""}`);
+    }
+    if (d.code_percent != null) {
+      offer.push(`<strong style="color:${C.cream};font-weight:700;">${esc(d.code || "SAMMYC")} ${d.code_percent}%</strong>`);
+    }
+    if (!offer.length) offer.push(esc(d.headline || ""));
+
+    const startTxt = d.start_date ? esc(dayLabel(d.start_date)) : "";
+    const endTxt = d.end_date ? esc(dayLabel(d.end_date)) : "";
+    const runs = (startTxt && endTxt)
+      ? `<div style="font:400 10px/1.3 ${FONT};color:${C.dim};text-transform:uppercase;letter-spacing:.6px;">From</div><div style="font:700 11px/1.4 ${FONT};color:${C.sand};padding:1px 0 5px 0;">${startTxt}</div><div style="font:400 10px/1.3 ${FONT};color:${C.dim};text-transform:uppercase;letter-spacing:.6px;">Until</div><div style="font:700 11px/1.4 ${FONT};color:${C.sand};padding:1px 0 0 0;">${endTxt}</div>`
+      : endTxt ? `<div style="font:400 10px/1.3 ${FONT};color:${C.dim};text-transform:uppercase;letter-spacing:.6px;">Until</div><div style="font:700 11px/1.4 ${FONT};color:${C.sand};padding:1px 0 0 0;">${endTxt}</div>`
+      : startTxt ? `<div style="font:400 10px/1.3 ${FONT};color:${C.dim};text-transform:uppercase;letter-spacing:.6px;">From</div><div style="font:700 11px/1.4 ${FONT};color:${C.sand};padding:1px 0 0 0;">${startTxt}</div>`
+      : `<div style="font:700 11px/1.4 ${FONT};color:${C.sand};">Ongoing</div>`;
+
+    rows.push(`
+              <tr>
+                <td valign="top" style="padding:14px 10px 14px 14px;${last ? "" : `border-bottom:1px solid ${C.line};`}">
+                  ${isNew(d) ? `<div style="padding:0 0 5px 0;"><span style="display:inline-block;background:${C.oliveSoft};color:${C.black};font:800 9px/1 ${FONT};letter-spacing:1px;text-transform:uppercase;padding:4px 7px;border-radius:3px;white-space:nowrap;">&#9733; New</span></div>` : ""}
+                  <div style="font:700 14px/1.4 ${FONT};color:${C.cream};">${names}</div>
+                  <div style="padding:5px 0 0 0;"><a href="${compare}" target="_blank" style="font:400 11px/1 ${FONT};color:${C.muted};text-decoration:underline;">Compare $/mg</a></div>
+                </td>
+                <td valign="top" style="padding:14px 10px;${last ? "" : `border-bottom:1px solid ${C.line};`}">
+                  <div style="font:400 12px/1.6 ${FONT};color:${C.muted};">${offer.join("<br/>")}</div>
+                </td>
+                <td valign="top" align="right" style="padding:14px 14px 14px 6px;white-space:nowrap;${last ? "" : `border-bottom:1px solid ${C.line};`}">
+                  ${runs}
+                  ${flag ? `<div style="font:700 10px/1.4 ${FONT};color:${T.urgent};text-transform:uppercase;letter-spacing:.6px;padding:4px 0 0 0;">${esc(flag)}</div>` : ""}
+                </td>
+              </tr>`);
+  }
+
+  return `
+        <tr>
+          <td class="s-card" style="background:${C.paper};padding:0 24px 8px 24px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="s-card" style="background:${C.panel};border:1px solid ${C.line};border-radius:14px;">
+              <tr>
+                <th align="left" style="padding:11px 10px 11px 14px;font:700 10px/1 ${FONT};color:${C.dim};text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid ${C.line};">Vendor</th>
+                <th align="left" style="padding:11px 10px;font:700 10px/1 ${FONT};color:${C.dim};text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid ${C.line};">Offer</th>
+                <th align="right" style="padding:11px 14px 11px 6px;font:700 10px/1 ${FONT};color:${C.dim};text-transform:uppercase;letter-spacing:1.2px;border-bottom:1px solid ${C.line};">Runs</th>
+              </tr>${rows.join("")}
+            </table>
+          </td>
+        </tr>`;
+}
+
+const eventTable = await dealTable([...featured, ...rest]);
+const ongoingTable = ongoingGroups.length ? await dealTable(ongoingGroups) : "";
 
 // One announcement slot, rendered after the deals.
 //
@@ -812,12 +913,18 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
         <tr>
           <td class="s-card" style="background:${C.paper};padding:0 24px;">
             <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
-              ${featuredCards ? heading(T.bunting ? "Labor Day sales" : "Biggest right now") + featuredCards : ""}
-              ${restRows ? heading("Also live") + restRows : ""}
-              ${ongoingRows ? heading(T.ongoingLabel) + ongoingRows : ""}
+              ${heading(T.bunting ? "Labor Day sales" : "Live now")}
             </table>
           </td>
         </tr>
+        ${eventTable}
+        ${ongoingTable ? `<tr>
+          <td class="s-card" style="background:${C.paper};padding:8px 24px 0 24px;">
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0">
+              ${heading(T.ongoingLabel)}
+            </table>
+          </td>
+        </tr>` + ongoingTable : ""}
 
         <tr>
           <td class="s-card" style="background:${C.paper};padding:26px 24px 32px 24px;" align="center">
