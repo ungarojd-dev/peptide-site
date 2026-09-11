@@ -1422,7 +1422,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260910-popup-per-session-v145") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260910-kit-logo-ticker-v146") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -1894,6 +1894,14 @@ body.deals-panel-open { overflow: hidden; }
 .partner-pop--autumn .ld-row-offer {
   grid-column: 1 / -1;
   font-size: 12.5px; line-height: 1.5; color: rgba(255,255,255,.72);
+}
+.partner-pop--autumn .partner-pop-logo {
+  display: block; margin: 0 auto 12px; width: 132px; height: auto; max-height: 46px;
+  object-fit: contain; position: relative; z-index: 1;
+}
+.partner-pop--autumn .partner-pop-code-pct {
+  font-style: normal; font-weight: 800; font-size: 13px; color: #E0A25C;
+  letter-spacing: .4px; padding-left: 8px;
 }
 .partner-pop--autumn .partner-pop-close:hover {
   background: rgba(196,120,48,.8); border-color: rgba(255,255,255,.66);

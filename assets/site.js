@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260910-popup-per-session-v145";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260910-kit-logo-ticker-v146";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -970,6 +970,8 @@
     // No end date on this promo, so the popup is given a horizon rather than
     // running forever. Move it out or retire it when it stops being news.
     runUntil: "2026-10-31",
+    logo: "/assets/vendor-logos/coffee-and-peppers.webp",
+    logoAlt: "Coffee & Peppers",
     eyebrow: "New at Coffee & Peppers",
     heading: "Build your own kit",
     body: "Mix any 5 or 10 eligible single vials and the discount applies at checkout.",
@@ -981,6 +983,7 @@
       { vendor: "57 singles eligible", offer: "Mix and match, original product names kept", when: "" }
     ],
     code: "SAMMYC",
+    codePercent: "15% off",
     codeLabel: "stacks on the kit price",
     ctaText: "Build a kit",
     // Straight to the builder with the affiliate coupon attached, rather than
@@ -1066,13 +1069,16 @@
         '<span class="ld-sweep" aria-hidden="true"></span>' +
         '<button type="button" class="partner-pop-close" aria-label="Close">\u00d7</button>' +
         '<div class="partner-pop-top">' +
+          (CAMPAIGN.logo ? '<img class="partner-pop-logo" src="' + CAMPAIGN.logo + '" alt="' + (CAMPAIGN.logoAlt || '') + '" loading="lazy"/>' : '') +
           '<span class="partner-pop-eyebrow">' + CAMPAIGN.eyebrow + '</span>' +
         '</div>' +
         '<div class="partner-pop-body">' +
           '<h2>' + CAMPAIGN.heading + '</h2>' +
           '<p>' + CAMPAIGN.body + '</p>' +
           '<ul class="ld-rows">' + rowsHtml + '</ul>' +
-          '<div class="partner-pop-code"><span>' + CAMPAIGN.codeLabel + '</span><strong>' + CAMPAIGN.code + '</strong></div>' +
+          '<div class="partner-pop-code"><span>' + CAMPAIGN.codeLabel + '</span><strong>' + CAMPAIGN.code + '</strong>' +
+            (CAMPAIGN.codePercent ? '<em class="partner-pop-code-pct">' + CAMPAIGN.codePercent + '</em>' : '') +
+          '</div>' +
           '<div class="partner-pop-actions">' +
             // An outbound affiliate destination needs the same attributes every
             // other monetized link on the site carries. Internal hrefs keep the

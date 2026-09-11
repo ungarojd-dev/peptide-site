@@ -164,6 +164,7 @@
       "show_in": [
         "deals"
       ],
+      "featured": true,
       "vendor": "Coffee and Peppers",
       "display_vendor": "Coffee & Peppers",
       "ongoing": true,
@@ -178,5 +179,5 @@
       "id": "coffee-build-your-own-kit"
     }
   ],
-  "version": "2026-09-10-coffee-build-your-own-kit"
+  "version": "2026-09-10-kit-featured-in-ticker"
 }
