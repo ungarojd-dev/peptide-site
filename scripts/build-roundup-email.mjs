@@ -779,13 +779,20 @@ const ongoingTable = ongoingGroups.length ? await dealTable(ongoingGroups) : "";
 // being read. To turn it on, fill in all four fields. Leave it null to omit the
 // block entirely.
 const ANNOUNCEMENT = {
-  label: "Community",
-  heading: "SammyC's Skool is now free to join",
-  body: "Vendor intel, protocols and testing talk, with no monthly fee.",
-  cta: "Join free",
-  // No affiliate parameter to preserve here, unlike a vendor link, so this one
-  // carries UTMs the same way our own pages do.
-  url: "https://www.skool.com/sammycs-skool/about?utm_source=email&utm_medium=newsletter&utm_campaign=skool-free"
+  label: "New",
+  heading: "Build your own kit at Coffee & Peppers",
+  body: "Pick any 5 or 10 eligible single vials and mix them however you like. A half kit of 5 saves 5%, a full kit of 10 saves 15%, and the discount applies automatically at checkout. Code SAMMYC stacks for a further 15% off the reduced price. Original product names stay on every vial, 57 singles are eligible, and the offer has no end date.",
+  cta: "Build a kit",
+  // Coffee and Peppers run orange on near black. Roasted brown with a russet
+  // edge and their orange as the accent, rather than the site's olive panel.
+  bg: "#2A1410",
+  border: "#8A3B1E",
+  accent: "#FF6B35",
+  ctaBg: "#D9391C",
+  ctaInk: "#FFFFFF",
+  // Vendor destination, so no UTMs appended. The affiliate coupon is the only
+  // parameter that belongs on it.
+  url: "https://coffeeandpeppers.com/build-your-own-kit/?coupon=sammyc"
 };
 // const ANNOUNCEMENT = {
 //   label: "Community",
@@ -826,6 +833,7 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
   [data-ogsc] .s-sand, [data-ogsb] .s-sand { color: ${C.sand} !important; }
   [data-ogsb] .s-page { background: ${C.black} !important; }
   [data-ogsb] .s-card { background: ${C.panel} !important; }
+  [data-ogsb] .s-promo { background: ${ANNOUNCEMENT && ANNOUNCEMENT.bg ? ANNOUNCEMENT.bg : C.panel} !important; }
   [data-ogsb] .s-head { background: ${C.panel2} !important; }
   [data-ogsb] .s-foot { background: ${C.forest2} !important; }
   [data-ogsc] .s-btn, [data-ogsb] .s-btn { background: ${C.oliveSoft} !important; color: ${C.black} !important; }
@@ -839,6 +847,7 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
     .s-sand { color: ${C.sand} !important; }
     .s-page { background: ${C.black} !important; }
     .s-card { background: ${C.panel} !important; }
+    .s-promo { background: ${ANNOUNCEMENT && ANNOUNCEMENT.bg ? ANNOUNCEMENT.bg : C.panel} !important; }
     .s-head { background: ${C.panel2} !important; }
     .s-foot { background: ${C.forest2} !important; }
     .s-btn { background: ${C.oliveSoft} !important; color: ${C.black} !important; }
@@ -898,13 +907,20 @@ const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "ht
 
         ${ANNOUNCEMENT ? `<tr>
           <td class="s-card" style="background:${C.paper};padding:8px 24px 0 24px;">
-            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" class="s-card" style="background:${C.panel};border:1px solid ${C.line};border-radius:16px;">
+            <!-- bgcolor mirrors the CSS background so Outlook, which ignores the
+                 style on a table, still fills the panel rather than dropping it
+                 onto the page background. -->
+            <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${ANNOUNCEMENT.bg || C.panel}" class="s-promo" style="background:${ANNOUNCEMENT.bg || C.panel};border:1px solid ${ANNOUNCEMENT.border || C.line};border-radius:16px;">
               <tr>
-                <td style="padding:18px 20px;">
-                  <div style="font:800 10px/1 ${FONT};color:${T.accent};text-transform:uppercase;letter-spacing:1.4px;">${esc(ANNOUNCEMENT.label)}</div>
-                  <div class="s-hi" style="font:800 17px/1.35 ${FONT};color:${C.cream};padding:8px 0 0 0;">${esc(ANNOUNCEMENT.heading)}</div>
-                  <div class="s-mu" style="font:400 13px/1.6 ${FONT};color:${C.muted};padding:6px 0 0 0;">${esc(ANNOUNCEMENT.body)}</div>
-                  <div style="padding:12px 0 0 0;"><a href="${esc(ANNOUNCEMENT.url)}" target="_blank" class="s-btn" style="display:inline-block;background:${C.oliveSoft};color:${C.black};font:700 12px/1 ${FONT};letter-spacing:.2px;text-decoration:none;padding:11px 20px;border-radius:999px;">${esc(ANNOUNCEMENT.cta)}</a></div>
+                <!-- A solid accent rail down the left edge. Four pixels of
+                     colour does more for attention than any amount of tinting,
+                     and it survives every client because it is a table cell. -->
+                <td width="5" bgcolor="${ANNOUNCEMENT.accent || C.oliveSoft}" style="width:5px;background:${ANNOUNCEMENT.accent || C.oliveSoft};font-size:0;line-height:0;border-radius:16px 0 0 16px;">&nbsp;</td>
+                <td style="padding:20px 22px;">
+                  <div class="s-ac" style="font:800 10px/1 ${FONT};color:${ANNOUNCEMENT.accent || T.accent};text-transform:uppercase;letter-spacing:1.6px;">${esc(ANNOUNCEMENT.label)}</div>
+                  <div class="s-hi" style="font:800 19px/1.3 ${FONT};color:${C.cream};padding:9px 0 0 0;letter-spacing:-.2px;">${esc(ANNOUNCEMENT.heading)}</div>
+                  <div class="s-sand" style="font:400 13px/1.65 ${FONT};color:${C.sand};padding:8px 0 0 0;">${esc(ANNOUNCEMENT.body)}</div>
+                  <div style="padding:16px 0 0 0;"><a href="${esc(ANNOUNCEMENT.url)}" target="_blank"${/^https?:\/\/(www\.)?mypeptideprice\.com/i.test(ANNOUNCEMENT.url) ? "" : ' rel="nofollow sponsored noopener"'} class="s-btn" style="display:inline-block;background:${ANNOUNCEMENT.ctaBg || C.oliveSoft};color:${ANNOUNCEMENT.ctaInk || C.black};font:800 13px/1 ${FONT};letter-spacing:.4px;text-decoration:none;padding:13px 24px;border-radius:999px;">${esc(ANNOUNCEMENT.cta)} &rsaquo;</a></div>
                 </td>
               </tr>
             </table>

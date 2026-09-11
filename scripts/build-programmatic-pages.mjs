@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260910-kit-logo-ticker-v146";
+const VER = "20260911-meta-pixel-swap-v149";
 const TODAY = "July 2026";
 const VALID_UNTIL = "2026-08-31";
 const BASE = "https://mypeptideprice.com";
@@ -106,10 +106,10 @@ const HEAD_ASSETS = `<link rel="preconnect" href="https://fonts.googleapis.com"/
 const GTM = `<!-- Google Tag Manager -->
 <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PDQM5TBB');</script>
 <!-- Meta Pixel -->
-<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','2737586326608423');fbq('track','PageView');</script>`;
+<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1628795955539627');fbq('track','PageView');</script>`;
 
 const NOSCRIPT = `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDQM5TBB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=2737586326608423&ev=PageView&noscript=1" alt=""/></noscript>`;
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1628795955539627&ev=PageView&noscript=1" alt=""/></noscript>`;
 
 const PAGE_CSS = `<style>
 .crumbs{max-width:1120px;margin:0 auto;padding:14px 20px 0;font-size:.82rem;color:var(--muted)}
