@@ -177,7 +177,44 @@
       "description": "Coffee and Peppers lets you build your own kit from any combination of eligible single vials, with the discount applied automatically at checkout. A half kit of 5 vials saves 5% and a full kit of 10 vials saves 15%. Original product names are kept on every vial. Code SAMMYC stacks for an additional 15% off the reduced price. The saving depends on kit size, so the per unit prices shown here do not include it. This offer has no end date. Confirm final pricing at checkout.",
       "affiliate_url": "https://coffeeandpeppers.com/build-your-own-kit/?coupon=sammyc",
       "id": "coffee-build-your-own-kit"
+    },
+    {
+      "priority": 319,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Oneday Compounds",
+      "start_date": "2026-09-11",
+      "end_date": "2026-09-13",
+      "sale_percent": 20,
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "Weekend sale, 20% off sitewide automatically, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Oneday Compounds is running 20% off sitewide from Friday September 11 through Sunday September 13. The discount applies automatically with no code needed. Code SAMMYC stacks for an additional 10% off the reduced price. Confirm final pricing at checkout.",
+      "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
+      "id": "oneday-weekend-20-2026-09"
+    },
+    {
+      "priority": 317,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Orbitrex Peptides",
+      "start_date": "2026-09-11",
+      "end_date": "2026-09-14",
+      "code": "SAMMYC",
+      "code_percent": 30,
+      "headline": "SAMMYC boosted to 30% off through Monday",
+      "timezone": "America/New_York",
+      "type": "code_only",
+      "cta_text": "Shop Now",
+      "description": "Orbitrex Peptides has boosted code SAMMYC from 15% to 30% off through midnight on Monday September 14. There is no automatic sitewide discount, the code is the offer. Confirm final pricing at checkout.",
+      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
+      "id": "orbitrex-sammyc-30-2026-09"
     }
   ],
-  "version": "2026-09-10-kit-featured-in-ticker"
+  "version": "2026-09-11-oneday-weekend-orbitrex-boost"
 }

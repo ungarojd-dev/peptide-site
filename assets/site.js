@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260911-meta-pixel-swap-v149";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260911-weekend-deals-v150";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -966,30 +966,28 @@
     // Changing campaignId retires the previous popup for everyone, including
     // people who already dismissed the FF40 one, so this campaign is seen
     // fresh rather than suppressed by the old 24h stamp.
-    campaignId: "coffee-kit-2026-09",
+    campaignId: "weekend-2026-09-11",
     // No end date on this promo, so the popup is given a horizon rather than
     // running forever. Move it out or retire it when it stops being news.
-    runUntil: "2026-10-31",
-    logo: "/assets/vendor-logos/coffee-and-peppers.webp",
-    logoAlt: "Coffee & Peppers",
-    eyebrow: "New at Coffee & Peppers",
-    heading: "Build your own kit",
-    body: "Mix any 5 or 10 eligible single vials and the discount applies at checkout.",
+    runUntil: "2026-09-14",
+    eyebrow: "New this weekend",
+    heading: "Weekend deals are live",
+    body: "Orbitrex doubled our code and Oneday is 20% off through Sunday.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board.
     rows: [
-      { vendor: "Half kit", offer: "Any 5 vials, 5% off, then SAMMYC 15%", when: "no end date" },
-      { vendor: "Full kit", offer: "Any 10 vials, 15% off, then SAMMYC 15%", when: "best value" },
-      { vendor: "57 singles eligible", offer: "Mix and match, original product names kept", when: "" }
+      { vendor: "Orbitrex Peptides", offer: "SAMMYC boosted to 30% off", when: "to Mon Sep 14" },
+      { vendor: "Oneday Compounds", offer: "20% off sitewide automatically, SAMMYC 10%", when: "Sep 11 to 13" },
+      { vendor: "Glow & Flawless", offer: "40% off sitewide with code FF40, SAMMYC 15%", when: "to Sep 23" }
     ],
     code: "SAMMYC",
-    codePercent: "15% off",
-    codeLabel: "stacks on the kit price",
-    ctaText: "Build a kit",
+    codePercent: "up to 30% off",
+    codeLabel: "stacks on these sales",
+    ctaText: "See all live deals",
     // Straight to the builder with the affiliate coupon attached, rather than
     // back to our own catalog. The popup is the ad, so the click should land on
     // the thing it advertises.
-    ctaHref: "https://coffeeandpeppers.com/build-your-own-kit/?coupon=sammyc",
+    ctaHref: "/#compare",
     dismissText: "Not now"
   };
 
