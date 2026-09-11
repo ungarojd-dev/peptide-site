@@ -214,7 +214,25 @@
       "description": "Orbitrex Peptides has boosted code SAMMYC from 15% to 30% off through midnight on Monday September 14. There is no automatic sitewide discount, the code is the offer. Confirm final pricing at checkout.",
       "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
       "id": "orbitrex-sammyc-30-2026-09"
+    },
+    {
+      "priority": 317,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "LabSourced Peptides",
+      "start_date": "2026-09-11",
+      "end_date": "2026-09-14",
+      "code": "SAMMYC",
+      "code_percent": 30,
+      "headline": "SAMMYC boosted to 30% off through Monday",
+      "timezone": "America/New_York",
+      "type": "code_only",
+      "cta_text": "Shop Now",
+      "description": "LabSourced Peptides has boosted code SAMMYC from 15% to 30% off through midnight on Monday September 14. There is no automatic sitewide discount, the code is the offer. Confirm final pricing at checkout.",
+      "affiliate_url": "https://labsourced.com/?ref=SammyC",
+      "id": "labsourced-sammyc-30-2026-09"
     }
   ],
-  "version": "2026-09-11-oneday-weekend-orbitrex-boost"
+  "version": "2026-09-11-labsourced-boost"
 }

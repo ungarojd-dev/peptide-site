@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260911-weekend-deals-v150";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260911-labsourced-boost-v151";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -972,11 +972,12 @@
     runUntil: "2026-09-14",
     eyebrow: "New this weekend",
     heading: "Weekend deals are live",
-    body: "Orbitrex doubled our code and Oneday is 20% off through Sunday.",
+    body: "Orbitrex and LabSourced both doubled our code, and Oneday is 20% off through Sunday.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board.
     rows: [
       { vendor: "Orbitrex Peptides", offer: "SAMMYC boosted to 30% off", when: "to Mon Sep 14" },
+      { vendor: "LabSourced Peptides", offer: "SAMMYC boosted to 30% off", when: "to Mon Sep 14" },
       { vendor: "Oneday Compounds", offer: "20% off sitewide automatically, SAMMYC 10%", when: "Sep 11 to 13" },
       { vendor: "Glow & Flawless", offer: "40% off sitewide with code FF40, SAMMYC 15%", when: "to Sep 23" }
     ],
