@@ -232,7 +232,26 @@
       "description": "LabSourced Peptides has boosted code SAMMYC from 15% to 30% off through midnight on Monday September 14. There is no automatic sitewide discount, the code is the offer. Confirm final pricing at checkout.",
       "affiliate_url": "https://labsourced.com/?ref=SammyC",
       "id": "labsourced-sammyc-30-2026-09"
+    },
+    {
+      "priority": 318,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Ion Peptide",
+      "start_date": "2026-09-12",
+      "end_date": "2026-09-13",
+      "sale_percent": 20,
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Weekend sale, 20% off sitewide, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Ion Peptide is running 20% off everything from 10am Eastern on Saturday September 12 through midnight Sunday September 13. Code SAMMYC stacks for an additional 15% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
+      "affiliate_url": "https://ionpeptide.com?ref=SammyC",
+      "id": "ion-weekend-20-2026-09"
     }
   ],
-  "version": "2026-09-11-labsourced-boost"
+  "version": "2026-09-11-ion-weekend"
 }
