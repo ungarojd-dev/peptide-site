@@ -66,43 +66,6 @@
       "ongoing": true
     },
     {
-      "priority": 308,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Mile High Peptides",
-      "display_vendor": "Mile High Compounds",
-      "start_date": "2026-09-03",
-      "end_date": "2026-09-09",
-      "code": "SAMMYC",
-      "code_percent": 35,
-      "headline": "SAMMYC boosted to 35% off for Labor Day",
-      "timezone": "America/Denver",
-      "type": "code_only",
-      "cta_text": "Shop Now",
-      "description": "Mile High Compounds is boosting code SAMMYC to 35% off from September 3 through September 9. Confirm final pricing at checkout.",
-      "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
-      "id": "mile-high-labor-day-35-2026-09"
-    },
-    {
-      "priority": 315,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Disguised Alpha",
-      "start_date": "2026-09-07",
-      "end_date": "2026-09-09",
-      "code": "LABOR",
-      "headline": "Labor Day, sale pricing plus 10% off with code LABOR, SAMMYC not valid",
-      "timezone": "America/Los_Angeles",
-      "type": "conditional",
-      "cta_text": "Shop Now",
-      "description": "Disguised Alpha is running a Labor Day sale from September 7 through September 9, ending 11:59pm Pacific. Sale pricing applies across the store, and code LABOR takes a further 10% off. The vendor advertises 20% as the total of those two together. Free FedEx 2 day shipping on US orders of $150 and over. Every order is one entry into a giveaway of $1,500 in store credit, ten winners at $150 each. Code SAMMYC cannot be combined with the LABOR code during this sale, so our usual stacked discount does not apply here. Confirm final pricing at checkout.",
-      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
-      "id": "disguised-alpha-labor-day-2026-09",
-      "code_percent": 10
-    },
-    {
       "priority": 320,
       "show_in": [
         "deals"
@@ -183,75 +146,20 @@
       "show_in": [
         "deals"
       ],
-      "vendor": "Oneday Compounds",
-      "start_date": "2026-09-11",
-      "end_date": "2026-09-13",
-      "sale_percent": 20,
+      "featured": true,
+      "vendor": "Instant Peptides",
+      "start_date": "2026-09-15",
+      "end_date": "2026-09-20",
       "code": "SAMMYC",
-      "code_percent": 10,
-      "headline": "Weekend sale, 20% off sitewide automatically, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Oneday Compounds is running 20% off sitewide from Friday September 11 through Sunday September 13. The discount applies automatically with no code needed. Code SAMMYC stacks for an additional 10% off the reduced price. Confirm final pricing at checkout.",
-      "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
-      "id": "oneday-weekend-20-2026-09"
-    },
-    {
-      "priority": 317,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Orbitrex Peptides",
-      "start_date": "2026-09-11",
-      "end_date": "2026-09-14",
-      "code": "SAMMYC",
-      "code_percent": 30,
-      "headline": "SAMMYC boosted to 30% off through Monday",
+      "code_percent": 25,
+      "headline": "SAMMYC boosted to 25% off through September 20",
       "timezone": "America/New_York",
       "type": "code_only",
       "cta_text": "Shop Now",
-      "description": "Orbitrex Peptides has boosted code SAMMYC from 15% to 30% off through midnight on Monday September 14. There is no automatic sitewide discount, the code is the offer. Confirm final pricing at checkout.",
-      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
-      "id": "orbitrex-sammyc-30-2026-09"
-    },
-    {
-      "priority": 317,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "LabSourced Peptides",
-      "start_date": "2026-09-11",
-      "end_date": "2026-09-14",
-      "code": "SAMMYC",
-      "code_percent": 30,
-      "headline": "SAMMYC boosted to 30% off through Monday",
-      "timezone": "America/New_York",
-      "type": "code_only",
-      "cta_text": "Shop Now",
-      "description": "LabSourced Peptides has boosted code SAMMYC from 15% to 30% off through midnight on Monday September 14. There is no automatic sitewide discount, the code is the offer. Confirm final pricing at checkout.",
-      "affiliate_url": "https://labsourced.com/?ref=SammyC",
-      "id": "labsourced-sammyc-30-2026-09"
-    },
-    {
-      "priority": 318,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Ion Peptide",
-      "start_date": "2026-09-12",
-      "end_date": "2026-09-13",
-      "sale_percent": 20,
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Weekend sale, 20% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Ion Peptide is running 20% off everything from 10am Eastern on Saturday September 12 through midnight Sunday September 13. Code SAMMYC stacks for an additional 15% off the reduced price, and paying by ACH takes a further 5% off. Confirm final pricing at checkout.",
-      "affiliate_url": "https://ionpeptide.com?ref=SammyC",
-      "id": "ion-weekend-20-2026-09"
+      "description": "Instant Peptides has boosted code SAMMYC from 15% to 25% off from midday Tuesday September 15 through 11:59pm Eastern on Sunday September 20. There is no automatic sitewide discount, the code is the offer. Confirm final pricing at checkout.",
+      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
+      "id": "instant-sammyc-25-2026-09"
     }
   ],
-  "version": "2026-09-11-ion-weekend"
+  "version": "2026-09-15-instant-boost"
 }
