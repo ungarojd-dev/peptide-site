@@ -66,6 +66,25 @@
       "ongoing": true
     },
     {
+      "priority": 326,
+      "show_in": [
+        "deals"
+      ],
+      "featured": true,
+      "vendor": "LabSourced Peptides",
+      "start_date": "2026-09-18",
+      "sale_percent": 50,
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "50% off sitewide automatically, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "LabSourced Peptides is running 50% off sitewide, applied automatically with no code needed. Bulk pricing is back on top of it, 20% off any order over 20 vials, 10% off kits, 5% off five packs and 3% off three packs. Code SAMMYC stacks for an additional 10% off, paying with Zelle takes a further 5% off, and loyalty rewards add 5% back. Shipping is free on orders over $150. No end date has been announced, so confirm the sale is still live and check final pricing at checkout.",
+      "affiliate_url": "https://labsourced.com/?ref=SammyC",
+      "id": "labsourced-50-birthday-2026-09"
+    },
+    {
       "priority": 322,
       "show_in": [
         "deals"
@@ -219,5 +238,5 @@
       "id": "instant-sammyc-25-2026-09"
     }
   ],
-  "version": "2026-09-18-glacier-milehigh"
+  "version": "2026-09-18-labsourced-50"
 }
