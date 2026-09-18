@@ -161,6 +161,45 @@
       "id": "coffee-build-your-own-kit"
     },
     {
+      "priority": 318,
+      "show_in": [
+        "deals"
+      ],
+      "featured": true,
+      "vendor": "Glacier Aminos",
+      "start_date": "2026-09-18",
+      "end_date": "2026-09-20",
+      "sale_percent": 20,
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "New drop launch sale, 20% off peptides and 10% off kits, stacks with SAMMYC",
+      "timezone": "America/Denver",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Glacier Aminos has seven new compounds live, Survodutide, Mazdutide, LL-37, B12, Dihexa capsules, GHKPV capsules and Super Blend, with COAs posted. The launch sale runs through 11:59pm Mountain on Sunday September 20. Peptides, capsules, sprays and drops are 20% off, and 5 pack and 10 pack kits are 10% off. The sale applies automatically at cart, then code SAMMYC stacks for an additional 10% off. Not every category is 20%, so check the category before ordering. Confirm final pricing at checkout.",
+      "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
+      "id": "glacier-new-drop-2026-09"
+    },
+    {
+      "priority": 314,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Mile High Peptides",
+      "display_vendor": "Mile High Compounds",
+      "start_date": "2026-09-21",
+      "end_date": "2026-09-28",
+      "code": "SAMMYC",
+      "code_percent": 25,
+      "headline": "Fall Into Research, SAMMYC boosted to 25% off",
+      "timezone": "America/Denver",
+      "type": "code_only",
+      "cta_text": "Shop Now",
+      "description": "Mile High Compounds is running its Fall Into Research sale from 8:00am Mountain on Sunday September 21 through 11:59pm Mountain on Monday September 28. Code SAMMYC is boosted from 10% to 25% off for the sale period. Confirm final pricing at checkout.",
+      "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
+      "id": "milehigh-fall-25-2026-09"
+    },
+    {
       "priority": 319,
       "show_in": [
         "deals"
@@ -180,5 +219,5 @@
       "id": "instant-sammyc-25-2026-09"
     }
   ],
-  "version": "2026-09-18-eom-push"
+  "version": "2026-09-18-glacier-milehigh"
 }

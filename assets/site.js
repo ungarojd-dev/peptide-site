@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260918-eom-push-v167";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260918-glacier-milehigh-v168";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -966,20 +966,22 @@
     // Changing campaignId retires the previous popup for everyone, including
     // people who already dismissed the Instant one, so this campaign is seen
     // fresh rather than suppressed by the old session flag.
-    campaignId: "eom-push-2026-09-18",
+    campaignId: "weekend-board-2026-09-18",
     // Tracks the longest deal on the board below, the Glow and Flawless push.
     runUntil: "2026-09-30",
     eyebrow: "Live now",
     heading: "45% off at Glow and Flawless",
     body: "Glow Aminos and Flawless Compounds are 45% off sitewide through September 30, applied automatically, and SAMMYC still stacks on top.",
     // Rows are authored here rather than read from deals.json so the popup
-    // stays a curated highlight instead of mirroring the whole board.
+    // stays a curated highlight instead of mirroring the whole board. Aurora
+    // sits out this round: its sale is Friday only, which needs a qualifier
+    // the row format has no space for, and the weekend deals are the news.
     rows: [
       { vendor: "Glow & Flawless", offer: "45% off sitewide automatically, SAMMYC 15%", when: "to Sep 30" },
-      { vendor: "Peptira", offer: "15% off sitewide automatically, SAMMYC 10%", when: "to Sep 20" },
       { vendor: "Instant Peptides", offer: "SAMMYC boosted to 25% off", when: "to Sep 20" },
-      { vendor: "Coffee & Peppers", offer: "Build a kit, 5% off 5 vials or 15% off 10, SAMMYC 15%", when: "no end date" },
-      { vendor: "Aurora Peptides", offer: "15% off sitewide every Friday, SAMMYC 20%", when: "Fridays" }
+      { vendor: "Glacier Aminos", offer: "New drop, 20% off peptides / 10% off kits, SAMMYC 10%", when: "to Sep 20" },
+      { vendor: "Peptira", offer: "15% off sitewide automatically, SAMMYC 10%", when: "to Sep 20" },
+      { vendor: "Coffee & Peppers", offer: "Build a kit, 5% off 5 vials or 15% off 10, SAMMYC 15%", when: "no end date" }
     ],
     code: "SAMMYC",
     codePercent: "15% off",

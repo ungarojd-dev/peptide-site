@@ -365,18 +365,23 @@ if (sinceArg && !sinceOrd) {
   process.exit(1);
 }
 
+// A deal closing tonight or tomorrow is better described by its deadline than
+// by being new, so it stays out of the fresh section. Anything with more room
+// than that is not a contradiction: a flash sale that opens today and runs to
+// Sunday is genuinely new AND has a deadline, and demoting it buried Peptira's
+// opening day in the compact list. The window label carries the deadline on
+// the card either way, so nothing is lost by promoting it.
+const deadlineDominates = d => /^Ends (today|tomorrow)$/.test(urgency(d));
+
 function isNew(d) {
   if (sinceOrd) {
     const s = ord(d.start_date);
     if (s == null || s < sinceOrd || s > sendOrd) return false;
-    return !urgency(d);
+    return !deadlineDominates(d);
   }
   const n = daysSinceStart(d);
   if (n === null || n < 0 || n > NEW_FOR_DAYS) return false;
-  // A short run can be both freshly started and closing tonight. Carrying NEW
-  // next to a deadline flag reads as a contradiction, and the deadline is the
-  // more useful signal, so the star stands down.
-  return !urgency(d);
+  return !deadlineDominates(d);
 }
 
 function urgency(d) {
@@ -458,8 +463,33 @@ const THEMES = {
       ? "1 sale live right now"
       : `${live.length} sales live right now across ${vendorCount} vendor${vendorCount === 1 ? "" : "s"}`,
     ongoingLabel: "Ongoing",
-    subject: line => `${line.charAt(0).toUpperCase()}${line.slice(1)}`,
-    preheader: "Every tracked vendor, normalized to cost per mg, with the sale and the code stated separately."
+    // The subject leads with the same offer the hero does, not the inventory
+    // count. "8 sales live right now" is the phrasing that tests as noise, and
+    // it was still reaching the inbox even after the hero was fixed. Scale
+    // moves to the tail, where it reads as a reason to open rather than as the
+    // whole pitch.
+    subject: (line, hero, restCount) => {
+      if (!hero) return `${line.charAt(0).toUpperCase()}${line.slice(1)}`;
+      return restCount > 0
+        ? `${hero}, plus ${restCount} more sale${restCount === 1 ? "" : "s"} live`
+        : hero;
+    },
+    // The preheader sits directly after the subject in the inbox, so its job
+    // is to add the next reason to open, not to describe our methodology.
+    // "Every tracked vendor, normalized to cost per mg" is how we talk to each
+    // other about the product, and it earned zero opens. This names whatever
+    // the subject did not get to, then the nearest deadline.
+    preheader: () => {
+      const second = freshGroups[1] || null;
+      const count = `${countLine.charAt(0).toUpperCase()}${countLine.slice(1)}`;
+      if (second) {
+        const tail = closeShort ? `, and ${closeShort}` : "";
+        return `${joinNames(second.members)} is ${figureFor(second)} too${tail}.`;
+      }
+      // No "and" here: the count is a standalone clause, so the deadline reads
+      // as a second fact about the same list rather than a continuation.
+      return closeShort ? `${count}, ${closeShort}.` : `${count}.`;
+    }
   },
   "labor-day": {
     eyebrow: "Labor Day sales",
@@ -483,6 +513,7 @@ const THEMES = {
     },
     // Named so nobody reads the second block as part of the event.
     ongoingLabel: "Standing offers, not Labor Day",
+    // The event is the pitch here, so this theme ignores the hero line.
     subject: () => closeShort ? `Last minute Labor Day deals, ${closeShort}` : "Last minute Labor Day deals still live",
     preheader: `${timed.length} Labor Day sale${timed.length === 1 ? "" : "s"} still live${closeShort ? `. ${closeShort.charAt(0).toUpperCase()}${closeShort.slice(1)}` : ""}.`
   }
@@ -553,6 +584,41 @@ function joinNames(members) {
   return names.length === 1 ? names[0] : names.join(" + ");
 }
 
+// A grouped card carries both vendor names in its title, but the description
+// comes from whichever deal won the rank, so it opened "Glow Aminos is running
+// 45% off" under a heading that said "Glow Aminos + Flawless Compounds". That
+// reads as a copy error even though both offers are identical. The lead's own
+// name is swapped for the joined names only when it is the opening subject of
+// the sentence, so a description that never names the vendor is left alone.
+// One vendor name becoming two also makes the subject plural, so the verb that
+// follows it has to move with it. Without this the card read "Glow Aminos +
+// Flawless Compounds is running 45% off". The map is explicit rather than a
+// general -s rule, because stripping a trailing s off an arbitrary word is how
+// you end up publishing "Glow + Flawless proces". Past tense needs no change.
+const PLURAL_VERB = {
+  is: "are", has: "have", was: "were", does: "do",
+  offers: "offer", lets: "let", takes: "take", runs: "run",
+  gives: "give", adds: "add", applies: "apply", stacks: "stack",
+  carries: "carry", includes: "include", excludes: "exclude"
+};
+
+function describe(g) {
+  const text = g.lead.description || g.lead.headline || "";
+  if (!text || g.members.length < 2) return text;
+  const who = joinNames(g.members);
+  for (const candidate of [nameOf(g.lead), g.lead.display_vendor, g.lead.vendor]) {
+    if (candidate && text.startsWith(candidate)) {
+      const rest = text.slice(candidate.length);
+      const agreed = rest.replace(/^(\s+)([A-Za-z]+)/, (whole, space, verb) => {
+        const swap = PLURAL_VERB[verb.toLowerCase()];
+        return swap ? `${space}${swap}` : whole;
+      });
+      return who + agreed;
+    }
+  }
+  return text;
+}
+
 // The window label above each offer. Both dates when both exist, so a reader
 // can tell a sale that just opened from one that has been running for weeks.
 function windowLabel(d) {
@@ -601,7 +667,7 @@ async function bigCard(g, lastOne) {
 <td valign="top">
 <div class="cream" style="font:800 15px/1.25 ${FONT};color:${C.cream};">${esc(joinNames(g.members))}</div>
 <div class="sand" style="font:700 9px/1.4 ${FONT};color:${C.sand};padding-top:3px;text-transform:uppercase;letter-spacing:.5px;">${windowLabel(d)}${urgency(d) ? ` &bull; <span style="color:${C.danger};">${esc(urgency(d))}</span>` : ""}</div>
-<div class="sand" style="font:400 10px/1.45 ${FONT};color:${C.sand};padding-top:5px;">${esc(d.description || d.headline || "")}</div>
+<div class="sand" style="font:400 10px/1.45 ${FONT};color:${C.sand};padding-top:5px;">${esc(describe(g))}</div>
 </td>
 <td width="185" valign="top" align="right" class="offerRight" style="padding-left:10px;">${offerCell(d, true)}</td>
 </tr></table>
@@ -689,19 +755,18 @@ const countLine = T.count();
 // Label is deliberately not "New". The kit went live on September 10, and a
 // panel claiming novelty it no longer has is the thing that made it read wrong
 // at the top. Partner colours are optional and fall back to the site palette.
+// The non-sale item in the send. It used to render as a full card directly
+// under the hero, which gave a standing announcement the same weight as a
+// 45% sitewide sale and pushed the actual deals down the email. It now sits
+// below the compare button as a single quiet line, so it is present without
+// competing with the offers. Set to null to drop it from a send entirely.
 const ANNOUNCEMENT = {
-  label: "Spotlight",
-  heading: "Build your own kit at Coffee & Peppers",
-  body: "Pick any 5 or 10 eligible single vials and mix them however you like. A half kit of 5 saves 5%, a full kit of 10 saves 15%, and the discount applies automatically at checkout. Code SAMMYC stacks for a further 15% off the reduced price. 57 singles are eligible and the offer has no end date.",
-  cta: "Build a kit",
-  bg: "#2A1410",
-  border: "#8A3B1E",
-  accent: "#FF6B35",
-  ctaBg: "#D9391C",
-  ctaInk: "#FFFFFF",
-  // Vendor destination, so no UTMs appended. The affiliate coupon is the only
-  // parameter that belongs on it.
-  url: "https://coffeeandpeppers.com/build-your-own-kit/?coupon=sammyc"
+  label: "Also",
+  heading: "SammyC's Skool is live",
+  body: "Direct access to Sam, research modules and vendor intel.",
+  cta: "Join",
+  accent: "#9DB33F",
+  url: "https://www.skool.com/sammycs-skool/about"
 };
 
 // The hero headline leads with the story, not the inventory.
@@ -731,13 +796,27 @@ function headlineFor(g) {
 
 const heroLine = headlineFor(leadGroup);
 
+// The bare figure for a group, for copy that already names the vendor. Same
+// rule as the offer column: one number, never a total, and the code is named
+// rather than added to the sale.
+function figureFor(g) {
+  const d = g.lead;
+  if (d.sale_percent != null) return `${d.sale_percent}% off`;
+  if (d.code_percent != null) return `${d.code || "SAMMYC"} at ${d.code_percent}% off`;
+  return "running an offer";
+}
+
 // The count and the nearest deadline drop to the supporting line.
 const contextLine = closeShort
   ? `${live.length} sales live, ${closeShort}. ${T.intro}`
   : `${live.length} sale${live.length === 1 ? "" : "s"} live. ${T.intro}`;
 
-const subject = T.subject(countLine);
-const preheader = T.preheader;
+// Deals the subject line has not already named, so the tail count never
+// double counts the lead group's own vendors.
+const leadNamed = leadGroup ? leadGroup.members.length : 0;
+const restCount = Math.max(0, live.length - leadNamed);
+const subject = T.subject(countLine, heroLine, restCount);
+const preheader = typeof T.preheader === "function" ? T.preheader() : T.preheader;
 
 const html = `<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml">
@@ -800,25 +879,20 @@ a[x-apple-data-detectors]{color:inherit!important;text-decoration:none!important
 
 
 ${freshHtml}
-${ANNOUNCEMENT ? `<tr><td class="page pad" style="background:${C.page};padding:0 22px 18px;">
-<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="${ANNOUNCEMENT.bg || C.card}" class="card" style="background:${ANNOUNCEMENT.bg || C.card};border:1px solid ${ANNOUNCEMENT.border || C.line};border-radius:9px;">
-<tr>
-<td width="5" bgcolor="${ANNOUNCEMENT.accent || C.olive}" style="width:5px;background:${ANNOUNCEMENT.accent || C.olive};font-size:0;line-height:0;">&nbsp;</td>
-<td style="padding:14px 16px;">
-<div style="font:800 9px/1 ${FONT};color:${ANNOUNCEMENT.accent || C.olive};text-transform:uppercase;letter-spacing:1.6px;">${esc(ANNOUNCEMENT.label)}</div>
-<div class="cream" style="font:800 15px/1.3 ${FONT};color:${C.cream};padding-top:7px;">${esc(ANNOUNCEMENT.heading)}</div>
-<div class="sand" style="font:400 11px/1.55 ${FONT};color:${C.sand};padding-top:6px;">${esc(ANNOUNCEMENT.body)}</div>
-<div style="padding-top:11px;"><a href="${esc(ANNOUNCEMENT.url)}" target="_blank"${/^https?:\/\/(www\.)?mypeptideprice\.com/i.test(ANNOUNCEMENT.url) ? "" : ' rel="nofollow sponsored noopener"'} style="display:inline-block;background:${ANNOUNCEMENT.ctaBg || C.olive};color:${ANNOUNCEMENT.ctaInk || C.cream};font:800 11px/1 ${FONT};letter-spacing:.4px;text-decoration:none;padding:11px 18px;border-radius:999px;">${esc(ANNOUNCEMENT.cta)} &rsaquo;</a></div>
-</td>
-</tr>
-</table>
-</td></tr>` : ""}
 ${otherHtml}
 
 <tr><td class="page pad" style="background:${C.page};padding:0 22px 21px;">
 <a href="${esc(tagged(SITE + "/#compare", sendDate))}" target="_blank" class="btn" style="display:block;background:${C.olive};color:${C.cream};font:800 12px/1 ${FONT};text-align:center;text-decoration:none;padding:14px 18px;border-radius:7px;">Compare live prices</a>
 <div class="sand" style="font:700 8px/1.4 ${FONT};color:${C.sand};text-align:center;letter-spacing:1px;text-transform:uppercase;padding-top:9px;">WE DON'T SELL PRODUCTS &nbsp;&bull;&nbsp; WE SHOW PRICES</div>
 </td></tr>
+${ANNOUNCEMENT ? `<tr><td class="page pad" style="background:${C.page};padding:0 22px 20px;">
+<table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="border-top:1px solid ${C.line};">
+<tr><td style="padding:13px 0 0;">
+<div style="font:800 8px/1 ${FONT};color:${ANNOUNCEMENT.accent || C.olive};text-transform:uppercase;letter-spacing:1.4px;">${esc(ANNOUNCEMENT.label)}</div>
+<div class="sand" style="font:400 10px/1.5 ${FONT};color:${C.sand};padding-top:5px;"><span class="cream" style="font-weight:700;color:${C.cream};">${esc(ANNOUNCEMENT.heading)}.</span> ${esc(ANNOUNCEMENT.body)} <a href="${esc(ANNOUNCEMENT.url)}" target="_blank"${/^https?:\/\/(www\.)?mypeptideprice\.com/i.test(ANNOUNCEMENT.url) ? "" : ' rel="nofollow sponsored noopener"'} style="color:${ANNOUNCEMENT.accent || C.olive};font-weight:700;text-decoration:underline;white-space:nowrap;">${esc(ANNOUNCEMENT.cta)} &rsaquo;</a></div>
+</td></tr>
+</table>
+</td></tr>` : ""}
 
 <tr><td class="page pad" style="background:${C.page};padding:14px 22px;border-top:1px solid ${C.line};">
 <div class="olive" style="font:800 8px/1 ${FONT};color:${C.olive};letter-spacing:1.2px;text-transform:uppercase;">RESEARCH USE ONLY</div>
