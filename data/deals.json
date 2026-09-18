@@ -66,44 +66,63 @@
       "ongoing": true
     },
     {
-      "priority": 320,
+      "priority": 322,
       "show_in": [
         "deals"
       ],
+      "featured": true,
       "vendor": "Glow Aminos",
-      "start_date": "2026-09-09",
-      "end_date": "2026-09-23",
-      "sale_percent": 40,
-      "sale_code": "FF40",
+      "start_date": "2026-09-18",
+      "end_date": "2026-09-30",
+      "sale_percent": 45,
       "code": "SAMMYC",
       "code_percent": 15,
-      "headline": "40% off sitewide with code FF40, stacks with SAMMYC",
+      "headline": "45% off sitewide automatically, stacks with SAMMYC",
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "cta_text": "Shop Now",
-      "description": "Glow Aminos is running 40% off sitewide through September 23 with code FF40. The site advertises 30% off publicly, and entering FF40 at checkout takes the discount to 40% instead. Code SAMMYC stacks for an additional 15% off the reduced price. Both codes are needed. Confirm final pricing at checkout.",
+      "description": "Glow Aminos is running 45% off sitewide from September 18 through 11:59pm Eastern on September 30. The discount applies automatically, no code needed. Code SAMMYC stacks for an additional 15% off the reduced price, and paying with Zelle takes a further 5% off. Shipping is free on orders over $150. HBrand BAC water and merchandise are excluded from the sale. Confirm final pricing at checkout.",
       "affiliate_url": "https://glowaminos.com/shop/?coupon=SammyC",
-      "id": "glow-ff40-2026-09"
+      "id": "glow-eom-45-2026-09"
     },
     {
-      "priority": 320,
+      "priority": 322,
       "show_in": [
         "deals"
       ],
+      "featured": true,
       "vendor": "Flawless Compounds",
-      "start_date": "2026-09-09",
-      "end_date": "2026-09-23",
-      "sale_percent": 40,
-      "sale_code": "FF40",
+      "start_date": "2026-09-18",
+      "end_date": "2026-09-30",
+      "sale_percent": 45,
       "code": "SAMMYC",
       "code_percent": 15,
-      "headline": "40% off sitewide with code FF40, stacks with SAMMYC",
+      "headline": "45% off sitewide automatically, stacks with SAMMYC",
       "timezone": "America/New_York",
       "type": "sitewide_sale",
       "cta_text": "Shop Now",
-      "description": "Flawless Compounds is running 40% off sitewide through September 23 with code FF40. The site advertises 30% off publicly, and entering FF40 at checkout takes the discount to 40% instead. Code SAMMYC stacks for an additional 15% off the reduced price. Both codes are needed. Confirm final pricing at checkout.",
+      "description": "Flawless Compounds is running 45% off sitewide from September 18 through 11:59pm Eastern on September 30. The discount applies automatically, no code needed. Code SAMMYC stacks for an additional 15% off the reduced price, and paying with Zelle takes a further 5% off. Shipping is free on orders over $150. HBrand BAC water and merchandise are excluded from the sale. Confirm final pricing at checkout.",
       "affiliate_url": "https://flawlesscompounds.com/shop/?coupon=SammyC",
-      "id": "flawless-ff40-2026-09"
+      "id": "flawless-eom-45-2026-09"
+    },
+    {
+      "priority": 316,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Peptira",
+      "start_date": "2026-09-18",
+      "end_date": "2026-09-20",
+      "sale_percent": 15,
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "Fall to Fall flash sale, 15% off sitewide, stacks with SAMMYC",
+      "timezone": "America/Denver",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Peptira is running its Fall to Fall flash sale from midnight Mountain time on September 18 through September 20. The 15% off sitewide applies automatically, no code needed. Code SAMMYC stacks for an additional 10% off the reduced price, and checking out via ACH takes a further 5% off. Shipping is free on orders over $250. Confirm final pricing at checkout.",
+      "affiliate_url": "https://peptira.com/?ref=SAMMYC",
+      "id": "peptira-fall-flash-2026-09"
     },
     {
       "priority": 306,
@@ -161,5 +180,5 @@
       "id": "instant-sammyc-25-2026-09"
     }
   ],
-  "version": "2026-09-15-instant-boost"
+  "version": "2026-09-18-eom-push"
 }

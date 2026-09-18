@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260915-instant-boost-v155";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260918-eom-push-v167";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -964,20 +964,20 @@
   const CAMPAIGN = {
     enabled: true,
     // Changing campaignId retires the previous popup for everyone, including
-    // people who already dismissed the FF40 one, so this campaign is seen
-    // fresh rather than suppressed by the old 24h stamp.
-    campaignId: "instant-boost-2026-09-15",
-    // No end date on this promo, so the popup is given a horizon rather than
-    // running forever. Move it out or retire it when it stops being news.
-    runUntil: "2026-09-23",
+    // people who already dismissed the Instant one, so this campaign is seen
+    // fresh rather than suppressed by the old session flag.
+    campaignId: "eom-push-2026-09-18",
+    // Tracks the longest deal on the board below, the Glow and Flawless push.
+    runUntil: "2026-09-30",
     eyebrow: "Live now",
-    heading: "Instant boosted our code to 25%",
-    body: "Instant Peptides took SAMMYC to 25% off, and FF40 still unlocks 40% at Glow and Flawless.",
+    heading: "45% off at Glow and Flawless",
+    body: "Glow Aminos and Flawless Compounds are 45% off sitewide through September 30, applied automatically, and SAMMYC still stacks on top.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board.
     rows: [
+      { vendor: "Glow & Flawless", offer: "45% off sitewide automatically, SAMMYC 15%", when: "to Sep 30" },
+      { vendor: "Peptira", offer: "15% off sitewide automatically, SAMMYC 10%", when: "to Sep 20" },
       { vendor: "Instant Peptides", offer: "SAMMYC boosted to 25% off", when: "to Sep 20" },
-      { vendor: "Glow & Flawless", offer: "40% off sitewide with code FF40, SAMMYC 15%", when: "to Sep 23" },
       { vendor: "Coffee & Peppers", offer: "Build a kit, 5% off 5 vials or 15% off 10, SAMMYC 15%", when: "no end date" },
       { vendor: "Aurora Peptides", offer: "15% off sitewide every Friday, SAMMYC 20%", when: "Fridays" }
     ],
