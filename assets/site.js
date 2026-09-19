@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260918-labsourced-50-v169";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260919-aurora-boost-30-v171";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -966,7 +966,7 @@
     // Changing campaignId retires the previous popup for everyone, including
     // people who already dismissed the Instant one, so this campaign is seen
     // fresh rather than suppressed by the old session flag.
-    campaignId: "labsourced-50-2026-09-18",
+    campaignId: "moon15-board-2026-09-19",
     // Tracks the longest deal on the board below, the Glow and Flawless push.
     // LabSourced leads but has announced no end date, so it cannot set this.
     runUntil: "2026-09-30",
@@ -982,7 +982,7 @@
       { vendor: "Glow & Flawless", offer: "45% off sitewide automatically, SAMMYC 15%", when: "to Sep 30" },
       { vendor: "Instant Peptides", offer: "SAMMYC boosted to 25% off", when: "to Sep 20" },
       { vendor: "Glacier Aminos", offer: "New drop, 20% off peptides / 10% off kits, SAMMYC 10%", when: "to Sep 20" },
-      { vendor: "Peptira", offer: "15% off sitewide automatically, SAMMYC 10%", when: "to Sep 20" }
+      { vendor: "Orbitrex Peptides", offer: "MOON15 takes 15% off, SAMMYC 15% stacks", when: "live now" }
     ],
     code: "SAMMYC",
     codePercent: "15% off",

@@ -85,6 +85,25 @@
       "id": "labsourced-50-birthday-2026-09"
     },
     {
+      "priority": 310,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Orbitrex Peptides",
+      "start_date": "2026-09-18",
+      "sale_percent": 15,
+      "sale_code": "MOON15",
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Observe the Moon flash sale, 15% off with code MOON15, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Orbitrex Peptides is running its Observe the Moon flash sale. Code MOON15 takes 15% off sitewide, and it stacks with code SAMMYC for an additional 15% off and with the first responder code. Both codes are needed. No end date has been announced, so confirm the sale is still live and check final pricing at checkout.",
+      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
+      "id": "orbitrex-moon15-2026-09"
+    },
+    {
       "priority": 322,
       "show_in": [
         "deals"
@@ -144,19 +163,37 @@
       "id": "peptira-fall-flash-2026-09"
     },
     {
+      "priority": 320,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Aurora Peptides",
+      "start_date": "2026-09-19",
+      "end_date": "2026-09-19",
+      "code": "SAMMYC",
+      "code_percent": 30,
+      "headline": "SAMMYC boosted to 30% off, today only",
+      "timezone": "America/New_York",
+      "type": "code_only",
+      "cta_text": "Shop Now",
+      "description": "Aurora Peptides has boosted code SAMMYC from 20% to 30% off for Saturday September 19 only. The rate returns to 20% after today. The Flash Sale Friday 15% sitewide discount is not running today, so the code is the whole offer. Confirm final pricing at checkout.",
+      "affiliate_url": "https://aurora-peptides.com/?ref=102",
+      "id": "aurora-boost-30-2026-09-19"
+    },
+    {
       "priority": 306,
       "show_in": [
         "deals"
       ],
       "vendor": "Aurora Peptides",
-      "start_date": "2026-09-11",
+      "start_date": "2026-09-20",
       "code": "SAMMYC",
       "code_percent": 20,
       "headline": "Flash Sale Friday, 15% off sitewide every Friday, stacks with SAMMYC",
       "timezone": "America/New_York",
       "type": "conditional",
       "cta_text": "Shop Now",
-      "description": "Aurora Peptides is running Flash Sale Friday every Friday starting September 11. The sale is 15% off sitewide, excluding brand goods, and it is only valid on Fridays. Code SAMMYC stacks for an additional 20% off. Because the sale runs one day a week, the prices shown here do not include the 15% and reflect the code only. Confirm final pricing at checkout.",
+      "description": "Aurora Peptides runs Flash Sale Friday every Friday. The sale is 15% off sitewide, excluding brand goods, and it is only valid on Fridays. Code SAMMYC stacks for an additional 20% off. Because the sale runs one day a week, the prices shown here do not include the 15% and reflect the code only. Confirm final pricing at checkout.",
       "affiliate_url": "https://aurora-peptides.com/?ref=102",
       "id": "aurora-flash-friday-2026-09"
     },
@@ -238,5 +275,5 @@
       "id": "instant-sammyc-25-2026-09"
     }
   ],
-  "version": "2026-09-18-labsourced-50"
+  "version": "2026-09-19-aurora-boost-30"
 }
