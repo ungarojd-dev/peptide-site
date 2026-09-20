@@ -233,7 +233,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260919-aurora-boost-30-v171";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260920-milehigh-30-v172";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -966,7 +966,7 @@
     // Changing campaignId retires the previous popup for everyone, including
     // people who already dismissed the Instant one, so this campaign is seen
     // fresh rather than suppressed by the old session flag.
-    campaignId: "moon15-board-2026-09-19",
+    campaignId: "fall-board-2026-09-20",
     // Tracks the longest deal on the board below, the Glow and Flawless push.
     // LabSourced leads but has announced no end date, so it cannot set this.
     runUntil: "2026-09-30",
@@ -974,14 +974,16 @@
     heading: "LabSourced just went 50% off sitewide",
     body: "The discount is automatic with no code, bulk pricing stacks on top of it, and SAMMYC stacks again.",
     // Rows are authored here rather than read from deals.json so the popup
-    // stays a curated highlight instead of mirroring the whole board. Aurora
-    // sits out this round: its sale is Friday only, which needs a qualifier
-    // the row format has no space for, and the weekend deals are the news.
+    // stays a curated highlight instead of mirroring the whole board. Unlike
+    // deals.json these rows cannot expire themselves, so nothing closing
+    // tonight belongs here: Glacier, Instant and Peptira all end Sep 20 and
+    // would keep claiming a dead sale until the next push. Everything below
+    // survives to Sep 28 or later. The board still carries tonight's closers.
     rows: [
       { vendor: "LabSourced", offer: "50% off sitewide automatically, SAMMYC 10%", when: "live now" },
       { vendor: "Glow & Flawless", offer: "45% off sitewide automatically, SAMMYC 15%", when: "to Sep 30" },
-      { vendor: "Instant Peptides", offer: "SAMMYC boosted to 25% off", when: "to Sep 20" },
-      { vendor: "Glacier Aminos", offer: "New drop, 20% off peptides / 10% off kits, SAMMYC 10%", when: "to Sep 20" },
+      { vendor: "Mile High", offer: "SAMMYC boosted to 30% off", when: "Sep 21 to 28" },
+      { vendor: "Disguised Alpha", offer: "20% off sitewide, SAMMYC 10% stacks", when: "live now" },
       { vendor: "Orbitrex Peptides", offer: "MOON15 takes 15% off, SAMMYC 15% stacks", when: "live now" }
     ],
     code: "SAMMYC",

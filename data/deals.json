@@ -85,6 +85,24 @@
       "id": "labsourced-50-birthday-2026-09"
     },
     {
+      "priority": 311,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Disguised Alpha",
+      "start_date": "2026-09-20",
+      "sale_percent": 20,
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "20% off sitewide, stacks with SAMMYC",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Disguised Alpha is running 20% off sitewide, and code SAMMYC stacks for an additional 10% off the reduced price. No end date has been announced, so confirm the sale is still live and check final pricing at checkout.",
+      "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
+      "id": "disguised-alpha-20-2026-09"
+    },
+    {
       "priority": 310,
       "show_in": [
         "deals"
@@ -163,24 +181,6 @@
       "id": "peptira-fall-flash-2026-09"
     },
     {
-      "priority": 320,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Aurora Peptides",
-      "start_date": "2026-09-19",
-      "end_date": "2026-09-19",
-      "code": "SAMMYC",
-      "code_percent": 30,
-      "headline": "SAMMYC boosted to 30% off, today only",
-      "timezone": "America/New_York",
-      "type": "code_only",
-      "cta_text": "Shop Now",
-      "description": "Aurora Peptides has boosted code SAMMYC from 20% to 30% off for Saturday September 19 only. The rate returns to 20% after today. The Flash Sale Friday 15% sitewide discount is not running today, so the code is the whole offer. Confirm final pricing at checkout.",
-      "affiliate_url": "https://aurora-peptides.com/?ref=102",
-      "id": "aurora-boost-30-2026-09-19"
-    },
-    {
       "priority": 306,
       "show_in": [
         "deals"
@@ -246,14 +246,14 @@
       "start_date": "2026-09-21",
       "end_date": "2026-09-28",
       "code": "SAMMYC",
-      "code_percent": 25,
-      "headline": "Fall Into Research, SAMMYC boosted to 25% off",
+      "code_percent": 30,
+      "headline": "Fall Into Research, SAMMYC boosted to 30% off",
       "timezone": "America/Denver",
       "type": "code_only",
       "cta_text": "Shop Now",
-      "description": "Mile High Compounds is running its Fall Into Research sale from 8:00am Mountain on Sunday September 21 through 11:59pm Mountain on Monday September 28. Code SAMMYC is boosted from 10% to 25% off for the sale period. Confirm final pricing at checkout.",
+      "description": "Mile High Compounds is running its Fall Into Research sale from 8:00am Mountain on Monday September 21 through 11:59pm Mountain on Monday September 28. Code SAMMYC is boosted from 10% to 30% off for the sale period, which the vendor states is a better rate than the standard site discount running during the sale. The code is the offer rather than an addition to that discount. Confirm final pricing at checkout.",
       "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
-      "id": "milehigh-fall-25-2026-09"
+      "id": "milehigh-fall-30-2026-09"
     },
     {
       "priority": 319,
@@ -275,5 +275,5 @@
       "id": "instant-sammyc-25-2026-09"
     }
   ],
-  "version": "2026-09-19-aurora-boost-30"
+  "version": "2026-09-20-milehigh-30-disguised"
 }
