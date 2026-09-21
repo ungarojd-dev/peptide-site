@@ -85,6 +85,23 @@
       "id": "labsourced-50-birthday-2026-09"
     },
     {
+      "priority": 321,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "High Tide Compounds",
+      "start_date": "2026-09-21",
+      "end_date": "2026-09-23",
+      "sale_percent": 40,
+      "headline": "Flash sale, 40% off individual prices catalog wide",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "High Tide Compounds is running a flash sale from midnight Monday September 21 through Wednesday September 23, with 40% off individual prices across the whole catalog. The vendor did not say whether code SAMMYC stacks on top of the sale, so try it at checkout and confirm final pricing there.",
+      "affiliate_url": "https://hightidecompounds.com/?aff=44",
+      "id": "hightide-flash-40-2026-09"
+    },
+    {
       "priority": 311,
       "show_in": [
         "deals"
@@ -275,5 +292,5 @@
       "id": "instant-sammyc-25-2026-09"
     }
   ],
-  "version": "2026-09-20-milehigh-30-disguised"
+  "version": "2026-09-20-hightide-flash-40"
 }
