@@ -29,8 +29,19 @@ function json(statusCode, body) {
   };
 }
 
+// Signups are paused while the sending account is blocked. The form is gone
+// from every page, but the endpoint is public, so bots posting to it directly
+// would still reach EmailOctopus and queue confirmation emails against an
+// account under review. Refusing here keeps anything from reaching it.
+// Set to false and restore the form markup to reopen signups.
+const SIGNUPS_PAUSED = true;
+
 export async function handler(event) {
   if (event.httpMethod !== "POST") return json(405, { error: "Method not allowed" });
+  if (SIGNUPS_PAUSED) {
+    console.log("subscribe: refused, signups paused");
+    return json(503, { error: "Signups are paused right now." });
+  }
 
   const apiKey = process.env.EMAILOCTOPUS_API_KEY;
   const listId = process.env.EMAILOCTOPUS_LIST_ID;
