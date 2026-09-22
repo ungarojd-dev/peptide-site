@@ -3,7 +3,10 @@
 
   const COMPLIANCE_KEY="mpp_compliance_session_acceptance_v3";
   const COMPLIANCE_VERSION="2026-06-04-v3";
-  const EXEMPT_PATHS=new Set(["/terms.html","/privacy.html","/disclaimer.html","/404.html"]);
+  // Both forms are listed. Links and canonicals now use clean URLs, so a visitor
+// arriving at /terms has pathname "/terms", and a .html-only list would put the
+// compliance gate over the very pages it links to. Old .html links still work.
+  const EXEMPT_PATHS=new Set(["/terms","/privacy","/disclaimer","/404","/terms.html","/privacy.html","/disclaimer.html","/404.html"]);
 
   // Search crawlers do not persist sessionStorage and never click Accept, so
   // without this they render every page with the disclaimer overlay covering
@@ -123,7 +126,7 @@
               <label><input type="checkbox" data-compliance-check/> <span>I have read and understood the Research Use and Compliance Disclaimer above.</span></label>
               <label><input type="checkbox" data-compliance-check/> <span>I am at least 21 years of age.</span></label>
               <label><input type="checkbox" data-compliance-check/> <span>I am a qualified researcher, or an authorized representative, accessing this website solely for lawful research comparison purposes.</span></label>
-              <label><input type="checkbox" data-compliance-check/> <span>I agree that my access to this website constitutes acceptance of the <a href="/terms.html" target="_blank" rel="noopener">Terms of Use</a> and acknowledgment of the affiliate disclosure.</span></label>
+              <label><input type="checkbox" data-compliance-check/> <span>I agree that my access to this website constitutes acceptance of the <a href="/terms" target="_blank" rel="noopener">Terms of Use</a> and acknowledgment of the affiliate disclosure.</span></label>
             </div>
             <p class="mpp-compliance-helper">If you do not agree to these terms, you must exit the website. Access is not permitted without acceptance.</p>
             <button class="mpp-compliance-link" type="button" data-compliance-full-open><span aria-hidden="true">▣</span> View full disclaimers</button>
@@ -169,7 +172,7 @@
             <p>Use of this website is at your own risk. Information and services are provided on an as-is and as-available basis, without warranties regarding accuracy, completeness, uninterrupted access, or fitness for a particular purpose.</p>
             <h3>No warranties</h3>
             <p>To the fullest extent permitted by law, all content and services are provided without express or implied warranties. Review the complete Terms of Use for additional provisions.</p>
-            <p class="mpp-full-disclaimer-links"><a href="/terms.html" target="_blank" rel="noopener">Terms of Use</a><a href="/privacy.html" target="_blank" rel="noopener">Privacy Policy</a><a href="/disclaimer.html" target="_blank" rel="noopener">Open standalone disclaimer</a></p>
+            <p class="mpp-full-disclaimer-links"><a href="/terms" target="_blank" rel="noopener">Terms of Use</a><a href="/privacy" target="_blank" rel="noopener">Privacy Policy</a><a href="/disclaimer" target="_blank" rel="noopener">Open standalone disclaimer</a></p>
           </div>
           <footer class="mpp-full-disclaimer-footer"><button type="button" data-compliance-full-close><span aria-hidden="true">←</span> Return to acceptance screen</button></footer>
         </section>
@@ -233,7 +236,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260921-signup-paused-v174";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260922-honest-dates-v176";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{

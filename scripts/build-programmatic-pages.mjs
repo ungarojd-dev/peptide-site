@@ -6,12 +6,24 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260921-signup-paused-v174";
-const TODAY = "July 2026";
-const VALID_UNTIL = "2026-08-31";
+const VER = "20260922-honest-dates-v176";
 const BASE = "https://mypeptideprice.com";
+// Files are written with .html, but every URL we publish (canonical, og:url,
+// schema, internal links, sitemap) uses the clean form. Google was indexing both
+// forms of 42 pages and ranking the clean one far higher (/compounds at 7.7 vs
+// /compounds.html at 50), so the .html canonicals were being overridden and the
+// signals split. Netlify serves /x from x.html, so no file moves.
+const clean = p => String(p).replace(/\/index\.html$/, "/").replace(/\.html(?=$|[?#])/, "");
 
 const snap = JSON.parse(await readFile(`${W}/data/catalog-fallback-snapshot.json`, "utf8"));
+// The "Updated" stamp is the date the price data was pulled, read from the
+// snapshot, not a hand-typed string. It was hardcoded to "July 2026", so every
+// page said July for two months while Netlify was regenerating it with fresh
+// prices on each deploy. Using the snapshot date keeps it honest: if a live pull
+// fails and the build falls back to an older snapshot, the page says so.
+const snapStamp = new Date(snap.generated_at || Date.now());
+const TODAY = (Number.isNaN(snapStamp.getTime()) ? new Date() : snapStamp)
+  .toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "America/New_York" });
 const vendorCfg = JSON.parse(await readFile(`${W}/data/vendor-config.json`, "utf8"));
 
 const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
@@ -92,10 +104,10 @@ function priceRow(o) {
 
 const NONPEP = ["Acetic Acid", "Bacteriostatic", "Travel Case", "Starter Kit", "Research Starter", "Case ONLY", "Protective Travel"];
 const HAND_BUILT = new Map([
-  ["semaglutide", "/semaglutide-price-comparison.html"],
-  ["tirzepatide", "/tirzepatide-price-comparison.html"],
-  ["retatrutide", "/retatrutide-price-comparison.html"],
-  ["bpc-157", "/bpc-157-price-comparison.html"],
+  ["semaglutide", "/semaglutide-price-comparison"],
+  ["tirzepatide", "/tirzepatide-price-comparison"],
+  ["retatrutide", "/retatrutide-price-comparison"],
+  ["bpc-157", "/bpc-157-price-comparison"],
 ]);
 
 const HEAD_ASSETS = `<link rel="preconnect" href="https://fonts.googleapis.com"/>
@@ -214,19 +226,19 @@ function header() {
     <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open navigation"><span></span><span></span><span></span></button>
     <nav class="site-nav" data-site-nav>
       <a href="/#compare">Prices</a>
-      <a href="/vendors.html">Vendors</a>
+      <a href="/vendors">Vendors</a>
       <div class="nav-dd" data-nav-dd>
         <button class="nav-dd-toggle" type="button" data-nav-dd-toggle aria-expanded="false" aria-haspopup="true">Compounds<span class="nav-dd-caret" aria-hidden="true"></span></button>
         <div class="nav-dd-menu" data-nav-dd-menu>
-          <a href="/semaglutide-price-comparison.html">Semaglutide</a>
-          <a href="/tirzepatide-price-comparison.html">Tirzepatide</a>
-          <a href="/retatrutide-price-comparison.html">Retatrutide</a>
-          <a href="/bpc-157-price-comparison.html">BPC-157</a>
-          <a href="/compounds.html">All compounds</a>
+          <a href="/semaglutide-price-comparison">Semaglutide</a>
+          <a href="/tirzepatide-price-comparison">Tirzepatide</a>
+          <a href="/retatrutide-price-comparison">Retatrutide</a>
+          <a href="/bpc-157-price-comparison">BPC-157</a>
+          <a href="/compounds">All compounds</a>
         </div>
       </div>
-      <a href="/faq.html">FAQ</a>
-      <a href="/standards.html">Standards</a>
+      <a href="/faq">FAQ</a>
+      <a href="/standards">Standards</a>
       <a href="/blog/">Research</a>
       <a class="nav-code-pill" href="/#compare">Use SAMMYC</a>
     </nav>
@@ -245,9 +257,9 @@ function footer() {
       </div>
       <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
     </div>
-    <div class="footer-col"><div class="footer-title">Compounds</div><div class="footer-links"><a href="/semaglutide-price-comparison.html">Semaglutide</a><a href="/tirzepatide-price-comparison.html">Tirzepatide</a><a href="/retatrutide-price-comparison.html">Retatrutide</a><a href="/bpc-157-price-comparison.html">BPC-157</a><a href="/compounds.html">All compounds</a></div></div>
-    <div class="footer-col"><div class="footer-title">Site</div><div class="footer-links"><a href="/#compare">Compare prices</a><a href="/vendors.html">Vendors</a><a href="/faq.html">FAQ</a><a href="/standards.html">7/7 Standard</a><a href="/blog/">Research</a></div></div>
-    <div class="footer-col"><div class="footer-title">Legal</div><div class="footer-links"><a href="/disclaimer.html">Disclaimer</a><a href="/terms.html">Terms</a><a href="/privacy.html">Privacy</a><a href="mailto:contact@mypeptideprice.com?subject=Price%20issue%20report">Report a price issue</a></div></div>
+    <div class="footer-col"><div class="footer-title">Compounds</div><div class="footer-links"><a href="/semaglutide-price-comparison">Semaglutide</a><a href="/tirzepatide-price-comparison">Tirzepatide</a><a href="/retatrutide-price-comparison">Retatrutide</a><a href="/bpc-157-price-comparison">BPC-157</a><a href="/compounds">All compounds</a></div></div>
+    <div class="footer-col"><div class="footer-title">Site</div><div class="footer-links"><a href="/#compare">Compare prices</a><a href="/vendors">Vendors</a><a href="/faq">FAQ</a><a href="/standards">7/7 Standard</a><a href="/blog/">Research</a></div></div>
+    <div class="footer-col"><div class="footer-title">Legal</div><div class="footer-links"><a href="/disclaimer">Disclaimer</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="mailto:contact@mypeptideprice.com?subject=Price%20issue%20report">Report a price issue</a></div></div>
   </div>
   <div class="footer-base"><span>&copy; 2026 MyPeptidePrice.com. Independent price comparison. For research use only.</span></div>
 </footer>
@@ -356,11 +368,15 @@ const generated = { compounds: [], vendors: [] };
 for (const c of compoundPages) {
   const sg = slug(c.name);
   const path = `/compounds/${sg}.html`;
-  const canonical = `${BASE}${path}`;
+  const canonical = `${BASE}${clean(path)}`;
   const lowLabel = c.lo != null ? money(c.lo) : null;
   const hiLabel = c.hi != null ? money(c.hi) : null;
   const title = `${c.name} Price Comparison | ${c.vendors.length} Vendors, Cost Per mg`;
-  const desc = `${c.name} listed prices and cost per mg compared across ${c.vendors.length} research vendors${lowLabel ? `, ${lowLabel} to ${hiLabel}` : ""}. Independent price reference. For laboratory research use only, not for human use.`;
+  // No price range in the snippet. It was baked in at build time, so every
+  // search result kept showing July prices once the generator stopped running.
+  // The fallback keeps the longest blend names under 160 characters.
+  const descFull = `${c.name} price per mg compared across ${c.vendors.length} research vendors, with current sales and coupon codes. Independent price reference, research use only.`;
+  const desc = descFull.length <= 158 ? descFull : `${c.name} price per mg across ${c.vendors.length} research vendors, with current sales and coupon codes. Independent reference, research use only.`;
 
   // price rows: dedupe identical (vendor,size,price). Neutral presentation, no
   // "lowest" hype, no urgency; the code is stated as a plain fact where it applies.
@@ -407,7 +423,7 @@ for (const c of compoundPages) {
 
   // related compounds in same category
   const related = compounds.filter(x => x.category === c.category && x.name !== c.name).slice(0, 8);
-  const relatedHtml = related.length ? `<div class="xlink-wrap"><h2>Other ${esc(c.category)} compounds</h2><div class="xlink-grid">${related.map(r => `<a href="${HAND_BUILT.get(slug(r.name)) || "/compounds/" + slug(r.name) + ".html"}">${esc(r.name)}</a>`).join("")}</div></div>` : "";
+  const relatedHtml = related.length ? `<div class="xlink-wrap"><h2>Other ${esc(c.category)} compounds</h2><div class="xlink-grid">${related.map(r => `<a href="${HAND_BUILT.get(slug(r.name)) || "/compounds/" + slug(r.name)}">${esc(r.name)}</a>`).join("")}</div></div>` : "";
 
   const permgLine = (() => {
     const withMg = c.priced.filter(o => o.permgVal);
@@ -436,18 +452,18 @@ for (const c of compoundPages) {
     "@graph": [
       { "@type": "BreadcrumbList", itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: `${BASE}/` },
-        { "@type": "ListItem", position: 2, name: "Compounds", item: `${BASE}/compounds.html` },
+        { "@type": "ListItem", position: 2, name: "Compounds", item: `${BASE}/compounds` },
         { "@type": "ListItem", position: 3, name: c.name, item: canonical },
       ]},
       { "@type": "Product", name: `${c.name} (Research Material)`, category: "Research compound",
         description: `${c.name} listed by third-party vendors for laboratory research use only. Not for human consumption. This page is an independent price reference.`,
-        ...(c.lo != null ? { offers: { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: c.lo.toFixed(2), highPrice: (c.hi ?? c.lo).toFixed(2), priceValidUntil: VALID_UNTIL, availability: "https://schema.org/InStock", offerCount: String(offerCount) } } : {}) },
+        ...(c.lo != null ? { offers: { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: c.lo.toFixed(2), highPrice: (c.hi ?? c.lo).toFixed(2), availability: "https://schema.org/InStock", offerCount: String(offerCount) } } : {}) },
       { "@type": "FAQPage", mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
     ],
   }, null, 0).replace(/&/g, "&amp;");
 
   const priceRangeLabel = lowLabel ? (hiLabel && hiLabel !== lowLabel ? `${lowLabel} to ${hiLabel}` : lowLabel) : "See listings";
-  const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/compounds.html">Compounds</a><span>/</span>${esc(c.name)}</nav>
+  const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Peptide price comparison</a><span>/</span><a href="/compounds">Compounds</a><span>/</span>${esc(c.name)}</nav>
 <section class="hero"><div class="hero-inner"><div><span class="eyebrow">${esc(c.category)}</span><h1>${esc(c.name)} price comparison.</h1><p>Listed prices and cost per mg for ${esc(c.name)} across ${c.vendors.length} research vendors tracked on MyPeptidePrice.com. An independent price reference, for laboratory research use only.</p><div class="hero-actions"><a class="button" href="/?q=${encodeURIComponent(c.name)}#compare" data-cta="hero">View current listings</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Listed price range</span><strong>${priceRangeLabel}</strong></div><div class="hero-stat"><span>Vendors listing it</span><strong>${c.vendors.length}</strong></div><div class="hero-stat"><span>Use</span><strong>Research only</strong></div></div></div></section>
 <div class="answer-box"><div class="inner"><p>${esc(answer)}</p></div></div>
 <section class="section compact"><div class="snap-wrap"><div class="snap-head"><h2>${esc(c.name)} prices by vendor</h2><span class="snap-meta"><span class="dot"></span>Updated ${TODAY}</span></div>
@@ -519,7 +535,7 @@ for (const v of vendorNames) {
   const vCfg = Array.isArray(vendorList) ? (vendorList.find(x => (x.name || x.id) === v.key) || {}) : (vendorList[v.key] || {});
   const payHtml = paymentBlock(vCfg, v.display);
   const path = `/vendors/${sg}.html`;
-  const canonical = `${BASE}${path}`;
+  const canonical = `${BASE}${clean(path)}`;
   // gather this vendor's offers across all compounds
   const items = [];
   for (const c of compounds) {
@@ -539,7 +555,7 @@ for (const v of vendorNames) {
   const lo = uniq.length ? uniq[0].price : null;
   const hi = uniq.length ? uniq[uniq.length - 1].price : null;
   const title = `${v.display} Prices | Compare ${compoundCount} Compounds Per Mg`;
-  const desc = `${v.display} prices tracked across ${compoundCount} research compounds${lo != null ? `, ${money(lo)} to ${money(hi)}` : ""}, compared against other vendors per mg. Independent price reference, for laboratory research use only.`;
+  const desc = `${v.display} prices across ${compoundCount} research compounds, compared per mg against other vendors, with current sales and coupon codes. Research use only.`;
 
   const vendorRows = uniq.slice(0, 20);
   // Bucketed on compound plus size here: a vendor page lists many different
@@ -578,7 +594,7 @@ for (const v of vendorNames) {
     "@graph": [
       { "@type": "BreadcrumbList", itemListElement: [
         { "@type": "ListItem", position: 1, name: "Home", item: `${BASE}/` },
-        { "@type": "ListItem", position: 2, name: "Vendors", item: `${BASE}/vendors.html` },
+        { "@type": "ListItem", position: 2, name: "Vendors", item: `${BASE}/vendors` },
         { "@type": "ListItem", position: 3, name: v.display, item: canonical },
       ]},
       { "@type": "FAQPage", mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
@@ -586,10 +602,10 @@ for (const v of vendorNames) {
   }, null, 0).replace(/&/g, "&amp;");
 
   const topCompounds = [...new Set(uniq.map(i => i.compound))].slice(0, 10);
-  const xlinks = topCompounds.map(name => `<a href="${HAND_BUILT.get(slug(name)) || "/compounds/" + slug(name) + ".html"}">${esc(name)}</a>`).join("");
+  const xlinks = topCompounds.map(name => `<a href="${HAND_BUILT.get(slug(name)) || "/compounds/" + slug(name)}">${esc(name)}</a>`).join("");
 
   const priceRangeLabel = lo != null ? (hi && hi !== lo ? `${money(lo)} to ${money(hi)}` : money(lo)) : "See listings";
-  const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span><a href="/vendors.html">Vendors</a><span>/</span>${esc(v.display)}</nav>
+  const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Peptide price comparison</a><span>/</span><a href="/vendors">Vendors</a><span>/</span>${esc(v.display)}</nav>
 <section class="hero"><div class="hero-inner"><div><span class="eyebrow">Vendor price reference</span><h1>${esc(v.display)} prices.</h1><p>Listed prices for ${esc(v.display)} across ${compoundCount} research compounds tracked on MyPeptidePrice.com. An independent price reference, for laboratory research use only.</p><div class="hero-actions"><a class="button" href="/?vendor=${encodeURIComponent(v.key)}#compare" data-cta="hero">View current listings</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Listed price range</span><strong>${priceRangeLabel}</strong></div><div class="hero-stat"><span>Compounds listed</span><strong>${compoundCount}</strong></div><div class="hero-stat"><span>Use</span><strong>Research only</strong></div></div></div></section>
 <div class="answer-box"><div class="inner"><p>${esc(v.display)} is one of the research vendors tracked on MyPeptidePrice.com, with ${compoundCount} compounds catalogued${lo != null ? ` and listed prices from ${money(lo)} to ${money(hi)}` : ""}. MyPeptidePrice.com is an independent price reference and does not sell these materials. Sold for laboratory research use only, not for human use.</p></div></div>
 <section class="section compact"><div class="snap-wrap"><div class="snap-head"><h2>${esc(v.display)} listings by price</h2><span class="snap-meta"><span class="dot"></span>Updated ${TODAY}</span></div>
@@ -642,7 +658,7 @@ console.log("vendor pages written:", generated.vendors.length);
     // homepage before they had seen a single price.
     return `<article class="vendor-card"><div class="vendor-head">${logo}<div><h3>${esc(v.name)}</h3>${discountLine}</div></div>` +
       `<p>${v.compoundCount} compounds tracked, listed from ${range}. Review current product details, testing documentation, stock status, and checkout terms directly with the vendor.</p>` +
-      `<div class="vendor-card-actions"><a class="button" href="${esc(v.path)}">Compare ${esc(v.name)} prices</a>` +
+      `<div class="vendor-card-actions"><a class="button" href="${esc(clean(v.path))}">Compare ${esc(v.name)} prices</a>` +
       (v.affiliateUrl ? `<a class="vendor-out" href="${esc(v.affiliateUrl)}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Vendor directory" data-category="vendor" data-vendor="${esc(v.key)}" data-code="${esc(vendorCfg.coupon_code || "")}" data-cta="Visit ${esc(v.name)}">Visit site &#8250;</a>` : "") +
       `</div></article>`;
   }).join("\n");
@@ -666,7 +682,7 @@ console.log("vendor pages written:", generated.vendors.length);
 
 // ---- COMPOUNDS HUB ----
 {
-  const canonical = `${BASE}/compounds.html`;
+  const canonical = `${BASE}/compounds`;
   const title = "All Peptide Compounds | Price Comparison by $/mg";
   const desc = `Browse every research peptide tracked on MyPeptidePrice.com. Compare prices and cost per mg across ${compounds.length} compounds and ${new Set(compounds.flatMap(c=>c.vendors)).size} vendors. Research use only.`;
   const byCat = {};
@@ -674,7 +690,7 @@ console.log("vendor pages written:", generated.vendors.length);
   const cats = Object.keys(byCat).sort();
   const sections = cats.map(cat => {
     const cards = byCat[cat].map(c => {
-      const href = HAND_BUILT.get(slug(c.name)) || `/compounds/${slug(c.name)}.html`;
+      const href = HAND_BUILT.get(slug(c.name)) || `/compounds/${slug(c.name)}`;
       return `<a class="hub-card" href="${href}"><div class="hc-name">${esc(c.name)}</div><div class="hc-cat">${c.vendors.length} vendors</div>${c.lo != null ? `<div class="hc-price">${money(c.lo)} <span>lowest after code</span></div>` : ""}</a>`;
     }).join("\n");
     return `<div class="hub-section-title">${esc(cat)}</div><div class="hub-grid">${cards}</div>`;
@@ -695,7 +711,7 @@ console.log("vendor pages written:", generated.vendors.length);
   // Was hardcoded to 13 and had drifted. Derived from the vendor pages actually
   // generated, so it cannot go stale again.
   const vendorCount = generated.vendors.length || Object.keys(vendorCfg.vendors || {}).length;
-  const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Home</a><span>/</span>Compounds</nav>
+  const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Peptide price comparison</a><span>/</span>Compounds</nav>
 <section class="hero"><div class="hero-inner"><div><span class="eyebrow">Compound directory</span><h1>All tracked peptide compounds.</h1><p>Browse every research compound compared on MyPeptidePrice.com. Each page ranks vendors by price and cost per mg.</p><div class="hero-actions"><a class="button" href="/#compare" data-cta="hero">Open the live comparison</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Compounds</span><strong>${compounds.length}</strong></div><div class="hero-stat"><span>Vendors</span><strong>${vendorCount}</strong></div><div class="hero-stat"><span>Discount code</span><strong>SAMMYC</strong></div></div></div></section>
 ${sections}
 <section class="section compact" style="margin-top:22px"><div class="container"><div class="notice">Use <span class="code-pill">SAMMYC</span> at supported vendor checkouts where listed. MyPeptidePrice.com is an independent comparison resource. For research use only. Prices last verified ${TODAY}.</div></div></section>`;
@@ -721,6 +737,7 @@ const CORE_URLS = [
   ["/blog/bpc-157-price-comparison.html", "0.5"],
   ["/blog/how-to-evaluate-peptide-vendor.html", "0.5"],
   ["/blog/what-is-7-7-testing-standard.html", "0.5"],
+  ["/blog/research-peptide-cost.html", "0.5"],
   ["/disclaimer.html", "0.3"],
   ["/privacy.html", "0.2"],
   ["/terms.html", "0.2"],
@@ -740,7 +757,7 @@ const allUrls = [...CORE_URLS, ...extra].filter(([p]) => {
 });
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allUrls.map(([p, pr]) => `<url><loc>${BASE}${p}</loc><lastmod>${lastmod}</lastmod><priority>${pr}</priority></url>`).join("\n")}
+${allUrls.map(([p, pr]) => `<url><loc>${BASE}${clean(p)}</loc><lastmod>${lastmod}</lastmod><priority>${pr}</priority></url>`).join("\n")}
 </urlset>
 `;
 await writeFile(`${W}/sitemap.xml`, sitemapXml);
