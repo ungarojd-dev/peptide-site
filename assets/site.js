@@ -236,7 +236,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260922-honest-dates-v176";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260922-hub-refresh-v177";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{

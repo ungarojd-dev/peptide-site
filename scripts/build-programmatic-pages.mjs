@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260922-honest-dates-v176";
+const VER = "20260922-hub-refresh-v177";
 const BASE = "https://mypeptideprice.com";
 // Files are written with .html, but every URL we publish (canonical, og:url,
 // schema, internal links, sitemap) uses the clean form. Google was indexing both
@@ -352,6 +352,44 @@ function compoundData() {
   return out;
 }
 
+// Shared by the generated compound pages and the hand-built hub pages, so both
+// render identical rows from the same snapshot.
+function buildPriceRows(c, max = 14, location = "compound_price_table") {
+  // price rows: dedupe identical (vendor,size,price). Neutral presentation, no
+  // "lowest" hype, no urgency; the code is stated as a plain fact where it applies.
+  const seen = new Set();
+  const rows = [];
+  for (const o of c.priced.concat(c.offers.filter(o => !Number.isFinite(o.price)))) {
+    const key = o.vendorKey + "|" + o.size + "|" + o.priceLabel;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    rows.push(o);
+    if (rows.length >= max) break;
+  }
+  const compoundDeltas = marketDeltas(rows);
+  const rowsHtml = rows.map((o) => {
+    const note = o.discount > 0 && o.code ? `Code ${esc(o.code)} applies (${o.discount}% off)` : (o.regularLabel && o.regularLabel !== o.priceLabel ? `Listed ${esc(o.regularLabel)}` : "Listed price");
+    return priceRow({
+      url: o.url,
+      product: c.name,
+      category: c.category,
+      vendorKey: o.vendorKey,
+      vendorDisplay: o.vendor,
+      code: o.code,
+      discount: o.discount,
+      sizeLine: `${esc(c.name)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}`,
+      vendorLine: `${esc(o.vendor)}${/choose/i.test(o.size || "") ? ", size selected on vendor site" : ""}`,
+      note,
+      priceLabel: o.priceLabel,
+      permg: o.permg,
+      delta: compoundDeltas.get(o),
+      inStock: o.inStock,
+      location,
+    });
+  }).join("\n");
+  return { rows, rowsHtml };
+}
+
 const compounds = compoundData();
 console.log("page-worthy compounds (2+ vendors):", compounds.length);
 
@@ -378,38 +416,7 @@ for (const c of compoundPages) {
   const descFull = `${c.name} price per mg compared across ${c.vendors.length} research vendors, with current sales and coupon codes. Independent price reference, research use only.`;
   const desc = descFull.length <= 158 ? descFull : `${c.name} price per mg across ${c.vendors.length} research vendors, with current sales and coupon codes. Independent reference, research use only.`;
 
-  // price rows: dedupe identical (vendor,size,price). Neutral presentation, no
-  // "lowest" hype, no urgency; the code is stated as a plain fact where it applies.
-  const seen = new Set();
-  const rows = [];
-  for (const o of c.priced.concat(c.offers.filter(o => !Number.isFinite(o.price)))) {
-    const key = o.vendorKey + "|" + o.size + "|" + o.priceLabel;
-    if (seen.has(key)) continue;
-    seen.add(key);
-    rows.push(o);
-    if (rows.length >= 14) break;
-  }
-  const compoundDeltas = marketDeltas(rows);
-  const rowsHtml = rows.map((o) => {
-    const note = o.discount > 0 && o.code ? `Code ${esc(o.code)} applies (${o.discount}% off)` : (o.regularLabel && o.regularLabel !== o.priceLabel ? `Listed ${esc(o.regularLabel)}` : "Listed price");
-    return priceRow({
-      url: o.url,
-      product: c.name,
-      category: c.category,
-      vendorKey: o.vendorKey,
-      vendorDisplay: o.vendor,
-      code: o.code,
-      discount: o.discount,
-      sizeLine: `${esc(c.name)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}`,
-      vendorLine: `${esc(o.vendor)}${/choose/i.test(o.size || "") ? ", size selected on vendor site" : ""}`,
-      note,
-      priceLabel: o.priceLabel,
-      permg: o.permg,
-      delta: compoundDeltas.get(o),
-      inStock: o.inStock,
-      location: "compound_price_table",
-    });
-  }).join("\n");
+  const { rows, rowsHtml } = buildPriceRows(c);
 
   // Sticky bar target: the cheapest in-stock listing on the page. Out-of-stock
   // rows are skipped, since a bar pointing at something unbuyable is worse
@@ -718,6 +725,45 @@ ${sections}
 
   await writeFile(`${W}/compounds.html`, shell({ title, desc, canonical, schema, body }));
   console.log("compounds hub written");
+}
+
+
+// ---- HAND-BUILT HUB PAGES ----
+// Semaglutide, tirzepatide, retatrutide and BPC-157 have hand-written pages, so
+// the loop above skips them. That left their price block, "Listed from" figure
+// and dates frozen at whatever was typed in July, including a lowest price from
+// a vendor whose feed later went dead. Refresh only the data regions in place and
+// leave the hand-written copy alone. Any page whose markers are missing, or whose
+// compound has no priced offers this build, is left untouched with a warning, the
+// same safety model as the vendors directory rebuild.
+for (const [key, hubPath] of HAND_BUILT) {
+  const file = `${W}${hubPath}.html`;
+  let html;
+  try { html = await readFile(file, "utf8"); } catch { console.warn(`hub ${hubPath}: file not found, skipped`); continue; }
+  const c = compounds.find(x => slug(x.name) === key);
+  if (!c || !c.priced.length) { console.warn(`hub ${hubPath}: no priced offers this build, left untouched`); continue; }
+
+  const cardOpen = '<div class="price-card">';
+  const cardClose = '</div>\n<p class="snap-note">';
+  const a = html.indexOf(cardOpen);
+  const b = a === -1 ? -1 : html.indexOf(cardClose, a);
+  if (a === -1 || b === -1) { console.warn(`hub ${hubPath}: price-card markers not found, left untouched`); continue; }
+
+  const { rowsHtml } = buildPriceRows(c, 8, "hub_price_table");
+  let out = html.slice(0, a) + `${cardOpen}\n${rowsHtml}\n` + html.slice(b);
+  // The hubs carried an older copy of the page stylesheet from before the current
+  // row design, so the refreshed rows rendered unstyled. PAGE_CSS is a strict
+  // superset of that copy, so swapping it in cannot drop a rule the hub uses.
+  out = out.replace(/<style>[\s\S]*?<\/style>/, () => PAGE_CSS);
+  out = out.replace(/(<span class="snap-meta"><span class="dot"><\/span>Updated )[^<]*(<\/span>)/, `$1${TODAY}$2`);
+  out = out.replace(/(were last checked )[^.]*\./, `$1${TODAY}.`);
+  out = out.replace(/(<div class="hero-stat"><span>Listed from<\/span><strong>)[^<]*(<\/strong>)/, `$1${money(c.lo)}$2`);
+  // The hub hero said "Tracked vendors 19", the sitewide roster, next to a list
+  // that only ever showed two. Report how many vendors list this compound.
+  out = out.replace(/<div class="hero-stat"><span>Tracked vendors<\/span><strong>[^<]*<\/strong>/, `<div class="hero-stat"><span>Vendors listing it</span><strong>${c.vendors.length}</strong>`);
+  out = out.replace(/(<div class="hero-stat"><span>Vendors listing it<\/span><strong>)[^<]*(<\/strong>)/, `$1${c.vendors.length}$2`);
+  await writeFile(file, out);
+  console.log(`hub ${hubPath}: refreshed, ${c.vendors.length} vendors, from ${money(c.lo)}`);
 }
 
 // ---- emit sitemap ----
