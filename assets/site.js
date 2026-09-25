@@ -236,7 +236,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260922-hub-refresh-v177";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260925-weekend-sales-v178";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -969,13 +969,13 @@
     // Changing campaignId retires the previous popup for everyone, including
     // people who already dismissed the Instant one, so this campaign is seen
     // fresh rather than suppressed by the old session flag.
-    campaignId: "fall-board-2026-09-20",
+    campaignId: "weekend-2026-09-25",
     // Tracks the longest deal on the board below, the Glow and Flawless push.
     // LabSourced leads but has announced no end date, so it cannot set this.
     runUntil: "2026-09-30",
     eyebrow: "Live now",
-    heading: "LabSourced just went 50% off sitewide",
-    body: "The discount is automatic with no code, bulk pricing stacks on top of it, and SAMMYC stacks again.",
+    heading: "Ion Peptide is 30% off through Monday",
+    body: "The sale applies automatically, SAMMYC stacks 15% on top, and paying by ACH takes a further 5% off.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board. Unlike
     // deals.json these rows cannot expire themselves, so nothing closing
@@ -983,11 +983,11 @@
     // would keep claiming a dead sale until the next push. Everything below
     // survives to Sep 28 or later. The board still carries tonight's closers.
     rows: [
+      { vendor: "Ion Peptide", offer: "30% off sitewide automatically, SAMMYC 15%", when: "to Sep 28" },
       { vendor: "LabSourced", offer: "50% off sitewide automatically, SAMMYC 10%", when: "live now" },
       { vendor: "Glow & Flawless", offer: "45% off sitewide automatically, SAMMYC 15%", when: "to Sep 30" },
-      { vendor: "Mile High", offer: "SAMMYC boosted to 30% off", when: "Sep 21 to 28" },
-      { vendor: "Disguised Alpha", offer: "20% off sitewide, SAMMYC 10% stacks", when: "live now" },
-      { vendor: "Orbitrex Peptides", offer: "MOON15 takes 15% off, SAMMYC 15% stacks", when: "live now" }
+      { vendor: "Mile High", offer: "SAMMYC boosted to 30% off", when: "to Sep 28" },
+      { vendor: "Orbitrex Peptides", offer: "ARC20 takes 20% off your order", when: "to Sep 27" }
     ],
     code: "SAMMYC",
     codePercent: "15% off",

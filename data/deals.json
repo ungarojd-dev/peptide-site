@@ -85,23 +85,6 @@
       "id": "labsourced-50-birthday-2026-09"
     },
     {
-      "priority": 321,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "High Tide Compounds",
-      "start_date": "2026-09-21",
-      "end_date": "2026-09-23",
-      "sale_percent": 40,
-      "headline": "Flash sale, 40% off individual prices catalog wide",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "High Tide Compounds is running a flash sale from midnight Monday September 21 through Wednesday September 23, with 40% off individual prices across the whole catalog. The vendor did not say whether code SAMMYC stacks on top of the sale, so try it at checkout and confirm final pricing there.",
-      "affiliate_url": "https://hightidecompounds.com/?aff=44",
-      "id": "hightide-flash-40-2026-09"
-    },
-    {
       "priority": 311,
       "show_in": [
         "deals"
@@ -118,25 +101,6 @@
       "description": "Disguised Alpha is running 20% off sitewide, and code SAMMYC stacks for an additional 10% off the reduced price. No end date has been announced, so confirm the sale is still live and check final pricing at checkout.",
       "affiliate_url": "https://disguisedalpha.com/?coupon=sammyc",
       "id": "disguised-alpha-20-2026-09"
-    },
-    {
-      "priority": 310,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Orbitrex Peptides",
-      "start_date": "2026-09-18",
-      "sale_percent": 15,
-      "sale_code": "MOON15",
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Observe the Moon flash sale, 15% off with code MOON15, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Orbitrex Peptides is running its Observe the Moon flash sale. Code MOON15 takes 15% off sitewide, and it stacks with code SAMMYC for an additional 15% off and with the first responder code. Both codes are needed. No end date has been announced, so confirm the sale is still live and check final pricing at checkout.",
-      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
-      "id": "orbitrex-moon15-2026-09"
     },
     {
       "priority": 322,
@@ -179,25 +143,6 @@
       "id": "flawless-eom-45-2026-09"
     },
     {
-      "priority": 316,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Peptira",
-      "start_date": "2026-09-18",
-      "end_date": "2026-09-20",
-      "sale_percent": 15,
-      "code": "SAMMYC",
-      "code_percent": 10,
-      "headline": "Fall to Fall flash sale, 15% off sitewide, stacks with SAMMYC",
-      "timezone": "America/Denver",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Peptira is running its Fall to Fall flash sale from midnight Mountain time on September 18 through September 20. The 15% off sitewide applies automatically, no code needed. Code SAMMYC stacks for an additional 10% off the reduced price, and checking out via ACH takes a further 5% off. Shipping is free on orders over $250. Confirm final pricing at checkout.",
-      "affiliate_url": "https://peptira.com/?ref=SAMMYC",
-      "id": "peptira-fall-flash-2026-09"
-    },
-    {
       "priority": 306,
       "show_in": [
         "deals"
@@ -234,26 +179,6 @@
       "id": "coffee-build-your-own-kit"
     },
     {
-      "priority": 318,
-      "show_in": [
-        "deals"
-      ],
-      "featured": true,
-      "vendor": "Glacier Aminos",
-      "start_date": "2026-09-18",
-      "end_date": "2026-09-20",
-      "sale_percent": 20,
-      "code": "SAMMYC",
-      "code_percent": 10,
-      "headline": "New drop launch sale, 20% off peptides and 10% off kits, stacks with SAMMYC",
-      "timezone": "America/Denver",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Glacier Aminos has seven new compounds live, Survodutide, Mazdutide, LL-37, B12, Dihexa capsules, GHKPV capsules and Super Blend, with COAs posted. The launch sale runs through 11:59pm Mountain on Sunday September 20. Peptides, capsules, sprays and drops are 20% off, and 5 pack and 10 pack kits are 10% off. The sale applies automatically at cart, then code SAMMYC stacks for an additional 10% off. Not every category is 20%, so check the category before ordering. Confirm final pricing at checkout.",
-      "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
-      "id": "glacier-new-drop-2026-09"
-    },
-    {
       "priority": 314,
       "show_in": [
         "deals"
@@ -273,24 +198,43 @@
       "id": "milehigh-fall-30-2026-09"
     },
     {
-      "priority": 319,
+      "priority": 324,
       "show_in": [
         "deals"
       ],
       "featured": true,
-      "vendor": "Instant Peptides",
-      "start_date": "2026-09-15",
-      "end_date": "2026-09-20",
+      "vendor": "Ion Peptide",
+      "start_date": "2026-09-25",
+      "end_date": "2026-09-28",
+      "sale_percent": 30,
       "code": "SAMMYC",
-      "code_percent": 25,
-      "headline": "SAMMYC boosted to 25% off through September 20",
+      "code_percent": 15,
+      "headline": "Weekend sale, 30% off sitewide, stacks with SAMMYC",
       "timezone": "America/New_York",
-      "type": "code_only",
+      "type": "sitewide_sale",
       "cta_text": "Shop Now",
-      "description": "Instant Peptides has boosted code SAMMYC from 15% to 25% off from midday Tuesday September 15 through 11:59pm Eastern on Sunday September 20. There is no automatic sitewide discount, the code is the offer. Confirm final pricing at checkout.",
-      "affiliate_url": "https://instantpeptides.com?ref=SAMMYC",
-      "id": "instant-sammyc-25-2026-09"
+      "description": "Ion Peptide is running 30% off sitewide from Friday morning September 25 through midnight Monday September 28. The discount applies automatically, no code needed. Code SAMMYC stacks for an additional 15% off the reduced price, and paying by ACH takes a further 5% off. Orders over $250 are entered into the vendor's giveaway draws. Confirm final pricing at checkout.",
+      "affiliate_url": "https://ionpeptide.com?ref=SammyC",
+      "id": "ion-weekend-30-2026-09"
+    },
+    {
+      "priority": 313,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Orbitrex Peptides",
+      "start_date": "2026-09-25",
+      "end_date": "2026-09-27",
+      "sale_percent": 20,
+      "sale_code": "ARC20",
+      "headline": "Autumn Arc Sale, 20% off your order with code ARC20",
+      "timezone": "America/Chicago",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Orbitrex Peptides is running its Autumn Arc Sale through 11:59pm Central on Sunday September 27. Code ARC20 takes 20% off the entire order across the full catalog, with no minimum. The vendor did not say whether code SAMMYC stacks on top of ARC20, so try it at checkout and confirm final pricing there.",
+      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
+      "id": "orbitrex-arc20-2026-09"
     }
   ],
-  "version": "2026-09-20-hightide-flash-40"
+  "version": "2026-09-25-ion-30-orbitrex-arc20"
 }
