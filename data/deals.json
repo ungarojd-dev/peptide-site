@@ -255,7 +255,25 @@
       "description": "Coffee and Peppers is running a buy 2 get 1 free sale through September 30. Code SAMMYC applies an additional 15% off. Because the saving depends on what is in the cart, the per unit prices shown here do not include it. Confirm final pricing at checkout.",
       "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
       "id": "coffee-b2g1-2026-09"
+    },
+    {
+      "priority": 317,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Peptidology",
+      "start_date": "2026-09-28",
+      "end_date": "2026-09-30",
+      "sale_percent": 30,
+      "sale_code": "FALL30",
+      "headline": "30% off vials and capsules with code FALL30",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Peptidology is running 30% off every compound vial and capsule through Wednesday night September 30 with code FALL30 at checkout. Volume pricing adds on top of the code: 3% off at 2 units, 5% at 3, and 8% at 5 or more. Solvents and lab supplies are excluded. The vendor did not say whether code SAMMYC stacks on top of FALL30, so try it at checkout and confirm final pricing there.",
+      "affiliate_url": "https://peptidology.co/?ref=idifhsqu",
+      "id": "peptidology-fall30-2026-09"
     }
   ],
-  "version": "2026-09-28-glacier-fall-coffee-b2g1"
+  "version": "2026-09-28-peptidology-fall30"
 }
