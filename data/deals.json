@@ -218,23 +218,44 @@
       "id": "ion-weekend-30-2026-09"
     },
     {
-      "priority": 313,
+      "priority": 320,
       "show_in": [
         "deals"
       ],
-      "vendor": "Orbitrex Peptides",
-      "start_date": "2026-09-25",
-      "end_date": "2026-09-27",
-      "sale_percent": 20,
-      "sale_code": "ARC20",
-      "headline": "Autumn Arc Sale, 20% off your order with code ARC20",
-      "timezone": "America/Chicago",
+      "featured": true,
+      "vendor": "Glacier Aminos",
+      "start_date": "2026-09-26",
+      "end_date": "2026-09-30",
+      "sale_percent": 25,
+      "code": "SAMMYC",
+      "code_percent": 10,
+      "headline": "Fall sale, buy 2 get 1 free on powders, 25% off everything else",
+      "timezone": "America/Denver",
       "type": "sitewide_sale",
       "cta_text": "Shop Now",
-      "description": "Orbitrex Peptides is running its Autumn Arc Sale through 11:59pm Central on Sunday September 27. Code ARC20 takes 20% off the entire order across the full catalog, with no minimum. The vendor did not say whether code SAMMYC stacks on top of ARC20, so try it at checkout and confirm final pricing there.",
-      "affiliate_url": "https://orbitrexpeptide.is/?ref=SammyC&utm_campaign=SammyC&utm_medium=referral&utm_source=affiliate",
-      "id": "orbitrex-arc20-2026-09"
+      "description": "Glacier Aminos is running a five day fall sale from midnight Saturday September 26 through 11:59pm Mountain on Wednesday September 30. Lyophilized powders are buy 2 get 1 free, everything else is 25% off, and kits are 10% off. Code SAMMYC stacks for an additional 10% off on top of the sale pricing. The free vial only applies when two of the same powder are in the cart, where it shows as a 100% discount line at checkout. Two different powders do not pair, kits do not count toward it, and it cannot be added after the order is placed. Shipping is free on orders over $250. The 25% new customer welcome code cannot be combined with this sale. Confirm final pricing at checkout.",
+      "affiliate_url": "https://glacieraminos.shop/?ref=SammyC",
+      "id": "glacier-fall-bogo-2026-09"
+    },
+    {
+      "priority": 315,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Coffee and Peppers",
+      "display_vendor": "Coffee & Peppers",
+      "start_date": "2026-09-28",
+      "end_date": "2026-09-30",
+      "code": "SAMMYC",
+      "code_percent": 15,
+      "headline": "Buy 2 get 1 free through September 30, stacks with SAMMYC",
+      "timezone": "America/Phoenix",
+      "type": "conditional",
+      "cta_text": "Shop Now",
+      "description": "Coffee and Peppers is running a buy 2 get 1 free sale through September 30. Code SAMMYC applies an additional 15% off. Because the saving depends on what is in the cart, the per unit prices shown here do not include it. Confirm final pricing at checkout.",
+      "affiliate_url": "https://coffeeandpeppers.com/?coupon=sammyc",
+      "id": "coffee-b2g1-2026-09"
     }
   ],
-  "version": "2026-09-25-ion-30-orbitrex-arc20"
+  "version": "2026-09-28-glacier-fall-coffee-b2g1"
 }
