@@ -236,7 +236,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260928-peptidology-v180";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260929-hightide-peptira-v181";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -969,25 +969,25 @@
     // Changing campaignId retires the previous popup for everyone, including
     // people who already dismissed the Instant one, so this campaign is seen
     // fresh rather than suppressed by the old session flag.
-    campaignId: "fall-close-2026-09-28b",
+    campaignId: "hightide-40-2026-09-29",
     // Tracks the longest deal on the board below, the Glow and Flawless push.
     // LabSourced leads but has announced no end date, so it cannot set this.
     runUntil: "2026-09-30",
     eyebrow: "Live now",
-    heading: "Glacier is buy 2 get 1 free through Wednesday",
-    body: "Buy 2 get 1 free on lyophilized powders, 25% off everything else, and SAMMYC stacks 10% on top of the sale.",
+    heading: "High Tide is 40% off through October 5",
+    body: "40% off individual prices, plus a raffle entry on every order. Shipments are paused until Sunday night while the vendor is away.",
     // Rows are authored here rather than read from deals.json so the popup
     // stays a curated highlight instead of mirroring the whole board. Unlike
     // deals.json these rows cannot expire themselves, so nothing closing
     // tonight belongs here: Glacier, Instant and Peptira all end Sep 20 and
     // would keep claiming a dead sale until the next push. Everything below
-    // survives to Sep 28 or later. The board still carries tonight's closers.
+    // survives past tonight. The board still carries tonight's closers.
     rows: [
-      { vendor: "Glacier Aminos", offer: "Buy 2 get 1 free on powders / 25% off the rest, SAMMYC 10%", when: "to Sep 30" },
-      { vendor: "Glow & Flawless", offer: "45% off sitewide automatically, SAMMYC 15%", when: "to Sep 30" },
+      { vendor: "High Tide", offer: "40% off individual prices, shipping paused to Sunday", when: "to Oct 5" },
+      { vendor: "Peptira", offer: "Buy one get one on the GLP listings, all sizes", when: "to Oct 2" },
       { vendor: "LabSourced", offer: "50% off sitewide automatically, SAMMYC 10%", when: "live now" },
-      { vendor: "Coffee & Peppers", offer: "Buy 2 get 1 free, SAMMYC 15% stacks", when: "to Sep 30" },
-      { vendor: "Peptidology", offer: "FALL30 takes 30% off vials and capsules", when: "to Sep 30" }
+      { vendor: "Glow & Flawless", offer: "45% off sitewide automatically, SAMMYC 15%", when: "to Sep 30" },
+      { vendor: "Glacier Aminos", offer: "Buy 2 get 1 free on powders / 25% off the rest, SAMMYC 10%", when: "to Sep 30" }
     ],
     code: "SAMMYC",
     codePercent: "15% off",

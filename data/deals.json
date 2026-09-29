@@ -179,45 +179,6 @@
       "id": "coffee-build-your-own-kit"
     },
     {
-      "priority": 314,
-      "show_in": [
-        "deals"
-      ],
-      "vendor": "Mile High Peptides",
-      "display_vendor": "Mile High Compounds",
-      "start_date": "2026-09-21",
-      "end_date": "2026-09-28",
-      "code": "SAMMYC",
-      "code_percent": 30,
-      "headline": "Fall Into Research, SAMMYC boosted to 30% off",
-      "timezone": "America/Denver",
-      "type": "code_only",
-      "cta_text": "Shop Now",
-      "description": "Mile High Compounds is running its Fall Into Research sale from 8:00am Mountain on Monday September 21 through 11:59pm Mountain on Monday September 28. Code SAMMYC is boosted from 10% to 30% off for the sale period, which the vendor states is a better rate than the standard site discount running during the sale. The code is the offer rather than an addition to that discount. Confirm final pricing at checkout.",
-      "affiliate_url": "https://milehighcompounds.is/?ref=sammyc",
-      "id": "milehigh-fall-30-2026-09"
-    },
-    {
-      "priority": 324,
-      "show_in": [
-        "deals"
-      ],
-      "featured": true,
-      "vendor": "Ion Peptide",
-      "start_date": "2026-09-25",
-      "end_date": "2026-09-28",
-      "sale_percent": 30,
-      "code": "SAMMYC",
-      "code_percent": 15,
-      "headline": "Weekend sale, 30% off sitewide, stacks with SAMMYC",
-      "timezone": "America/New_York",
-      "type": "sitewide_sale",
-      "cta_text": "Shop Now",
-      "description": "Ion Peptide is running 30% off sitewide from Friday morning September 25 through midnight Monday September 28. The discount applies automatically, no code needed. Code SAMMYC stacks for an additional 15% off the reduced price, and paying by ACH takes a further 5% off. Orders over $250 are entered into the vendor's giveaway draws. Confirm final pricing at checkout.",
-      "affiliate_url": "https://ionpeptide.com?ref=SammyC",
-      "id": "ion-weekend-30-2026-09"
-    },
-    {
       "priority": 320,
       "show_in": [
         "deals"
@@ -273,7 +234,41 @@
       "description": "Peptidology is running 30% off every compound vial and capsule through Wednesday night September 30 with code FALL30 at checkout. Volume pricing adds on top of the code: 3% off at 2 units, 5% at 3, and 8% at 5 or more. Solvents and lab supplies are excluded. The vendor did not say whether code SAMMYC stacks on top of FALL30, so try it at checkout and confirm final pricing there.",
       "affiliate_url": "https://peptidology.co/?ref=idifhsqu",
       "id": "peptidology-fall30-2026-09"
+    },
+    {
+      "priority": 323,
+      "show_in": [
+        "deals"
+      ],
+      "featured": true,
+      "vendor": "High Tide Compounds",
+      "start_date": "2026-09-29",
+      "end_date": "2026-10-05",
+      "sale_percent": 40,
+      "headline": "40% off individual prices through October 5, shipping paused until Sunday",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "High Tide Compounds is running 40% off individual prices through Monday October 5. Orders placed now are accepted but shipments are paused until Sunday night while the vendor is away, so expect a delay before anything ships. Every order placed before midnight October 5 is entered into their raffle for one of four $250 store credits, with one entry per order. The vendor did not say whether code SAMMYC stacks on top of the sale, so try it at checkout and confirm final pricing there.",
+      "affiliate_url": "https://hightidecompounds.com/?aff=44",
+      "id": "hightide-40-raffle-2026-10"
+    },
+    {
+      "priority": 319,
+      "show_in": [
+        "deals"
+      ],
+      "vendor": "Peptira",
+      "start_date": "2026-09-29",
+      "end_date": "2026-10-02",
+      "headline": "Buy one get one on RETA-3, TIRZ-2, SEMA-1 and Survodutide",
+      "timezone": "America/Denver",
+      "type": "conditional",
+      "cta_text": "Shop Now",
+      "description": "Peptira is running buy one get one from 5am Mountain on September 29 through 11:59pm Mountain on October 2. The offer covers the RETA-3, TIRZ-2, SEMA-1 and Survodutide listings, with all sizes included. It does not apply to the rest of the catalog. Because the saving depends on what is in the cart, the per unit prices shown here do not include it. The vendor did not say whether code SAMMYC stacks on top, so try it at checkout and confirm final pricing there.",
+      "affiliate_url": "https://peptira.com/?ref=SAMMYC",
+      "id": "peptira-bogo-glp-2026-10"
     }
   ],
-  "version": "2026-09-28-peptidology-fall30"
+  "version": "2026-09-29-hightide-40-peptira-bogo"
 }
