@@ -1422,7 +1422,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260929-hightide-peptira-v181") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260929-hero-solo-v182") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -2017,3 +2017,10 @@ body.deals-panel-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .signup-submit { transition: none; }
 }
+
+/* ── HERO: single column after the static comparison preview was removed ──
+   The preview card showed hardcoded BPC-157 prices that never updated, so it
+   was reading as live data when it was not. Scoped to the homepage hero because
+   live-wheel.html shares .premium-hero and still uses its own hero-visual. ── */
+.premium-hero .hero-inner--solo { grid-template-columns: 1fr; }
+.premium-hero .hero-inner--solo .hero-copy { max-width: 860px; }
