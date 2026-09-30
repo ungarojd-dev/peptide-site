@@ -16,6 +16,12 @@ import { dirname, resolve } from "node:path";
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const problems = [];
 const note = message => problems.push(message);
+// Some drift is cosmetic and some of it is a wrong number on a page a customer
+// reads. The second kind fails the deploy whether or not QA_STRICT is set,
+// because "the site says a different number in three places" is the exact
+// failure this file exists to stop. QA_ALLOW_COUNT_DRIFT=1 is the escape hatch.
+const fatals = [];
+const fail = message => (process.env.QA_ALLOW_COUNT_DRIFT === "1" ? problems : fatals).push(message);
 
 const read = async path => {
   try { return await readFile(`${W}/${path}`, "utf8"); } catch { return null; }
@@ -102,20 +108,42 @@ const snapshotVendors = new Set();
 for (const product of snapshot.products || [])
   for (const variant of product.variants || [])
     for (const supplier of variant.suppliers || []) snapshotVendors.add(supplier.vendor_name);
+// The sitewide vendor number is the ROSTER, always. It used to also accept the
+// snapshot's vendor count, and that tolerance is why the homepage could say 18
+// while the vendor directory said 13 and nothing complained. Per-compound counts
+// are worded "Vendors listing it" and are matched by neither pattern below.
 const expected = vendors.length;
-const alsoValid = snapshotVendors.size;
+if (snapshotVendors.size !== expected) {
+  note(`price snapshot carries ${snapshotVendors.size} of the ${expected} roster vendors (${vendors.filter(v => !snapshotVendors.has(v)).join(", ")}), so those vendors show no listings`);
+}
 for (const file of await readdir(W)) {
   if (!file.endsWith(".html")) continue;
   const html = await read(file);
   if (!html) continue;
   for (const match of html.matchAll(/<span>(?:Tracked )?[Vv]endors<\/span>\s*<strong>(\d+)<\/strong>/g)) {
     const n = Number(match[1]);
-    if (n !== expected && n !== alsoValid) note(`${file} advertises ${n} vendors, roster has ${expected}`);
+    if (n !== expected) fail(`${file} advertises ${n} vendors, roster has ${expected}`);
   }
   for (const match of html.matchAll(/[Aa]cross (\d+) (?:verified |tracked )?[Vv]endors/g)) {
     const n = Number(match[1]);
-    if (n !== expected && n !== alsoValid) note(`${file} says "across ${n} vendors", roster has ${expected}`);
+    if (n !== expected) fail(`${file} says "across ${n} vendors", roster has ${expected}`);
   }
+  // The vendor directory's own sentence. It was the one sitewide count no
+  // pattern here matched, so it drifted to 13 unnoticed.
+  for (const match of html.matchAll(/supports (\d+) vendor partners/g)) {
+    const n = Number(match[1]);
+    if (n !== expected) fail(`${file} says "supports ${n} vendor partners", roster has ${expected}`);
+  }
+}
+
+// The homepage "Trusted vendors" tile is rendered at runtime from a constant
+// hardcoded in JavaScript, so it appears in no HTML file and nothing above can
+// see it. Adding a vendor to vendor-config and forgetting this line is the next
+// drift, and it would show on the busiest page on the site.
+if (catalogUi) {
+  const m = catalogUi.match(/TRACKED_VENDOR_COUNT\s*=\s*(\d+)/);
+  if (!m) note("assets/catalog-ui.js no longer defines TRACKED_VENDOR_COUNT, so the homepage vendor tile is unchecked");
+  else if (Number(m[1]) !== expected) fail(`assets/catalog-ui.js sets TRACKED_VENDOR_COUNT=${m[1]}, roster has ${expected}`);
 }
 
 // ---------------------------------------------------------------------------
@@ -172,12 +200,21 @@ for (const asset of ["assets/site.js", "assets/catalog-ui.js"]) {
 }
 
 // ---------------------------------------------------------------------------
-if (!problems.length) {
+if (fatals.length) {
+  console.error(`\nvalidate-site: ${fatals.length} BLOCKING issue(s), the site would ship contradicting itself\n`);
+  for (const problem of fatals) console.error(`  - ${problem}`);
+  console.error("\n  Every sitewide vendor number comes from data/vendor-config.json.");
+  console.error("  Rebuild the pages rather than editing a number by hand.");
+  console.error("  QA_ALLOW_COUNT_DRIFT=1 downgrades these to warnings.\n");
+}
+if (!problems.length && !fatals.length) {
   console.log("validate-site: no drift detected");
   process.exit(0);
 }
 const strict = process.env.QA_STRICT === "1";
-console[strict ? "error" : "warn"](`\nvalidate-site: ${problems.length} issue(s)\n`);
-for (const problem of problems) console[strict ? "error" : "warn"](`  - ${problem}`);
-console[strict ? "error" : "warn"]("");
-process.exit(strict ? 1 : 0);
+if (problems.length) {
+  console[strict ? "error" : "warn"](`\nvalidate-site: ${problems.length} issue(s)\n`);
+  for (const problem of problems) console[strict ? "error" : "warn"](`  - ${problem}`);
+  console[strict ? "error" : "warn"]("");
+}
+process.exit(fatals.length || strict ? 1 : 0);

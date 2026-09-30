@@ -16,6 +16,13 @@ const BASE = "https://mypeptideprice.com";
 // signals split. Netlify serves /x from x.html, so no file moves.
 const clean = p => String(p).replace(/\/index\.html$/, "/").replace(/\.html(?=$|[?#])/, "");
 
+// Pages that are PATCHED in place keep whatever ?v= string their shell was
+// written with, so their favicons and assets stayed on an old cache-bust while
+// fully regenerated pages moved on. The site validator has been reporting
+// "2 different cache-bust strings in use" for exactly this. Re-stamp the whole
+// file whenever we touch it.
+const stampVersion = html => String(html).replace(/(\?v=)\d{8}-[a-z0-9-]*v\d+/gi, `$1${VER}`);
+
 const snap = JSON.parse(await readFile(`${W}/data/catalog-fallback-snapshot.json`, "utf8"));
 // The "Updated" stamp is the date the price data was pulled, read from the
 // snapshot, not a hand-typed string. It was hardcoded to "July 2026", so every
@@ -737,7 +744,29 @@ console.log("vendor pages written:", generated.vendors.length);
 // the count in the lead paragraph was stale. Generating it means the number and
 // the cards can never disagree again.
 {
-  const dir = [...generated.vendors].sort((a, b) => a.name.localeCompare(b.name));
+  // The directory is the ROSTER, not whatever the price snapshot happens to
+  // hold. Building it from generated pages meant a vendor whose feed was down,
+  // or who joined after the snapshot was taken, silently vanished from the site
+  // while vendor-config, the CMS dropdown and the homepage all still said 18.
+  // vendor-config.json is the single source of truth for who we work with; the
+  // snapshot only decides what a card can say about prices.
+  const generatedByKey = new Map(generated.vendors.map(g => [g.key, g]));
+  const dir = vendorNames.map(({ key, display }) => {
+    const cfg = Array.isArray(vendorList) ? (vendorList.find(x => (x.name || x.id) === key) || {}) : (vendorList[key] || {});
+    const g = generatedByKey.get(key);
+    return {
+      key, name: display,
+      logo: cfg.logo || "",
+      discount: Number(cfg.discount_percent) || 0,
+      affiliateUrl: cfg.affiliate_url || "",
+      path: g ? g.path : "",
+      compoundCount: g ? g.compoundCount : 0,
+      lo: g ? g.lo : null,
+      hi: g ? g.hi : null,
+      tracked: !!g
+    };
+  }).sort((a, b) => a.name.localeCompare(b.name));
+  const untracked = dir.filter(v => !v.tracked);
   const cards = dir.map(v => {
     const logo = v.logo
       // Explicit dimensions: 15 logos without them made the directory reflow as
@@ -751,9 +780,18 @@ console.log("vendor pages written:", generated.vendors.length);
     // Primary action is the internal vendor page, which carries the full
     // listing table. Sending this click straight offsite spent the visit on a
     // homepage before they had seen a single price.
-    return `<article class="vendor-card"><div class="vendor-head">${logo}<div><h3>${esc(v.name)}</h3>${discountLine}</div></div>` +
-      `<p>${v.compoundCount} compounds tracked, listed from ${range}. Review current product details, testing documentation, stock status, and checkout terms directly with the vendor.</p>` +
-      `<div class="vendor-card-actions"><a class="button" href="${esc(clean(v.path))}">Compare ${esc(v.name)} prices</a>` +
+    // A vendor with no rows in this snapshot still belongs in the directory, but
+    // it gets no link to a page that was never generated, and the copy says so
+    // rather than claiming "0 compounds tracked".
+    const body = v.tracked
+      ? `<p>${v.compoundCount} compounds tracked, listed from ${range}. Review current product details, testing documentation, stock status, and checkout terms directly with the vendor.</p>`
+      : `<p>Listings for this vendor are not in the current price snapshot. Check the live comparison on the homepage for up to date pricing, and confirm details directly with the vendor.</p>`;
+    const compareLink = v.tracked
+      ? `<a class="button" href="${esc(clean(v.path))}">Compare ${esc(v.name)} prices</a>`
+      : "";
+    return `<article class="vendor-card${v.tracked ? "" : " is-untracked"}"><div class="vendor-head">${logo}<div><h3>${esc(v.name)}</h3>${discountLine}</div></div>` +
+      body +
+      `<div class="vendor-card-actions">${compareLink}` +
       (v.affiliateUrl ? `<a class="vendor-out" href="${esc(v.affiliateUrl)}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Vendor directory" data-category="vendor" data-vendor="${esc(v.key)}" data-code="${esc(vendorCfg.coupon_code || "")}" data-cta="Visit ${esc(v.name)}">Visit site &#8250;</a>` : "") +
       `</div></article>`;
   }).join("\n");
@@ -770,8 +808,9 @@ console.log("vendor pages written:", generated.vendors.length);
       /The comparison catalog currently supports \d+ vendor partners\./,
       `The comparison catalog currently supports ${dir.length} vendor partners.`
     );
-    await writeFile(vendorsPath, html);
-    console.log("vendors.html directory rebuilt:", dir.length, "cards");
+    await writeFile(vendorsPath, stampVersion(html));
+    console.log(`vendors.html directory rebuilt: ${dir.length} cards (${dir.length - untracked.length} with tracked listings)`);
+    if (untracked.length) console.log(`  no listings in this snapshot: ${untracked.map(v => v.name).join(", ")}`);
   }
 }
 
@@ -856,7 +895,7 @@ for (const [key, hubPath] of HAND_BUILT) {
   // that only ever showed two. Report how many vendors list this compound.
   out = out.replace(/<div class="hero-stat"><span>Tracked vendors<\/span><strong>[^<]*<\/strong>/, () => `<div class="hero-stat"><span>Vendors listing it</span><strong>${c.vendors.length}</strong>`);
   out = out.replace(/(<div class="hero-stat"><span>Vendors listing it<\/span><strong>)[^<]*(<\/strong>)/, (m, a, b) => a + c.vendors.length + b);
-  await writeFile(file, out);
+  await writeFile(file, stampVersion(out));
   console.log(`hub ${hubPath}: refreshed, ${c.vendors.length} vendors, from ${money(c.lo)}`);
 }
 
@@ -1108,7 +1147,7 @@ for (const [key, hubPath] of HAND_BUILT) {
       dealsHtml = dealsHtml.replace(/\n?<script>\(function\(\)\{try\{var t=new Date\(\)\.toLocaleDateString\("en-CA"[\s\S]*?<\/script>/g, "");
       dealsHtml = dealsHtml.replace(/\n?<script>\(function\(\)\{try\{var t=document\.querySelector\("\[data-deals-ticker\]"[\s\S]*?<\/script>/g, "");
       dealsHtml = dealsHtml.replace("</body>", `${guard}\n</body>`);
-      await writeFile(dealsPath, dealsHtml);
+      await writeFile(dealsPath, stampVersion(dealsHtml));
       console.log(`deals.html rebuilt: ${deals.length} live offers across ${vendorCount} vendors`);
     }
   }
