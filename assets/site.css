@@ -1444,7 +1444,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260930-price-history-v191") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260930-history-modal-v192") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -2220,4 +2220,57 @@ a.hero-price-card:focus-visible { outline: 2px solid var(--olive-soft); outline-
   .announce-seg { padding: 0 14px; gap: 7px; }
   .announce-seg-vendor { font-size: 12px; }
   .announce-seg-offer { font-size: 11px; padding: 2px 9px; }
+}
+
+
+/* ── PRICE HISTORY: catalog pill + dialog ────────────────────────────────
+   The pill sits in the card subtitle beside the vendor count and opens the same
+   chart the compound pages render inline, so there is one thing to maintain. */
+.ph-pill {
+  display: inline-flex; align-items: center; gap: 5px;
+  border: 1px solid var(--line); border-radius: 999px; background: #fff;
+  color: var(--forest); padding: 3px 10px;
+  font: inherit; font-size: 11px; font-weight: 800; cursor: pointer;
+  transition: border-color .14s ease, background .14s ease;
+}
+.ph-pill svg { width: 16px; height: 10px; }
+.ph-pill:hover { border-color: var(--olive); background: var(--soft, #f4f6f0); }
+.ph-pill:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
+
+.ph-modal-backdrop {
+  /* Above the other panel backdrops (promo 1900, deals 1950, giveaways 1960) and
+     deliberately below the compliance gate at 4000, which must never be covered. */
+  position: fixed; inset: 0; z-index: 1970;
+  display: grid; place-items: center;
+  background: rgba(13,13,13,.55); padding: 18px;
+}
+body.ph-modal-open { overflow: hidden; }
+.ph-modal {
+  position: relative; width: min(680px, 100%); max-height: 86vh; overflow-y: auto;
+  border-radius: 20px; background: #fff; padding: 22px;
+  box-shadow: 0 30px 80px rgba(0,0,0,.34);
+}
+.ph-modal h2 { margin: 0 44px 14px 0; font-family: var(--font-display); color: var(--forest); font-size: 20px; }
+.ph-modal-close {
+  position: absolute; top: 12px; right: 12px;
+  width: 34px; height: 34px; display: grid; place-items: center;
+  border: 1px solid var(--line); border-radius: 50%; background: #fff;
+  color: var(--ink); font: inherit; font-size: 20px; line-height: 1; cursor: pointer;
+}
+.ph-modal-close:hover { border-color: var(--olive); }
+.ph-modal-close:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
+.ph-modal-loading, .ph-modal-note { margin: 10px 0 0; color: var(--muted); font-size: 13px; line-height: 1.6; }
+/* The dialog reuses the same figure row and chart box as the compound pages, so
+   these only need declaring for the pages that do not inline PAGE_CSS. */
+.ph-modal .ph-figures { display: flex; flex-wrap: wrap; gap: 22px; margin-bottom: 12px; }
+.ph-modal .ph-figures div { display: flex; flex-direction: column; gap: 2px; }
+.ph-modal .ph-figures span { font-size: 10px; font-weight: 800; letter-spacing: .06em; text-transform: uppercase; color: var(--muted); }
+.ph-modal .ph-figures strong { font-size: 20px; font-weight: 900; font-variant-numeric: tabular-nums; color: var(--forest); }
+.ph-modal .ph-chart { height: 120px; margin: 4px 0 6px; }
+.ph-modal .ph-chart svg { display: block; width: 100%; height: 120px; }
+@media (max-width: 520px) {
+  .ph-modal { padding: 18px; border-radius: 16px; }
+  .ph-modal .ph-figures { gap: 14px; }
+  .ph-modal .ph-figures strong { font-size: 17px; }
+  .ph-modal .ph-chart, .ph-modal .ph-chart svg { height: 96px; }
 }

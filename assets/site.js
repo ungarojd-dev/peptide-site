@@ -236,7 +236,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260930-price-history-v191";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260930-history-modal-v192";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -1261,3 +1261,151 @@ function renderSignupProof(promotions){
     }
   });
 })();
+
+/* ---------------------------------------------------------------------------
+   Price history: one renderer, two surfaces.
+   The compound pages fill a section in place; the catalog cards open the same
+   chart in a dialog. Both draw from /.netlify/functions/price-history, and the
+   drawing code lives here rather than being written twice, because the two were
+   going to drift the moment one of them was tweaked.
+--------------------------------------------------------------------------- */
+(function(global){
+  "use strict";
+  var CACHE = {};
+
+  function money(n){ return "$" + Number(n).toFixed(2); }
+
+  function load(id){
+    if (CACHE[id]) return CACHE[id];
+    CACHE[id] = fetch("/.netlify/functions/price-history?id=" + encodeURIComponent(id) + "&days=90", { cache: "no-store" })
+      .then(function(r){ return r.ok ? r.json() : null; })
+      .catch(function(){ return null; });
+    return CACHE[id];
+  }
+
+  // Returns null when there is nothing honest to draw. Two readings is the
+  // minimum that can be called a history; one is a dot, not a trend.
+  function summarise(data){
+    if (!data || !data.rows || data.rows.length < 2) return null;
+    var lows = data.rows.map(function(r){ return Number(r.low); }).filter(isFinite);
+    if (lows.length < 2) return null;
+    var min = Math.min.apply(null, lows), max = Math.max.apply(null, lows);
+    var first = lows[0], last = lows[lows.length - 1];
+    var pct = first ? Math.round(((last - first) / first) * 100) : 0;
+    return {
+      lows: lows, days: lows.length, min: min, max: max, first: first, last: last, pct: pct,
+      // "At a low" is generous by 2%: a reading a few cents above the floor is
+      // the same news to a buyer, and exact-equality would almost never fire.
+      atLow: min > 0 && (last - min) / min <= 0.02
+    };
+  }
+
+  function chartSvg(s){
+    var W = 680, H = 120, P = 6, span = (s.max - s.min) || 1;
+    var pts = s.lows.map(function(v, i){
+      var x = P + (i / (s.lows.length - 1)) * (W - P * 2);
+      var y = s.max === s.min ? H / 2 : P + (1 - ((v - s.min) / span)) * (H - P * 2);
+      return x.toFixed(1) + "," + y.toFixed(1);
+    }).join(" ");
+    var area = "M" + P + "," + (H - P) + " L" + pts.split(" ").join(" L") + " L" + (W - P) + "," + (H - P) + " Z";
+    return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" role="img" aria-label="Lowest tracked price over '
+      + s.days + ' days, from ' + money(s.first) + ' to ' + money(s.last) + '">'
+      + '<path d="' + area + '" fill="rgba(106,121,41,.13)"/>'
+      + '<polyline points="' + pts + '" fill="none" stroke="#6A7929" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'
+      + '</svg>';
+  }
+
+  // The caption says the direction in words. A sparkline with no axis labels is
+  // a shape; the sentence is what makes it a fact.
+  function caption(s){
+    var dir = Math.abs(s.pct) < 1 ? "held steady" : ((s.last < s.first ? "fallen " : "risen ") + Math.abs(s.pct) + "%");
+    return "Lowest tracked price across all vendors, one reading per day. Over the last " + s.days
+      + " day" + (s.days === 1 ? "" : "s") + " it has " + dir + ", from " + money(s.first) + " to " + money(s.last)
+      + ". Prices change without notice; confirm at the vendor.";
+  }
+
+  function figures(s){
+    return '<div class="ph-figures">'
+      + '<div><span>Lowest</span><strong>' + money(s.min) + '</strong></div>'
+      + '<div><span>Highest</span><strong>' + money(s.max) + '</strong></div>'
+      + '<div><span>Today</span><strong>' + money(s.last) + '</strong></div></div>';
+  }
+
+  // ---- compound pages: fill the section that the generator emitted ----
+  function fillSection(){
+    var root = document.querySelector("[data-price-history]");
+    if (!root) return;
+    var id = root.getAttribute("data-price-history");
+    if (!id) return;
+    load(id).then(function(data){
+      var s = summarise(data);
+      if (!s) return;                       // stays hidden; no empty frame
+      var set = function(sel, v){ var el = root.querySelector(sel); if (el) el.textContent = v; };
+      set("[data-ph-low]", money(s.min));
+      set("[data-ph-high]", money(s.max));
+      set("[data-ph-now]", money(s.last));
+      set("[data-ph-range]", s.days + " day" + (s.days === 1 ? "" : "s") + " tracked");
+      var chart = root.querySelector("[data-ph-chart]"); if (chart) chart.innerHTML = chartSvg(s);
+      set("[data-ph-caption]", caption(s));
+      root.removeAttribute("hidden");
+    });
+  }
+
+  // ---- catalog cards: the same chart in a dialog ----
+  var modal = null, lastFocus = null;
+
+  function closeModal(){
+    if (!modal) return;
+    modal.hidden = true;
+    document.body.classList.remove("ph-modal-open");
+    if (lastFocus && lastFocus.focus) lastFocus.focus();
+  }
+
+  function ensureModal(){
+    if (modal) return modal;
+    modal = document.createElement("div");
+    modal.className = "ph-modal-backdrop";
+    modal.hidden = true;
+    modal.innerHTML = '<section class="ph-modal" role="dialog" aria-modal="true" aria-labelledby="ph-modal-title">'
+      + '<button type="button" class="ph-modal-close" aria-label="Close">×</button>'
+      + '<h2 id="ph-modal-title" data-ph-title>Price history</h2>'
+      + '<div data-ph-body><p class="ph-modal-loading">Loading price history…</p></div>'
+      + '</section>';
+    document.body.appendChild(modal);
+    modal.addEventListener("click", function(e){ if (e.target === modal) closeModal(); });
+    modal.querySelector(".ph-modal-close").addEventListener("click", closeModal);
+    document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeModal(); });
+    return modal;
+  }
+
+  function openModal(id, name){
+    lastFocus = document.activeElement;
+    var m = ensureModal();
+    m.querySelector("[data-ph-title]").textContent = (name || "Price") + " price history";
+    var bodyEl = m.querySelector("[data-ph-body]");
+    bodyEl.innerHTML = '<p class="ph-modal-loading">Loading price history…</p>';
+    m.hidden = false;
+    document.body.classList.add("ph-modal-open");
+    m.querySelector(".ph-modal-close").focus();
+    load(id).then(function(data){
+      var s = summarise(data);
+      bodyEl.innerHTML = s
+        ? figures(s) + '<div class="ph-chart">' + chartSvg(s) + '</div><p class="ph-modal-note">' + caption(s) + '</p>'
+        // A compound added this week genuinely has no history. Saying so is
+        // better than an empty chart frame the visitor has to interpret.
+        : '<p class="ph-modal-note">We have not tracked this compound long enough to show a price history yet. It starts once there are at least two daily readings.</p>';
+    });
+  }
+
+  document.addEventListener("click", function(e){
+    var btn = e.target && e.target.closest ? e.target.closest("[data-ph-open]") : null;
+    if (!btn) return;
+    e.preventDefault();
+    openModal(btn.getAttribute("data-ph-open"), btn.getAttribute("data-ph-name"));
+  });
+
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", fillSection);
+  else fillSection();
+
+  global.MPPPriceHistory = { open: openModal, load: load, summarise: summarise };
+})(window);

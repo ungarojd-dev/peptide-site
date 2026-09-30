@@ -11,14 +11,14 @@
 <meta property="og:url" content="https://mypeptideprice.com/compounds/cartalax"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://mypeptideprice.com/og-image-2026-rebrand.png"/>
-<link rel="icon" href="/favicon.png?v=20260930-price-history-v191"/>
-<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260930-price-history-v191"/>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260930-price-history-v191"/>
+<link rel="icon" href="/favicon.png?v=20260930-history-modal-v192"/>
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260930-history-modal-v192"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260930-history-modal-v192"/>
 <link rel="manifest" href="/site.webmanifest"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/assets/site.css?v=20260930-price-history-v191"/>
+<link rel="stylesheet" href="/assets/site.css?v=20260930-history-modal-v192"/>
 <style>
 .crumbs{max-width:1120px;margin:0 auto;padding:14px 20px 0;font-size:.82rem;color:var(--muted)}
 .crumbs a{color:var(--olive-2);text-decoration:none}.crumbs a:hover{text-decoration:underline}.crumbs span{color:var(--muted);margin:0 6px}
@@ -140,7 +140,7 @@ of 126 pages that promise was not kept. -->
 <header class="site-top premium-top">
   <div class="top-inner">
     <a class="brand premium-brand" href="/" aria-label="MyPeptidePrice home">
-      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260930-price-history-v191" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260930-history-modal-v192" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
       <span class="brand-copy"><span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span><span class="brand-tagline">Research. Compare. Save.</span></span>
       </a>
       <a class="nav-deals-btn" href="/deals">Deals<span class="nav-deals-count" data-deals-count hidden>0</span></a>
@@ -224,7 +224,7 @@ of 126 pages that promise was not kept. -->
   <div class="footer-inner">
     <div class="footer-col footer-col-brand">
       <div class="footer-brand premium-footer-brand">
-        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260930-price-history-v191" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260930-history-modal-v192" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
         <div><div class="footer-wordmark"><span class="footer-brand-my">my</span><span class="footer-brand-peptide">peptide</span><span class="footer-brand-price">price</span><span class="footer-brand-dot">.com</span></div><div class="footer-tagline">Research. Compare. Save.</div></div>
       </div>
       <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
@@ -235,56 +235,7 @@ of 126 pages that promise was not kept. -->
   </div>
   <div class="footer-base"><span>&copy; 2026 MyPeptidePrice.com. Independent price comparison. For research use only.</span></div>
 </footer>
-<script src="/assets/site.js?v=20260930-price-history-v191"></script>
-<script>(function(){
-  var root=document.querySelector("[data-price-history]");
-  if(!root) return;
-  var id=root.getAttribute("data-price-history");
-  if(!id) return;
-  var money=function(n){return "$"+Number(n).toFixed(2);};
-  fetch("/.netlify/functions/price-history?id="+encodeURIComponent(id)+"&days=90",{cache:"no-store"})
-    .then(function(r){return r.ok?r.json():null;})
-    .then(function(d){
-      // Two points is the minimum that can honestly be called a history. Below
-      // that the section stays hidden rather than drawing a dot and calling it
-      // a trend.
-      if(!d||!d.rows||d.rows.length<2) return;
-      var rows=d.rows, lows=rows.map(function(r){return Number(r.low);});
-      var min=Math.min.apply(null,lows), max=Math.max.apply(null,lows);
-      var last=lows[lows.length-1], first=lows[0];
-      root.querySelector("[data-ph-low]").textContent=money(min);
-      root.querySelector("[data-ph-high]").textContent=money(max);
-      root.querySelector("[data-ph-now]").textContent=money(last);
-      var days=rows.length;
-      root.querySelector("[data-ph-range]").textContent=days+" day"+(days===1?"":"s")+" tracked";
+<script src="/assets/site.js?v=20260930-history-modal-v192"></script>
 
-      // Inline SVG, drawn from the data rather than loaded from anywhere. A flat
-      // series would divide by zero on the scale, so it is pinned to mid height.
-      var W=680,H=120,P=6;
-      var span=(max-min)||1;
-      var pts=lows.map(function(v,i){
-        var x=P+(i/(lows.length-1))*(W-P*2);
-        var y=max===min?H/2:P+(1-((v-min)/span))*(H-P*2);
-        return x.toFixed(1)+","+y.toFixed(1);
-      }).join(" ");
-      var area="M"+P+","+(H-P)+" L"+pts.split(" ").join(" L")+" L"+(W-P)+","+(H-P)+" Z";
-      root.querySelector("[data-ph-chart]").innerHTML=
-        '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Lowest tracked price over '+days+' days, from '+money(first)+' to '+money(last)+'">'
-        +'<path d="'+area+'" fill="rgba(106,121,41,.13)"/>'
-        +'<polyline points="'+pts+'" fill="none" stroke="#6A7929" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'
-        +'</svg>';
-
-      // The caption states the direction in words, because a sparkline with no
-      // axis labels is a shape, not a fact.
-      var delta=last-first, pct=first?Math.round((delta/first)*100):0, dir;
-      if(Math.abs(pct)<1) dir="held steady";
-      else dir=(delta<0?"fallen ":"risen ")+Math.abs(pct)+"%";
-      root.querySelector("[data-ph-caption]").textContent=
-        "Lowest tracked price across all vendors, one reading per day. Over the last "+days+" day"+(days===1?"":"s")+" it has "+dir
-        +", from "+money(first)+" to "+money(last)+". Prices change without notice; confirm at the vendor.";
-      root.removeAttribute("hidden");
-    })
-    .catch(function(){});
-})();</script>
 </body>
 </html>

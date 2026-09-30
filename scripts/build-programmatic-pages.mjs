@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260930-price-history-v191";
+const VER = "20260930-history-modal-v192";
 const BASE = "https://mypeptideprice.com";
 // Files are written with .html, but every URL we publish (canonical, og:url,
 // schema, internal links, sitemap) uses the clean form. Google was indexing both
@@ -431,56 +431,9 @@ await mkdir(`${W}/vendors`, { recursive: true }).catch(() => {});
 
 const generated = { compounds: [], vendors: [] };
 
-const PRICE_HISTORY_JS = `<script>(function(){
-  var root=document.querySelector("[data-price-history]");
-  if(!root) return;
-  var id=root.getAttribute("data-price-history");
-  if(!id) return;
-  var money=function(n){return "$"+Number(n).toFixed(2);};
-  fetch("/.netlify/functions/price-history?id="+encodeURIComponent(id)+"&days=90",{cache:"no-store"})
-    .then(function(r){return r.ok?r.json():null;})
-    .then(function(d){
-      // Two points is the minimum that can honestly be called a history. Below
-      // that the section stays hidden rather than drawing a dot and calling it
-      // a trend.
-      if(!d||!d.rows||d.rows.length<2) return;
-      var rows=d.rows, lows=rows.map(function(r){return Number(r.low);});
-      var min=Math.min.apply(null,lows), max=Math.max.apply(null,lows);
-      var last=lows[lows.length-1], first=lows[0];
-      root.querySelector("[data-ph-low]").textContent=money(min);
-      root.querySelector("[data-ph-high]").textContent=money(max);
-      root.querySelector("[data-ph-now]").textContent=money(last);
-      var days=rows.length;
-      root.querySelector("[data-ph-range]").textContent=days+" day"+(days===1?"":"s")+" tracked";
-
-      // Inline SVG, drawn from the data rather than loaded from anywhere. A flat
-      // series would divide by zero on the scale, so it is pinned to mid height.
-      var W=680,H=120,P=6;
-      var span=(max-min)||1;
-      var pts=lows.map(function(v,i){
-        var x=P+(i/(lows.length-1))*(W-P*2);
-        var y=max===min?H/2:P+(1-((v-min)/span))*(H-P*2);
-        return x.toFixed(1)+","+y.toFixed(1);
-      }).join(" ");
-      var area="M"+P+","+(H-P)+" L"+pts.split(" ").join(" L")+" L"+(W-P)+","+(H-P)+" Z";
-      root.querySelector("[data-ph-chart]").innerHTML=
-        '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Lowest tracked price over '+days+' days, from '+money(first)+' to '+money(last)+'">'
-        +'<path d="'+area+'" fill="rgba(106,121,41,.13)"/>'
-        +'<polyline points="'+pts+'" fill="none" stroke="#6A7929" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'
-        +'</svg>';
-
-      // The caption states the direction in words, because a sparkline with no
-      // axis labels is a shape, not a fact.
-      var delta=last-first, pct=first?Math.round((delta/first)*100):0, dir;
-      if(Math.abs(pct)<1) dir="held steady";
-      else dir=(delta<0?"fallen ":"risen ")+Math.abs(pct)+"%";
-      root.querySelector("[data-ph-caption]").textContent=
-        "Lowest tracked price across all vendors, one reading per day. Over the last "+days+" day"+(days===1?"":"s")+" it has "+dir
-        +", from "+money(first)+" to "+money(last)+". Prices change without notice; confirm at the vendor.";
-      root.removeAttribute("hidden");
-    })
-    .catch(function(){});
-})();<\/script>`;
+// The price history renderer moved to assets/site.js, which every page already
+// loads. It was duplicated there and in catalog-ui for the card modal, and two
+// copies of a chart drawer drift the moment one is touched.
 
 // ---- COMPOUND PAGES ----
 for (const c of compoundPages) {
@@ -596,7 +549,7 @@ ${stickyHtml}
 
 <section class="section compact"><div class="container"><div class="notice">MyPeptidePrice.com is an independent price reference and does not sell research materials. Prices come from third-party vendor listings and were last checked ${TODAY}. Confirm current details on the vendor site. For laboratory research use only, not for human consumption.</div></div></section>`;
 
-  await writeFile(`${W}${path}`, shell({ title, desc, canonical, schema, body, scripts: PRICE_HISTORY_JS }));
+  await writeFile(`${W}${path}`, shell({ title, desc, canonical, schema, body }));
   generated.compounds.push({ path, name: c.name });
 }
 console.log("compound pages written:", generated.compounds.length);

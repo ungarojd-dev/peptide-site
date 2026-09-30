@@ -447,6 +447,19 @@
     return `<div class="supplier-row${isBest?" is-best":""}${supplier.in_stock===false?" is-oos":""}"><a class="supplier-hit" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}" data-cta="${attr(ctaTracking)}" aria-label="${attr(hitLabel)}"></a><div class="supplier-left">${logo}<div class="supplier-copy"><div class="supplier-name-row"><div class="supplier-name">${esc(supplier.vendor_name)}</div>${bestBadge}${marketBadge}</div><div class="supplier-meta-line">${variantLine}${stock}${alternate}</div>${productListing}<div class="supplier-sub">${discount}</div>${promoBadge}</div></div><div class="supplier-price-wrap">${regular}<div class="supplier-price">${esc(supplier.effective_price_label||"Contact vendor")}</div>${supplier.price_per_mg_label?`<div class="supplier-permg">${esc(supplier.price_per_mg_label)}</div>`:""}</div><div class="supplier-actions">${copyButton}<span class="supplier-go">${ctaLabel}</span></div></div>`;
   }
 
+  // Opens the shared price history dialog from site.js. The chart itself is only
+  // fetched on click: rendering the grid already costs one request, and asking
+  // for history on 240 cards up front to decorate a handful of them would be a
+  // poor trade. Which cards deserve a louder badge needs a digest of all the
+  // histories in one payload, which is a separate piece of work.
+  function historyPill(card){
+    const id=card.product_id||card.id;
+    if(!id) return "";
+    return `<button type="button" class="ph-pill" data-ph-open="${attr(id)}" data-ph-name="${attr(card.name)}">`
+      +`<svg viewBox="0 0 24 14" aria-hidden="true" focusable="false"><polyline points="1,11 6,7 11,9 16,3 23,5" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>`
+      +`Price history</button>`;
+  }
+
   function cardHtml(card){
     const selected=selectedVariantId(card);
     const isAll=selected===ALL_VARIANTS;
@@ -486,7 +499,7 @@
         <div class="product-title-row">
           <div class="product-title-copy">
             <h2 class="product-title">${esc(card.name)}</h2>
-            <div class="product-subtitle"><span class="fmt-summary">${multiFormat&&formatId===ALL_FORMATS?"":formatIcon(formatSummary)}${esc(formatSummary)}</span><span class="vendor-count">${vendorLabel}</span></div>
+            <div class="product-subtitle"><span class="fmt-summary">${multiFormat&&formatId===ALL_FORMATS?"":formatIcon(formatSummary)}${esc(formatSummary)}</span><span class="vendor-count">${vendorLabel}</span>${historyPill(card)}</div>
           </div>
         </div>
       </header>
@@ -699,8 +712,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260930-price-history-v191",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260930-price-history-v191",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260930-history-modal-v192",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260930-history-modal-v192",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
