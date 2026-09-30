@@ -236,7 +236,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260930-ticker-compact-v190";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260930-price-history-v191";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -908,7 +908,11 @@
 --------------------------------------------------------------------------- */
 (function(){
   const CAMPAIGN = {
-    enabled: true,
+    // Retired 2026-09-30: the fall campaign is over. The machinery stays because
+    // it is per-campaign by design, so the next partner push is this flag plus a
+    // new campaignId, heading, body and rows. Changing campaignId is what makes
+    // a new popup show to people who dismissed the last one.
+    enabled: false,
     // Changing campaignId retires the previous popup for everyone, including
     // people who already dismissed the Instant one, so this campaign is seen
     // fresh rather than suppressed by the old session flag.

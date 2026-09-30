@@ -11,14 +11,14 @@
 <meta property="og:url" content="https://mypeptideprice.com/compounds/eloralintide"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://mypeptideprice.com/og-image-2026-rebrand.png"/>
-<link rel="icon" href="/favicon.png?v=20260930-ticker-compact-v190"/>
-<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260930-ticker-compact-v190"/>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260930-ticker-compact-v190"/>
+<link rel="icon" href="/favicon.png?v=20260930-price-history-v191"/>
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260930-price-history-v191"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260930-price-history-v191"/>
 <link rel="manifest" href="/site.webmanifest"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/assets/site.css?v=20260930-ticker-compact-v190"/>
+<link rel="stylesheet" href="/assets/site.css?v=20260930-price-history-v191"/>
 <style>
 .crumbs{max-width:1120px;margin:0 auto;padding:14px 20px 0;font-size:.82rem;color:var(--muted)}
 .crumbs a{color:var(--olive-2);text-decoration:none}.crumbs a:hover{text-decoration:underline}.crumbs span{color:var(--muted);margin:0 6px}
@@ -106,6 +106,14 @@
 .hub-card .hc-cat{font-size:.76rem;color:var(--muted);margin-top:2px}
 .hub-card .hc-price{font-size:.86rem;color:var(--forest);font-weight:800;margin-top:8px}
 .hub-card .hc-price span{color:var(--muted);font-weight:600}
+.ph-card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:16px;box-shadow:0 10px 30px rgba(13,13,13,.05)}
+.ph-figures{display:flex;flex-wrap:wrap;gap:22px;margin-bottom:12px}
+.ph-figures div{display:flex;flex-direction:column;gap:2px}
+.ph-figures span{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ph-figures strong{font-family:var(--font-body);font-size:1.25rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest)}
+.ph-chart{height:120px;margin:4px 0 10px}
+.ph-chart svg{display:block;width:100%;height:120px}
+@media(max-width:520px){.ph-figures{gap:16px}.ph-figures strong{font-size:1.1rem}.ph-chart,.ph-chart svg{height:96px}}
 .hub-section-title{max-width:1120px;margin:22px auto 0;padding:0 20px;font-family:var(--font-display);color:var(--forest);font-size:1.15rem}
 @media(max-width:520px){.snap-head h2{font-size:1.3rem}.answer-box .inner p{font-size:.95rem}
 .price-row{flex-direction:column;align-items:flex-start;gap:10px}
@@ -132,7 +140,7 @@ of 126 pages that promise was not kept. -->
 <header class="site-top premium-top">
   <div class="top-inner">
     <a class="brand premium-brand" href="/" aria-label="MyPeptidePrice home">
-      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260930-ticker-compact-v190" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260930-price-history-v191" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
       <span class="brand-copy"><span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span><span class="brand-tagline">Research. Compare. Save.</span></span>
       </a>
       <a class="nav-deals-btn" href="/deals">Deals<span class="nav-deals-count" data-deals-count hidden>0</span></a>
@@ -170,6 +178,23 @@ of 126 pages that promise was not kept. -->
 </div>
 <p class="snap-note">Prices are drawn from third-party vendor listings and reflect a known discount code where one applies. They change over time; confirm the current price, size, and stock on the vendor site. MyPeptidePrice.com does not sell these materials. For laboratory research use only.</p>
 </div></section>
+<!-- Price history. Rendered client side from the daily lows the refresh function
+     has been recording, and it removes itself when there is nothing to draw, so a
+     compound added this week shows no empty frame. -->
+<section class="section compact" id="price-history" data-price-history="eloralintide" hidden>
+  <div class="snap-wrap">
+    <div class="snap-head"><h2>ELORALINTIDE price history</h2><span class="snap-meta"><span class="dot"></span><span data-ph-range>Last 90 days</span></span></div>
+    <div class="ph-card">
+      <div class="ph-figures">
+        <div><span>Lowest</span><strong data-ph-low>&mdash;</strong></div>
+        <div><span>Highest</span><strong data-ph-high>&mdash;</strong></div>
+        <div><span>Today</span><strong data-ph-now>&mdash;</strong></div>
+      </div>
+      <div class="ph-chart" data-ph-chart></div>
+      <p class="snap-note" data-ph-caption></p>
+    </div>
+  </div>
+</section>
 <section class="section compact"><div class="copy"><span class="research-tag">What this page is</span><h2>About ELORALINTIDE on this page</h2><p>ELORALINTIDE is tracked across the vendors compared on this site. Vendors list it as a research material, typically as lyophilized powder in a vial. This page reports the prices those vendors list and the resulting cost per mg. It does not describe what ELORALINTIDE does, how it is used, or how it is handled.</p><p>Every listing referenced here is sold by independent third-party vendors for laboratory research use only and is not for human consumption. MyPeptidePrice.com is an independent price comparison reference. It does not sell products, ship orders, or provide medical, dosing, or usage guidance of any kind.</p></div></section>
 <div class="xlink-wrap"><h2>Other GLP-1 &amp; Incretin compounds</h2><div class="xlink-grid"><a href="/compounds/cagrilintide">Cagrilintide</a><a href="/compounds/mazdutide">Mazdutide</a><a href="/compounds/orforglipron">Orforglipron</a><a href="/retatrutide-price-comparison">Retatrutide</a><a href="/compounds/retatrutide-and-cagrilintide-blend">Retatrutide &amp; Cagrilintide Blend</a><a href="/compounds/retatrutide-and-tirzepatide-blend">Retatrutide &amp; Tirzepatide Blend</a><a href="/semaglutide-price-comparison">Semaglutide</a><a href="/compounds/semaglutide-and-cagrilintide-blend">Semaglutide &amp; Cagrilintide Blend</a></div></div>
 <section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">ELORALINTIDE FAQ</span><h2>ELORALINTIDE questions</h2><div class="faq-list">
@@ -184,12 +209,13 @@ of 126 pages that promise was not kept. -->
   <span class="sb-figure">$169.15</span>
   <a class="sb-go" href="https://flawlesscompounds.com/product/eloralintide/?coupon=SammyC" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="ELORALINTIDE" data-category="GLP-1 &amp; Incretin" data-vendor="Flawless Compounds" data-code="SAMMYC" data-cta="View listing, 15% off at Flawless Compounds">View listing</a>
 </div>
+
 <section class="section compact"><div class="container"><div class="notice">MyPeptidePrice.com is an independent price reference and does not sell research materials. Prices come from third-party vendor listings and were last checked July 29, 2026. Confirm current details on the vendor site. For laboratory research use only, not for human consumption.</div></div></section>
 <footer class="site-footer premium-footer">
   <div class="footer-inner">
     <div class="footer-col footer-col-brand">
       <div class="footer-brand premium-footer-brand">
-        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260930-ticker-compact-v190" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260930-price-history-v191" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
         <div><div class="footer-wordmark"><span class="footer-brand-my">my</span><span class="footer-brand-peptide">peptide</span><span class="footer-brand-price">price</span><span class="footer-brand-dot">.com</span></div><div class="footer-tagline">Research. Compare. Save.</div></div>
       </div>
       <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
@@ -200,6 +226,56 @@ of 126 pages that promise was not kept. -->
   </div>
   <div class="footer-base"><span>&copy; 2026 MyPeptidePrice.com. Independent price comparison. For research use only.</span></div>
 </footer>
-<script src="/assets/site.js?v=20260930-ticker-compact-v190"></script>
+<script src="/assets/site.js?v=20260930-price-history-v191"></script>
+<script>(function(){
+  var root=document.querySelector("[data-price-history]");
+  if(!root) return;
+  var id=root.getAttribute("data-price-history");
+  if(!id) return;
+  var money=function(n){return "$"+Number(n).toFixed(2);};
+  fetch("/.netlify/functions/price-history?id="+encodeURIComponent(id)+"&days=90",{cache:"no-store"})
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(d){
+      // Two points is the minimum that can honestly be called a history. Below
+      // that the section stays hidden rather than drawing a dot and calling it
+      // a trend.
+      if(!d||!d.rows||d.rows.length<2) return;
+      var rows=d.rows, lows=rows.map(function(r){return Number(r.low);});
+      var min=Math.min.apply(null,lows), max=Math.max.apply(null,lows);
+      var last=lows[lows.length-1], first=lows[0];
+      root.querySelector("[data-ph-low]").textContent=money(min);
+      root.querySelector("[data-ph-high]").textContent=money(max);
+      root.querySelector("[data-ph-now]").textContent=money(last);
+      var days=rows.length;
+      root.querySelector("[data-ph-range]").textContent=days+" day"+(days===1?"":"s")+" tracked";
+
+      // Inline SVG, drawn from the data rather than loaded from anywhere. A flat
+      // series would divide by zero on the scale, so it is pinned to mid height.
+      var W=680,H=120,P=6;
+      var span=(max-min)||1;
+      var pts=lows.map(function(v,i){
+        var x=P+(i/(lows.length-1))*(W-P*2);
+        var y=max===min?H/2:P+(1-((v-min)/span))*(H-P*2);
+        return x.toFixed(1)+","+y.toFixed(1);
+      }).join(" ");
+      var area="M"+P+","+(H-P)+" L"+pts.split(" ").join(" L")+" L"+(W-P)+","+(H-P)+" Z";
+      root.querySelector("[data-ph-chart]").innerHTML=
+        '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Lowest tracked price over '+days+' days, from '+money(first)+' to '+money(last)+'">'
+        +'<path d="'+area+'" fill="rgba(106,121,41,.13)"/>'
+        +'<polyline points="'+pts+'" fill="none" stroke="#6A7929" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'
+        +'</svg>';
+
+      // The caption states the direction in words, because a sparkline with no
+      // axis labels is a shape, not a fact.
+      var delta=last-first, pct=first?Math.round((delta/first)*100):0, dir;
+      if(Math.abs(pct)<1) dir="held steady";
+      else dir=(delta<0?"fallen ":"risen ")+Math.abs(pct)+"%";
+      root.querySelector("[data-ph-caption]").textContent=
+        "Lowest tracked price across all vendors, one reading per day. Over the last "+days+" day"+(days===1?"":"s")+" it has "+dir
+        +", from "+money(first)+" to "+money(last)+". Prices change without notice; confirm at the vendor.";
+      root.removeAttribute("hidden");
+    })
+    .catch(function(){});
+})();</script>
 </body>
 </html>

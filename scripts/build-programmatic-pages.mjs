@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260930-ticker-compact-v190";
+const VER = "20260930-price-history-v191";
 const BASE = "https://mypeptideprice.com";
 // Files are written with .html, but every URL we publish (canonical, og:url,
 // schema, internal links, sitemap) uses the clean form. Google was indexing both
@@ -228,6 +228,14 @@ const PAGE_CSS = `<style>
 .hub-card .hc-cat{font-size:.76rem;color:var(--muted);margin-top:2px}
 .hub-card .hc-price{font-size:.86rem;color:var(--forest);font-weight:800;margin-top:8px}
 .hub-card .hc-price span{color:var(--muted);font-weight:600}
+.ph-card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:16px;box-shadow:0 10px 30px rgba(13,13,13,.05)}
+.ph-figures{display:flex;flex-wrap:wrap;gap:22px;margin-bottom:12px}
+.ph-figures div{display:flex;flex-direction:column;gap:2px}
+.ph-figures span{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ph-figures strong{font-family:var(--font-body);font-size:1.25rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest)}
+.ph-chart{height:120px;margin:4px 0 10px}
+.ph-chart svg{display:block;width:100%;height:120px}
+@media(max-width:520px){.ph-figures{gap:16px}.ph-figures strong{font-size:1.1rem}.ph-chart,.ph-chart svg{height:96px}}
 .hub-section-title{max-width:1120px;margin:22px auto 0;padding:0 20px;font-family:var(--font-display);color:var(--forest);font-size:1.15rem}
 @media(max-width:520px){.snap-head h2{font-size:1.3rem}.answer-box .inner p{font-size:.95rem}
 .price-row{flex-direction:column;align-items:flex-start;gap:10px}
@@ -285,7 +293,7 @@ function footer() {
 <script src="/assets/site.js?v=${VER}"></script>`;
 }
 
-function shell({ title, desc, canonical, schema, body }) {
+function shell({ title, desc, canonical, schema, body, scripts = "" }) {
   return `<!doctype html>
 <html lang="en">
 <head>
@@ -316,6 +324,7 @@ ${NOSCRIPT}
 ${header()}
 ${body}
 ${footer()}
+${scripts}
 </body>
 </html>
 `;
@@ -422,6 +431,57 @@ await mkdir(`${W}/vendors`, { recursive: true }).catch(() => {});
 
 const generated = { compounds: [], vendors: [] };
 
+const PRICE_HISTORY_JS = `<script>(function(){
+  var root=document.querySelector("[data-price-history]");
+  if(!root) return;
+  var id=root.getAttribute("data-price-history");
+  if(!id) return;
+  var money=function(n){return "$"+Number(n).toFixed(2);};
+  fetch("/.netlify/functions/price-history?id="+encodeURIComponent(id)+"&days=90",{cache:"no-store"})
+    .then(function(r){return r.ok?r.json():null;})
+    .then(function(d){
+      // Two points is the minimum that can honestly be called a history. Below
+      // that the section stays hidden rather than drawing a dot and calling it
+      // a trend.
+      if(!d||!d.rows||d.rows.length<2) return;
+      var rows=d.rows, lows=rows.map(function(r){return Number(r.low);});
+      var min=Math.min.apply(null,lows), max=Math.max.apply(null,lows);
+      var last=lows[lows.length-1], first=lows[0];
+      root.querySelector("[data-ph-low]").textContent=money(min);
+      root.querySelector("[data-ph-high]").textContent=money(max);
+      root.querySelector("[data-ph-now]").textContent=money(last);
+      var days=rows.length;
+      root.querySelector("[data-ph-range]").textContent=days+" day"+(days===1?"":"s")+" tracked";
+
+      // Inline SVG, drawn from the data rather than loaded from anywhere. A flat
+      // series would divide by zero on the scale, so it is pinned to mid height.
+      var W=680,H=120,P=6;
+      var span=(max-min)||1;
+      var pts=lows.map(function(v,i){
+        var x=P+(i/(lows.length-1))*(W-P*2);
+        var y=max===min?H/2:P+(1-((v-min)/span))*(H-P*2);
+        return x.toFixed(1)+","+y.toFixed(1);
+      }).join(" ");
+      var area="M"+P+","+(H-P)+" L"+pts.split(" ").join(" L")+" L"+(W-P)+","+(H-P)+" Z";
+      root.querySelector("[data-ph-chart]").innerHTML=
+        '<svg viewBox="0 0 '+W+' '+H+'" preserveAspectRatio="none" role="img" aria-label="Lowest tracked price over '+days+' days, from '+money(first)+' to '+money(last)+'">'
+        +'<path d="'+area+'" fill="rgba(106,121,41,.13)"/>'
+        +'<polyline points="'+pts+'" fill="none" stroke="#6A7929" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'
+        +'</svg>';
+
+      // The caption states the direction in words, because a sparkline with no
+      // axis labels is a shape, not a fact.
+      var delta=last-first, pct=first?Math.round((delta/first)*100):0, dir;
+      if(Math.abs(pct)<1) dir="held steady";
+      else dir=(delta<0?"fallen ":"risen ")+Math.abs(pct)+"%";
+      root.querySelector("[data-ph-caption]").textContent=
+        "Lowest tracked price across all vendors, one reading per day. Over the last "+days+" day"+(days===1?"":"s")+" it has "+dir
+        +", from "+money(first)+" to "+money(last)+". Prices change without notice; confirm at the vendor.";
+      root.removeAttribute("hidden");
+    })
+    .catch(function(){});
+})();<\/script>`;
+
 // ---- COMPOUND PAGES ----
 for (const c of compoundPages) {
   const sg = slug(c.name);
@@ -510,15 +570,33 @@ ${rowsHtml}
 </div>
 <p class="snap-note">Prices are drawn from third-party vendor listings and reflect a known discount code where one applies. They change over time; confirm the current price, size, and stock on the vendor site. MyPeptidePrice.com does not sell these materials. For laboratory research use only.</p>
 </div></section>
+<!-- Price history. Rendered client side from the daily lows the refresh function
+     has been recording, and it removes itself when there is nothing to draw, so a
+     compound added this week shows no empty frame. -->
+<section class="section compact" id="price-history" data-price-history="${esc(sg)}" hidden>
+  <div class="snap-wrap">
+    <div class="snap-head"><h2>${esc(c.name)} price history</h2><span class="snap-meta"><span class="dot"></span><span data-ph-range>Last 90 days</span></span></div>
+    <div class="ph-card">
+      <div class="ph-figures">
+        <div><span>Lowest</span><strong data-ph-low>&mdash;</strong></div>
+        <div><span>Highest</span><strong data-ph-high>&mdash;</strong></div>
+        <div><span>Today</span><strong data-ph-now>&mdash;</strong></div>
+      </div>
+      <div class="ph-chart" data-ph-chart></div>
+      <p class="snap-note" data-ph-caption></p>
+    </div>
+  </div>
+</section>
 <section class="section compact"><div class="copy"><span class="research-tag">What this page is</span><h2>About ${esc(c.name)} on this page</h2><p>${esc(c.name)} is tracked across the vendors compared on this site. Vendors list it as a research material, typically as lyophilized powder in a vial. This page reports the prices those vendors list and the resulting cost per mg. It does not describe what ${esc(c.name)} does, how it is used, or how it is handled.</p><p>Every listing referenced here is sold by independent third-party vendors for laboratory research use only and is not for human consumption. MyPeptidePrice.com is an independent price comparison reference. It does not sell products, ship orders, or provide medical, dosing, or usage guidance of any kind.</p></div></section>
 ${relatedHtml}
 <section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">${esc(c.name)} FAQ</span><h2>${esc(c.name)} questions</h2><div class="faq-list">
 ${faq.map(([q, a]) => `<article class="faq-item"><h3>${esc(q)}</h3><p>${esc(a)}</p></article>`).join("\n")}
 </div></div></section>
 ${stickyHtml}
+
 <section class="section compact"><div class="container"><div class="notice">MyPeptidePrice.com is an independent price reference and does not sell research materials. Prices come from third-party vendor listings and were last checked ${TODAY}. Confirm current details on the vendor site. For laboratory research use only, not for human consumption.</div></div></section>`;
 
-  await writeFile(`${W}${path}`, shell({ title, desc, canonical, schema, body }));
+  await writeFile(`${W}${path}`, shell({ title, desc, canonical, schema, body, scripts: PRICE_HISTORY_JS }));
   generated.compounds.push({ path, name: c.name });
 }
 console.log("compound pages written:", generated.compounds.length);
