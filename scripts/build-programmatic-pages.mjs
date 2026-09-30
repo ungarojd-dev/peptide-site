@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260930-announce-marquee-v188";
+const VER = "20260930-ticker-compact-v190";
 const BASE = "https://mypeptideprice.com";
 // Files are written with .html, but every URL we publish (canonical, og:url,
 // schema, internal links, sitemap) uses the clean form. Google was indexing both
@@ -908,7 +908,9 @@ for (const [key, hubPath] of HAND_BUILT) {
         : (d.ongoing ? `<span class="deal-ends deal-ends--open">Ongoing</span>` : "");
       const compare = match ? `<a class="vendor-out" href="${esc(clean("/vendors/" + slug(match.cfg.id || match.key) + ".html"))}">See ${esc(name)} prices &#8250;</a>` : "";
 
-      return `<article class="vendor-card deal-card"${d.end_date ? ` data-deal-end="${esc(d.end_date)}"` : ""}>` +
+      // Anchored so the ticker can land on the exact offer someone tapped rather
+      // than the top of the page. scroll-margin keeps it clear of the sticky header.
+      return `<article class="vendor-card deal-card" id="deal-${esc(d.id)}"${d.end_date ? ` data-deal-end="${esc(d.end_date)}"` : ""}>` +
         `<div class="vendor-head">${logo}<div><h3>${esc(name)}</h3>${ends}</div></div>` +
         `<p class="deal-headline">${esc(d.headline)}</p>` +
         (lines.length ? `<ul class="deal-lines">${lines.join("")}</ul>` : "") +

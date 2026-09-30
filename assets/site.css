@@ -1444,7 +1444,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260930-announce-marquee-v188") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260930-ticker-compact-v190") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -2093,7 +2093,10 @@ a.hero-price-card:focus-visible { outline: 2px solid var(--olive-soft); outline-
 .deals-meta strong { color: var(--forest); font-weight: 850; }
 .deals-meta span { display: inline-flex; align-items: center; gap: 6px; }
 .deals-meta span::before { content: ""; width: 6px; height: 6px; border-radius: 50%; background: var(--olive); }
-.deal-card { display: flex; flex-direction: column; }
+.deal-card { display: flex; flex-direction: column; scroll-margin-top: 104px; }
+/* Brief highlight when arriving from the ticker, so the anchored card is
+   obvious without the visitor hunting for what changed. */
+.deal-card:target { border-color: var(--olive); box-shadow: 0 0 0 3px rgba(106,121,41,.16), var(--shadow); }
 .deal-card .vendor-head { align-items: flex-start; }
 .deal-card .vendor-head > div { min-width: 0; }
 .deal-ends { display: inline-block; margin-top: 4px; border-radius: 999px; background: rgba(196,120,48,.12); color: #8a4f1d; padding: 3px 9px; font-size: 11px; font-weight: 850; letter-spacing: .2px; }
@@ -2154,32 +2157,67 @@ a.hero-price-card:focus-visible { outline: 2px solid var(--olive-soft); outline-
 }
 
 
-/* ── ANNOUNCEMENT BAR MARQUEE ────────────────────────────────────────────
-   This bar carried a discount code and its terms, and both were being cut off:
-   nowrap plus an ellipsis on desktop, a two line clamp on phones. "30% off with
-   code FALL30 plus 10% with..." loses the part that matters, and an ellipsis on
-   an offer is worse than making someone wait a second for it to scroll past.
 
-   So the text scrolls, but ONLY when it does not fit. The run is measured after
-   every slide paint and the animation is applied with a distance and duration
-   computed from the actual overflow, so a short message never moves and a long
-   one travels exactly as far as it needs to. Hovering pauses it, and with
-   reduced motion it wraps onto more lines instead, which is taller but still
-   never truncated. */
-.announce-run { display: inline-block; white-space: nowrap; will-change: transform; }
-.announce-text.is-marquee .announce-run {
-  animation: announce-marquee var(--am-dur, 9s) ease-in-out infinite;
+
+/* ── ANNOUNCEMENT TICKER ─────────────────────────────────────────────────
+   One belt, one direction, constant speed. The previous bar showed a single
+   deal at a time and, when the text overflowed, scrolled it right and then back
+   again. Reversing mid-sentence is hard to follow, and before that it was simply
+   truncated with an ellipsis, which hid the discount code entirely.
+
+   Every offer is now a segment on one belt. Two identical runs sit side by side
+   and the belt translates exactly one run width, so the loop has no visible
+   seam. Duration is derived from the run width at a fixed px/sec, so the reading
+   speed is the same whether there are two deals or twelve. */
+.announce-viewport { overflow: hidden; }
+.announce-belt {
+  display: flex;
+  width: max-content;
+  animation: announce-roll var(--ab-dur, 30s) linear infinite;
 }
-.announce-bar:hover .announce-run,
-.announce-bar:focus-within .announce-run { animation-play-state: paused; }
-@keyframes announce-marquee {
-  0%, 14%   { transform: translate3d(0, 0, 0); }
-  50%, 64%  { transform: translate3d(var(--am-shift, 0), 0, 0); }
-  97%, 100% { transform: translate3d(0, 0, 0); }
+.announce-run { display: flex; align-items: center; }
+@keyframes announce-roll {
+  from { transform: translate3d(0, 0, 0); }
+  to   { transform: translate3d(-50%, 0, 0); }
 }
+/* Any of these stops it, so a visitor can always hold a code still to read it. */
+.announce-bar:hover .announce-belt,
+.announce-bar:focus-within .announce-belt { animation-play-state: paused; }
+
+.announce-seg {
+  display: inline-flex; align-items: center; gap: 9px; flex: none;
+  padding: 0 20px; white-space: nowrap; text-decoration: none;
+}
+.announce-seg + .announce-seg { border-left: 1px solid rgba(255,255,255,.12); }
+.announce-seg-vendor { color: #fffdf8; font-size: 12.5px; font-weight: 900; }
+.announce-seg-offer {
+  border: 1px solid color-mix(in srgb, var(--bc, #a9d13a) 62%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--bc, #a9d13a) 16%, transparent);
+  color: #fff; padding: 3px 11px; font-size: 11.5px; font-weight: 900; letter-spacing: .2px;
+}
+.announce-seg:hover .announce-seg-offer { background: color-mix(in srgb, var(--bc, #a9d13a) 34%, transparent); }
+/* Kept for the placeholder segment rendered before the data loads. */
+.announce-seg-text { color: rgba(255,255,255,.80); font-size: 12px; font-weight: 700; }
+.announce-seg:focus-visible { outline: 2px solid #fff; outline-offset: -3px; }
+.announce-seg--all .announce-seg-vendor { color: var(--sand); }
+.announce-seg .announce-logo {
+  width: 22px; height: 22px; flex: none; border-radius: 6px;
+  background: #fff; object-fit: contain; padding: 2px;
+}
+.announce-seg .announce-tube {
+  border-radius: 999px; background: rgba(255,255,255,.14); color: #fff;
+  padding: 2px 8px; font-size: 10px; font-weight: 900; letter-spacing: .4px;
+}
+/* No motion: the belt becomes a row the visitor scrolls themselves, and the
+   duplicate run is removed so offers are not listed twice. */
 @media (prefers-reduced-motion: reduce) {
-  .announce-text.is-marquee .announce-run { animation: none; }
-  .announce-neon .announce-text,
-  .premium-announce .announce-text { white-space: normal; overflow: visible; }
-  .announce-run { white-space: normal; }
+  .announce-belt { animation: none; }
+  .announce-viewport { overflow-x: auto; }
+  .announce-belt .announce-run + .announce-run { display: none; }
+}
+@media (max-width: 640px) {
+  .announce-seg { padding: 0 14px; gap: 7px; }
+  .announce-seg-vendor { font-size: 12px; }
+  .announce-seg-offer { font-size: 11px; padding: 2px 9px; }
 }
