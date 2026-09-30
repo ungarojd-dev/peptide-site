@@ -332,7 +332,11 @@ function labSourcedAdapter() {
   return {
     vendor,
     async load() {
-      const { data } = await fetchJson("https://labsourced.com/api/public/products", 15000);
+      // Temporary domain while the registrar issue on labsourced.com is sorted.
+      // Both the feed and the storefront moved; anything still pointing at the
+      // old host is rewritten below rather than trusted.
+      const LS_HOST = "https://lab-sourced.com";
+      const { data } = await fetchJson(`${LS_HOST}/api/public/products`, 15000);
       const products = (data.products || []).map(product => ({
         company: vendor,
         product: compact(product.name),
@@ -342,7 +346,12 @@ function labSourcedAdapter() {
         price: money(product.price),
         sku: compact(product.sku || product.id),
         in_stock: product.in_stock === true,
-        url: appendQuery(product.url || VENDOR_CONFIG[vendor]?.affiliate_url, { ref: "SammyC" }),
+        // No referral attribution on the temporary domain, so appending ref=
+        // SammyC would be a query string that does nothing and makes the link
+        // look tracked when it is not. The discount is earned by typing the code
+        // at checkout, which is what the product cards now say.
+        url: String(product.url || VENDOR_CONFIG[vendor]?.affiliate_url || LS_HOST)
+          .replace(/^https?:\/\/(www\.)?labsourced\.com/i, LS_HOST),
         image: product.image || null,
         source: "api",
         source_type: "custom-json"

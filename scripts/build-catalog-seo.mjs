@@ -121,8 +121,11 @@ out = out.replace(
 );
 
 // Hero intro copy
+// Matches either wording. This regex said "research products" while the hero
+// copy had been reworded to "research compounds", so it quietly stopped matching
+// and the figure sat at 220 through every deploy while the catalog grew to 240.
 out = out.replace(
-  /Search [\d,]+\+? research products/,
+  /Search [\d,]+\+? research (?:products|compounds)/,
   `Search ${cards.length} research compounds`
 );
 

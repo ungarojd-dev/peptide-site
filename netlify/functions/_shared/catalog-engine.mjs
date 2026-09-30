@@ -15,7 +15,7 @@ export const ENGINE_VERSION = "1.5.1-peptidology-logo";
 // JSON is imported with { type: "json" } and is therefore baked into the
 // function bundle at build time. Without a .mjs edit Netlify reuses the cached
 // bundle and the config change silently does nothing.
-export const VENDOR_CONFIG_FINGERPRINT = "8952e1f7999a4e72";
+export const VENDOR_CONFIG_FINGERPRINT = "ccb1139899636fca";
 export const COUPON_CODE = vendorPayload.coupon_code || "SAMMYC";
 export const VENDOR_CONFIG = vendorPayload.vendors || {};
 
@@ -650,6 +650,13 @@ export function normalizeOffer(raw = {}, options = {}) {
     discount_sitewide_percent: meta.discount_sitewide_percent ?? null,
     discount_code_percent: meta.discount_code_percent ?? discount,
     coupon_code: discount > 0 ? COUPON_CODE : "",
+    // Whether the code applies itself. Most vendors carry ?coupon= on the
+    // affiliate URL so it lands applied; a vendor on a temporary domain has no
+    // link attribution at all and the visitor has to type it, which is the
+    // difference between a discount and full price. Defaults to true so an
+    // entry without the field behaves exactly as before.
+    code_auto_applies: meta.code_auto_applies !== false,
+    code_note: compact(meta.code_note || ""),
     in_stock: source.in_stock !== false,
     affiliate_url: compact((meta.use_product_deep_links === true ? source.url : meta.affiliate_url) || meta.affiliate_url || "#"),
     raw_product: compact(source.raw_product || source.product || source.name || source.title || source.listing || "Untitled product"),

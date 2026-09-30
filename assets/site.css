@@ -173,6 +173,23 @@ button, input, select { font: inherit; }
   flex: none;
 }
 .announce-link:hover { border-bottom-color: var(--sand); }
+/* Standing link to the full deals page, beside the rotating slide's own CTA.
+   .announce-inner is a flex row with no wrap, and this went in without any
+   rules of its own, so on a phone it collapsed to three lines and spilled out
+   of the bar. It needs the same no-shrink, no-wrap treatment as the CTA, and
+   below 720 the bar is already tight and the header Deals pill goes to the same
+   place, so it is dropped rather than squeezed. */
+.announce-all {
+  flex: none;
+  white-space: nowrap;
+  color: rgba(255,255,255,.72);
+  font-size: 11px;
+  font-weight: 750;
+  text-decoration: none;
+  padding-left: 2px;
+}
+.announce-all:hover { color: #fff; }
+@media (max-width: 720px) { .announce-all { display: none; } }
 
 /* ── STICKY STACK (sale banner + skool bar) ── */
 .sticky-stack { position: sticky; top: 70px; z-index: 120; }
@@ -1427,7 +1444,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260930-deals-ticker-v186") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260930-labsourced-temp-v187") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept

@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260930-deals-ticker-v186";
+const VER = "20260930-labsourced-temp-v187";
 const BASE = "https://mypeptideprice.com";
 // Files are written with .html, but every URL we publish (canonical, og:url,
 // schema, internal links, sitemap) uses the clean form. Google was indexing both
@@ -100,6 +100,16 @@ function priceRow(o) {
     : "";
   const hitLabel = `${o.priceLabel || "See price"} for ${o.sizeLine} at ${o.vendorDisplay}`;
   return `<div class="price-row${o.inStock === false ? " is-oos" : ""}"><a class="row-hit" href="${esc(o.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(o.product)}" data-category="${esc(o.category)}" data-vendor="${esc(o.vendorKey)}" data-code="${esc(o.code || "")}" data-cta="${esc(ctaTrack)}" aria-label="${esc(hitLabel)}"></a><span class="price-size"><span class="size">${o.sizeLine}${marketBadge(o.delta)}</span><span class="vendor">${o.vendorLine}</span><span class="disc">${o.note}</span></span><span class="price-amount"><span class="amt">${esc(o.priceLabel || "See vendor")}</span>${o.permg ? `<span class="permg">${esc(o.permg)}</span>` : ""}<span class="row-actions">${copy}<span class="go">${esc(cta)}</span></span></span></div>`;
+}
+
+// "Code SAMMYC applies" is true for a vendor whose affiliate link carries the
+// coupon. A vendor on a temporary domain has no link attribution at all, so the
+// visitor has to type it, and saying "applies" would cost them the discount.
+function codeNote(vendorKey, code, discount) {
+  const cfg = vendorCfg.vendors?.[vendorKey];
+  return cfg && cfg.code_auto_applies === false
+    ? `Enter ${esc(code)} at checkout (${discount}% off)`
+    : `Code ${esc(code)} applies (${discount}% off)`;
 }
 
 const NONPEP = ["Acetic Acid", "Bacteriostatic", "Travel Case", "Starter Kit", "Research Starter", "Case ONLY", "Protective Travel"];
@@ -378,7 +388,7 @@ function buildPriceRows(c, max = 14, location = "compound_price_table") {
   }
   const compoundDeltas = marketDeltas(rows);
   const rowsHtml = rows.map((o) => {
-    const note = o.discount > 0 && o.code ? `Code ${esc(o.code)} applies (${o.discount}% off)` : (o.regularLabel && o.regularLabel !== o.priceLabel ? `Listed ${esc(o.regularLabel)}` : "Listed price");
+    const note = o.discount > 0 && o.code ? codeNote(o.vendorKey, o.code, o.discount) : (o.regularLabel && o.regularLabel !== o.priceLabel ? `Listed ${esc(o.regularLabel)}` : "Listed price");
     return priceRow({
       url: o.url,
       product: c.name,
@@ -593,7 +603,7 @@ for (const v of vendorNames) {
   // compounds, so size alone is not a like-for-like comparison.
   const vendorDeltas = marketDeltas(vendorRows, o => `${o.compound}|${o.size}`);
   const rowsHtml = vendorRows.map((o) => {
-    const note = o.discount > 0 && o.code ? `Code ${esc(o.code)} applies (${o.discount}% off)` : "Listed price";
+    const note = o.discount > 0 && o.code ? codeNote(o.vendorKey, o.code, o.discount) : "Listed price";
     return priceRow({
       url: o.url,
       product: o.compound,
@@ -879,6 +889,7 @@ for (const [key, hubPath] of HAND_BUILT) {
       // The sale and the code are always two separate lines. Adding them into
       // one headline number ("35% off") states a total only the vendor's
       // checkout can decide, because the order they apply in changes it.
+      const manual = vendorCfg.vendors?.[d.vendor]?.code_auto_applies === false;
       const lines = [];
       if (d.sale_percent) {
         lines.push(d.sale_code
@@ -886,9 +897,10 @@ for (const [key, hubPath] of HAND_BUILT) {
           : `<li><strong>${esc(d.sale_percent)}% off</strong> sitewide sale</li>`);
       }
       if (d.code_percent && d.code) {
-        lines.push(`<li>${d.sale_percent ? "then a further " : ""}<strong>${esc(d.code_percent)}% off</strong> with <span class="code-pill">${esc(d.code)}</span></li>`);
+        lines.push(`<li>${d.sale_percent ? "then a further " : ""}<strong>${esc(d.code_percent)}% off</strong> ` +
+          `${manual ? "when you enter" : "with"} <span class="code-pill">${esc(d.code)}</span>${manual ? " at checkout" : ""}</li>`);
       } else if (d.code) {
-        lines.push(`<li>Use code <span class="code-pill">${esc(d.code)}</span></li>`);
+        lines.push(`<li>${manual ? "Enter code" : "Use code"} <span class="code-pill">${esc(d.code)}</span>${manual ? " at checkout" : ""}</li>`);
       }
 
       const ends = d.end_date

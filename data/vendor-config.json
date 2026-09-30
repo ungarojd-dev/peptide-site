@@ -42,9 +42,9 @@
     "LabSourced Peptides": {
       "id": "labsourced-peptides",
       "discount_percent": 15,
-      "affiliate_url": "https://labsourced.com/?ref=SammyC",
+      "affiliate_url": "https://lab-sourced.com/",
       "logo": "/assets/vendor-logos/labsourced-peptides.webp",
-      "use_product_deep_links": true,
+      "use_product_deep_links": false,
       "payment_methods": [
         "Apple Pay",
         "Google Pay",
@@ -54,7 +54,9 @@
         "Zelle"
       ],
       "brand_color": "#1470c8",
-      "package_protection_required": false
+      "package_protection_required": false,
+      "code_auto_applies": false,
+      "code_note": "Enter SAMMYC at checkout"
     },
     "Mile High Peptides": {
       "id": "mile-high-peptides",

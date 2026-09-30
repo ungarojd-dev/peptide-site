@@ -409,7 +409,12 @@
     if(labelPromo){
       discount=`<span class="supplier-discount">${esc(Number(labelPromo.sale_percent))}% off <span class="supplier-discount-plus">+ ${esc(Number(labelPromo.code_percent))}% with ${code}</span></span>`;
     }else if(supplier.discount_percent){
-      discount=`<span class="supplier-discount">${esc(Number(supplier.discount_percent))}% off with ${code}</span>`;
+      // "with SAMMYC" reads as something the link already did. When the vendor
+      // has no link attribution the visitor has to type it, and not saying so
+      // costs them the discount and us the commission.
+      discount=supplier.code_auto_applies===false
+        ?`<span class="supplier-discount">${esc(Number(supplier.discount_percent))}% off, enter ${code} at checkout</span>`
+        :`<span class="supplier-discount">${esc(Number(supplier.discount_percent))}% off with ${code}</span>`;
     }else{
       discount=`<span class="supplier-discount">Code details on vendor site</span>`;
     }
@@ -694,8 +699,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260930-deals-ticker-v186",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260930-deals-ticker-v186",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260930-labsourced-temp-v187",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260930-labsourced-temp-v187",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
@@ -816,7 +821,7 @@
       :`<span class="hero-vendor-mark">${esc(initials(supplier.vendor_name))}</span>`;
     const code=supplier.coupon_code||"SAMMYC";
     const note=Number(supplier.discount_percent)>0
-      ?`${size}, ${Number(supplier.discount_percent)}% off with ${code}`
+      ?`${size}, ${Number(supplier.discount_percent)}% off${supplier.code_auto_applies===false?`, enter ${code} at checkout`:` with ${code}`}`
       :`${size}, code details on vendor site`;
     const permg=supplier.price_per_mg_label?`<span class="hero-vendor-permg">${esc(supplier.price_per_mg_label)}</span>`:"";
     const cta=Number(supplier.discount_percent)>0
