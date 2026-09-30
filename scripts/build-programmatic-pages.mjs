@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260929-hero-solo-v182";
+const VER = "20260929-deals-page-v185";
 const BASE = "https://mypeptideprice.com";
 // Files are written with .html, but every URL we publish (canonical, og:url,
 // schema, internal links, sitemap) uses the clean form. Google was indexing both
@@ -115,10 +115,18 @@ const HEAD_ASSETS = `<link rel="preconnect" href="https://fonts.googleapis.com"/
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
 <link rel="stylesheet" href="/assets/site.css?v=${VER}"/>`;
 
+const OPT_OUT = `<!-- Privacy: honour a stored opt-out and Global Privacy Control before any
+tracking loads. The privacy policy promises GPC visitors that "analytics and
+advertising scripts are disabled automatically". The hand-written pages did this,
+but every generated page loaded GTM and the Meta Pixel unconditionally, so on 107
+of 126 pages that promise was not kept. -->
+<script>(function(){try{var k="mpp_analytics_opt_out_v1";var gpc=navigator.globalPrivacyControl===true;var stored=null;try{stored=localStorage.getItem(k);}catch(e){}
+  window.MPP_ANALYTICS_OPT_OUT=(stored==="1")||(gpc&&stored!=="0");}catch(e){window.MPP_ANALYTICS_OPT_OUT=false;}})();</script>`;
+
 const GTM = `<!-- Google Tag Manager -->
-<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PDQM5TBB');</script>
+<script>if(!window.MPP_ANALYTICS_OPT_OUT)(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PDQM5TBB');</script>
 <!-- Meta Pixel -->
-<script>!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1628795955539627');fbq('track','PageView');</script>`;
+<script>if(!window.MPP_ANALYTICS_OPT_OUT)!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1628795955539627');fbq('track','PageView');</script>`;
 
 const NOSCRIPT = `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDQM5TBB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
 <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1628795955539627&ev=PageView&noscript=1" alt=""/></noscript>`;
@@ -238,7 +246,7 @@ function header() {
         </div>
       </div>
       <a href="/faq">FAQ</a>
-      <a href="/standards">Standards</a>
+      <a href="/deals">Deals</a><a href="/standards">Standards</a>
       <a href="/blog/">Research</a>
       <a class="nav-code-pill" href="/#compare">Use SAMMYC</a>
     </nav>
@@ -286,6 +294,7 @@ function shell({ title, desc, canonical, schema, body }) {
 <link rel="manifest" href="/site.webmanifest"/>
 ${HEAD_ASSETS}
 ${PAGE_CSS}
+${OPT_OUT}
 ${GTM}
 <script type="application/ld+json">
 ${schema}
@@ -409,7 +418,17 @@ for (const c of compoundPages) {
   const canonical = `${BASE}${clean(path)}`;
   const lowLabel = c.lo != null ? money(c.lo) : null;
   const hiLabel = c.hi != null ? money(c.hi) : null;
-  const title = `${c.name} Price Comparison | ${c.vendors.length} Vendors, Cost Per mg`;
+  // Titles are capped at 62 characters so Google shows them whole. Blend names
+  // run to 37 characters ("BPC-157 + TB-500 + GHK-Cu + KPV Blend"), which blew
+  // the full template past 79. The compound name is the keyword and is never
+  // shortened; the suffix gives way instead, longest form that still fits.
+  const n = c.vendors.length;
+  const title = [
+    `${c.name} Price Comparison | ${n} Vendors, Cost Per mg`,
+    `${c.name} Price Comparison | ${n} Vendors`,
+    `${c.name} Prices | ${n} Vendors`,
+    `${c.name} Prices`
+  ].find(t => t.length <= 62) || `${c.name} Prices`;
   // No price range in the snippet. It was baked in at build time, so every
   // search result kept showing July prices once the generator stopped running.
   // The fallback keeps the longest blend names under 160 characters.
@@ -561,7 +580,11 @@ for (const v of vendorNames) {
   if (uniq.length === 0) { continue; } // vendor with no priced offers in snapshot, skip page
   const lo = uniq.length ? uniq[0].price : null;
   const hi = uniq.length ? uniq[uniq.length - 1].price : null;
-  const title = `${v.display} Prices | Compare ${compoundCount} Compounds Per Mg`;
+  const title = [
+    `${v.display} Prices | Compare ${compoundCount} Compounds Per Mg`,
+    `${v.display} Prices | ${compoundCount} Compounds Compared`,
+    `${v.display} Prices | ${compoundCount} Compounds`
+  ].find(t => t.length <= 62) || `${v.display} Prices`;
   const desc = `${v.display} prices across ${compoundCount} research compounds, compared per mg against other vendors, with current sales and coupon codes. Research use only.`;
 
   const vendorRows = uniq.slice(0, 20);
@@ -691,7 +714,14 @@ console.log("vendor pages written:", generated.vendors.length);
 {
   const canonical = `${BASE}/compounds`;
   const title = "All Peptide Compounds | Price Comparison by $/mg";
-  const desc = `Browse every research peptide tracked on MyPeptidePrice.com. Compare prices and cost per mg across ${compounds.length} compounds and ${new Set(compounds.flatMap(c=>c.vendors)).size} vendors. Research use only.`;
+  // The roster in data/vendor-config.json, not the vendors that happened to
+  // appear in this build. Both the meta description and the hero stat below are
+  // tracking claims and have to agree with the homepage, which publishes the
+  // roster. Counting distinct vendors across the generated compounds gave a
+  // different number on every deploy that had a feed time out, and it read 15
+  // against the homepage's 19.
+  const vendorCount = Object.keys(vendorCfg.vendors || {}).length || generated.vendors.length;
+  const desc = `Browse every research peptide tracked on MyPeptidePrice.com. Compare prices and cost per mg across ${compounds.length} compounds and ${vendorCount} vendors. Research use only.`;
   const byCat = {};
   for (const c of compounds) (byCat[c.category] = byCat[c.category] || []).push(c);
   const cats = Object.keys(byCat).sort();
@@ -717,7 +747,6 @@ console.log("vendor pages written:", generated.vendors.length);
 
   // Was hardcoded to 13 and had drifted. Derived from the vendor pages actually
   // generated, so it cannot go stale again.
-  const vendorCount = generated.vendors.length || Object.keys(vendorCfg.vendors || {}).length;
   const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Peptide price comparison</a><span>/</span>Compounds</nav>
 <section class="hero"><div class="hero-inner"><div><span class="eyebrow">Compound directory</span><h1>All tracked peptide compounds.</h1><p>Browse every research compound compared on MyPeptidePrice.com. Each page ranks vendors by price and cost per mg.</p><div class="hero-actions"><a class="button" href="/#compare" data-cta="hero">Open the live comparison</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Compounds</span><strong>${compounds.length}</strong></div><div class="hero-stat"><span>Vendors</span><strong>${vendorCount}</strong></div><div class="hero-stat"><span>Discount code</span><strong>SAMMYC</strong></div></div></div></section>
 ${sections}
@@ -766,6 +795,184 @@ for (const [key, hubPath] of HAND_BUILT) {
   console.log(`hub ${hubPath}: refreshed, ${c.vendors.length} vendors, from ${money(c.lo)}`);
 }
 
+// ---- DEALS PAGE ----
+// deals.html is a hand-written shell whose card grid is rewritten here from
+// data/deals.json, the same file the Decap portal at /admin edits. It is server
+// rendered so the offers are crawlable: every deal on the site used to live
+// only in JavaScript panels and popups, so the freshest dataset we have earned
+// no organic traffic at all.
+//
+// promotions.json is deliberately NOT the source. That file is generated by
+// build-promotions.mjs and never ships in the repo, so reading it here would
+// make the page depend on a build artefact that may not exist. deals.json is
+// committed and is what a human actually edits.
+{
+  const dealsPath = `${W}/deals.html`;
+  let dealsHtml = null;
+  try { dealsHtml = await readFile(dealsPath, "utf8"); }
+  catch { console.warn("deals.html: file not found, skipped"); }
+
+  if (dealsHtml) {
+    const dealsDoc = JSON.parse(await readFile(`${W}/data/deals.json`, "utf8"));
+    const allDeals = Array.isArray(dealsDoc.deals) ? dealsDoc.deals : [];
+
+    // "Last checked" is when the DEALS were last checked, which is the date on
+    // the deals.json version string, not TODAY. TODAY is the date the price
+    // snapshot was pulled, and the two move independently: a deploy that only
+    // refreshes prices would otherwise re-date every offer on this page without
+    // anyone having looked at them.
+    const versionDate = String(dealsDoc.version || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
+    const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const checkedLabel = versionDate
+      ? `${MONTHS[Number(versionDate[2]) - 1]} ${Number(versionDate[3])}, ${versionDate[1]}`
+      : TODAY;
+
+    // Authored dates are plain YYYY-MM-DD wall dates. Building a Date from one
+    // parses it as UTC midnight, which in America/New_York is the evening
+    // before, so a deal ending "2026-09-30" was being dropped on the 29th.
+    // Compare the strings instead: they sort correctly by construction.
+    const todayISO = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+    const shownIn = d => (Array.isArray(d.show_in) ? d.show_in : [d.show_in]).includes("deals");
+    const live = d => !d.end_date || String(d.end_date) >= todayISO;
+    const started = d => !d.start_date || String(d.start_date) <= todayISO;
+
+    const deals = allDeals.filter(d => shownIn(d) && live(d) && started(d));
+
+    // Biggest saving first. A visitor scanning this page is looking for the
+    // largest number, not for whoever we happen to have listed first, and
+    // ordering by anything we are paid on would make the page an ad.
+    const cut = d => Number(d.sale_percent || 0) || Number(d.code_percent || 0);
+    deals.sort((a, b) =>
+      Number(!!b.featured) - Number(!!a.featured) ||
+      cut(b) - cut(a) ||
+      Number(a.priority || 99) - Number(b.priority || 99) ||
+      String(a.vendor).localeCompare(String(b.vendor))
+    );
+
+    const vendorKeyFor = name => {
+      const want = slug(name);
+      for (const [k, v] of Object.entries(vendorCfg.vendors || {})) {
+        if (slug(k) === want || slug(v.id || "") === want) return { key: k, cfg: v };
+      }
+      return null;
+    };
+
+    // "Ends Oct 5", never "2 days left". A relative phrase computed at build
+    // time is wrong by the next morning, and the client guard below already
+    // removes the row once the date passes.
+    const endLabel = iso => {
+      if (!iso) return "";
+      const [y, m, d] = String(iso).split("-").map(Number);
+      if (!y || !m || !d) return "";
+      const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      return `${months[m - 1]} ${d}`;
+    };
+
+    const cards = deals.map(d => {
+      const name = d.display_vendor || d.vendor;
+      const match = vendorKeyFor(d.vendor);
+      const logo = match && match.cfg.logo
+        ? `<img src="${esc(match.cfg.logo)}?v=${VER}" alt="${esc(name)} logo" width="48" height="48" loading="lazy" decoding="async"/>`
+        : "";
+
+      // The sale and the code are always two separate lines. Adding them into
+      // one headline number ("35% off") states a total only the vendor's
+      // checkout can decide, because the order they apply in changes it.
+      const lines = [];
+      if (d.sale_percent) {
+        lines.push(d.sale_code
+          ? `<li><strong>${esc(d.sale_percent)}% off</strong> with <span class="code-pill">${esc(d.sale_code)}</span></li>`
+          : `<li><strong>${esc(d.sale_percent)}% off</strong> sitewide sale</li>`);
+      }
+      if (d.code_percent && d.code) {
+        lines.push(`<li>${d.sale_percent ? "then a further " : ""}<strong>${esc(d.code_percent)}% off</strong> with <span class="code-pill">${esc(d.code)}</span></li>`);
+      } else if (d.code) {
+        lines.push(`<li>Use code <span class="code-pill">${esc(d.code)}</span></li>`);
+      }
+
+      const ends = d.end_date
+        ? `<span class="deal-ends">Ends ${esc(endLabel(d.end_date))}</span>`
+        : (d.ongoing ? `<span class="deal-ends deal-ends--open">Ongoing</span>` : "");
+      const compare = match ? `<a class="vendor-out" href="${esc(clean("/vendors/" + slug(match.cfg.id || match.key) + ".html"))}">See ${esc(name)} prices &#8250;</a>` : "";
+
+      return `<article class="vendor-card deal-card"${d.end_date ? ` data-deal-end="${esc(d.end_date)}"` : ""}>` +
+        `<div class="vendor-head">${logo}<div><h3>${esc(name)}</h3>${ends}</div></div>` +
+        `<p class="deal-headline">${esc(d.headline)}</p>` +
+        (lines.length ? `<ul class="deal-lines">${lines.join("")}</ul>` : "") +
+        `<p>${esc(d.description)}</p>` +
+        `<div class="vendor-card-actions">` +
+        `<a class="button" href="${esc(d.affiliate_url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(d.headline)}" data-category="promotion" data-vendor="${esc(d.vendor)}" data-code="${esc(d.code || d.sale_code || "")}" data-cta="Deals page, ${esc(name)}">${esc(d.cta_text || "Shop now")}</a>` +
+        compare +
+        `</div></article>`;
+    }).join("\n");
+
+    const vendorCount = new Set(deals.map(d => String(d.vendor))).size;
+
+    // ItemList of Offers. seller is the vendor, not us: we are not the merchant
+    // and marking ourselves as one would be a misrepresentation.
+    const itemList = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "Research peptide coupon codes and vendor sales",
+      numberOfItems: deals.length,
+      itemListElement: deals.map((d, i) => {
+        const offer = {
+          "@type": "Offer",
+          name: d.headline,
+          description: d.description,
+          url: `${BASE}/deals`,
+          seller: { "@type": "Organization", name: d.display_vendor || d.vendor },
+          category: "Research peptides"
+        };
+        if (d.end_date) offer.availabilityEnds = d.end_date;
+        if (d.start_date) offer.availabilityStarts = d.start_date;
+        return { "@type": "ListItem", position: i + 1, item: offer };
+      })
+    };
+    const breadcrumb = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${BASE}/` },
+        { "@type": "ListItem", position: 2, name: "Deals", item: `${BASE}/deals` }
+      ]
+    };
+    const schema = `<script type="application/ld+json">${JSON.stringify(itemList)}</script>\n` +
+                   `<script type="application/ld+json">${JSON.stringify(breadcrumb)}</script>`;
+
+    // A deal can expire between deploys, because the page is only rebuilt when
+    // Netlify builds. The server-rendered list is what a crawler sees; this
+    // removes any row whose end date has passed for a visitor arriving later.
+    // Same string comparison rule as the build: no Date parsing of wall dates.
+    const guard = `<script>(function(){try{var t=new Date().toLocaleDateString("en-CA",{timeZone:"America/New_York"});` +
+      `var rows=document.querySelectorAll("[data-deal-end]"),gone=0;` +
+      `for(var i=0;i<rows.length;i++){if(rows[i].getAttribute("data-deal-end")<t){rows[i].remove();gone++;}}` +
+      `if(gone){var n=document.querySelector("[data-deals-live]");` +
+      `if(n)n.textContent=String(Math.max(0,(parseInt(n.textContent,10)||0)-gone));` +
+      `var list=document.querySelector("[data-deals-list]");var empty=document.querySelector("[data-deals-empty]");` +
+      `if(list&&empty&&!list.querySelector(".deal-card")){list.hidden=true;empty.hidden=false;}}}catch(e){}})();</script>`;
+
+    const start = dealsHtml.indexOf("<!-- DEALS-GRID-START -->");
+    const end = dealsHtml.indexOf("<!-- DEALS-GRID-END -->");
+    if (start === -1 || end === -1) {
+      console.warn("deals.html: grid markers not found, left untouched");
+    } else {
+      dealsHtml = dealsHtml.slice(0, start) +
+        `<!-- DEALS-GRID-START -->\n<div class="vendor-grid deals-grid" data-deals-list>\n${cards}\n</div>\n` +
+        dealsHtml.slice(end);
+      dealsHtml = dealsHtml.replace(/(<strong data-deals-updated>)[^<]*(<\/strong>)/, `$1${checkedLabel}$2`);
+      dealsHtml = dealsHtml.replace(/(<strong data-deals-live>)[^<]*(<\/strong>)/, `$1${deals.length}$2`);
+      dealsHtml = dealsHtml.replace(/(<strong data-deals-vendors>)[^<]*(<\/strong>)/, `$1${vendorCount}$2`);
+      dealsHtml = dealsHtml.replace(/\n?<script type="application\/ld\+json">[\s\S]*?<\/script>(?=\s*<\/head>)/g, "");
+      dealsHtml = dealsHtml.replace("</head>", `${schema}\n</head>`);
+      dealsHtml = dealsHtml.replace(/\n?<script>\(function\(\)\{try\{var t=new Date\(\)\.toLocaleDateString\("en-CA"[\s\S]*?<\/script>/g, "");
+      dealsHtml = dealsHtml.replace("</body>", `${guard}\n</body>`);
+      await writeFile(dealsPath, dealsHtml);
+      console.log(`deals.html rebuilt: ${deals.length} live offers across ${vendorCount} vendors`);
+    }
+  }
+}
+
 // ---- emit sitemap ----
 // Previously this only wrote a list of URLs to a side file and left sitemap.xml
 // stale, so newly generated pages never got submitted. Now the sitemap is built
@@ -778,6 +985,11 @@ const CORE_URLS = [
   ["/bpc-157-price-comparison.html", "0.9"],
   ["/glp-weight-loss.html", "0.8"],
   ["/vendors.html", "0.8"],
+  // The deals page changes most days, which is the whole reason it earns a
+  // crawl. /standards was simply missing, so the page carrying our testing
+  // claim was never submitted.
+  ["/deals.html", "0.8"],
+  ["/standards.html", "0.7"],
   ["/faq.html", "0.6"],
   ["/blog/", "0.6"],
   ["/blog/bpc-157-price-comparison.html", "0.5"],

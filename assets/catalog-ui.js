@@ -18,7 +18,7 @@
     "Other":"Other"
   };
   function catLabel(value){return CATEGORY_LABELS[value]||value;}
-  const TRACKED_VENDOR_COUNT=15;
+  const TRACKED_VENDOR_COUNT=19;
   const NON_PEPTIDE_CATEGORIES=["Supplies","Other"];
   // Raw Powder sits next to Vials: both describe the material as supplied,
   // the rest describe a delivery format. Omitting it here would leave the
@@ -363,7 +363,10 @@
     set("statOffers",catalog.normalized_offer_count||catalog.mapped_offer_count||0);
     // The static fallback snapshot only carries a subset of vendors, so
     // vendors_loaded can read low (e.g. 5) on first paint and for crawlers.
-    // We track 14 vendors, so never display fewer than that.
+    // The roster in data/vendor-config.json is the number we publish, so never
+    // display fewer than that. Keep TRACKED_VENDOR_COUNT equal to the count of
+    // entries in that file: five of them have no live feed yet, but the tile is
+    // labelled "Trusted vendors", which is the roster, not the feed.
     set("statVendors",Math.max(Number(catalog.vendors_loaded)||0,TRACKED_VENDOR_COUNT));
   }
 
@@ -671,6 +674,7 @@
     resolveVendorFilter();
     renderFilters();
     renderCards(false);
+    renderHeroLive();
   }
 
 
@@ -690,8 +694,8 @@
 
   async function boot(){
     try{await global.MPPPromotions?.ready;}catch(error){console.warn("Promotion badges unavailable",error.message);}
-    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260929-hero-solo-v182",7000);
-    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260929-hero-solo-v182",10000);
+    const fallbackPromise=json("/data/catalog-fallback-snapshot.json?v=20260929-deals-page-v185",7000);
+    const latestPromise=json("/.netlify/functions/catalog-snapshot?v=20260929-deals-page-v185",10000);
     applyInitialFilters();
     try{const fallback=await fallbackPromise;applyCatalog(fallback.data,"Bundled catalog ready");}catch(error){console.warn("Bundled catalog unavailable",error.message);}
     try{const latest=await latestPromise;applyCatalog(latest.data,latest.response.headers.get("X-MPP-Catalog-Source")==="blob"?"Live snapshot loaded":"Bundled snapshot loaded");}catch(error){console.warn("Latest catalog snapshot unavailable",error.message);if(!state.cards.length){const status=$("catalogStatus");const grid=$("catalogGrid");if(status)status.textContent="Catalog unavailable";if(grid)grid.innerHTML=`<div class="catalog-empty">The comparison catalog could not load. Please refresh the page.</div>`;}}
@@ -720,6 +724,157 @@
       });
     });
     global.addEventListener("resize",updateChipsOverflow);
+  }
+
+
+  // ---- Hero live card --------------------------------------------------
+  // Replaces the hand-written comparison card that used to sit in the hero. That
+  // one showed a fixed BPC-157 example which never moved, visitors read it as a
+  // live quote, and it disagreed with the grid below. This card is drawn from the
+  // same catalog state the comparison grid renders from, so the two can never
+  // contradict each other, and it stays hidden when there is no data rather than
+  // showing a price it cannot stand behind.
+  //
+  // Prices are only comparable within one size, so the card locks onto a single
+  // size (the one the most vendors stock) and compares vendors inside it. A list
+  // of the absolute cheapest offers would rank a 5mg vial above a 10mg one and
+  // read as a better deal when it is not.
+  const HERO_FEATURED=[
+    {match:"retatrutide",href:"/retatrutide-price-comparison"},
+    {match:"tirzepatide",href:"/tirzepatide-price-comparison"},
+    {match:"semaglutide",href:"/semaglutide-price-comparison"},
+    {match:"bpc 157",href:"/bpc-157-price-comparison"}
+  ];
+  const HERO_ROWS=3;
+  const HERO_MIN_VENDORS=2;
+
+  function heroBuyable(supplier){
+    return supplier&&supplier.in_stock!==false&&Number.isFinite(Number(supplier.effective_price_min))&&Number(supplier.effective_price_min)>0;
+  }
+
+  // Sizes come off the supplier, not the variant. Whether the snapshot arrives
+  // pre-split into sized variants or as one variant holding every listing
+  // depends on the feed, and mergeLegacyCards passes the second shape straight
+  // through. Bucketing on quantity_label here is the same key the static page
+  // generator buckets on for its market medians, so the hero and the compound
+  // pages always agree on what counts as the same size.
+  function heroSizeGroups(card){
+    const groups=new Map();
+    (card.variants||[]).forEach(variant=>{
+      (variant.suppliers||[]).forEach(supplier=>{
+        if(!heroBuyable(supplier)) return;
+        const label=String(supplier.quantity_label||variant.label||"").trim();
+        if(!label||isUnsized(label)) return;
+        const key=normalizeText(label);
+        if(!key) return;
+        if(!groups.has(key)) groups.set(key,{label,vendors:new Map(),listings:0});
+        const group=groups.get(key);
+        group.listings+=1;
+        // One row per vendor. A vendor listing the same size twice would
+        // otherwise take two of the three rows and turn the comparison into a
+        // single quote wearing three hats.
+        const vendorKey=normalizeText(supplier.vendor_name);
+        if(!vendorKey) return;
+        const held=group.vendors.get(vendorKey);
+        if(!held||Number(supplier.effective_price_min)<Number(held.effective_price_min)) group.vendors.set(vendorKey,supplier);
+      });
+    });
+    return Array.from(groups.values()).map(group=>({
+      label:group.label,
+      listings:group.listings,
+      offers:Array.from(group.vendors.values()).sort((a,b)=>Number(a.effective_price_min)-Number(b.effective_price_min))
+    })).filter(group=>group.offers.length>=HERO_MIN_VENDORS);
+  }
+
+  function heroPick(cards){
+    for(const featured of HERO_FEATURED){
+      const card=(cards||[]).find(item=>normalizeText(item.name).startsWith(featured.match));
+      if(!card) continue;
+      const groups=heroSizeGroups(card);
+      if(!groups.length) continue;
+      // The size the most vendors stock is the most useful comparison and the
+      // most stable one, so a feed dropping a single listing cannot swap the
+      // card out from under a returning visitor.
+      groups.sort((a,b)=>b.offers.length-a.offers.length
+        ||Number(a.offers[0].effective_price_min)-Number(b.offers[0].effective_price_min)
+        ||String(a.label).localeCompare(String(b.label)));
+      const group=groups[0];
+      return {card,href:featured.href,size:group.label,listings:group.listings,offers:group.offers};
+    }
+    return null;
+  }
+
+  function heroUpdatedLabel(catalog){
+    const stamp=new Date(catalog&&catalog.generated_at?catalog.generated_at:NaN);
+    if(Number.isNaN(stamp.getTime())) return "";
+    return stamp.toLocaleDateString("en-US",{month:"short",day:"numeric",timeZone:"America/New_York"});
+  }
+
+  function heroRow(supplier,card,size,isLowest){
+    const mark=supplier.vendor_logo
+      ?`<img class="hero-vendor-logo" src="${attr(supplier.vendor_logo)}" alt="" width="46" height="46" loading="lazy"/>`
+      :`<span class="hero-vendor-mark">${esc(initials(supplier.vendor_name))}</span>`;
+    const code=supplier.coupon_code||"SAMMYC";
+    const note=Number(supplier.discount_percent)>0
+      ?`${size}, ${Number(supplier.discount_percent)}% off with ${code}`
+      :`${size}, code details on vendor site`;
+    const permg=supplier.price_per_mg_label?`<span class="hero-vendor-permg">${esc(supplier.price_per_mg_label)}</span>`:"";
+    const cta=Number(supplier.discount_percent)>0
+      ?`Hero card, ${Number(supplier.discount_percent)}% off at ${supplier.vendor_name}`
+      :`Hero card, view deal at ${supplier.vendor_name}`;
+    const label=`${supplier.effective_price_label||"See price"} for ${card.name} ${size} at ${supplier.vendor_name}`;
+    return `<a class="hero-price-card${isLowest?" is-lowest":""}" href="${attr(supplier.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-hero-affiliate="1" data-product="${attr(card.name)}" data-category="${attr(card.category)}" data-vendor="${attr(supplier.vendor_name)}" data-code="${attr(supplier.coupon_code||"")}" data-cta="${attr(cta)}" aria-label="${attr(label)}">${mark}<span class="hero-vendor-copy"><strong>${esc(supplier.vendor_name)}</strong><span>${esc(note)}</span></span><span class="hero-vendor-price">${isLowest?`<span class="hero-lowest-badge">Lowest</span>`:""}<strong>${esc(supplier.effective_price_label)}</strong>${permg}</span></a>`;
+  }
+
+  function renderHeroLive(){
+    const mount=$("heroLivePanel");
+    const shell=$("heroLive");
+    const inner=$("heroInner");
+    if(!mount||!shell) return;
+    const picked=heroPick(state.cards);
+    // No usable data means no card. The hero returns to the single column layout
+    // it ships in, which is the same thing a visitor without JavaScript sees.
+    // This resets rather than simply returning, because the fallback snapshot
+    // renders first and the live one replaces state.cards a moment later: if the
+    // live data no longer supports the card, leaving the fallback render on
+    // screen is exactly the stale price the old static panel was removed for.
+    if(!picked){
+      mount.innerHTML="";
+      shell.setAttribute("hidden","");
+      if(inner) inner.classList.add("hero-inner--solo");
+      return;
+    }
+    const {card,href,size,listings,offers}=picked;
+    const rows=offers.slice(0,HERO_ROWS);
+    const spread=Number(offers[offers.length-1].effective_price_min)-Number(offers[0].effective_price_min);
+    const permg=offers.map(supplier=>Number(supplier.price_per_mg)).filter(value=>Number.isFinite(value)&&value>0);
+    const updated=heroUpdatedLabel(state.catalog);
+    const stats=[];
+    if(permg.length) stats.push({figure:money(Math.min.apply(null,permg)),label:"Lowest per mg"});
+    stats.push({figure:String(offers.length),label:"Vendors compared"});
+    if(spread>0.01) stats.push({figure:money(spread),label:"Low to high gap"});
+    mount.innerHTML=`<div class="hero-comparison-head">
+        <div>
+          <span class="hero-network-kicker">Cheapest right now</span>
+          <strong>${esc(card.name)} ${esc(size)}</strong>
+          <small>Lowest tracked price per vendor across ${esc(listings)} listing${listings===1?"":"s"} of this size, after the codes we can verify.</small>
+        </div>
+        <span class="hero-network-badge">Live pricing</span>
+      </div>
+      ${rows.map((supplier,index)=>heroRow(supplier,card,size,index===0)).join("")}
+      ${stats.length?`<div class="hero-mini-stats">${stats.map(stat=>`<div><strong>${esc(stat.figure)}</strong><span>${esc(stat.label)}</span></div>`).join("")}</div>`:""}
+      <div class="hero-network-foot">
+        <a class="hero-foot-link" href="${attr(href)}">See every ${esc(card.name)} listing &rsaquo;</a>
+        ${updated?`<span>Updated ${esc(updated)}</span>`:""}
+      </div>`;
+    mount.querySelectorAll('[data-hero-affiliate="1"]').forEach(link=>{
+      link.onclick=()=>{
+        global.dataLayer=global.dataLayer||[];
+        global.dataLayer.push({event:"affiliate_click",product_name:link.dataset.product,product_category:link.dataset.category,lab_result:"tracked_vendor",button_text:link.dataset.cta||"View deal",button_location:"hero_live_card",affiliate_network:"direct_vendor",vendor_name:link.dataset.vendor,discount_code:link.dataset.code,affiliate_url:link.href});
+      };
+    });
+    shell.removeAttribute("hidden");
+    if(inner) inner.classList.remove("hero-inner--solo");
   }
 
   global.CatalogUI={boot,state};

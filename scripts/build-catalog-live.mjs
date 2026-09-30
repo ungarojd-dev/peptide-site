@@ -5,7 +5,8 @@
 // Replaces build-catalog-fallback.mjs in the Netlify build chain.
 //
 // Why: build-catalog-fallback.mjs rebuilds from data/catalog-fallback.json, a
-// committed seed of 1506 rows carrying no `url` field and only 14 vendors. Any
+// committed seed of 1506 rows carrying no `url` field and only 14 vendors against
+// the 19 in data/vendor-config.json. Any
 // deploy running it reverted the bundled snapshot to base affiliate URLs and
 // dropped Orbitrex, then regenerated all 100+ static pages from that. This
 // script pulls the same live feeds the serverless functions use instead.

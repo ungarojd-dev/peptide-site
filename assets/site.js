@@ -236,7 +236,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260929-hero-solo-v182";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260929-deals-page-v185";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
