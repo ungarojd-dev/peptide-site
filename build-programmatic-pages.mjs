@@ -1,0 +1,1183 @@
+import { readFile, writeFile, mkdir } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { assertSnapshotUsable } from "./_snapshot-floor.mjs";
+import { dirname, resolve } from "node:path";
+
+// Resolve the repo root from this file's location so the generator works from
+// any checkout. It previously pointed at a hardcoded scratch directory, which
+// silently read a stale snapshot and wrote pages outside the repo.
+const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const VER = "20260930-history-chart-v193";
+const BASE = "https://mypeptideprice.com";
+// Files are written with .html, but every URL we publish (canonical, og:url,
+// schema, internal links, sitemap) uses the clean form. Google was indexing both
+// forms of 42 pages and ranking the clean one far higher (/compounds at 7.7 vs
+// /compounds.html at 50), so the .html canonicals were being overridden and the
+// signals split. Netlify serves /x from x.html, so no file moves.
+const clean = p => String(p).replace(/\/index\.html$/, "/").replace(/\.html(?=$|[?#])/, "");
+
+const snap = JSON.parse(await readFile(`${W}/data/catalog-fallback-snapshot.json`, "utf8"));
+// The "Updated" stamp is the date the price data was pulled, read from the
+// snapshot, not a hand-typed string. It was hardcoded to "July 2026", so every
+// page said July for two months while Netlify was regenerating it with fresh
+// prices on each deploy. Using the snapshot date keeps it honest: if a live pull
+// fails and the build falls back to an older snapshot, the page says so.
+const snapStamp = new Date(snap.generated_at || Date.now());
+const TODAY = (Number.isNaN(snapStamp.getTime()) ? new Date() : snapStamp)
+  .toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "America/New_York" });
+const vendorCfg = JSON.parse(await readFile(`${W}/data/vendor-config.json`, "utf8"));
+
+// Nothing below this line is safe to run on a partial snapshot: it regenerates
+// every compound page, every hub, the vendors page and the sitemap. If the
+// snapshot is a seed rather than a catalog, stop here and fail the deploy.
+assertSnapshotUsable(snap, {
+  configuredVendors: Object.keys(vendorCfg.vendors || {}).length,
+  label: "data/catalog-fallback-snapshot.json"
+});
+
+const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
+const jesc = s => String(s == null ? "" : s).replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\s+/g, " ").trim();
+const slug = s => String(s).toLowerCase().replace(/&/g, " and ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+const money = n => "$" + Number(n).toFixed(2);
+const catUrl = c => `${BASE}/?cat=${encodeURIComponent(c)}`;
+
+// ---------------------------------------------------------------------------
+// Price context and row rendering, shared by compound and vendor pages.
+//
+// The median is computed here rather than read from the snapshot so these pages
+// carry price context on the very first build, before a live snapshot with the
+// engine's market fields has been pulled down.
+// ---------------------------------------------------------------------------
+const MARKET_BADGE_THRESHOLD = 10;
+const MIN_MARKET_SAMPLE = 4;
+
+function median(values = []) {
+  const sorted = values.filter(v => Number.isFinite(v)).sort((a, b) => a - b);
+  if (!sorted.length) return null;
+  const mid = Math.floor(sorted.length / 2);
+  return sorted.length % 2 ? sorted[mid] : (sorted[mid - 1] + sorted[mid]) / 2;
+}
+
+// Compares like with like by bucketing on size before taking a median, so a
+// 10mg listing is never measured against a 100mg one.
+function marketDeltas(offers = [], sizeOf = o => o.size) {
+  const buckets = new Map();
+  for (const offer of offers) {
+    if (!Number.isFinite(offer.price)) continue;
+    const key = String(sizeOf(offer) || "");
+    if (!buckets.has(key)) buckets.set(key, []);
+    buckets.get(key).push(offer.price);
+  }
+  const medians = new Map();
+  for (const [key, prices] of buckets) {
+    if (prices.length < MIN_MARKET_SAMPLE) continue;
+    const reference = median(prices);
+    if (reference > 0) medians.set(key, reference);
+  }
+  const deltas = new Map();
+  for (const offer of offers) {
+    const reference = medians.get(String(sizeOf(offer) || ""));
+    if (!reference || !Number.isFinite(offer.price)) continue;
+    deltas.set(offer, Math.round(((offer.price - reference) / reference) * 100));
+  }
+  return deltas;
+}
+
+// Only the favourable side is ever rendered. Labelling a tracked partner as
+// expensive helps no one and invites a vendor-relations problem.
+function marketBadge(delta) {
+  return Number.isFinite(delta) && delta <= -MARKET_BADGE_THRESHOLD
+    ? `<span class="market-chip">${Math.abs(delta)}% below market</span>`
+    : "";
+}
+
+function ctaLabel() {
+  return "View listing";
+}
+// Analytics keeps the descriptive version even though the button is generic.
+function ctaTracking(discount, vendor) {
+  return discount > 0 ? `View listing, ${discount}% off at ${vendor}` : `View listing at ${vendor}`;
+}
+
+// The row is a container with a transparent stretched link, because the copy
+// button is a real <button> and cannot be nested inside an <a>.
+function priceRow(o) {
+  const cta = ctaLabel();
+  const ctaTrack = ctaTracking(o.discount, o.vendorDisplay);
+  const copy = o.discount > 0 && o.code
+    ? `<button class="row-copy" type="button" data-copy-code="${esc(o.code)}" data-vendor="${esc(o.vendorKey)}" data-product="${esc(o.product)}" data-copy-location="${esc(o.location || "static_price_table")}"><span class="supplier-copy-text">Copy ${esc(o.code)}</span></button>`
+    : "";
+  const hitLabel = `${o.priceLabel || "See price"} for ${o.sizeLine} at ${o.vendorDisplay}`;
+  return `<div class="price-row${o.inStock === false ? " is-oos" : ""}"><a class="row-hit" href="${esc(o.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(o.product)}" data-category="${esc(o.category)}" data-vendor="${esc(o.vendorKey)}" data-code="${esc(o.code || "")}" data-cta="${esc(ctaTrack)}" aria-label="${esc(hitLabel)}"></a><span class="price-size"><span class="size">${o.sizeLine}${marketBadge(o.delta)}</span><span class="vendor">${o.vendorLine}</span><span class="disc">${o.note}</span></span><span class="price-amount"><span class="amt">${esc(o.priceLabel || "See vendor")}</span>${o.permg ? `<span class="permg">${esc(o.permg)}</span>` : ""}<span class="row-actions">${copy}<span class="go">${esc(cta)}</span></span></span></div>`;
+}
+
+// "Code SAMMYC applies" is true for a vendor whose affiliate link carries the
+// coupon. A vendor on a temporary domain has no link attribution at all, so the
+// visitor has to type it, and saying "applies" would cost them the discount.
+function codeNote(vendorKey, code, discount) {
+  const cfg = vendorCfg.vendors?.[vendorKey];
+  return cfg && cfg.code_auto_applies === false
+    ? `Enter ${esc(code)} at checkout (${discount}% off)`
+    : `Code ${esc(code)} applies (${discount}% off)`;
+}
+
+const NONPEP = ["Acetic Acid", "Bacteriostatic", "Travel Case", "Starter Kit", "Research Starter", "Case ONLY", "Protective Travel"];
+const HAND_BUILT = new Map([
+  ["semaglutide", "/semaglutide-price-comparison"],
+  ["tirzepatide", "/tirzepatide-price-comparison"],
+  ["retatrutide", "/retatrutide-price-comparison"],
+  ["bpc-157", "/bpc-157-price-comparison"],
+]);
+
+const HEAD_ASSETS = `<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
+<link rel="stylesheet" href="/assets/site.css?v=${VER}"/>`;
+
+const OPT_OUT = `<!-- Privacy: honour a stored opt-out and Global Privacy Control before any
+tracking loads. The privacy policy promises GPC visitors that "analytics and
+advertising scripts are disabled automatically". The hand-written pages did this,
+but every generated page loaded GTM and the Meta Pixel unconditionally, so on 107
+of 126 pages that promise was not kept. -->
+<script>(function(){try{var k="mpp_analytics_opt_out_v1";var gpc=navigator.globalPrivacyControl===true;var stored=null;try{stored=localStorage.getItem(k);}catch(e){}
+  window.MPP_ANALYTICS_OPT_OUT=(stored==="1")||(gpc&&stored!=="0");}catch(e){window.MPP_ANALYTICS_OPT_OUT=false;}})();</script>`;
+
+const GTM = `<!-- Google Tag Manager -->
+<script>if(!window.MPP_ANALYTICS_OPT_OUT)(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src='https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);})(window,document,'script','dataLayer','GTM-PDQM5TBB');</script>
+<!-- Meta Pixel -->
+<script>if(!window.MPP_ANALYTICS_OPT_OUT)!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1628795955539627');fbq('track','PageView');</script>`;
+
+const NOSCRIPT = `<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-PDQM5TBB" height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=1628795955539627&ev=PageView&noscript=1" alt=""/></noscript>`;
+
+const PAGE_CSS = `<style>
+.crumbs{max-width:1120px;margin:0 auto;padding:14px 20px 0;font-size:.82rem;color:var(--muted)}
+.crumbs a{color:var(--olive-2);text-decoration:none}.crumbs a:hover{text-decoration:underline}.crumbs span{color:var(--muted);margin:0 6px}
+.answer-box{max-width:1120px;margin:18px auto 0;padding:0 20px}
+.answer-box .inner{background:var(--soft);border-left:4px solid var(--olive);border-radius:0 12px 12px 0;padding:14px 18px}
+.answer-box .inner p{margin:0;font-size:1rem;line-height:1.6;color:var(--ink)}
+.answer-box .inner strong{color:var(--forest)}
+.snap-wrap{max-width:1120px;margin:0 auto;padding:8px 20px 0}
+.snap-head{display:flex;flex-wrap:wrap;align-items:baseline;justify-content:space-between;gap:8px;margin-bottom:12px}
+.snap-head h2{font-family:var(--font-display);color:var(--forest);margin:0;font-size:1.5rem}
+.snap-meta{font-size:.8rem;color:var(--muted);display:inline-flex;align-items:center;gap:6px}
+.snap-meta .dot{width:8px;height:8px;border-radius:50%;background:var(--olive);display:inline-block}
+.price-card{background:var(--paper);border:1px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.price-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:12px;padding:16px 18px;text-decoration:none;color:inherit;border-bottom:1px solid var(--line);transition:background .15s ease}
+.price-row:last-child{border-bottom:0}
+.price-row:hover{background:var(--soft)}
+.price-size{min-width:0;display:block}
+.price-size .size{display:block;font-weight:900;color:var(--ink);font-size:1.02rem}
+.price-size .vendor{display:block;font-size:.83rem;color:var(--muted);margin-top:3px}
+.price-size .disc{display:block;font-size:.77rem;color:var(--olive-2);font-weight:700;margin-top:3px}
+.price-amount{text-align:right;white-space:nowrap}
+.price-amount .from{display:block;font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.price-amount .amt{display:block;font-family:var(--font-body);font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest);font-size:1.3rem;margin-top:2px}
+.price-amount .permg{display:block;font-size:.72rem;color:var(--olive-2);font-weight:800;margin-top:2px}
+.price-amount .go{display:block;font-size:.77rem;color:var(--olive-2);font-weight:700;margin-top:3px}
+.snap-note{font-size:.78rem;color:var(--muted);margin-top:12px;line-height:1.5}
+.pay-grid{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pay-chip{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line);border-radius:999px;background:#fff;padding:5px 12px;font-size:.8rem;font-weight:600;color:var(--ink)}
+.pay-icon{width:14px;height:14px;flex:none;opacity:.7}
+.pay-note{font-size:.78rem;color:var(--muted);margin-top:12px;line-height:1.5}
+@media(max-width:700px){.pay-chip{padding:4px 10px;font-size:.74rem}.pay-grid{gap:6px}}
+.snap-cta{margin-top:14px}
+/* Row actions: stretched outbound link, copy-code button, price context.
+   The row is a container because a real <button> cannot sit inside an <a>. */
+.price-row{position:relative}
+.row-hit{position:absolute;inset:0;z-index:1;text-decoration:none}
+.row-hit:focus-visible{outline:3px solid var(--olive);outline-offset:-3px}
+.row-actions{display:flex;align-items:center;justify-content:flex-end;gap:8px;flex-wrap:wrap;margin-top:8px}
+.price-amount .go{display:inline-flex;align-items:center;margin-top:0;border-radius:999px;background:var(--forest);color:#fff;padding:6px 12px;font-size:.76rem;font-weight:800;line-height:1.3;text-align:left}
+.price-row:hover .go{background:var(--olive)}
+.row-copy{position:relative;z-index:2;display:inline-flex;align-items:center;border:1px dashed rgba(29,58,43,.5);border-radius:999px;background:#fff;color:var(--forest);padding:5px 11px;font:inherit;font-size:.76rem;font-weight:800;line-height:1.3;cursor:pointer;transition:background .14s ease,border-color .14s ease,color .14s ease}
+.row-copy:hover{border-style:solid;border-color:var(--olive);background:var(--soft)}
+.row-copy:focus-visible{outline:3px solid var(--olive);outline-offset:2px}
+.row-copy.is-copied{border-style:solid;border-color:var(--forest);background:var(--forest);color:#fff}
+.market-chip{display:inline-block;margin-left:8px;border-radius:999px;background:rgba(106,121,41,.14);color:#4c5720;padding:2px 8px;font-size:.66rem;font-weight:800;letter-spacing:.03em;text-transform:uppercase;vertical-align:middle;white-space:nowrap}
+.price-row.is-oos{opacity:.62}
+.price-row.is-oos .go{background:#6B6862}
+.price-row.is-oos:hover{opacity:1}
+/* Sticky lowest-price bar. Mobile-first: this is where nearly all search
+   traffic lands, and the price table scrolls away fast on a phone. */
+.sticky-best{position:fixed;left:0;right:0;bottom:0;z-index:60;display:flex;align-items:center;gap:12px;background:var(--forest);color:var(--cream);padding:10px 16px;box-shadow:0 -6px 20px rgba(13,15,12,.28);transform:translateY(110%);transition:transform .22s ease;padding-bottom:calc(10px + env(safe-area-inset-bottom,0px))}
+.sticky-best.is-visible{transform:translateY(0)}
+.sb-copy{display:flex;flex-direction:column;min-width:0;flex:1 1 auto}
+.sb-label{font-size:.62rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;opacity:.75}
+.sb-detail{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:.84rem;font-weight:700}
+.sb-figure{flex:none;font-family:var(--font-body);font-size:1.1rem;font-weight:900;font-variant-numeric:tabular-nums}
+.sb-go{flex:none;border-radius:999px;background:var(--cream);color:var(--forest);padding:9px 16px;font-size:.78rem;font-weight:900;text-decoration:none;white-space:nowrap}
+.sb-go:hover{background:#fff}
+.sb-go:focus-visible{outline:3px solid var(--cream);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.sticky-best{transition:none}.row-copy,.price-amount .go{transition:none}}
+@media(min-width:900px){.sticky-best{display:none}}
+@media(max-width:520px){
+.row-actions{width:100%;justify-content:flex-start;margin-top:9px}
+.price-amount .go{font-size:.72rem;padding:6px 10px}
+.row-copy{font-size:.72rem;padding:5px 9px}
+.market-chip{margin-left:0;margin-top:4px;font-size:.6rem}
+.sticky-best{gap:9px;padding:9px 12px;padding-bottom:calc(9px + env(safe-area-inset-bottom,0px))}
+.sb-figure{font-size:1rem}
+.sb-go{padding:8px 13px;font-size:.74rem}
+}
+.copy{max-width:1120px;margin:0 auto;padding:0 20px}
+.copy h2{font-family:var(--font-display);color:var(--forest);margin-bottom:6px}
+.copy h3{font-family:var(--font-display);color:var(--forest);font-size:1.2rem;margin:22px 0 6px}
+.copy p{color:var(--ink);line-height:1.7}
+.research-tag{display:inline-block;background:var(--soft);color:var(--forest-2);border:1px solid var(--line);border-radius:999px;padding:4px 12px;font-size:.75rem;font-weight:800;letter-spacing:.03em;margin-bottom:10px}
+.xlink-wrap{max-width:1120px;margin:0 auto;padding:8px 20px}
+.xlink-wrap h2{font-family:var(--font-display);color:var(--forest);font-size:1.2rem;margin:0 0 10px}
+.xlink-grid{display:flex;flex-wrap:wrap;gap:8px}
+.xlink-grid a{display:inline-block;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:6px 14px;font-size:.82rem;font-weight:700;color:var(--forest);text-decoration:none}
+.xlink-grid a:hover{background:var(--paper);border-color:var(--olive)}
+.hub-grid{max-width:1120px;margin:0 auto;padding:8px 20px 0;display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px}
+.hub-card{display:block;background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:14px 16px;text-decoration:none;color:inherit;transition:border-color .15s,background .15s}
+.hub-card:hover{border-color:var(--olive);background:var(--soft)}
+.hub-card .hc-name{font-weight:900;color:var(--ink);font-size:1rem}
+.hub-card .hc-cat{font-size:.76rem;color:var(--muted);margin-top:2px}
+.hub-card .hc-price{font-size:.86rem;color:var(--forest);font-weight:800;margin-top:8px}
+.hub-card .hc-price span{color:var(--muted);font-weight:600}
+.ph-card{border:1px solid var(--line);border-radius:16px;background:#fff;padding:16px;box-shadow:0 10px 30px rgba(13,13,13,.05)}
+.ph-figures{display:flex;flex-wrap:wrap;gap:22px;margin-bottom:12px}
+.ph-figures div{display:flex;flex-direction:column;gap:2px}
+.ph-figures span{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ph-figures strong{font-family:var(--font-body);font-size:1.25rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest)}
+.ph-chart{margin:4px 0 10px}
+.ph-plot{position:relative;padding-top:38px}
+.ph-plot svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.ph-plot svg:focus-visible{outline:2px solid var(--olive);outline-offset:3px;border-radius:10px}
+.ph-tip{position:absolute;top:0;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:1px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:4px 10px;white-space:nowrap;pointer-events:none;box-shadow:0 6px 18px rgba(13,13,13,.12)}
+.ph-tip strong{font-size:.94rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest);line-height:1.15}
+.ph-tip span{font-size:.69rem;font-weight:700;color:var(--muted)}
+.ph-table{margin:8px 0 0}
+.ph-table summary{cursor:pointer;font-size:.78rem;font-weight:800;color:var(--forest)}
+.ph-table summary:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+.ph-table-scroll{max-height:230px;overflow:auto;margin-top:8px;border:1px solid var(--line);border-radius:10px}
+.ph-table table{width:100%;border-collapse:collapse;font-size:.8rem}
+.ph-table th,.ph-table td{padding:6px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.ph-table th{position:sticky;top:0;background:var(--soft);font-size:.64rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ph-table td{font-variant-numeric:tabular-nums}
+.ph-table tbody tr:last-child td{border-bottom:0}
+@media(max-width:520px){.ph-figures{gap:16px}.ph-figures strong{font-size:1.1rem}.ph-plot{padding-top:34px}.ph-tip{padding:3px 8px}}
+.hub-section-title{max-width:1120px;margin:22px auto 0;padding:0 20px;font-family:var(--font-display);color:var(--forest);font-size:1.15rem}
+@media(max-width:520px){.snap-head h2{font-size:1.3rem}.answer-box .inner p{font-size:.95rem}
+.price-row{flex-direction:column;align-items:flex-start;gap:10px}
+.price-amount{text-align:left;width:100%}.price-amount .amt{font-size:1.4rem}}
+</style>`;
+
+function header() {
+  return `<header class="site-top premium-top">
+  <div class="top-inner">
+    <a class="brand premium-brand" href="/" aria-label="MyPeptidePrice home">
+      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=${VER}" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+      <span class="brand-copy"><span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span><span class="brand-tagline">Research. Compare. Save.</span></span>
+      </a>
+      <a class="nav-deals-btn" href="/deals">Deals<span class="nav-deals-count" data-deals-count hidden>0</span></a>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open navigation"><span></span><span></span><span></span></button>
+    <nav class="site-nav" data-site-nav>
+      <a href="/#compare">Prices</a>
+      <a href="/vendors">Vendors</a>
+      <div class="nav-dd" data-nav-dd>
+        <button class="nav-dd-toggle" type="button" data-nav-dd-toggle aria-expanded="false" aria-haspopup="true">Compounds<span class="nav-dd-caret" aria-hidden="true"></span></button>
+        <div class="nav-dd-menu" data-nav-dd-menu>
+          <a href="/semaglutide-price-comparison">Semaglutide</a>
+          <a href="/tirzepatide-price-comparison">Tirzepatide</a>
+          <a href="/retatrutide-price-comparison">Retatrutide</a>
+          <a href="/bpc-157-price-comparison">BPC-157</a>
+          <a href="/compounds">All compounds</a>
+        </div>
+      </div>
+      <a href="/faq">FAQ</a>
+      <a href="/standards">Standards</a>
+      <a href="/blog/">Research</a>
+      <a class="nav-code-pill" href="/#compare">Use SAMMYC</a>
+    </nav>
+  </div>
+</header>
+<div class="coupon-strip">Independent research peptide price reference. Prices reflect the <span class="code-pill">SAMMYC</span> code where a vendor supports it. For laboratory research use only.</div>\n<div class="rou-strip" role="note">For laboratory and research use only. Not for human consumption. Not medical advice.</div>`;
+}
+
+function footer() {
+  return `<footer class="site-footer premium-footer">
+  <div class="footer-inner">
+    <div class="footer-col footer-col-brand">
+      <div class="footer-brand premium-footer-brand">
+        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=${VER}" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+        <div><div class="footer-wordmark"><span class="footer-brand-my">my</span><span class="footer-brand-peptide">peptide</span><span class="footer-brand-price">price</span><span class="footer-brand-dot">.com</span></div><div class="footer-tagline">Research. Compare. Save.</div></div>
+      </div>
+      <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
+    </div>
+    <div class="footer-col"><div class="footer-title">Compounds</div><div class="footer-links"><a href="/semaglutide-price-comparison">Semaglutide</a><a href="/tirzepatide-price-comparison">Tirzepatide</a><a href="/retatrutide-price-comparison">Retatrutide</a><a href="/bpc-157-price-comparison">BPC-157</a><a href="/compounds">All compounds</a></div></div>
+    <div class="footer-col"><div class="footer-title">Site</div><div class="footer-links"><a href="/#compare">Compare prices</a><a href="/vendors">Vendors</a><a href="/faq">FAQ</a><a href="/standards">7/7 Standard</a><a href="/blog/">Research</a></div></div>
+    <div class="footer-col"><div class="footer-title">Legal</div><div class="footer-links"><a href="/disclaimer">Disclaimer</a><a href="/terms">Terms</a><a href="/privacy">Privacy</a><a href="mailto:contact@mypeptideprice.com?subject=Price%20issue%20report">Report a price issue</a></div></div>
+  </div>
+  <div class="footer-base"><span>&copy; 2026 MyPeptidePrice.com. Independent price comparison. For research use only.</span></div>
+</footer>
+<script src="/assets/site.js?v=${VER}"></script>`;
+}
+
+function shell({ title, desc, canonical, schema, body, scripts = "" }) {
+  return `<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<title>${esc(title)}</title>
+<meta name="description" content="${esc(desc)}"/>
+<link rel="canonical" href="${canonical}"/>
+<meta property="og:title" content="${esc(title)}"/>
+<meta property="og:description" content="${esc(desc)}"/>
+<meta property="og:url" content="${canonical}"/>
+<meta property="og:type" content="website"/>
+<meta property="og:image" content="${BASE}/og-image-2026-rebrand.png"/>
+<link rel="icon" href="/favicon.png?v=${VER}"/>
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=${VER}"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=${VER}"/>
+<link rel="manifest" href="/site.webmanifest"/>
+${HEAD_ASSETS}
+${PAGE_CSS}
+${OPT_OUT}
+${GTM}
+<script type="application/ld+json">
+${schema}
+</script>
+</head>
+<body>
+${NOSCRIPT}
+${header()}
+${body}
+${footer()}
+${scripts}
+</body>
+</html>
+`;
+}
+
+// ---- gather compound aggregates from the snapshot ----
+function compoundData() {
+  // The snapshot splits a compound into separate cards per format (vials,
+  // capsules, liquid). Those share one slug, so generating a page per card meant
+  // the pages overwrote each other and each showed only one format's vendors.
+  // Merge cards by slug first so a compound page carries every vendor.
+  const merged = new Map();
+  for (const p of snap.products) {
+    const name = p.name || p.title;
+    if (!name || NONPEP.some(n => name.includes(n))) continue;
+    const offers = [];
+    for (const v of p.variants) for (const s of v.suppliers) {
+      offers.push({
+        vendor: s.vendor_display || s.vendor_name,
+        vendorKey: s.vendor_name,
+        size: s.quantity_label,
+        price: s.effective_price_min,
+        priceLabel: s.effective_price_label,
+        regularLabel: s.regular_price_label,
+        discount: s.discount_percent,
+        code: s.coupon_code,
+        url: s.affiliate_url,
+        permg: s.price_per_mg_label,
+        permgVal: s.price_per_mg,
+        inStock: s.in_stock !== false,
+      });
+    }
+    const key = slug(name);
+    if (!merged.has(key)) {
+      merged.set(key, { name, category: p.category || "Research peptide", offers: [] });
+    }
+    const entry = merged.get(key);
+    entry.offers.push(...offers);
+    // keep the most specific category we see rather than a generic fallback
+    if ((!entry.category || entry.category === "Research peptide") && p.category) entry.category = p.category;
+  }
+
+  const out = [];
+  for (const entry of merged.values()) {
+    const vendors = new Set(entry.offers.map(o => o.vendorKey));
+    if (vendors.size < 2) continue;              // skip thin single-vendor pages
+    const priced = entry.offers.filter(o => Number.isFinite(o.price) && o.price > 0);
+    priced.sort((a, b) => a.price - b.price);
+    const lo = priced.length ? priced[0].price : null;
+    const hi = priced.length ? priced[priced.length - 1].price : null;
+    out.push({ name: entry.name, category: entry.category, offers: entry.offers, priced, vendors: [...vendors], lo, hi });
+  }
+  out.sort((a, b) => a.name.localeCompare(b.name));
+  return out;
+}
+
+// Shared by the generated compound pages and the hand-built hub pages, so both
+// render identical rows from the same snapshot.
+function buildPriceRows(c, max = 14, location = "compound_price_table") {
+  // price rows: dedupe identical (vendor,size,price). Neutral presentation, no
+  // "lowest" hype, no urgency; the code is stated as a plain fact where it applies.
+  const seen = new Set();
+  const rows = [];
+  for (const o of c.priced.concat(c.offers.filter(o => !Number.isFinite(o.price)))) {
+    const key = o.vendorKey + "|" + o.size + "|" + o.priceLabel;
+    if (seen.has(key)) continue;
+    seen.add(key);
+    rows.push(o);
+    if (rows.length >= max) break;
+  }
+  const compoundDeltas = marketDeltas(rows);
+  const rowsHtml = rows.map((o) => {
+    const note = o.discount > 0 && o.code ? codeNote(o.vendorKey, o.code, o.discount) : (o.regularLabel && o.regularLabel !== o.priceLabel ? `Listed ${esc(o.regularLabel)}` : "Listed price");
+    return priceRow({
+      url: o.url,
+      product: c.name,
+      category: c.category,
+      vendorKey: o.vendorKey,
+      vendorDisplay: o.vendor,
+      code: o.code,
+      discount: o.discount,
+      sizeLine: `${esc(c.name)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}`,
+      vendorLine: `${esc(o.vendor)}${/choose/i.test(o.size || "") ? ", size selected on vendor site" : ""}`,
+      note,
+      priceLabel: o.priceLabel,
+      permg: o.permg,
+      delta: compoundDeltas.get(o),
+      inStock: o.inStock,
+      location,
+    });
+  }).join("\n");
+  return { rows, rowsHtml };
+}
+
+const compounds = compoundData();
+console.log("page-worthy compounds (2+ vendors):", compounds.length);
+
+// dedupe by slug, skip hand-built
+const compoundPages = compounds.filter(c => !HAND_BUILT.has(slug(c.name)));
+console.log("to generate (excluding hand-built):", compoundPages.length);
+
+await mkdir(`${W}/compounds`, { recursive: true }).catch(() => {});
+await mkdir(`${W}/vendors`, { recursive: true }).catch(() => {});
+
+const generated = { compounds: [], vendors: [] };
+
+// The price history renderer moved to assets/site.js, which every page already
+// loads. It was duplicated there and in catalog-ui for the card modal, and two
+// copies of a chart drawer drift the moment one is touched.
+
+// ---- COMPOUND PAGES ----
+for (const c of compoundPages) {
+  const sg = slug(c.name);
+  const path = `/compounds/${sg}.html`;
+  const canonical = `${BASE}${clean(path)}`;
+  const lowLabel = c.lo != null ? money(c.lo) : null;
+  const hiLabel = c.hi != null ? money(c.hi) : null;
+  // Titles are capped at 62 characters so Google shows them whole. Blend names
+  // run to 37 characters ("BPC-157 + TB-500 + GHK-Cu + KPV Blend"), which blew
+  // the full template past 79. The compound name is the keyword and is never
+  // shortened; the suffix gives way instead, longest form that still fits.
+  const n = c.vendors.length;
+  const title = [
+    `${c.name} Price Comparison | ${n} Vendors, Cost Per mg`,
+    `${c.name} Price Comparison | ${n} Vendors`,
+    `${c.name} Prices | ${n} Vendors`,
+    `${c.name} Prices`
+  ].find(t => t.length <= 62) || `${c.name} Prices`;
+  // No price range in the snippet. It was baked in at build time, so every
+  // search result kept showing July prices once the generator stopped running.
+  // The fallback keeps the longest blend names under 160 characters.
+  const descFull = `${c.name} price per mg compared across ${c.vendors.length} research vendors, with current sales and coupon codes. Independent price reference, research use only.`;
+  const desc = descFull.length <= 158 ? descFull : `${c.name} price per mg across ${c.vendors.length} research vendors, with current sales and coupon codes. Independent reference, research use only.`;
+
+  const { rows, rowsHtml } = buildPriceRows(c);
+
+  // Sticky bar target: the cheapest in-stock listing on the page. Out-of-stock
+  // rows are skipped, since a bar pointing at something unbuyable is worse
+  // than no bar.
+  const stickyPick = rows.find(o => Number.isFinite(o.price) && o.inStock !== false) || null;
+  const stickyHtml = stickyPick ? `<div class="sticky-best" data-sticky-best>
+  <span class="sb-copy"><span class="sb-label">Lowest tracked price</span><span class="sb-detail">${esc(stickyPick.vendor)}${stickyPick.size && !/standard|choose/i.test(stickyPick.size) ? " &middot; " + esc(stickyPick.size) : ""}</span></span>
+  <span class="sb-figure">${esc(stickyPick.priceLabel || "")}</span>
+  <a class="sb-go" href="${esc(stickyPick.url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(c.name)}" data-category="${esc(c.category)}" data-vendor="${esc(stickyPick.vendorKey)}" data-code="${esc(stickyPick.code || "")}" data-cta="${esc(ctaTracking(stickyPick.discount, stickyPick.vendor))}">View listing</a>
+</div>` : "";
+
+  // related compounds in same category
+  const related = compounds.filter(x => x.category === c.category && x.name !== c.name).slice(0, 8);
+  const relatedHtml = related.length ? `<div class="xlink-wrap"><h2>Other ${esc(c.category)} compounds</h2><div class="xlink-grid">${related.map(r => `<a href="${HAND_BUILT.get(slug(r.name)) || "/compounds/" + slug(r.name)}">${esc(r.name)}</a>`).join("")}</div></div>` : "";
+
+  const permgLine = (() => {
+    const withMg = c.priced.filter(o => o.permgVal);
+    if (!withMg.length) return "";
+    withMg.sort((a, b) => a.permgVal - b.permgVal);
+    return ` Cost per mg ranges from ${esc(withMg[0].permg)} to ${esc(withMg[withMg.length - 1].permg)}.`;
+  })();
+
+  // Factual featured answer. States what it is and the observed price range, no
+  // sell language, no health claim, no human-use implication.
+  const answer = lowLabel
+    ? `${c.name} is listed by ${c.vendors.length} research vendors tracked here, with prices from ${lowLabel} to ${hiLabel} per listing depending on size and vendor.${permgLine} MyPeptidePrice.com is an independent price reference and does not sell it. Sold by third parties for laboratory research use only, not for human use.`
+    : `${c.name} is listed by ${c.vendors.length} research vendors tracked here. MyPeptidePrice.com is an independent price reference and does not sell it. Sold by third parties for laboratory research use only, not for human use.`;
+
+  const faq = [
+    [`What is ${c.name}?`, `${c.name} is a research compound tracked on MyPeptidePrice.com. It is supplied by third-party vendors as a research material for laboratory use only. This page reports listed prices and does not describe effects, uses, or handling.`],
+    [`What does ${c.name} cost across vendors?`, `${lowLabel ? `Listed prices range from ${lowLabel} to ${hiLabel} per listing across ${c.vendors.length} tracked vendors, depending on size and format.` : `${c.name} pricing varies by size, format, and vendor.`}${permgLine} Prices shown are drawn from vendor listings and change over time; confirm the current price on the vendor site.`],
+    [`What does price per mg mean?`, `Price per mg divides a listing's price by its milligram amount, so listings of different sizes can be compared on the same basis. A lower price per mg means more material for the money at that listing size.`],
+    [`Is ${c.name} sold for human use?`, `No. Every listing referenced here is sold by third-party vendors for laboratory and research use only and is not for human consumption. MyPeptidePrice.com does not sell products and provides no medical, dosing, or usage guidance.`],
+    [`Does MyPeptidePrice.com sell ${c.name}?`, `No. MyPeptidePrice.com is an independent price comparison reference. Purchases, shipping, testing documentation, and terms are handled entirely by the third-party vendors linked on this page.`],
+  ];
+
+  const offerCount = c.priced.length || c.offers.length;
+  const schema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "BreadcrumbList", itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${BASE}/` },
+        { "@type": "ListItem", position: 2, name: "Compounds", item: `${BASE}/compounds` },
+        { "@type": "ListItem", position: 3, name: c.name, item: canonical },
+      ]},
+      { "@type": "Product", name: `${c.name} (Research Material)`, category: "Research compound",
+        description: `${c.name} listed by third-party vendors for laboratory research use only. Not for human consumption. This page is an independent price reference.`,
+        ...(c.lo != null ? { offers: { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: c.lo.toFixed(2), highPrice: (c.hi ?? c.lo).toFixed(2), availability: "https://schema.org/InStock", offerCount: String(offerCount) } } : {}) },
+      { "@type": "FAQPage", mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
+    ],
+  }, null, 0).replace(/&/g, "&amp;");
+
+  const priceRangeLabel = lowLabel ? (hiLabel && hiLabel !== lowLabel ? `${lowLabel} to ${hiLabel}` : lowLabel) : "See listings";
+  const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Peptide price comparison</a><span>/</span><a href="/compounds">Compounds</a><span>/</span>${esc(c.name)}</nav>
+<section class="hero"><div class="hero-inner"><div><span class="eyebrow">${esc(c.category)}</span><h1>${esc(c.name)} price comparison.</h1><p>Listed prices and cost per mg for ${esc(c.name)} across ${c.vendors.length} research vendors tracked on MyPeptidePrice.com. An independent price reference, for laboratory research use only.</p><div class="hero-actions"><a class="button" href="/?q=${encodeURIComponent(c.name)}#compare" data-cta="hero">View current listings</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Listed price range</span><strong>${priceRangeLabel}</strong></div><div class="hero-stat"><span>Vendors listing it</span><strong>${c.vendors.length}</strong></div><div class="hero-stat"><span>Use</span><strong>Research only</strong></div></div></div></section>
+<div class="answer-box"><div class="inner"><p>${esc(answer)}</p></div></div>
+<section class="section compact"><div class="snap-wrap"><div class="snap-head"><h2>${esc(c.name)} prices by vendor</h2><span class="snap-meta"><span class="dot"></span>Updated ${TODAY}</span></div>
+<span data-sticky-anchor aria-hidden="true"></span>
+<div class="price-card">
+${rowsHtml}
+</div>
+<p class="snap-note">Prices are drawn from third-party vendor listings and reflect a known discount code where one applies. They change over time; confirm the current price, size, and stock on the vendor site. MyPeptidePrice.com does not sell these materials. For laboratory research use only.</p>
+</div></section>
+<!-- Price history. Rendered client side from the daily lows the refresh function
+     has been recording, and it removes itself when there is nothing to draw, so a
+     compound added this week shows no empty frame. -->
+<section class="section compact" id="price-history" data-price-history="${esc(sg)}" hidden>
+  <div class="snap-wrap">
+    <div class="snap-head"><h2>${esc(c.name)} price history</h2><span class="snap-meta"><span class="dot"></span><span data-ph-range>Last 90 days</span></span></div>
+    <div class="ph-card">
+      <div class="ph-figures">
+        <div><span>Lowest</span><strong data-ph-low>&nbsp;</strong></div>
+        <div><span>Highest</span><strong data-ph-high>&nbsp;</strong></div>
+        <div><span>Today</span><strong data-ph-now>&nbsp;</strong></div>
+      </div>
+      <div class="ph-chart" data-ph-chart></div>
+      <p class="snap-note" data-ph-caption></p>
+    </div>
+  </div>
+</section>
+<section class="section compact"><div class="copy"><span class="research-tag">What this page is</span><h2>About ${esc(c.name)} on this page</h2><p>${esc(c.name)} is tracked across the vendors compared on this site. Vendors list it as a research material, typically as lyophilized powder in a vial. This page reports the prices those vendors list and the resulting cost per mg. It does not describe what ${esc(c.name)} does, how it is used, or how it is handled.</p><p>Every listing referenced here is sold by independent third-party vendors for laboratory research use only and is not for human consumption. MyPeptidePrice.com is an independent price comparison reference. It does not sell products, ship orders, or provide medical, dosing, or usage guidance of any kind.</p></div></section>
+${relatedHtml}
+<section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">${esc(c.name)} FAQ</span><h2>${esc(c.name)} questions</h2><div class="faq-list">
+${faq.map(([q, a]) => `<article class="faq-item"><h3>${esc(q)}</h3><p>${esc(a)}</p></article>`).join("\n")}
+</div></div></section>
+${stickyHtml}
+
+<section class="section compact"><div class="container"><div class="notice">MyPeptidePrice.com is an independent price reference and does not sell research materials. Prices come from third-party vendor listings and were last checked ${TODAY}. Confirm current details on the vendor site. For laboratory research use only, not for human consumption.</div></div></section>`;
+
+  await writeFile(`${W}${path}`, shell({ title, desc, canonical, schema, body }));
+  generated.compounds.push({ path, name: c.name });
+}
+console.log("compound pages written:", generated.compounds.length);
+
+// ---- VENDOR PAGES ----
+// The config is an object keyed by vendor name. Only vendors that actually have
+// priced offers in the snapshot get a page; the rest would be thin/empty shells
+// (the fallback snapshot currently carries a subset of vendors, the rest arrive
+// live from the Netlify function).
+// Payment methods accepted, from vendor-config. Vendor pages are where a buyer
+// decides "can I actually check out here", so this lives here rather than on
+// every catalog row.
+const PAYMENT_GLYPHS = {
+  visa: "card", mastercard: "card", amex: "card", "american-express": "card", discover: "card",
+  "credit-card": "card", card: "card",
+  zelle: "bank", ach: "bank", "bank-transfer": "bank", "bank-payment": "bank", bank: "bank", chime: "bank",
+  check: "check", "e-check": "check",
+  bitcoin: "crypto", btc: "crypto", ethereum: "crypto", crypto: "crypto", usdt: "crypto", usdc: "crypto",
+  cashapp: "mobile-pay", "cash-app": "mobile-pay", venmo: "mobile-pay",
+  "apple-pay": "mobile-pay", "google-pay": "mobile-pay",
+  paypal: "wallet", wise: "wallet", affirm: "wallet",
+  "idem-pay": "bank", idem: "bank"
+};
+const paySlug = value => String(value).toLowerCase().trim().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+function paymentBlock(cfg, display) {
+  const methods = Array.isArray(cfg && cfg.payment_methods) ? cfg.payment_methods : [];
+  if (!methods.length) return "";
+  const chips = methods.map(m => {
+    const glyph = PAYMENT_GLYPHS[paySlug(m)] || "card";
+    return `<span class="pay-chip"><img class="pay-icon" src="/assets/payment-icons/${glyph}.svg" alt="" width="14" height="14" loading="lazy"/>${esc(m)}</span>`;
+  }).join("");
+  const protection = cfg.package_protection_required === true
+    ? `<p class="pay-note">${esc(display)} requires package protection at checkout.</p>`
+    : cfg.package_protection_required === false
+      ? `<p class="pay-note">Package protection is not required at ${esc(display)}.</p>`
+      : "";
+  return `<section class="section compact"><div class="container"><h2>Payment methods at ${esc(display)}</h2>
+<div class="pay-grid">${chips}</div>
+${protection}
+<p class="pay-note">Payment options are set by the vendor and can change. Confirm at checkout. MyPeptidePrice.com does not process payments.</p>
+</div></section>`;
+}
+
+const vendorList = vendorCfg.vendors || vendorCfg;
+const vendorNames = Array.isArray(vendorList)
+  ? vendorList.map(v => ({ key: v.name || v.id, display: v.display_name || v.name || v.id }))
+  : Object.entries(vendorList).map(([name, v]) => ({ key: name, display: v.display_name || name }));
+
+for (const v of vendorNames) {
+  const sg = slug(v.key);
+  const vCfg = Array.isArray(vendorList) ? (vendorList.find(x => (x.name || x.id) === v.key) || {}) : (vendorList[v.key] || {});
+  const payHtml = paymentBlock(vCfg, v.display);
+  const path = `/vendors/${sg}.html`;
+  const canonical = `${BASE}${clean(path)}`;
+  // gather this vendor's offers across all compounds
+  const items = [];
+  for (const c of compounds) {
+    for (const o of c.offers) {
+      if (o.vendorKey === v.key && Number.isFinite(o.price)) items.push({ compound: c.name, category: c.category, ...o });
+    }
+  }
+  const uniq = [];
+  const seen = new Set();
+  items.sort((a, b) => a.price - b.price);
+  for (const it of items) {
+    const k = it.compound + "|" + it.size + "|" + it.priceLabel;
+    if (seen.has(k)) continue; seen.add(k); uniq.push(it);
+  }
+  const compoundCount = new Set(uniq.map(i => i.compound)).size;
+  if (uniq.length === 0) { continue; } // vendor with no priced offers in snapshot, skip page
+  const lo = uniq.length ? uniq[0].price : null;
+  const hi = uniq.length ? uniq[uniq.length - 1].price : null;
+  const title = [
+    `${v.display} Prices | Compare ${compoundCount} Compounds Per Mg`,
+    `${v.display} Prices | ${compoundCount} Compounds Compared`,
+    `${v.display} Prices | ${compoundCount} Compounds`
+  ].find(t => t.length <= 62) || `${v.display} Prices`;
+  const desc = `${v.display} prices across ${compoundCount} research compounds, compared per mg against other vendors, with current sales and coupon codes. Research use only.`;
+
+  const vendorRows = uniq.slice(0, 20);
+  // Bucketed on compound plus size here: a vendor page lists many different
+  // compounds, so size alone is not a like-for-like comparison.
+  const vendorDeltas = marketDeltas(vendorRows, o => `${o.compound}|${o.size}`);
+  const rowsHtml = vendorRows.map((o) => {
+    const note = o.discount > 0 && o.code ? codeNote(o.vendorKey, o.code, o.discount) : "Listed price";
+    return priceRow({
+      url: o.url,
+      product: o.compound,
+      category: o.category,
+      vendorKey: v.key,
+      vendorDisplay: v.display,
+      code: o.code,
+      discount: o.discount,
+      sizeLine: `${esc(o.compound)}${o.size && !/standard|choose/i.test(o.size) ? ", " + esc(o.size) : ""}`,
+      vendorLine: esc(o.category),
+      note,
+      priceLabel: o.priceLabel,
+      permg: o.permg,
+      delta: vendorDeltas.get(o),
+      inStock: o.inStock,
+      location: "vendor_price_table",
+    });
+  }).join("\n");
+
+  const faq = [
+    [`How do ${v.display} prices compare to other vendors?`, `MyPeptidePrice.com tracks ${v.display} alongside other research vendors so you can compare the same compound by price per mg. Use the listings above, then open any compound to see where ${v.display} ranks against other vendors for that specific item.`],
+    [`What does ${v.display} list?`, `${v.display} is one of the research vendors tracked on MyPeptidePrice.com, with ${compoundCount} compounds catalogued here. The listings above show current prices; browse them or compare the same compounds across other vendors.`],
+    [`What do ${v.display} listings cost?`, `${lo != null ? `Across the compounds tracked here, ${v.display} listings range from ${money(lo)} to ${money(hi)} depending on compound and size.` : `Pricing varies by compound and size.`} Prices come from vendor listings and change over time; confirm the current price on the vendor site.`],
+    [`Does the SAMMYC code apply at ${v.display}?`, `Where ${v.display} supports it, the SAMMYC code is reflected in the listed price shown here, and the row notes when it applies. Confirm the code at checkout on the vendor site.`],
+    [`Are ${v.display} listings for human use?`, `No. Listings tracked here are sold by ${v.display} for laboratory and research use only and are not for human consumption. MyPeptidePrice.com is an independent price reference and does not sell products or provide medical guidance.`],
+  ];
+  const schema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "BreadcrumbList", itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${BASE}/` },
+        { "@type": "ListItem", position: 2, name: "Vendors", item: `${BASE}/vendors` },
+        { "@type": "ListItem", position: 3, name: v.display, item: canonical },
+      ]},
+      { "@type": "FAQPage", mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
+    ],
+  }, null, 0).replace(/&/g, "&amp;");
+
+  const topCompounds = [...new Set(uniq.map(i => i.compound))].slice(0, 10);
+  const xlinks = topCompounds.map(name => `<a href="${HAND_BUILT.get(slug(name)) || "/compounds/" + slug(name)}">${esc(name)}</a>`).join("");
+
+  const priceRangeLabel = lo != null ? (hi && hi !== lo ? `${money(lo)} to ${money(hi)}` : money(lo)) : "See listings";
+  const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Peptide price comparison</a><span>/</span><a href="/vendors">Vendors</a><span>/</span>${esc(v.display)}</nav>
+<section class="hero"><div class="hero-inner"><div><span class="eyebrow">Vendor price reference</span><h1>${esc(v.display)} prices.</h1><p>Listed prices for ${esc(v.display)} across ${compoundCount} research compounds tracked on MyPeptidePrice.com. An independent price reference, for laboratory research use only.</p><div class="hero-actions"><a class="button" href="/?vendor=${encodeURIComponent(v.key)}#compare" data-cta="hero">View current listings</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Listed price range</span><strong>${priceRangeLabel}</strong></div><div class="hero-stat"><span>Compounds listed</span><strong>${compoundCount}</strong></div><div class="hero-stat"><span>Use</span><strong>Research only</strong></div></div></div></section>
+<div class="answer-box"><div class="inner"><p>${esc(v.display)} is one of the research vendors tracked on MyPeptidePrice.com, with ${compoundCount} compounds catalogued${lo != null ? ` and listed prices from ${money(lo)} to ${money(hi)}` : ""}. MyPeptidePrice.com is an independent price reference and does not sell these materials. Sold for laboratory research use only, not for human use.</p></div></div>
+<section class="section compact"><div class="snap-wrap"><div class="snap-head"><h2>${esc(v.display)} listings by price</h2><span class="snap-meta"><span class="dot"></span>Updated ${TODAY}</span></div>
+<div class="price-card">
+${rowsHtml}
+</div>
+<p class="snap-note">Prices are drawn from ${esc(v.display)} listings and reflect a known discount code where one applies. They change over time; confirm the current price, size, and stock on the vendor site. For laboratory research use only.</p>
+</div></section>
+<div class="xlink-wrap"><h2>Compounds listed at ${esc(v.display)}</h2><div class="xlink-grid">${xlinks}</div></div>
+${payHtml}
+<section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">${esc(v.display)} FAQ</span><h2>${esc(v.display)} questions</h2><div class="faq-list">
+${faq.map(([q, a]) => `<article class="faq-item"><h3>${esc(q)}</h3><p>${esc(a)}</p></article>`).join("\n")}
+</div></div></section>
+<section class="section compact"><div class="container"><div class="notice">MyPeptidePrice.com is an independent price reference and does not sell research materials. Prices come from ${esc(v.display)} listings and were last checked ${TODAY}. Confirm current details on the vendor site. For laboratory research use only, not for human consumption.</div></div></section>`;
+
+  await writeFile(`${W}${path}`, shell({ title, desc, canonical, schema, body }));
+  generated.vendors.push({
+    path,
+    name: v.display,
+    key: v.key,
+    logo: vCfg.logo || "",
+    discount: Number(vCfg.discount_percent) || 0,
+    affiliateUrl: vCfg.affiliate_url || "",
+    compoundCount,
+    lo,
+    hi,
+  });
+}
+console.log("vendor pages written:", generated.vendors.length);
+
+// ---- VENDOR DIRECTORY ----
+// vendors.html is rewritten from the generated set rather than hand-maintained.
+// It had drifted to 13 cards against 14 built pages and a 15-vendor config, and
+// the count in the lead paragraph was stale. Generating it means the number and
+// the cards can never disagree again.
+{
+  const dir = [...generated.vendors].sort((a, b) => a.name.localeCompare(b.name));
+  const cards = dir.map(v => {
+    const logo = v.logo
+      // Explicit dimensions: 15 logos without them made the directory reflow as
+      // they loaded.
+      ? `<img src="${esc(v.logo)}?v=${VER}" alt="${esc(v.name)} logo" width="48" height="48" loading="lazy" decoding="async"/>`
+      : "";
+    const discountLine = v.discount > 0
+      ? `<p>${v.discount}% estimated discount with <span class="code-pill">${esc(vendorCfg.coupon_code || "SAMMYC")}</span></p>`
+      : `<p>Tracked in the comparison catalog</p>`;
+    const range = v.lo != null ? (v.hi && v.hi !== v.lo ? `${money(v.lo)} to ${money(v.hi)}` : money(v.lo)) : "See listings";
+    // Primary action is the internal vendor page, which carries the full
+    // listing table. Sending this click straight offsite spent the visit on a
+    // homepage before they had seen a single price.
+    return `<article class="vendor-card"><div class="vendor-head">${logo}<div><h3>${esc(v.name)}</h3>${discountLine}</div></div>` +
+      `<p>${v.compoundCount} compounds tracked, listed from ${range}. Review current product details, testing documentation, stock status, and checkout terms directly with the vendor.</p>` +
+      `<div class="vendor-card-actions"><a class="button" href="${esc(clean(v.path))}">Compare ${esc(v.name)} prices</a>` +
+      (v.affiliateUrl ? `<a class="vendor-out" href="${esc(v.affiliateUrl)}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Vendor directory" data-category="vendor" data-vendor="${esc(v.key)}" data-code="${esc(vendorCfg.coupon_code || "")}" data-cta="Visit ${esc(v.name)}">Visit site &#8250;</a>` : "") +
+      `</div></article>`;
+  }).join("\n");
+
+  const vendorsPath = `${W}/vendors.html`;
+  let html = await readFile(vendorsPath, "utf8");
+  const gridStart = html.indexOf('<div class="vendor-grid">');
+  const gridEnd = html.indexOf("</div></div></section>", gridStart);
+  if (gridStart === -1 || gridEnd === -1) {
+    console.warn("vendors.html: vendor-grid markers not found, directory left untouched");
+  } else {
+    html = html.slice(0, gridStart) + `<div class="vendor-grid">\n${cards}\n` + html.slice(gridEnd);
+    html = html.replace(
+      /The comparison catalog currently supports \d+ vendor partners\./,
+      `The comparison catalog currently supports ${dir.length} vendor partners.`
+    );
+    await writeFile(vendorsPath, html);
+    console.log("vendors.html directory rebuilt:", dir.length, "cards");
+  }
+}
+
+// ---- COMPOUNDS HUB ----
+{
+  const canonical = `${BASE}/compounds`;
+  const title = "All Peptide Compounds | Price Comparison by $/mg";
+  // The roster in data/vendor-config.json, not the vendors that happened to
+  // appear in this build. Both the meta description and the hero stat below are
+  // tracking claims and have to agree with the homepage, which publishes the
+  // roster. Counting distinct vendors across the generated compounds gave a
+  // different number on every deploy that had a feed time out, and it read 15
+  // against the homepage's 19.
+  const vendorCount = Object.keys(vendorCfg.vendors || {}).length || generated.vendors.length;
+  const desc = `Browse every research peptide tracked on MyPeptidePrice.com. Compare prices and cost per mg across ${compounds.length} compounds and ${vendorCount} vendors. Research use only.`;
+  const byCat = {};
+  for (const c of compounds) (byCat[c.category] = byCat[c.category] || []).push(c);
+  const cats = Object.keys(byCat).sort();
+  const sections = cats.map(cat => {
+    const cards = byCat[cat].map(c => {
+      const href = HAND_BUILT.get(slug(c.name)) || `/compounds/${slug(c.name)}`;
+      return `<a class="hub-card" href="${href}"><div class="hc-name">${esc(c.name)}</div><div class="hc-cat">${c.vendors.length} vendors</div>${c.lo != null ? `<div class="hc-price">${money(c.lo)} <span>lowest after code</span></div>` : ""}</a>`;
+    }).join("\n");
+    return `<div class="hub-section-title">${esc(cat)}</div><div class="hub-grid">${cards}</div>`;
+  }).join("\n");
+
+  const schema = JSON.stringify({
+    "@context": "https://schema.org",
+    "@graph": [
+      { "@type": "BreadcrumbList", itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${BASE}/` },
+        { "@type": "ListItem", position: 2, name: "Compounds", item: canonical },
+      ]},
+      { "@type": "CollectionPage", name: "All Peptide Compounds", description: desc,
+        url: canonical },
+    ],
+  }, null, 0).replace(/&/g, "&amp;");
+
+  // Was hardcoded to 13 and had drifted. Derived from the vendor pages actually
+  // generated, so it cannot go stale again.
+  const body = `<nav class="crumbs" aria-label="Breadcrumb"><a href="/">Peptide price comparison</a><span>/</span>Compounds</nav>
+<section class="hero"><div class="hero-inner"><div><span class="eyebrow">Compound directory</span><h1>All tracked peptide compounds.</h1><p>Browse every research compound compared on MyPeptidePrice.com. Each page ranks vendors by price and cost per mg.</p><div class="hero-actions"><a class="button" href="/#compare" data-cta="hero">Open the live comparison</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Compounds</span><strong>${compounds.length}</strong></div><div class="hero-stat"><span>Vendors</span><strong>${vendorCount}</strong></div><div class="hero-stat"><span>Discount code</span><strong>SAMMYC</strong></div></div></div></section>
+${sections}
+<section class="section compact" style="margin-top:22px"><div class="container"><div class="notice">Use <span class="code-pill">SAMMYC</span> at supported vendor checkouts where listed. MyPeptidePrice.com is an independent comparison resource. For research use only. Prices last verified ${TODAY}.</div></div></section>`;
+
+  await writeFile(`${W}/compounds.html`, shell({ title, desc, canonical, schema, body }));
+  console.log("compounds hub written");
+}
+
+
+// ---- HAND-BUILT HUB PAGES ----
+// Semaglutide, tirzepatide, retatrutide and BPC-157 have hand-written pages, so
+// the loop above skips them. That left their price block, "Listed from" figure
+// and dates frozen at whatever was typed in July, including a lowest price from
+// a vendor whose feed later went dead. Refresh only the data regions in place and
+// leave the hand-written copy alone. Any page whose markers are missing, or whose
+// compound has no priced offers this build, is left untouched with a warning, the
+// same safety model as the vendors directory rebuild.
+for (const [key, hubPath] of HAND_BUILT) {
+  const file = `${W}${hubPath}.html`;
+  let html;
+  try { html = await readFile(file, "utf8"); } catch { console.warn(`hub ${hubPath}: file not found, skipped`); continue; }
+  const c = compounds.find(x => slug(x.name) === key);
+  if (!c || !c.priced.length) { console.warn(`hub ${hubPath}: no priced offers this build, left untouched`); continue; }
+
+  const cardOpen = '<div class="price-card">';
+  const cardClose = '</div>\n<p class="snap-note">';
+  const a = html.indexOf(cardOpen);
+  const b = a === -1 ? -1 : html.indexOf(cardClose, a);
+  if (a === -1 || b === -1) { console.warn(`hub ${hubPath}: price-card markers not found, left untouched`); continue; }
+
+  const { rowsHtml } = buildPriceRows(c, 8, "hub_price_table");
+  let out = html.slice(0, a) + `${cardOpen}\n${rowsHtml}\n` + html.slice(b);
+  // The hubs carried an older copy of the page stylesheet from before the current
+  // row design, so the refreshed rows rendered unstyled. PAGE_CSS is a strict
+  // superset of that copy, so swapping it in cannot drop a rule the hub uses.
+  out = out.replace(/<style>[\s\S]*?<\/style>/, () => PAGE_CSS);
+  out = out.replace(/(<span class="snap-meta"><span class="dot"><\/span>Updated )[^<]*(<\/span>)/, `$1${TODAY}$2`);
+  out = out.replace(/(were last checked )[^.]*\./, `$1${TODAY}.`);
+  out = out.replace(/(<div class="hero-stat"><span>Listed from<\/span><strong>)[^<]*(<\/strong>)/, `$1${money(c.lo)}$2`);
+  // The hub hero said "Tracked vendors 19", the sitewide roster, next to a list
+  // that only ever showed two. Report how many vendors list this compound.
+  out = out.replace(/<div class="hero-stat"><span>Tracked vendors<\/span><strong>[^<]*<\/strong>/, `<div class="hero-stat"><span>Vendors listing it</span><strong>${c.vendors.length}</strong>`);
+  out = out.replace(/(<div class="hero-stat"><span>Vendors listing it<\/span><strong>)[^<]*(<\/strong>)/, `$1${c.vendors.length}$2`);
+  await writeFile(file, out);
+  console.log(`hub ${hubPath}: refreshed, ${c.vendors.length} vendors, from ${money(c.lo)}`);
+}
+
+// ---- DEALS PAGE ----
+// deals.html is a hand-written shell whose card grid is rewritten here from
+// data/deals.json, the same file the Decap portal at /admin edits. It is server
+// rendered so the offers are crawlable: every deal on the site used to live
+// only in JavaScript panels and popups, so the freshest dataset we have earned
+// no organic traffic at all.
+//
+// promotions.json is deliberately NOT the source. That file is generated by
+// build-promotions.mjs and never ships in the repo, so reading it here would
+// make the page depend on a build artefact that may not exist. deals.json is
+// committed and is what a human actually edits.
+{
+  const dealsPath = `${W}/deals.html`;
+  let dealsHtml = null;
+  try { dealsHtml = await readFile(dealsPath, "utf8"); }
+  catch { console.warn("deals.html: file not found, skipped"); }
+
+  if (dealsHtml) {
+    const dealsDoc = JSON.parse(await readFile(`${W}/data/deals.json`, "utf8"));
+    const allDeals = Array.isArray(dealsDoc.deals) ? dealsDoc.deals : [];
+
+    // "Last checked" is when the DEALS were last checked, which is the date on
+    // the deals.json version string, not TODAY. TODAY is the date the price
+    // snapshot was pulled, and the two move independently: a deploy that only
+    // refreshes prices would otherwise re-date every offer on this page without
+    // anyone having looked at them.
+    const versionDate = String(dealsDoc.version || "").match(/^(\d{4})-(\d{2})-(\d{2})/);
+    const MONTHS = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+    const checkedLabel = versionDate
+      ? `${MONTHS[Number(versionDate[2]) - 1]} ${Number(versionDate[3])}, ${versionDate[1]}`
+      : TODAY;
+
+    // Authored dates are plain YYYY-MM-DD wall dates. Building a Date from one
+    // parses it as UTC midnight, which in America/New_York is the evening
+    // before, so a deal ending "2026-09-30" was being dropped on the 29th.
+    // Compare the strings instead: they sort correctly by construction.
+    const todayISO = new Date().toLocaleDateString("en-CA", { timeZone: "America/New_York" });
+    const shownIn = d => (Array.isArray(d.show_in) ? d.show_in : [d.show_in]).includes("deals");
+    const live = d => !d.end_date || String(d.end_date) >= todayISO;
+    const started = d => !d.start_date || String(d.start_date) <= todayISO;
+
+    const deals = allDeals.filter(d => shownIn(d) && live(d) && started(d));
+
+    // Biggest saving first. A visitor scanning this page is looking for the
+    // largest number, not for whoever we happen to have listed first, and
+    // ordering by anything we are paid on would make the page an ad.
+    const cut = d => Number(d.sale_percent || 0) || Number(d.code_percent || 0);
+    deals.sort((a, b) =>
+      Number(!!b.featured) - Number(!!a.featured) ||
+      cut(b) - cut(a) ||
+      Number(a.priority || 99) - Number(b.priority || 99) ||
+      String(a.vendor).localeCompare(String(b.vendor))
+    );
+
+    const vendorKeyFor = name => {
+      const want = slug(name);
+      for (const [k, v] of Object.entries(vendorCfg.vendors || {})) {
+        if (slug(k) === want || slug(v.id || "") === want) return { key: k, cfg: v };
+      }
+      return null;
+    };
+
+    // "Ends Oct 5", never "2 days left". A relative phrase computed at build
+    // time is wrong by the next morning, and the client guard below already
+    // removes the row once the date passes.
+    const endLabel = iso => {
+      if (!iso) return "";
+      const [y, m, d] = String(iso).split("-").map(Number);
+      if (!y || !m || !d) return "";
+      const months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      return `${months[m - 1]} ${d}`;
+    };
+
+    const cards = deals.map(d => {
+      const name = d.display_vendor || d.vendor;
+      const match = vendorKeyFor(d.vendor);
+      const logo = match && match.cfg.logo
+        ? `<img src="${esc(match.cfg.logo)}?v=${VER}" alt="${esc(name)} logo" width="48" height="48" loading="lazy" decoding="async"/>`
+        : "";
+
+      // The sale and the code are always two separate lines. Adding them into
+      // one headline number ("35% off") states a total only the vendor's
+      // checkout can decide, because the order they apply in changes it.
+      const manual = vendorCfg.vendors?.[d.vendor]?.code_auto_applies === false;
+      const lines = [];
+      if (d.sale_percent) {
+        lines.push(d.sale_code
+          ? `<li><strong>${esc(d.sale_percent)}% off</strong> with <span class="code-pill">${esc(d.sale_code)}</span></li>`
+          : `<li><strong>${esc(d.sale_percent)}% off</strong> sitewide sale</li>`);
+      }
+      if (d.code_percent && d.code) {
+        lines.push(`<li>${d.sale_percent ? "then a further " : ""}<strong>${esc(d.code_percent)}% off</strong> ` +
+          `${manual ? "when you enter" : "with"} <span class="code-pill">${esc(d.code)}</span>${manual ? " at checkout" : ""}</li>`);
+      } else if (d.code) {
+        lines.push(`<li>${manual ? "Enter code" : "Use code"} <span class="code-pill">${esc(d.code)}</span>${manual ? " at checkout" : ""}</li>`);
+      }
+
+      const ends = d.end_date
+        ? `<span class="deal-ends">Ends ${esc(endLabel(d.end_date))}</span>`
+        : (d.ongoing ? `<span class="deal-ends deal-ends--open">Ongoing</span>` : "");
+      const compare = match ? `<a class="vendor-out" href="${esc(clean("/vendors/" + slug(match.cfg.id || match.key) + ".html"))}">See ${esc(name)} prices &#8250;</a>` : "";
+
+      // Anchored so the ticker can land on the exact offer someone tapped rather
+      // than the top of the page. scroll-margin keeps it clear of the sticky header.
+      return `<article class="vendor-card deal-card" id="deal-${esc(d.id)}"${d.end_date ? ` data-deal-end="${esc(d.end_date)}"` : ""}>` +
+        `<div class="vendor-head">${logo}<div><h3>${esc(name)}</h3>${ends}</div></div>` +
+        `<p class="deal-headline">${esc(d.headline)}</p>` +
+        (lines.length ? `<ul class="deal-lines">${lines.join("")}</ul>` : "") +
+        `<p>${esc(d.description)}</p>` +
+        `<div class="vendor-card-actions">` +
+        `<a class="button" href="${esc(d.affiliate_url || "#")}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(d.headline)}" data-category="promotion" data-vendor="${esc(d.vendor)}" data-code="${esc(d.code || d.sale_code || "")}" data-cta="Deals page, ${esc(name)}">${esc(d.cta_text || "Shop now")}</a>` +
+        compare +
+        `</div></article>`;
+    }).join("\n");
+
+    const vendorCount = new Set(deals.map(d => String(d.vendor))).size;
+
+    // ItemList of Offers. seller is the vendor, not us: we are not the merchant
+    // and marking ourselves as one would be a misrepresentation.
+    const itemList = {
+      "@context": "https://schema.org",
+      "@type": "ItemList",
+      name: "Research peptide coupon codes and vendor sales",
+      numberOfItems: deals.length,
+      itemListElement: deals.map((d, i) => {
+        const offer = {
+          "@type": "Offer",
+          name: d.headline,
+          description: d.description,
+          url: `${BASE}/deals`,
+          seller: { "@type": "Organization", name: d.display_vendor || d.vendor },
+          category: "Research peptides"
+        };
+        if (d.end_date) offer.availabilityEnds = d.end_date;
+        if (d.start_date) offer.availabilityStarts = d.start_date;
+        return { "@type": "ListItem", position: i + 1, item: offer };
+      })
+    };
+    const breadcrumb = {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      itemListElement: [
+        { "@type": "ListItem", position: 1, name: "Home", item: `${BASE}/` },
+        { "@type": "ListItem", position: 2, name: "Deals", item: `${BASE}/deals` }
+      ]
+    };
+    const schema = `<script type="application/ld+json">${JSON.stringify(itemList)}</script>\n` +
+                   `<script type="application/ld+json">${JSON.stringify(breadcrumb)}</script>`;
+
+    // A deal can expire between deploys, because the page is only rebuilt when
+    // Netlify builds. The server-rendered list is what a crawler sees; this
+    // removes any row whose end date has passed for a visitor arriving later.
+    // Same string comparison rule as the build: no Date parsing of wall dates.
+    // Everything injected here is wrapped in DEALS-JS markers. The previous
+    // strip matched a single <script>...</script> non-greedily, so once this
+    // became two scripts it only ever removed the first and every rebuild
+    // appended another copy of the second. Two copies meant two click
+    // listeners on the pause button, which toggled the class twice and looked
+    // like the button was dead.
+    const guard = `<!-- DEALS-JS-START --><script>(function(){try{var t=new Date().toLocaleDateString("en-CA",{timeZone:"America/New_York"});` +
+      `var rows=document.querySelectorAll("[data-deal-end]"),gone=0;` +
+      `for(var i=0;i<rows.length;i++){if(rows[i].getAttribute("data-deal-end")<t){rows[i].remove();gone++;}}` +
+      `if(gone){var n=document.querySelector("[data-deals-live]");` +
+      `if(n)n.textContent=String(Math.max(0,(parseInt(n.textContent,10)||0)-gone));` +
+      `var list=document.querySelector("[data-deals-list]");var empty=document.querySelector("[data-deals-empty]");` +
+      `if(list&&empty&&!list.querySelector(".deal-card")){list.hidden=true;empty.hidden=false;}}}catch(e){}})();</script>` +
+      // Ticker wiring. aria-hidden takes the clone out of the accessibility tree
+      // but NOT out of the tab order, so every link in it is explicitly removed
+      // from tabbing here. The pause button is required: WCAG 2.2.2 wants a way
+      // to stop anything that moves by itself for more than five seconds, and
+      // hover alone does not serve keyboard or touch.
+      `<script>(function(){try{var t=document.querySelector("[data-deals-ticker]");if(!t)return;` +
+      `var clone=t.querySelector("[data-dt-clone]");` +
+      `if(clone){var a=clone.querySelectorAll("a");for(var i=0;i<a.length;i++){a[i].setAttribute("tabindex","-1");}}` +
+      `var btn=t.querySelector("[data-dt-pause]");if(!btn)return;` +
+      `btn.addEventListener("click",function(){var off=t.classList.toggle("is-paused");` +
+      `btn.setAttribute("aria-pressed",off?"true":"false");btn.textContent=off?"Play":"Pause";});` +
+      `}catch(e){}})();</script><!-- DEALS-JS-END -->`;
+
+    // Ending-soonest conveyor. Decorative: it is a second way to notice an offer,
+    // never the only way to read one. Every deal in it is also a full card below,
+    // so a visitor who cannot or will not chase moving text loses nothing.
+    //
+    // Only dated offers qualify. An evergreen standing discount has no deadline,
+    // so putting it in a strip headed "ending soonest" would be a lie.
+    const dated = deals
+      .filter(d => d.end_date)
+      .sort((a, b) => String(a.end_date).localeCompare(String(b.end_date)));
+
+    // Below three it reads as a broken carousel rather than a moving strip, so it
+    // does not render at all and the page just starts with the grid.
+    const TICKER_MIN = 3;
+    let tickerHtml = "";
+    if (dated.length >= TICKER_MIN) {
+      const chip = d => {
+        const name = d.display_vendor || d.vendor;
+        const cut = Number(d.sale_percent) || Number(d.code_percent) || 0;
+        return `<a class="dt-chip" href="${esc(d.affiliate_url || "#")}" target="_blank" rel="nofollow sponsored noopener"` +
+          ` data-hero-affiliate="1" data-product="${esc(d.headline)}" data-category="promotion"` +
+          ` data-vendor="${esc(d.vendor)}" data-code="${esc(d.code || d.sale_code || "")}"` +
+          ` data-cta="Deals ticker, ${esc(name)}">` +
+          `<span class="dt-vendor">${esc(name)}</span>` +
+          (cut ? `<span class="dt-cut">${esc(cut)}% off</span>` : "") +
+          `<span class="dt-ends">Ends ${esc(endLabel(d.end_date))}</span></a>`;
+      };
+      const run = dated.map(chip).join("");
+      // The run is duplicated so the translation can loop seamlessly. The copy is
+      // aria-hidden and not focusable, so the same offer is not announced twice
+      // and tabbing does not walk through it again.
+      tickerHtml = `<div class="deals-ticker" data-deals-ticker>
+        <div class="dt-head"><span class="dt-label">Ending soonest</span>
+          <button class="dt-pause" type="button" data-dt-pause aria-pressed="false">Pause</button></div>
+        <div class="dt-window">
+          <div class="dt-run" data-dt-run style="--dt-count:${dated.length}">
+            <div class="dt-set">${run}</div>
+            <div class="dt-set" aria-hidden="true" data-dt-clone>${run}</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    const tStart = dealsHtml.indexOf("<!-- DEALS-TICKER-START -->");
+    const tEnd = dealsHtml.indexOf("<!-- DEALS-TICKER-END -->");
+    if (tStart !== -1 && tEnd !== -1) {
+      dealsHtml = dealsHtml.slice(0, tStart) +
+        `<!-- DEALS-TICKER-START -->\n${tickerHtml}\n` +
+        dealsHtml.slice(tEnd);
+    }
+
+    const start = dealsHtml.indexOf("<!-- DEALS-GRID-START -->");
+    const end = dealsHtml.indexOf("<!-- DEALS-GRID-END -->");
+    if (start === -1 || end === -1) {
+      console.warn("deals.html: grid markers not found, left untouched");
+    } else {
+      dealsHtml = dealsHtml.slice(0, start) +
+        `<!-- DEALS-GRID-START -->\n<div class="vendor-grid deals-grid" data-deals-list>\n${cards}\n</div>\n` +
+        dealsHtml.slice(end);
+      dealsHtml = dealsHtml.replace(/(<strong data-deals-updated>)[^<]*(<\/strong>)/, `$1${checkedLabel}$2`);
+      dealsHtml = dealsHtml.replace(/(<strong data-deals-live>)[^<]*(<\/strong>)/, `$1${deals.length}$2`);
+      dealsHtml = dealsHtml.replace(/(<strong data-deals-vendors>)[^<]*(<\/strong>)/, `$1${vendorCount}$2`);
+      dealsHtml = dealsHtml.replace(/\n?<script type="application\/ld\+json">[\s\S]*?<\/script>(?=\s*<\/head>)/g, "");
+      dealsHtml = dealsHtml.replace("</head>", `${schema}\n</head>`);
+      dealsHtml = dealsHtml.replace(/\n?<!-- DEALS-JS-START -->[\s\S]*?<!-- DEALS-JS-END -->/g, "");
+      // Legacy sweep: builds before the markers existed left unmarked copies that
+      // the marker strip above can never match, so they would accumulate forever.
+      dealsHtml = dealsHtml.replace(/\n?<script>\(function\(\)\{try\{var t=new Date\(\)\.toLocaleDateString\("en-CA"[\s\S]*?<\/script>/g, "");
+      dealsHtml = dealsHtml.replace(/\n?<script>\(function\(\)\{try\{var t=document\.querySelector\("\[data-deals-ticker\]"[\s\S]*?<\/script>/g, "");
+      dealsHtml = dealsHtml.replace("</body>", `${guard}\n</body>`);
+      await writeFile(dealsPath, dealsHtml);
+      console.log(`deals.html rebuilt: ${deals.length} live offers across ${vendorCount} vendors`);
+    }
+  }
+}
+
+// ---- emit sitemap ----
+// Previously this only wrote a list of URLs to a side file and left sitemap.xml
+// stale, so newly generated pages never got submitted. Now the sitemap is built
+// in full from the core pages plus everything generated in this run.
+const CORE_URLS = [
+  ["/", "1.0"],
+  ["/semaglutide-price-comparison.html", "0.9"],
+  ["/tirzepatide-price-comparison.html", "0.9"],
+  ["/retatrutide-price-comparison.html", "0.9"],
+  ["/bpc-157-price-comparison.html", "0.9"],
+  ["/glp-weight-loss.html", "0.8"],
+  ["/vendors.html", "0.8"],
+  // The deals page changes most days, which is the whole reason it earns a
+  // crawl. /standards was simply missing, so the page carrying our testing
+  // claim was never submitted.
+  ["/deals.html", "0.8"],
+  ["/standards.html", "0.7"],
+  ["/faq.html", "0.6"],
+  ["/blog/", "0.6"],
+  ["/blog/bpc-157-price-comparison.html", "0.5"],
+  ["/blog/how-to-evaluate-peptide-vendor.html", "0.5"],
+  ["/blog/what-is-7-7-testing-standard.html", "0.5"],
+  ["/blog/research-peptide-cost.html", "0.5"],
+  ["/disclaimer.html", "0.3"],
+  ["/privacy.html", "0.2"],
+  ["/terms.html", "0.2"],
+];
+const extra = [];
+for (const g of generated.compounds) extra.push([g.path, "0.7"]);
+for (const g of generated.vendors) extra.push([g.path, "0.6"]);
+extra.push(["/compounds.html", "0.8"]);
+// /alerts.html left out of the sitemap while email signups are paused.
+
+const lastmod = new Date().toISOString().slice(0, 10);
+const seenUrl = new Set();
+const allUrls = [...CORE_URLS, ...extra].filter(([p]) => {
+  if (seenUrl.has(p)) return false;
+  seenUrl.add(p);
+  return true;
+});
+const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${allUrls.map(([p, pr]) => `<url><loc>${BASE}${clean(p)}</loc><lastmod>${lastmod}</lastmod><priority>${pr}</priority></url>`).join("\n")}
+</urlset>
+`;
+await writeFile(`${W}/sitemap.xml`, sitemapXml);
+await writeFile(`${W}/scripts/_generated-urls.json`, JSON.stringify(extra, null, 0));
+console.log("sitemap written:", allUrls.length, "URLs");
+// Pages stop being generated when a compound drops below the vendor threshold or
+// a vendor is removed, but the old file stays on disk and keeps serving stale
+// copy while being absent from the sitemap. Warn rather than delete: a bad build
+// should never be able to wipe pages.
+{
+  const { readdir, stat } = await import("node:fs/promises");
+  const expected = new Set([...generated.compounds, ...generated.vendors].map(g => `${W}${g.path}`));
+  for (const dir of ["compounds", "vendors"]) {
+    let files = [];
+    try { files = await readdir(`${W}/${dir}`); } catch { continue; }
+    for (const file of files) {
+      if (!file.endsWith(".html")) continue;
+      const full = `${W}/${dir}/${file}`;
+      if (expected.has(full)) continue;
+      console.warn(`  orphan: ${dir}/${file} is no longer generated and may be serving stale content`);
+    }
+  }
+}
+console.log("total generated pages:", generated.compounds.length + generated.vendors.length + 1);

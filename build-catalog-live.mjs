@@ -1,0 +1,232 @@
+// Builds data/catalog-fallback-snapshot.json from the live vendor APIs at deploy
+// time, so the bundled snapshot and every generated static page ship with real
+// product deep links and the full vendor roster.
+//
+// Replaces build-catalog-fallback.mjs in the Netlify build chain.
+//
+// Why: build-catalog-fallback.mjs rebuilds from data/catalog-fallback.json, a
+// committed seed of 1506 rows carrying no `url` field and only 14 vendors against
+// the 19 in data/vendor-config.json. Any
+// deploy running it reverted the bundled snapshot to base affiliate URLs and
+// dropped Orbitrex, then regenerated all 100+ static pages from that. This
+// script pulls the same live feeds the serverless functions use instead.
+//
+// Safety model, in order of preference:
+//   1. Live pull succeeds with full vendor coverage  -> write new snapshot
+//   2. Live pull is short on vendors or fails        -> keep committed snapshot,
+//                                                        warn, exit 0
+// The build never fails because a vendor feed had a bad minute. A stale but
+// complete snapshot is always better than a fresh partial one baked into
+// 100+ pages.
+//
+// Environment:
+//   SKIP_CATALOG_LIVE=1        bypass entirely and use the committed snapshot
+//   CATALOG_ALLOW_MISSING      comma-separated vendor names permitted to be absent
+//   CATALOG_MIN_VENDORS        override the vendor coverage floor (default: 80%
+//                              of configured vendors)
+
+import { readFile, writeFile } from "node:fs/promises";
+import { fileURLToPath } from "node:url";
+import { dirname, resolve } from "node:path";
+import { buildCatalog, publicSnapshot } from "../netlify/functions/_shared/catalog-engine.mjs";
+import { VENDOR_ADAPTERS } from "../netlify/functions/_shared/vendor-adapters.mjs";
+import { assertSnapshotUsable, describeSnapshot } from "./_snapshot-floor.mjs";
+
+const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
+const SNAPSHOT_PATH = `${W}/data/catalog-fallback-snapshot.json`;
+
+const allowMissing = new Set(
+  String(process.env.CATALOG_ALLOW_MISSING || "")
+    .split(",").map(s => s.trim()).filter(Boolean)
+);
+
+// A vendor with a future launch_date in vendor-config is expected to be absent
+// and must not hold up a deploy. This is self-healing: the waiver lapses on its
+// own the day the vendor goes live, so nobody has to remember to remove an
+// environment variable, and a genuinely broken feed still trips the guard.
+const vendorConfig = JSON.parse(await readFile(`${W}/data/vendor-config.json`, "utf8"));
+const today = new Date().toISOString().slice(0, 10);
+const preLaunch = [];
+for (const [name, meta] of Object.entries(vendorConfig.vendors || {})) {
+  const launch = String(meta.launch_date || "").slice(0, 10);
+  if (launch && launch > today) { allowMissing.add(name); preLaunch.push(`${name} (launches ${launch})`); }
+}
+if (preLaunch.length) console.log(`build-catalog-live: pre-launch, absence waived: ${preLaunch.join(", ")}`);
+
+function keepCommitted(reason) {
+  console.warn(`\n  build-catalog-live: ${reason}`);
+  console.warn("  Keeping the committed snapshot. Static pages will use the");
+  console.warn("  last known-good data rather than partial live data.\n");
+}
+
+async function committedSummary() {
+  try {
+    const snap = JSON.parse(await readFile(SNAPSHOT_PATH, "utf8"));
+    return `${snap.vendors_loaded ?? "?"} vendors, ${(snap.products || []).length} products, generated ${snap.generated_at || "unknown"}`;
+  } catch {
+    return "unreadable";
+  }
+}
+
+// Falling back is only safe when there is something complete to fall back to.
+// Called on every path that leaves the committed snapshot in place.
+async function assertCommittedIsUsable() {
+  let snap;
+  try {
+    snap = JSON.parse(await readFile(SNAPSHOT_PATH, "utf8"));
+  } catch (error) {
+    console.error(`  BUILD STOPPED: committed snapshot unreadable (${error.message})`);
+    process.exit(1);
+  }
+  assertSnapshotUsable(snap, {
+    configuredVendors: Object.keys(vendorConfig.vendors || {}).length,
+    label: "committed data/catalog-fallback-snapshot.json"
+  });
+}
+
+if (process.env.SKIP_CATALOG_LIVE === "1") {
+  keepCommitted("SKIP_CATALOG_LIVE=1 set, skipping the live pull");
+  console.log(`  Committed snapshot: ${await committedSummary()}`);
+  await assertCommittedIsUsable();
+  process.exit(0);
+}
+
+const configured = VENDOR_ADAPTERS.map(a => a.vendor);
+const minVendors = Number.parseInt(process.env.CATALOG_MIN_VENDORS || "", 10)
+  || (configured.length - allowMissing.size);
+
+console.log(`build-catalog-live: pulling ${configured.length} vendor feeds (expected ${minVendors})`);
+
+// Promise.allSettled, never a sequential loop: one slow vendor must not
+// serialize the whole build.
+const settled = await Promise.allSettled(VENDOR_ADAPTERS.map(a => a.load()));
+
+const rows = [];
+const vendorStatus = {};
+const warnings = [];
+const loaded = [];
+const failed = [];
+
+settled.forEach((result, index) => {
+  const vendor = configured[index];
+  if (result.status === "fulfilled" && result.value?.products?.length) {
+    const tagged = result.value.products.map(row => ({ ...row, source_layer: "live-api" }));
+    rows.push(...tagged);
+    vendorStatus[vendor] = {
+      status: "live",
+      row_count: tagged.length,
+      fetched_at: result.value.fetched_at || new Date().toISOString(),
+      metadata: result.value.metadata || {}
+    };
+    loaded.push(vendor);
+  } else {
+    const message = result.status === "rejected"
+      ? (result.reason?.message || String(result.reason))
+      : "returned zero rows";
+    vendorStatus[vendor] = { status: "failed", row_count: 0, error: message };
+    warnings.push(`${vendor}: ${message}`);
+    failed.push(vendor);
+  }
+});
+
+console.log(`  loaded ${loaded.length}/${configured.length} vendors, ${rows.length} rows`);
+for (const w of warnings) console.log(`  warning: ${w}`);
+
+const missingBlocking = failed.filter(v => !allowMissing.has(v));
+
+if (!rows.length) {
+  keepCommitted("every vendor feed failed, no rows returned");
+  console.log(`  Committed snapshot: ${await committedSummary()}`);
+  await assertCommittedIsUsable();
+  process.exit(0);
+}
+
+// A single flaky feed used to discard the entire live pull, so every static page
+// regenerated from a months-old committed snapshot. That is how Aurora,
+// Peptidology, Iron Protocol and Peptira ended up with no vendor pages while
+// their feeds were healthy: one unrelated vendor failed on each deploy and took
+// the whole snapshot down with it. A small number of failures is now tolerated,
+// which costs that vendor its static pages for one deploy rather than costing
+// every vendor three weeks of freshness. The serverless catalog still serves the
+// failed vendor from its own retained rows, so the live comparison is unaffected.
+const maxFailures = Number.parseInt(process.env.CATALOG_MAX_FAILURES || "", 10);
+const failureBudget = Number.isFinite(maxFailures) ? maxFailures : 2;
+// Below this share of vendors the pull looks like an outage rather than a bad
+// minute. CATALOG_MIN_VENDORS is documented at the top of this file as the
+// override for it, and until now it was read into a variable that only ever
+// reached a log line while the decision used the hardcoded share, so setting it
+// did nothing.
+const coverageFloor = Number.parseInt(process.env.CATALOG_MIN_VENDORS || "", 10)
+  || Math.ceil(configured.length * 0.8);
+
+// Built before the decision, because the decision now needs to look at what the
+// pull actually produced rather than only counting which feeds answered.
+const catalog = buildCatalog(rows, { vendor_status: vendorStatus, warnings });
+const output = {
+  ...publicSnapshot(catalog),
+  snapshot_updated_at: new Date().toISOString(),
+  snapshot_refresh_ms: 0
+};
+
+if (loaded.length < coverageFloor || missingBlocking.length > failureBudget) {
+  const reason = `only ${loaded.length} of ${configured.length} vendors loaded, wanted at least ${coverageFloor} and no more than ${failureBudget} blocking failures`;
+
+  // "A stale but complete snapshot beats a fresh partial one" holds only while
+  // the committed snapshot is complete. On 2026-09-30 it was a 4 vendor seed,
+  // the pull came up short, and the build published a site with 7 compounds on
+  // it. Retrying could not help: the pull was short every time, so every deploy
+  // took the same branch. So compare the two instead of assuming, and keep the
+  // committed one only when it is genuinely the better of the pair.
+  let committed = { vendors: 0, products: 0 };
+  try {
+    committed = describeSnapshot(JSON.parse(await readFile(SNAPSHOT_PATH, "utf8")));
+  } catch { /* unreadable committed snapshot loses the comparison */ }
+  const live = describeSnapshot(output);
+  const liveIsBetter = live.vendors > committed.vendors
+    || (live.vendors === committed.vendors && live.products > committed.products);
+
+  if (liveIsBetter) {
+    console.warn(`\n  build-catalog-live: ${reason}`);
+    if (missingBlocking.length) console.warn(`  missing: ${missingBlocking.join(", ")}`);
+    console.warn(`  Using the live pull anyway: ${live.vendors} vendors / ${live.products} products`);
+    console.warn(`  beats the committed ${committed.vendors} vendors / ${committed.products} products.`);
+    console.warn("  Fix the failing feeds, but a partial live catalog is still the better site.\n");
+  } else {
+    keepCommitted(reason);
+    if (missingBlocking.length) console.warn(`  missing: ${missingBlocking.join(", ")}`);
+    console.log(`  Committed snapshot: ${await committedSummary()}`);
+    await assertCommittedIsUsable();
+    process.exit(0);
+  }
+} else if (missingBlocking.length) {
+  console.warn(`\n  build-catalog-live: proceeding without ${missingBlocking.length} vendor(s): ${missingBlocking.join(", ")}`);
+  console.warn("  Their static pages keep the previously committed content this deploy.");
+  console.warn("  A vendor appearing here on repeated deploys has a genuinely broken feed.\n");
+}
+
+// Deep-link rate is reported, not enforced. Solyn and Oneday are intentionally
+// held on base URLs, so a non-zero base count is expected and must not block a
+// deploy. A sudden drop to zero deep links is worth noticing in the build log.
+let deep = 0;
+let base = 0;
+for (const product of output.products || []) {
+  for (const variant of product.variants || []) {
+    for (const supplier of variant.suppliers || []) {
+      const url = String(supplier.affiliate_url || "");
+      let path = "";
+      try { path = new URL(url).pathname.replace(/\/+$/, "").replace(/^\//, ""); } catch { /* ignore */ }
+      if (path && !["shop", "store", "products"].includes(path)) deep += 1;
+      else base += 1;
+    }
+  }
+}
+const total = deep + base;
+const pct = total ? Math.round((deep / total) * 100) : 0;
+
+await writeFile(SNAPSHOT_PATH, `${JSON.stringify(output, null, 2)}\n`);
+
+console.log(`  wrote data/catalog-fallback-snapshot.json`);
+console.log(`  ${output.product_card_count} cards, ${output.normalized_offer_count} offers, ${loaded.length} vendors`);
+console.log(`  deep links: ${deep}/${total} (${pct}%), base URLs: ${base}`);
+if (deep === 0) console.warn("  warning: zero deep links resolved, check use_product_deep_links flags");
+if (allowMissing.size) console.log(`  waived: ${[...allowMissing].join(", ")}`);
