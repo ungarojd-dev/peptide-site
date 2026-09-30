@@ -15,7 +15,7 @@ export const ENGINE_VERSION = "1.5.1-peptidology-logo";
 // JSON is imported with { type: "json" } and is therefore baked into the
 // function bundle at build time. Without a .mjs edit Netlify reuses the cached
 // bundle and the config change silently does nothing.
-export const VENDOR_CONFIG_FINGERPRINT = "388d8dd027c5c0af";
+export const VENDOR_CONFIG_FINGERPRINT = "8952e1f7999a4e72";
 export const COUPON_CODE = vendorPayload.coupon_code || "SAMMYC";
 export const VENDOR_CONFIG = vendorPayload.vendors || {};
 

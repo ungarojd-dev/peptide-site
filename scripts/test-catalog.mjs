@@ -42,7 +42,6 @@ const expectedSammycRates = {
   "Mile High Peptides": 10,
   "LabSourced Peptides": 15,
   "Instant Peptides": 15,
-  "Southern Aminos": 15,
   "Flawless Compounds": 15,
   "Glow Aminos": 15,
   "Solyn Labs": 10,

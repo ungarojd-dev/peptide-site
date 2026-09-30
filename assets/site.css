@@ -1427,7 +1427,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260929-deals-page-v185") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20260930-deals-ticker-v186") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -2099,4 +2099,43 @@ a.hero-price-card:focus-visible { outline: 2px solid var(--olive-soft); outline-
 @media (max-width: 640px) {
   .deals-meta { gap: 6px 14px; font-size: 12px; }
   .deal-headline { font-size: 13.5px !important; }
+}
+
+
+/* ── DEALS TICKER ────────────────────────────────────────────────────────
+   A second way to notice an offer, never the only way to read one: every chip
+   here is also a full card below. Motion is decorative, so it yields to the
+   pause control, to hover, to keyboard focus and to prefers-reduced-motion. */
+.deals-ticker { margin: 0 0 22px; border: 1px solid var(--line); border-radius: var(--radius-card); background: var(--paper); box-shadow: var(--shadow); overflow: hidden; }
+.dt-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; border-bottom: 1px solid var(--line); padding: 9px 14px; }
+.dt-label { color: var(--forest); font-size: 11px; font-weight: 850; letter-spacing: .9px; text-transform: uppercase; }
+.dt-pause { border: 1px solid var(--line); border-radius: 999px; background: #fff; color: var(--forest); padding: 4px 12px; font: inherit; font-size: 11px; font-weight: 800; cursor: pointer; }
+.dt-pause:hover { border-color: var(--olive); }
+.dt-pause:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
+.dt-window { overflow: hidden; padding: 10px 0; -webkit-mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); mask-image: linear-gradient(90deg, transparent, #000 40px, #000 calc(100% - 40px), transparent); }
+.dt-run { display: flex; width: max-content; animation: dt-scroll linear infinite; animation-duration: calc(var(--dt-count, 6) * 4s); }
+.dt-set { display: flex; gap: 10px; padding-right: 10px; }
+/* Hover, keyboard focus and the button all stop it. Any one of them is enough. */
+.deals-ticker:hover .dt-run,
+.deals-ticker:focus-within .dt-run,
+.deals-ticker.is-paused .dt-run { animation-play-state: paused; }
+@keyframes dt-scroll { from { transform: translate3d(0,0,0); } to { transform: translate3d(-50%,0,0); } }
+.dt-chip { display: inline-flex; align-items: center; gap: 9px; flex: 0 0 auto; border: 1px solid var(--line); border-radius: 999px; background: var(--soft, #f4f6f0); padding: 7px 14px; text-decoration: none; white-space: nowrap; }
+.dt-chip:hover { border-color: var(--olive); }
+.dt-chip:focus-visible { outline: 2px solid var(--olive); outline-offset: 2px; }
+.dt-vendor { color: var(--ink); font-size: 13px; font-weight: 800; }
+.dt-cut { color: var(--forest); font-size: 13px; font-weight: 900; }
+.dt-ends { color: var(--muted); font-size: 11px; font-weight: 750; }
+/* No motion at all: the strip becomes an ordinary scrollable row the visitor
+   drives, and the pause button is pointless so it goes. */
+@media (prefers-reduced-motion: reduce) {
+  .dt-run { animation: none; width: auto; }
+  .dt-window { overflow-x: auto; -webkit-mask-image: none; mask-image: none; }
+  .dt-set[data-dt-clone] { display: none; }
+  .dt-pause { display: none; }
+}
+@media (max-width: 640px) {
+  .dt-head { padding: 8px 12px; }
+  .dt-chip { padding: 6px 12px; gap: 7px; }
+  .dt-vendor, .dt-cut { font-size: 12px; }
 }

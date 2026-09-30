@@ -236,7 +236,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260929-deals-page-v185";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260930-deals-ticker-v186";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -371,54 +371,27 @@
         : (it.startLabel ? `<span class="deal-when">starts ${escapeHtml(it.startLabel)}</span>` : "");
     return `<a class="deal-line" href="${escapeHtml(it.url)}" target="_blank" rel="nofollow sponsored noopener" data-deal-affiliate="1" data-deal-vendor="${escapeHtml(it.vendorKey)}"><span class="deal-line-main"><strong>${escapeHtml(it.vendor)}</strong> <span class="deal-offer">${escapeHtml(it.offer)}</span></span>${rate||""}${when}</a>`;
   }
-  const dealsPanelMarkup=all=>{
-    const b=dealBuckets(all);
-    const section=(title,cls,items)=> items.length?`<div class="deals-group ${cls}"><h3>${title} <span class="deals-group-n">${items.length}</span></h3>${items.map(dealLineHtml).join("")}</div>`:"";
-    const total=b.ending.length+b.live.length+b.upcoming.length+b.ongoing.length;
-    return `<div class="deals-panel-backdrop" data-deals-backdrop hidden><section class="deals-panel" role="dialog" aria-modal="true" aria-labelledby="deals-panel-title"><header class="deals-panel-header"><div><span class="deals-eyebrow">Live roundup</span><h2 id="deals-panel-title">Today's Deals</h2></div><button class="deals-close" type="button" data-deals-close aria-label="Close deals">×</button></header><div class="deals-panel-scroll">${section("Ending soon","is-ending",b.ending)}${section("Live now","is-live",b.live)}${section("Always on","is-ongoing",b.ongoing)}${section("Upcoming","is-upcoming",b.upcoming)}${total===0?'<p class="deals-empty">No active deals right now. Check back soon.</p>':""}</div><footer class="deals-panel-footer">Prices and stacking are set by each vendor and can change. Confirm at checkout.</footer></section></div>`;
-  };
-  let dealsPanelRoot=null;
-  const openDealsPanel=()=>{ if(dealsPanelRoot){ dealsPanelRoot.hidden=false; document.body.classList.add("deals-panel-open"); dealsPanelRoot.querySelector("[data-deals-close]")?.focus(); } };
-  const closeDealsPanel=()=>{ if(dealsPanelRoot){ dealsPanelRoot.hidden=true; document.body.classList.remove("deals-panel-open"); } };
-  // Today's Deals is a deal surface. An entry that only ticks "Announcement
-  // strip (top bar)" is vendor news, not an offer, and was appearing here and
-  // in the header count because the panel received every promotion. Anything
-  // shown in the deal carousel or the roundup still appears; only strip-only
-  // announcements are filtered out.
+  // The Deals popup panel is gone. /deals is a real page now: crawlable, linked
+  // from every header, and it carries the same offers with more room. Keeping a
+  // homepage-only modal that rendered the same data meant two "Deals" entries in
+  // the nav and a surface Google could not follow.
+  //
+  // The one thing worth keeping is the count badge on the header pill, so the
+  // link still says how many time-sensitive offers are waiting.
   function isDealSurface(promo){
     return promo.show_in_deals===true;
   }
-  function setupDealsPanel(everything){
+  function setupDealsBadge(everything){
     const all=(everything||[]).filter(isDealSurface);
-    if(dealsPanelRoot) dealsPanelRoot.remove();
-    const holder=document.createElement("div");
-    holder.innerHTML=dealsPanelMarkup(all);
-    dealsPanelRoot=holder.firstElementChild;
-    document.body.appendChild(dealsPanelRoot);
-    dealsPanelRoot.querySelectorAll("[data-deals-close]").forEach(btn=>btn.addEventListener("click",closeDealsPanel));
-    dealsPanelRoot.addEventListener("click",e=>{if(e.target===dealsPanelRoot)closeDealsPanel();});
-    dealsPanelRoot.querySelectorAll("[data-deal-affiliate='1']").forEach(link=>link.addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Today's Deals roundup",product_category:"promotion",button_text:"Deal line",button_location:"deals_roundup_panel",affiliate_network:"direct_vendor",vendor_name:link.dataset.dealVendor||"",affiliate_url:link.href});}));
-    // Header button count = time-sensitive deals only (ending + live + upcoming).
+    // Time-sensitive only: ending, live and upcoming. Evergreen standing
+    // discounts are always true, so counting them would make the badge a
+    // constant and tell a returning visitor nothing.
     const b=dealBuckets(all);
     const count=b.ending.length+b.live.length+b.upcoming.length;
-    document.querySelectorAll("[data-deals-open]").forEach(btn=>{
-      btn.addEventListener("click",openDealsPanel);
-      const badge=btn.querySelector("[data-deals-count]");
-      if(badge){ if(count>0){ badge.textContent=String(count); badge.hidden=false; } else { badge.hidden=true; } }
+    document.querySelectorAll("[data-deals-count]").forEach(badge=>{
+      if(count>0){ badge.textContent=String(count); badge.hidden=false; }
+      else { badge.hidden=true; }
     });
-    // Mobile deals strip: same count as the header pill, plus a one line teaser
-    // naming the strongest live offer so the row says something specific
-    // rather than just "we have deals".
-    // The strip carries data-deals-open and data-deals-count, so the click
-    // handler and badge above wire it exactly like the header pill. It opens the
-    // styled Today's Deals drawer, not the older promotions panel.
-    const stripSub=document.querySelector("[data-deals-strip-sub]");
-    if(stripSub){
-      const headline=[...b.ending,...b.live].map(item=>({vendor:item.vendor,sale:Number(item.sale)}))
-        .filter(item=>Number.isFinite(item.sale)).sort((a,b2)=>b2.sale-a.sale)[0];
-      if(headline) stripSub.textContent=`${headline.vendor} ${headline.sale}% off, plus ${count-1} more`;
-    }
-    document.addEventListener("keydown",e=>{ if(e.key==="Escape") closeDealsPanel(); });
   }
   function setupPromotionRolodex(promotions){
     const saleCard=document.querySelector("[data-sale-card]");
@@ -516,7 +489,6 @@
     const logos={
       "disguised alpha":"/assets/vendor-logos/disguised-alpha.webp",
       "bioedge research labs":"/assets/vendor-logos/bioedge-research-labs.webp",
-      "southern aminos":"/assets/vendor-logos/southern-aminos.webp",
       "mile high peptides":"/assets/vendor-logos/mile-high-peptides.webp",
       "mile high compounds":"/assets/vendor-logos/mile-high-peptides.webp",
       "instant peptides":"/assets/vendor-logos/instant-peptides.webp",
@@ -536,37 +508,9 @@
     };
     return logos[key]||"";
   };
-  function setupDealCarousel(promotions){
-    const track=document.querySelector("[data-deal-track]");
-    const dotsWrap=document.querySelector("[data-deal-dots]");
-    if(!track) return;
-    const deals=promotions.filter(p=>p.show_in_deals===true)
-      .slice().sort((a,b)=>Number(!!b.pinned)-Number(!!a.pinned));
-    if(!deals.length){const s=document.querySelector(".deal-carousel");if(s)s.hidden=true;return;}
-    const isStackable=deal=>{const h=((deal.short_detail||"")+" "+(deal.full_detail||"")).toLowerCase();return h.includes("stackable")||h.includes("sammyc");};
-    let current=0;let autoTimer;
-    const render=()=>{
-      const deal=deals[current];
-      const{text:headline}=splitHeadlineBadge(deal.headline);
-      const badgeHtml=`<span class="dc-badge">${escapeHtml(deal.badge||"Limited Time Deal")}</span>`;
-      const stackChip=isStackable(deal)?`<span class="dc-stack">+SAMMYC</span>`:"";
-      const logo=dealLogoPath(deal.display_vendor||deal.vendor);
-      const logoHtml=logo?`<img class="dc-logo" src="${escapeHtml(logo)}" alt="" width="46" height="30" loading="lazy">`:"";
-      const pinClass=deal.pinned?" dc-card--pinned":"";
-      const brand=deal.brand_color||"";
-      track.innerHTML=`<a class="dc-card${pinClass}"${brand?` style="--bc:${escapeHtml(brand)}"`:""} href="${escapeHtml(deal.affiliate_url||"#")}" target="_blank" rel="nofollow sponsored noopener" data-vendor="${escapeHtml(deal.vendor)}"><div class="dc-card-body"><div class="dc-top">${badgeHtml}<span class="dc-vendor-wrap">${logoHtml}<span class="dc-vendor">${escapeHtml(deal.display_vendor||deal.vendor)}</span></span>${stackChip}</div><strong class="dc-headline">${escapeHtml(headline)}</strong><span class="dc-detail">${escapeHtml(deal.short_detail||"")}</span></div><span class="dc-cta">View Deal ›</span></a>`;
-      if(dotsWrap){dotsWrap.innerHTML=deals.map((_,i)=>`<button class="dc-dot${i===current?" active":""}" data-dot="${i}" aria-label="Deal ${i+1}"></button>`).join("");dotsWrap.querySelectorAll("[data-dot]").forEach(d=>d.addEventListener("click",()=>goTo(parseInt(d.dataset.dot))));}
-      track.querySelector(".dc-card")&&track.querySelector(".dc-card").addEventListener("click",()=>{window.dataLayer=window.dataLayer||[];window.dataLayer.push({event:"affiliate_click",product_name:"Deal carousel",product_category:"promotion",button_text:"View Deal",button_location:"deal_carousel",vendor_name:deal.vendor,affiliate_url:deal.affiliate_url||""});});
-    };
-    const goTo=i=>{current=(i+deals.length)%deals.length;render();resetTimer();};
-    const resetTimer=()=>{clearInterval(autoTimer);if(deals.length>1)autoTimer=setInterval(()=>goTo(current+1),4000);};
-    document.querySelector("[data-deal-prev]")&&document.querySelector("[data-deal-prev]").addEventListener("click",()=>goTo(current-1));
-    document.querySelector("[data-deal-next]")&&document.querySelector("[data-deal-next]").addEventListener("click",()=>goTo(current+1));
-    let tx=0;
-    track.addEventListener("touchstart",e=>{tx=e.touches[0].clientX;},{passive:true});
-    track.addEventListener("touchend",e=>{const d=tx-e.changedTouches[0].clientX;if(Math.abs(d)>40)goTo(current+(d>0?1:-1));},{passive:true});
-    render();resetTimer();
-  }
+  // setupDealCarousel removed. It queried [data-deal-track], [data-deal-dots],
+  // [data-deal-prev] and [data-deal-next], none of which exist in any page, so
+  // the whole implementation never ran. /deals now carries the browsable list.
 
   function addVendorDirectoryBadges(promotions){
     document.querySelectorAll(".vendor-card").forEach(card=>{
@@ -594,8 +538,7 @@
       // only by the announcement bar.
       announcementGiveaways().then(gw=>{ promoState.giveawayAnnouncements=gw; });
       setupPromotionRolodex(promoState.active);
-      setupDealCarousel(promoState.active);
-      setupDealsPanel(promoState.all);
+      setupDealsBadge(promoState.all);
       renderSignupProof(promoState.all);
       addVendorDirectoryBadges(promoState.active);
       document.dispatchEvent(new CustomEvent("mpp:promotions-ready"));

@@ -2,6 +2,24 @@
   "_comment": "Human-editable deal source. The Decap portal at /admin edits THIS file. scripts/build-promotions.mjs expands it into data/promotions.json, which the site reads. Do not edit promotions.json by hand.",
   "deals": [
     {
+      "priority": 120,
+      "show_in": [
+        "deals"
+      ],
+      "featured": true,
+      "vendor": "Oneday Compounds",
+      "start_date": "2026-09-30",
+      "end_date": "2026-09-30",
+      "sale_percent": 35,
+      "headline": "35% off sitewide, extended through tonight",
+      "timezone": "America/New_York",
+      "type": "sitewide_sale",
+      "cta_text": "Shop Now",
+      "description": "Oneday Compounds extended its sale: 35% off sitewide, applied automatically with no code needed. The sale ends at 11:59pm Mountain on September 30. Confirm final pricing at checkout.",
+      "affiliate_url": "https://onedaycompounds.net/?ref=subileue",
+      "id": "oneday-35-sitewide-2026-09-30"
+    },
+    {
       "show_in": [
         "announcement"
       ],
@@ -270,5 +288,5 @@
       "id": "peptira-bogo-glp-2026-10"
     }
   ],
-  "version": "2026-09-29-hightide-40-peptira-bogo"
+  "version": "2026-09-30-oneday-35-southern-removed"
 }

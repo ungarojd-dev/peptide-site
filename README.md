@@ -50,8 +50,6 @@ only for offline engine testing.
 - `GLACIER_CS`
 - `ION_CK`
 - `ION_CS`
-- `SOUTHERN_CK`
-- `SOUTHERN_CS`
 - `FLAWLESS_CK`
 - `FLAWLESS_CS`
 - `GLOW_CK`

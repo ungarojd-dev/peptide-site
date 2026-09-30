@@ -75,23 +75,6 @@
       "brand_color": "#4175aa",
       "package_protection_required": false
     },
-    "Southern Aminos": {
-      "id": "southern-aminos",
-      "discount_percent": 15,
-      "affiliate_url": "https://southernaminos.com/?coupon=sammyc",
-      "logo": "/assets/vendor-logos/southern-aminos.webp",
-      "use_product_deep_links": true,
-      "payment_methods": [
-        "Apple Pay",
-        "Google Pay",
-        "Visa",
-        "Discover",
-        "American Express",
-        "Mastercard"
-      ],
-      "brand_color": "#c35b27",
-      "package_protection_required": false
-    },
     "Flawless Compounds": {
       "id": "flawless-compounds",
       "discount_percent": 15,

@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260929-deals-page-v185";
+const VER = "20260930-deals-ticker-v186";
 const BASE = "https://mypeptideprice.com";
 // Files are written with .html, but every URL we publish (canonical, og:url,
 // schema, internal links, sitemap) uses the clean form. Google was indexing both
@@ -230,8 +230,9 @@ function header() {
     <a class="brand premium-brand" href="/" aria-label="MyPeptidePrice home">
       <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=${VER}" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
       <span class="brand-copy"><span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span><span class="brand-tagline">Research. Compare. Save.</span></span>
-    </a>
-    <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open navigation"><span></span><span></span><span></span></button>
+      </a>
+      <a class="nav-deals-btn" href="/deals">Deals<span class="nav-deals-count" data-deals-count hidden>0</span></a>
+      <button class="nav-toggle" type="button" data-nav-toggle aria-label="Open navigation"><span></span><span></span><span></span></button>
     <nav class="site-nav" data-site-nav>
       <a href="/#compare">Prices</a>
       <a href="/vendors">Vendors</a>
@@ -246,7 +247,7 @@ function header() {
         </div>
       </div>
       <a href="/faq">FAQ</a>
-      <a href="/deals">Deals</a><a href="/standards">Standards</a>
+      <a href="/standards">Standards</a>
       <a href="/blog/">Research</a>
       <a class="nav-code-pill" href="/#compare">Use SAMMYC</a>
     </nav>
@@ -944,13 +945,81 @@ for (const [key, hubPath] of HAND_BUILT) {
     // Netlify builds. The server-rendered list is what a crawler sees; this
     // removes any row whose end date has passed for a visitor arriving later.
     // Same string comparison rule as the build: no Date parsing of wall dates.
-    const guard = `<script>(function(){try{var t=new Date().toLocaleDateString("en-CA",{timeZone:"America/New_York"});` +
+    // Everything injected here is wrapped in DEALS-JS markers. The previous
+    // strip matched a single <script>...</script> non-greedily, so once this
+    // became two scripts it only ever removed the first and every rebuild
+    // appended another copy of the second. Two copies meant two click
+    // listeners on the pause button, which toggled the class twice and looked
+    // like the button was dead.
+    const guard = `<!-- DEALS-JS-START --><script>(function(){try{var t=new Date().toLocaleDateString("en-CA",{timeZone:"America/New_York"});` +
       `var rows=document.querySelectorAll("[data-deal-end]"),gone=0;` +
       `for(var i=0;i<rows.length;i++){if(rows[i].getAttribute("data-deal-end")<t){rows[i].remove();gone++;}}` +
       `if(gone){var n=document.querySelector("[data-deals-live]");` +
       `if(n)n.textContent=String(Math.max(0,(parseInt(n.textContent,10)||0)-gone));` +
       `var list=document.querySelector("[data-deals-list]");var empty=document.querySelector("[data-deals-empty]");` +
-      `if(list&&empty&&!list.querySelector(".deal-card")){list.hidden=true;empty.hidden=false;}}}catch(e){}})();</script>`;
+      `if(list&&empty&&!list.querySelector(".deal-card")){list.hidden=true;empty.hidden=false;}}}catch(e){}})();</script>` +
+      // Ticker wiring. aria-hidden takes the clone out of the accessibility tree
+      // but NOT out of the tab order, so every link in it is explicitly removed
+      // from tabbing here. The pause button is required: WCAG 2.2.2 wants a way
+      // to stop anything that moves by itself for more than five seconds, and
+      // hover alone does not serve keyboard or touch.
+      `<script>(function(){try{var t=document.querySelector("[data-deals-ticker]");if(!t)return;` +
+      `var clone=t.querySelector("[data-dt-clone]");` +
+      `if(clone){var a=clone.querySelectorAll("a");for(var i=0;i<a.length;i++){a[i].setAttribute("tabindex","-1");}}` +
+      `var btn=t.querySelector("[data-dt-pause]");if(!btn)return;` +
+      `btn.addEventListener("click",function(){var off=t.classList.toggle("is-paused");` +
+      `btn.setAttribute("aria-pressed",off?"true":"false");btn.textContent=off?"Play":"Pause";});` +
+      `}catch(e){}})();</script><!-- DEALS-JS-END -->`;
+
+    // Ending-soonest conveyor. Decorative: it is a second way to notice an offer,
+    // never the only way to read one. Every deal in it is also a full card below,
+    // so a visitor who cannot or will not chase moving text loses nothing.
+    //
+    // Only dated offers qualify. An evergreen standing discount has no deadline,
+    // so putting it in a strip headed "ending soonest" would be a lie.
+    const dated = deals
+      .filter(d => d.end_date)
+      .sort((a, b) => String(a.end_date).localeCompare(String(b.end_date)));
+
+    // Below three it reads as a broken carousel rather than a moving strip, so it
+    // does not render at all and the page just starts with the grid.
+    const TICKER_MIN = 3;
+    let tickerHtml = "";
+    if (dated.length >= TICKER_MIN) {
+      const chip = d => {
+        const name = d.display_vendor || d.vendor;
+        const cut = Number(d.sale_percent) || Number(d.code_percent) || 0;
+        return `<a class="dt-chip" href="${esc(d.affiliate_url || "#")}" target="_blank" rel="nofollow sponsored noopener"` +
+          ` data-hero-affiliate="1" data-product="${esc(d.headline)}" data-category="promotion"` +
+          ` data-vendor="${esc(d.vendor)}" data-code="${esc(d.code || d.sale_code || "")}"` +
+          ` data-cta="Deals ticker, ${esc(name)}">` +
+          `<span class="dt-vendor">${esc(name)}</span>` +
+          (cut ? `<span class="dt-cut">${esc(cut)}% off</span>` : "") +
+          `<span class="dt-ends">Ends ${esc(endLabel(d.end_date))}</span></a>`;
+      };
+      const run = dated.map(chip).join("");
+      // The run is duplicated so the translation can loop seamlessly. The copy is
+      // aria-hidden and not focusable, so the same offer is not announced twice
+      // and tabbing does not walk through it again.
+      tickerHtml = `<div class="deals-ticker" data-deals-ticker>
+        <div class="dt-head"><span class="dt-label">Ending soonest</span>
+          <button class="dt-pause" type="button" data-dt-pause aria-pressed="false">Pause</button></div>
+        <div class="dt-window">
+          <div class="dt-run" data-dt-run style="--dt-count:${dated.length}">
+            <div class="dt-set">${run}</div>
+            <div class="dt-set" aria-hidden="true" data-dt-clone>${run}</div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    const tStart = dealsHtml.indexOf("<!-- DEALS-TICKER-START -->");
+    const tEnd = dealsHtml.indexOf("<!-- DEALS-TICKER-END -->");
+    if (tStart !== -1 && tEnd !== -1) {
+      dealsHtml = dealsHtml.slice(0, tStart) +
+        `<!-- DEALS-TICKER-START -->\n${tickerHtml}\n` +
+        dealsHtml.slice(tEnd);
+    }
 
     const start = dealsHtml.indexOf("<!-- DEALS-GRID-START -->");
     const end = dealsHtml.indexOf("<!-- DEALS-GRID-END -->");
@@ -965,7 +1034,11 @@ for (const [key, hubPath] of HAND_BUILT) {
       dealsHtml = dealsHtml.replace(/(<strong data-deals-vendors>)[^<]*(<\/strong>)/, `$1${vendorCount}$2`);
       dealsHtml = dealsHtml.replace(/\n?<script type="application\/ld\+json">[\s\S]*?<\/script>(?=\s*<\/head>)/g, "");
       dealsHtml = dealsHtml.replace("</head>", `${schema}\n</head>`);
+      dealsHtml = dealsHtml.replace(/\n?<!-- DEALS-JS-START -->[\s\S]*?<!-- DEALS-JS-END -->/g, "");
+      // Legacy sweep: builds before the markers existed left unmarked copies that
+      // the marker strip above can never match, so they would accumulate forever.
       dealsHtml = dealsHtml.replace(/\n?<script>\(function\(\)\{try\{var t=new Date\(\)\.toLocaleDateString\("en-CA"[\s\S]*?<\/script>/g, "");
+      dealsHtml = dealsHtml.replace(/\n?<script>\(function\(\)\{try\{var t=document\.querySelector\("\[data-deals-ticker\]"[\s\S]*?<\/script>/g, "");
       dealsHtml = dealsHtml.replace("</body>", `${guard}\n</body>`);
       await writeFile(dealsPath, dealsHtml);
       console.log(`deals.html rebuilt: ${deals.length} live offers across ${vendorCount} vendors`);
