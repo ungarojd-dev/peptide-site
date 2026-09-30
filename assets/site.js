@@ -236,7 +236,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260930-labsourced-temp-v187";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260930-announce-marquee-v188";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{

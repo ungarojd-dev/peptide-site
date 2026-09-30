@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260930-labsourced-temp-v187";
+const VER = "20260930-announce-marquee-v188";
 const BASE = "https://mypeptideprice.com";
 // Files are written with .html, but every URL we publish (canonical, og:url,
 // schema, internal links, sitemap) uses the clean form. Google was indexing both
