@@ -1,5 +1,6 @@
 import { readFile, writeFile, mkdir } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
+import { assertSnapshotUsable } from "./_snapshot-floor.mjs";
 import { dirname, resolve } from "node:path";
 
 // Resolve the repo root from this file's location so the generator works from
@@ -25,6 +26,14 @@ const snapStamp = new Date(snap.generated_at || Date.now());
 const TODAY = (Number.isNaN(snapStamp.getTime()) ? new Date() : snapStamp)
   .toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric", timeZone: "America/New_York" });
 const vendorCfg = JSON.parse(await readFile(`${W}/data/vendor-config.json`, "utf8"));
+
+// Nothing below this line is safe to run on a partial snapshot: it regenerates
+// every compound page, every hub, the vendors page and the sitemap. If the
+// snapshot is a seed rather than a catalog, stop here and fail the deploy.
+assertSnapshotUsable(snap, {
+  configuredVendors: Object.keys(vendorCfg.vendors || {}).length,
+  label: "data/catalog-fallback-snapshot.json"
+});
 
 const esc = s => String(s == null ? "" : s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;");
 const jesc = s => String(s == null ? "" : s).replace(/\\/g, "\\\\").replace(/"/g, '\\"').replace(/\s+/g, " ").trim();
@@ -840,13 +849,13 @@ for (const [key, hubPath] of HAND_BUILT) {
   // row design, so the refreshed rows rendered unstyled. PAGE_CSS is a strict
   // superset of that copy, so swapping it in cannot drop a rule the hub uses.
   out = out.replace(/<style>[\s\S]*?<\/style>/, () => PAGE_CSS);
-  out = out.replace(/(<span class="snap-meta"><span class="dot"><\/span>Updated )[^<]*(<\/span>)/, `$1${TODAY}$2`);
-  out = out.replace(/(were last checked )[^.]*\./, `$1${TODAY}.`);
-  out = out.replace(/(<div class="hero-stat"><span>Listed from<\/span><strong>)[^<]*(<\/strong>)/, `$1${money(c.lo)}$2`);
+  out = out.replace(/(<span class="snap-meta"><span class="dot"><\/span>Updated )[^<]*(<\/span>)/, (m, a, b) => a + TODAY + b);
+  out = out.replace(/(were last checked )[^.]*\./, (m, a) => a + TODAY + ".");
+  out = out.replace(/(<div class="hero-stat"><span>Listed from<\/span><strong>)[^<]*(<\/strong>)/, (m, a, b) => a + money(c.lo) + b);
   // The hub hero said "Tracked vendors 19", the sitewide roster, next to a list
   // that only ever showed two. Report how many vendors list this compound.
-  out = out.replace(/<div class="hero-stat"><span>Tracked vendors<\/span><strong>[^<]*<\/strong>/, `<div class="hero-stat"><span>Vendors listing it</span><strong>${c.vendors.length}</strong>`);
-  out = out.replace(/(<div class="hero-stat"><span>Vendors listing it<\/span><strong>)[^<]*(<\/strong>)/, `$1${c.vendors.length}$2`);
+  out = out.replace(/<div class="hero-stat"><span>Tracked vendors<\/span><strong>[^<]*<\/strong>/, () => `<div class="hero-stat"><span>Vendors listing it</span><strong>${c.vendors.length}</strong>`);
+  out = out.replace(/(<div class="hero-stat"><span>Vendors listing it<\/span><strong>)[^<]*(<\/strong>)/, (m, a, b) => a + c.vendors.length + b);
   await writeFile(file, out);
   console.log(`hub ${hubPath}: refreshed, ${c.vendors.length} vendors, from ${money(c.lo)}`);
 }
@@ -1088,9 +1097,9 @@ for (const [key, hubPath] of HAND_BUILT) {
       dealsHtml = dealsHtml.slice(0, start) +
         `<!-- DEALS-GRID-START -->\n<div class="vendor-grid deals-grid" data-deals-list>\n${cards}\n</div>\n` +
         dealsHtml.slice(end);
-      dealsHtml = dealsHtml.replace(/(<strong data-deals-updated>)[^<]*(<\/strong>)/, `$1${checkedLabel}$2`);
-      dealsHtml = dealsHtml.replace(/(<strong data-deals-live>)[^<]*(<\/strong>)/, `$1${deals.length}$2`);
-      dealsHtml = dealsHtml.replace(/(<strong data-deals-vendors>)[^<]*(<\/strong>)/, `$1${vendorCount}$2`);
+      dealsHtml = dealsHtml.replace(/(<strong data-deals-updated>)[^<]*(<\/strong>)/, (m, a, b) => a + checkedLabel + b);
+      dealsHtml = dealsHtml.replace(/(<strong data-deals-live>)[^<]*(<\/strong>)/, (m, a, b) => a + deals.length + b);
+      dealsHtml = dealsHtml.replace(/(<strong data-deals-vendors>)[^<]*(<\/strong>)/, (m, a, b) => a + vendorCount + b);
       dealsHtml = dealsHtml.replace(/\n?<script type="application\/ld\+json">[\s\S]*?<\/script>(?=\s*<\/head>)/g, "");
       dealsHtml = dealsHtml.replace("</head>", `${schema}\n</head>`);
       dealsHtml = dealsHtml.replace(/\n?<!-- DEALS-JS-START -->[\s\S]*?<!-- DEALS-JS-END -->/g, "");

@@ -22,14 +22,15 @@
 // Environment:
 //   SKIP_CATALOG_LIVE=1        bypass entirely and use the committed snapshot
 //   CATALOG_ALLOW_MISSING      comma-separated vendor names permitted to be absent
-//   CATALOG_MIN_VENDORS        override the minimum vendor count (default: all
-//                              configured vendors minus allowed-missing)
+//   CATALOG_MIN_VENDORS        override the vendor coverage floor (default: 80%
+//                              of configured vendors)
 
 import { readFile, writeFile } from "node:fs/promises";
 import { fileURLToPath } from "node:url";
 import { dirname, resolve } from "node:path";
 import { buildCatalog, publicSnapshot } from "../netlify/functions/_shared/catalog-engine.mjs";
 import { VENDOR_ADAPTERS } from "../netlify/functions/_shared/vendor-adapters.mjs";
+import { assertSnapshotUsable, describeSnapshot } from "./_snapshot-floor.mjs";
 
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
 const SNAPSHOT_PATH = `${W}/data/catalog-fallback-snapshot.json`;
@@ -67,9 +68,26 @@ async function committedSummary() {
   }
 }
 
+// Falling back is only safe when there is something complete to fall back to.
+// Called on every path that leaves the committed snapshot in place.
+async function assertCommittedIsUsable() {
+  let snap;
+  try {
+    snap = JSON.parse(await readFile(SNAPSHOT_PATH, "utf8"));
+  } catch (error) {
+    console.error(`  BUILD STOPPED: committed snapshot unreadable (${error.message})`);
+    process.exit(1);
+  }
+  assertSnapshotUsable(snap, {
+    configuredVendors: Object.keys(vendorConfig.vendors || {}).length,
+    label: "committed data/catalog-fallback-snapshot.json"
+  });
+}
+
 if (process.env.SKIP_CATALOG_LIVE === "1") {
   keepCommitted("SKIP_CATALOG_LIVE=1 set, skipping the live pull");
   console.log(`  Committed snapshot: ${await committedSummary()}`);
+  await assertCommittedIsUsable();
   process.exit(0);
 }
 
@@ -119,6 +137,7 @@ const missingBlocking = failed.filter(v => !allowMissing.has(v));
 if (!rows.length) {
   keepCommitted("every vendor feed failed, no rows returned");
   console.log(`  Committed snapshot: ${await committedSummary()}`);
+  await assertCommittedIsUsable();
   process.exit(0);
 }
 
@@ -133,28 +152,57 @@ if (!rows.length) {
 const maxFailures = Number.parseInt(process.env.CATALOG_MAX_FAILURES || "", 10);
 const failureBudget = Number.isFinite(maxFailures) ? maxFailures : 2;
 // Below this share of vendors the pull looks like an outage rather than a bad
-// minute, and a stale complete snapshot really is the better answer.
-const coverageFloor = Math.ceil(configured.length * 0.8);
+// minute. CATALOG_MIN_VENDORS is documented at the top of this file as the
+// override for it, and until now it was read into a variable that only ever
+// reached a log line while the decision used the hardcoded share, so setting it
+// did nothing.
+const coverageFloor = Number.parseInt(process.env.CATALOG_MIN_VENDORS || "", 10)
+  || Math.ceil(configured.length * 0.8);
 
-if (loaded.length < coverageFloor || missingBlocking.length > failureBudget) {
-  keepCommitted(`only ${loaded.length} of ${configured.length} vendors loaded, need at least ${coverageFloor} and no more than ${failureBudget} blocking failures`);
-  if (missingBlocking.length) console.warn(`  missing: ${missingBlocking.join(", ")}`);
-  console.log(`  Committed snapshot: ${await committedSummary()}`);
-  process.exit(0);
-}
-
-if (missingBlocking.length) {
-  console.warn(`\n  build-catalog-live: proceeding without ${missingBlocking.length} vendor(s): ${missingBlocking.join(", ")}`);
-  console.warn("  Their static pages keep the previously committed content this deploy.");
-  console.warn("  A vendor appearing here on repeated deploys has a genuinely broken feed.\n");
-}
-
+// Built before the decision, because the decision now needs to look at what the
+// pull actually produced rather than only counting which feeds answered.
 const catalog = buildCatalog(rows, { vendor_status: vendorStatus, warnings });
 const output = {
   ...publicSnapshot(catalog),
   snapshot_updated_at: new Date().toISOString(),
   snapshot_refresh_ms: 0
 };
+
+if (loaded.length < coverageFloor || missingBlocking.length > failureBudget) {
+  const reason = `only ${loaded.length} of ${configured.length} vendors loaded, wanted at least ${coverageFloor} and no more than ${failureBudget} blocking failures`;
+
+  // "A stale but complete snapshot beats a fresh partial one" holds only while
+  // the committed snapshot is complete. On 2026-09-30 it was a 4 vendor seed,
+  // the pull came up short, and the build published a site with 7 compounds on
+  // it. Retrying could not help: the pull was short every time, so every deploy
+  // took the same branch. So compare the two instead of assuming, and keep the
+  // committed one only when it is genuinely the better of the pair.
+  let committed = { vendors: 0, products: 0 };
+  try {
+    committed = describeSnapshot(JSON.parse(await readFile(SNAPSHOT_PATH, "utf8")));
+  } catch { /* unreadable committed snapshot loses the comparison */ }
+  const live = describeSnapshot(output);
+  const liveIsBetter = live.vendors > committed.vendors
+    || (live.vendors === committed.vendors && live.products > committed.products);
+
+  if (liveIsBetter) {
+    console.warn(`\n  build-catalog-live: ${reason}`);
+    if (missingBlocking.length) console.warn(`  missing: ${missingBlocking.join(", ")}`);
+    console.warn(`  Using the live pull anyway: ${live.vendors} vendors / ${live.products} products`);
+    console.warn(`  beats the committed ${committed.vendors} vendors / ${committed.products} products.`);
+    console.warn("  Fix the failing feeds, but a partial live catalog is still the better site.\n");
+  } else {
+    keepCommitted(reason);
+    if (missingBlocking.length) console.warn(`  missing: ${missingBlocking.join(", ")}`);
+    console.log(`  Committed snapshot: ${await committedSummary()}`);
+    await assertCommittedIsUsable();
+    process.exit(0);
+  }
+} else if (missingBlocking.length) {
+  console.warn(`\n  build-catalog-live: proceeding without ${missingBlocking.length} vendor(s): ${missingBlocking.join(", ")}`);
+  console.warn("  Their static pages keep the previously committed content this deploy.");
+  console.warn("  A vendor appearing here on repeated deploys has a genuinely broken feed.\n");
+}
 
 // Deep-link rate is reported, not enforced. Solyn and Oneday are intentionally
 // held on base URLs, so a non-zero base count is expected and must not block a

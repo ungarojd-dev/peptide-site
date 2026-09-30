@@ -3,22 +3,22 @@
 <head>
 <meta charset="utf-8"/>
 <meta name="viewport" content="width=device-width,initial-scale=1"/>
-<title>Coffee and Peppers Prices | Compare 50 Compounds Per Mg</title>
-<meta name="description" content="Coffee and Peppers prices across 50 research compounds, compared per mg against other vendors, with current sales and coupon codes. Research use only."/>
+<title>Coffee and Peppers Prices | Compare 49 Compounds Per Mg</title>
+<meta name="description" content="Coffee and Peppers prices across 49 research compounds, compared per mg against other vendors, with current sales and coupon codes. Research use only."/>
 <link rel="canonical" href="https://mypeptideprice.com/vendors/coffee-and-peppers"/>
-<meta property="og:title" content="Coffee and Peppers Prices | Compare 50 Compounds Per Mg"/>
-<meta property="og:description" content="Coffee and Peppers prices across 50 research compounds, compared per mg against other vendors, with current sales and coupon codes. Research use only."/>
+<meta property="og:title" content="Coffee and Peppers Prices | Compare 49 Compounds Per Mg"/>
+<meta property="og:description" content="Coffee and Peppers prices across 49 research compounds, compared per mg against other vendors, with current sales and coupon codes. Research use only."/>
 <meta property="og:url" content="https://mypeptideprice.com/vendors/coffee-and-peppers"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://mypeptideprice.com/og-image-2026-rebrand.png"/>
-<link rel="icon" href="/favicon.png?v=20260930-history-modal-v192"/>
-<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260930-history-modal-v192"/>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260930-history-modal-v192"/>
+<link rel="icon" href="/favicon.png?v=20260930-history-chart-v193"/>
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260930-history-chart-v193"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260930-history-chart-v193"/>
 <link rel="manifest" href="/site.webmanifest"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/assets/site.css?v=20260930-history-modal-v192"/>
+<link rel="stylesheet" href="/assets/site.css?v=20260930-history-chart-v193"/>
 <style>
 .crumbs{max-width:1120px;margin:0 auto;padding:14px 20px 0;font-size:.82rem;color:var(--muted)}
 .crumbs a{color:var(--olive-2);text-decoration:none}.crumbs a:hover{text-decoration:underline}.crumbs span{color:var(--muted);margin:0 6px}
@@ -111,9 +111,23 @@
 .ph-figures div{display:flex;flex-direction:column;gap:2px}
 .ph-figures span{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .ph-figures strong{font-family:var(--font-body);font-size:1.25rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest)}
-.ph-chart{height:120px;margin:4px 0 10px}
-.ph-chart svg{display:block;width:100%;height:120px}
-@media(max-width:520px){.ph-figures{gap:16px}.ph-figures strong{font-size:1.1rem}.ph-chart,.ph-chart svg{height:96px}}
+.ph-chart{margin:4px 0 10px}
+.ph-plot{position:relative;padding-top:38px}
+.ph-plot svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.ph-plot svg:focus-visible{outline:2px solid var(--olive);outline-offset:3px;border-radius:10px}
+.ph-tip{position:absolute;top:0;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:1px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:4px 10px;white-space:nowrap;pointer-events:none;box-shadow:0 6px 18px rgba(13,13,13,.12)}
+.ph-tip strong{font-size:.94rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest);line-height:1.15}
+.ph-tip span{font-size:.69rem;font-weight:700;color:var(--muted)}
+.ph-table{margin:8px 0 0}
+.ph-table summary{cursor:pointer;font-size:.78rem;font-weight:800;color:var(--forest)}
+.ph-table summary:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+.ph-table-scroll{max-height:230px;overflow:auto;margin-top:8px;border:1px solid var(--line);border-radius:10px}
+.ph-table table{width:100%;border-collapse:collapse;font-size:.8rem}
+.ph-table th,.ph-table td{padding:6px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.ph-table th{position:sticky;top:0;background:var(--soft);font-size:.64rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ph-table td{font-variant-numeric:tabular-nums}
+.ph-table tbody tr:last-child td{border-bottom:0}
+@media(max-width:520px){.ph-figures{gap:16px}.ph-figures strong{font-size:1.1rem}.ph-plot{padding-top:34px}.ph-tip{padding:3px 8px}}
 .hub-section-title{max-width:1120px;margin:22px auto 0;padding:0 20px;font-family:var(--font-display);color:var(--forest);font-size:1.15rem}
 @media(max-width:520px){.snap-head h2{font-size:1.3rem}.answer-box .inner p{font-size:.95rem}
 .price-row{flex-direction:column;align-items:flex-start;gap:10px}
@@ -131,7 +145,7 @@ of 126 pages that promise was not kept. -->
 <!-- Meta Pixel -->
 <script>if(!window.MPP_ANALYTICS_OPT_OUT)!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');fbq('init','1628795955539627');fbq('track','PageView');</script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mypeptideprice.com/"},{"@type":"ListItem","position":2,"name":"Vendors","item":"https://mypeptideprice.com/vendors"},{"@type":"ListItem","position":3,"name":"Coffee and Peppers","item":"https://mypeptideprice.com/vendors/coffee-and-peppers"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do Coffee and Peppers prices compare to other vendors?","acceptedAnswer":{"@type":"Answer","text":"MyPeptidePrice.com tracks Coffee and Peppers alongside other research vendors so you can compare the same compound by price per mg. Use the listings above, then open any compound to see where Coffee and Peppers ranks against other vendors for that specific item."}},{"@type":"Question","name":"What does Coffee and Peppers list?","acceptedAnswer":{"@type":"Answer","text":"Coffee and Peppers is one of the research vendors tracked on MyPeptidePrice.com, with 50 compounds catalogued here. The listings above show current prices; browse them or compare the same compounds across other vendors."}},{"@type":"Question","name":"What do Coffee and Peppers listings cost?","acceptedAnswer":{"@type":"Answer","text":"Across the compounds tracked here, Coffee and Peppers listings range from $35.70 to $590.75 depending on compound and size. Prices come from vendor listings and change over time; confirm the current price on the vendor site."}},{"@type":"Question","name":"Does the SAMMYC code apply at Coffee and Peppers?","acceptedAnswer":{"@type":"Answer","text":"Where Coffee and Peppers supports it, the SAMMYC code is reflected in the listed price shown here, and the row notes when it applies. Confirm the code at checkout on the vendor site."}},{"@type":"Question","name":"Are Coffee and Peppers listings for human use?","acceptedAnswer":{"@type":"Answer","text":"No. Listings tracked here are sold by Coffee and Peppers for laboratory and research use only and are not for human consumption. MyPeptidePrice.com is an independent price reference and does not sell products or provide medical guidance."}}]}]}
+{"@context":"https://schema.org","@graph":[{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https://mypeptideprice.com/"},{"@type":"ListItem","position":2,"name":"Vendors","item":"https://mypeptideprice.com/vendors"},{"@type":"ListItem","position":3,"name":"Coffee and Peppers","item":"https://mypeptideprice.com/vendors/coffee-and-peppers"}]},{"@type":"FAQPage","mainEntity":[{"@type":"Question","name":"How do Coffee and Peppers prices compare to other vendors?","acceptedAnswer":{"@type":"Answer","text":"MyPeptidePrice.com tracks Coffee and Peppers alongside other research vendors so you can compare the same compound by price per mg. Use the listings above, then open any compound to see where Coffee and Peppers ranks against other vendors for that specific item."}},{"@type":"Question","name":"What does Coffee and Peppers list?","acceptedAnswer":{"@type":"Answer","text":"Coffee and Peppers is one of the research vendors tracked on MyPeptidePrice.com, with 49 compounds catalogued here. The listings above show current prices; browse them or compare the same compounds across other vendors."}},{"@type":"Question","name":"What do Coffee and Peppers listings cost?","acceptedAnswer":{"@type":"Answer","text":"Across the compounds tracked here, Coffee and Peppers listings range from $35.70 to $590.75 depending on compound and size. Prices come from vendor listings and change over time; confirm the current price on the vendor site."}},{"@type":"Question","name":"Does the SAMMYC code apply at Coffee and Peppers?","acceptedAnswer":{"@type":"Answer","text":"Where Coffee and Peppers supports it, the SAMMYC code is reflected in the listed price shown here, and the row notes when it applies. Confirm the code at checkout on the vendor site."}},{"@type":"Question","name":"Are Coffee and Peppers listings for human use?","acceptedAnswer":{"@type":"Answer","text":"No. Listings tracked here are sold by Coffee and Peppers for laboratory and research use only and are not for human consumption. MyPeptidePrice.com is an independent price reference and does not sell products or provide medical guidance."}}]}]}
 </script>
 </head>
 <body>
@@ -140,7 +154,7 @@ of 126 pages that promise was not kept. -->
 <header class="site-top premium-top">
   <div class="top-inner">
     <a class="brand premium-brand" href="/" aria-label="MyPeptidePrice home">
-      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260930-history-modal-v192" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260930-history-chart-v193" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
       <span class="brand-copy"><span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span><span class="brand-tagline">Research. Compare. Save.</span></span>
       </a>
       <a class="nav-deals-btn" href="/deals">Deals<span class="nav-deals-count" data-deals-count hidden>0</span></a>
@@ -168,8 +182,8 @@ of 126 pages that promise was not kept. -->
 <div class="coupon-strip">Independent research peptide price reference. Prices reflect the <span class="code-pill">SAMMYC</span> code where a vendor supports it. For laboratory research use only.</div>
 <div class="rou-strip" role="note">For laboratory and research use only. Not for human consumption. Not medical advice.</div>
 <nav class="crumbs" aria-label="Breadcrumb"><a href="/">Peptide price comparison</a><span>/</span><a href="/vendors">Vendors</a><span>/</span>Coffee and Peppers</nav>
-<section class="hero"><div class="hero-inner"><div><span class="eyebrow">Vendor price reference</span><h1>Coffee and Peppers prices.</h1><p>Listed prices for Coffee and Peppers across 50 research compounds tracked on MyPeptidePrice.com. An independent price reference, for laboratory research use only.</p><div class="hero-actions"><a class="button" href="/?vendor=Coffee%20and%20Peppers#compare" data-cta="hero">View current listings</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Listed price range</span><strong>$35.70 to $590.75</strong></div><div class="hero-stat"><span>Compounds listed</span><strong>50</strong></div><div class="hero-stat"><span>Use</span><strong>Research only</strong></div></div></div></section>
-<div class="answer-box"><div class="inner"><p>Coffee and Peppers is one of the research vendors tracked on MyPeptidePrice.com, with 50 compounds catalogued and listed prices from $35.70 to $590.75. MyPeptidePrice.com is an independent price reference and does not sell these materials. Sold for laboratory research use only, not for human use.</p></div></div>
+<section class="hero"><div class="hero-inner"><div><span class="eyebrow">Vendor price reference</span><h1>Coffee and Peppers prices.</h1><p>Listed prices for Coffee and Peppers across 49 research compounds tracked on MyPeptidePrice.com. An independent price reference, for laboratory research use only.</p><div class="hero-actions"><a class="button" href="/?vendor=Coffee%20and%20Peppers#compare" data-cta="hero">View current listings</a></div></div><div class="hero-stats"><div class="hero-stat"><span>Listed price range</span><strong>$35.70 to $590.75</strong></div><div class="hero-stat"><span>Compounds listed</span><strong>49</strong></div><div class="hero-stat"><span>Use</span><strong>Research only</strong></div></div></div></section>
+<div class="answer-box"><div class="inner"><p>Coffee and Peppers is one of the research vendors tracked on MyPeptidePrice.com, with 49 compounds catalogued and listed prices from $35.70 to $590.75. MyPeptidePrice.com is an independent price reference and does not sell these materials. Sold for laboratory research use only, not for human use.</p></div></div>
 <section class="section compact"><div class="snap-wrap"><div class="snap-head"><h2>Coffee and Peppers listings by price</h2><span class="snap-meta"><span class="dot"></span>Updated July 29, 2026</span></div>
 <div class="price-card">
 <div class="price-row is-oos"><a class="row-hit" href="https://coffeeandpeppers.com/shop/singles/slu-pp-332-500mcg-60-ct/?coupon=sammyc" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="SLU-PP-332" data-category="Metabolic &amp; Mitochondrial" data-vendor="Coffee and Peppers" data-code="SAMMYC" data-cta="View listing, 15% off at Coffee and Peppers" aria-label="$35.70 for SLU-PP-332, 500mcg / 60 ct at Coffee and Peppers"></a><span class="price-size"><span class="size">SLU-PP-332, 500mcg / 60 ct</span><span class="vendor">Metabolic &amp; Mitochondrial</span><span class="disc">Code SAMMYC applies (15% off)</span></span><span class="price-amount"><span class="amt">$35.70</span><span class="row-actions"><button class="row-copy" type="button" data-copy-code="SAMMYC" data-vendor="Coffee and Peppers" data-product="SLU-PP-332" data-copy-location="vendor_price_table"><span class="supplier-copy-text">Copy SAMMYC</span></button><span class="go">View listing</span></span></span></div>
@@ -203,7 +217,7 @@ of 126 pages that promise was not kept. -->
 </div></section>
 <section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">Coffee and Peppers FAQ</span><h2>Coffee and Peppers questions</h2><div class="faq-list">
 <article class="faq-item"><h3>How do Coffee and Peppers prices compare to other vendors?</h3><p>MyPeptidePrice.com tracks Coffee and Peppers alongside other research vendors so you can compare the same compound by price per mg. Use the listings above, then open any compound to see where Coffee and Peppers ranks against other vendors for that specific item.</p></article>
-<article class="faq-item"><h3>What does Coffee and Peppers list?</h3><p>Coffee and Peppers is one of the research vendors tracked on MyPeptidePrice.com, with 50 compounds catalogued here. The listings above show current prices; browse them or compare the same compounds across other vendors.</p></article>
+<article class="faq-item"><h3>What does Coffee and Peppers list?</h3><p>Coffee and Peppers is one of the research vendors tracked on MyPeptidePrice.com, with 49 compounds catalogued here. The listings above show current prices; browse them or compare the same compounds across other vendors.</p></article>
 <article class="faq-item"><h3>What do Coffee and Peppers listings cost?</h3><p>Across the compounds tracked here, Coffee and Peppers listings range from $35.70 to $590.75 depending on compound and size. Prices come from vendor listings and change over time; confirm the current price on the vendor site.</p></article>
 <article class="faq-item"><h3>Does the SAMMYC code apply at Coffee and Peppers?</h3><p>Where Coffee and Peppers supports it, the SAMMYC code is reflected in the listed price shown here, and the row notes when it applies. Confirm the code at checkout on the vendor site.</p></article>
 <article class="faq-item"><h3>Are Coffee and Peppers listings for human use?</h3><p>No. Listings tracked here are sold by Coffee and Peppers for laboratory and research use only and are not for human consumption. MyPeptidePrice.com is an independent price reference and does not sell products or provide medical guidance.</p></article>
@@ -213,7 +227,7 @@ of 126 pages that promise was not kept. -->
   <div class="footer-inner">
     <div class="footer-col footer-col-brand">
       <div class="footer-brand premium-footer-brand">
-        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260930-history-modal-v192" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260930-history-chart-v193" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
         <div><div class="footer-wordmark"><span class="footer-brand-my">my</span><span class="footer-brand-peptide">peptide</span><span class="footer-brand-price">price</span><span class="footer-brand-dot">.com</span></div><div class="footer-tagline">Research. Compare. Save.</div></div>
       </div>
       <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
@@ -224,7 +238,7 @@ of 126 pages that promise was not kept. -->
   </div>
   <div class="footer-base"><span>&copy; 2026 MyPeptidePrice.com. Independent price comparison. For research use only.</span></div>
 </footer>
-<script src="/assets/site.js?v=20260930-history-modal-v192"></script>
+<script src="/assets/site.js?v=20260930-history-chart-v193"></script>
 
 </body>
 </html>

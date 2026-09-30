@@ -11,14 +11,14 @@
 <meta property="og:url" content="https://mypeptideprice.com/compounds/selank"/>
 <meta property="og:type" content="website"/>
 <meta property="og:image" content="https://mypeptideprice.com/og-image-2026-rebrand.png"/>
-<link rel="icon" href="/favicon.png?v=20260930-history-modal-v192"/>
-<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260930-history-modal-v192"/>
-<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260930-history-modal-v192"/>
+<link rel="icon" href="/favicon.png?v=20260930-history-chart-v193"/>
+<link rel="icon" type="image/png" sizes="64x64" href="/favicon.png?v=20260930-history-chart-v193"/>
+<link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png?v=20260930-history-chart-v193"/>
 <link rel="manifest" href="/site.webmanifest"/>
 <link rel="preconnect" href="https://fonts.googleapis.com"/>
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet"/>
-<link rel="stylesheet" href="/assets/site.css?v=20260930-history-modal-v192"/>
+<link rel="stylesheet" href="/assets/site.css?v=20260930-history-chart-v193"/>
 <style>
 .crumbs{max-width:1120px;margin:0 auto;padding:14px 20px 0;font-size:.82rem;color:var(--muted)}
 .crumbs a{color:var(--olive-2);text-decoration:none}.crumbs a:hover{text-decoration:underline}.crumbs span{color:var(--muted);margin:0 6px}
@@ -111,9 +111,23 @@
 .ph-figures div{display:flex;flex-direction:column;gap:2px}
 .ph-figures span{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .ph-figures strong{font-family:var(--font-body);font-size:1.25rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest)}
-.ph-chart{height:120px;margin:4px 0 10px}
-.ph-chart svg{display:block;width:100%;height:120px}
-@media(max-width:520px){.ph-figures{gap:16px}.ph-figures strong{font-size:1.1rem}.ph-chart,.ph-chart svg{height:96px}}
+.ph-chart{margin:4px 0 10px}
+.ph-plot{position:relative;padding-top:38px}
+.ph-plot svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.ph-plot svg:focus-visible{outline:2px solid var(--olive);outline-offset:3px;border-radius:10px}
+.ph-tip{position:absolute;top:0;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:1px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:4px 10px;white-space:nowrap;pointer-events:none;box-shadow:0 6px 18px rgba(13,13,13,.12)}
+.ph-tip strong{font-size:.94rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest);line-height:1.15}
+.ph-tip span{font-size:.69rem;font-weight:700;color:var(--muted)}
+.ph-table{margin:8px 0 0}
+.ph-table summary{cursor:pointer;font-size:.78rem;font-weight:800;color:var(--forest)}
+.ph-table summary:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+.ph-table-scroll{max-height:230px;overflow:auto;margin-top:8px;border:1px solid var(--line);border-radius:10px}
+.ph-table table{width:100%;border-collapse:collapse;font-size:.8rem}
+.ph-table th,.ph-table td{padding:6px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.ph-table th{position:sticky;top:0;background:var(--soft);font-size:.64rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ph-table td{font-variant-numeric:tabular-nums}
+.ph-table tbody tr:last-child td{border-bottom:0}
+@media(max-width:520px){.ph-figures{gap:16px}.ph-figures strong{font-size:1.1rem}.ph-plot{padding-top:34px}.ph-tip{padding:3px 8px}}
 .hub-section-title{max-width:1120px;margin:22px auto 0;padding:0 20px;font-family:var(--font-display);color:var(--forest);font-size:1.15rem}
 @media(max-width:520px){.snap-head h2{font-size:1.3rem}.answer-box .inner p{font-size:.95rem}
 .price-row{flex-direction:column;align-items:flex-start;gap:10px}
@@ -140,7 +154,7 @@ of 126 pages that promise was not kept. -->
 <header class="site-top premium-top">
   <div class="top-inner">
     <a class="brand premium-brand" href="/" aria-label="MyPeptidePrice home">
-      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260930-history-modal-v192" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+      <span class="brand-mark-wrap" aria-hidden="true"><img class="brand-mark" src="/assets/brand/logo-symbol.png?v=20260930-history-chart-v193" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
       <span class="brand-copy"><span class="brand-wordmark"><span class="brand-my">my</span><span class="brand-peptide">peptide</span><span class="brand-price">price</span><span class="brand-dot">.com</span></span><span class="brand-tagline">Research. Compare. Save.</span></span>
       </a>
       <a class="nav-deals-btn" href="/deals">Deals<span class="nav-deals-count" data-deals-count hidden>0</span></a>
@@ -186,7 +200,7 @@ of 126 pages that promise was not kept. -->
 <div class="price-row"><a class="row-hit" href="https://glowaminos.com/product/selank/?ref=sammyc&amp;coupon=SammyC" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Selank" data-category="Cognitive &amp; Nootropic" data-vendor="Glow Aminos" data-code="SAMMYC" data-cta="View listing, 15% off at Glow Aminos" aria-label="$37.40 for Selank at Glow Aminos"></a><span class="price-size"><span class="size">Selank</span><span class="vendor">Glow Aminos</span><span class="disc">Code SAMMYC applies (15% off)</span></span><span class="price-amount"><span class="amt">$37.40</span><span class="row-actions"><button class="row-copy" type="button" data-copy-code="SAMMYC" data-vendor="Glow Aminos" data-product="Selank" data-copy-location="compound_price_table"><span class="supplier-copy-text">Copy SAMMYC</span></button><span class="go">View listing</span></span></span></div>
 <div class="price-row"><a class="row-hit" href="https://disguisedalpha.com/product/selank-10mg/?coupon=sammyc" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Selank" data-category="Cognitive &amp; Nootropic" data-vendor="Disguised Alpha" data-code="SAMMYC" data-cta="View listing, 10% off at Disguised Alpha" aria-label="$40.49 for Selank at Disguised Alpha"></a><span class="price-size"><span class="size">Selank</span><span class="vendor">Disguised Alpha</span><span class="disc">Code SAMMYC applies (10% off)</span></span><span class="price-amount"><span class="amt">$40.49</span><span class="row-actions"><button class="row-copy" type="button" data-copy-code="SAMMYC" data-vendor="Disguised Alpha" data-product="Selank" data-copy-location="compound_price_table"><span class="supplier-copy-text">Copy SAMMYC</span></button><span class="go">View listing</span></span></span></div>
 <div class="price-row"><a class="row-hit" href="https://solyn.com/?ref=SammyC" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Selank" data-category="Cognitive &amp; Nootropic" data-vendor="Solyn Labs" data-code="SAMMYC" data-cta="View listing, 10% off at Solyn Labs" aria-label="$40.49 for Selank at Solyn Labs"></a><span class="price-size"><span class="size">Selank</span><span class="vendor">Solyn Labs</span><span class="disc">Code SAMMYC applies (10% off)</span></span><span class="price-amount"><span class="amt">$40.49</span><span class="row-actions"><button class="row-copy" type="button" data-copy-code="SAMMYC" data-vendor="Solyn Labs" data-product="Selank" data-copy-location="compound_price_table"><span class="supplier-copy-text">Copy SAMMYC</span></button><span class="go">View listing</span></span></span></div>
-<div class="price-row"><a class="row-hit" href="https://lab-sourced.com/products/selank-10mg" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Selank" data-category="Cognitive &amp; Nootropic" data-vendor="LabSourced Peptides" data-code="SAMMYC" data-cta="View listing, 15% off at LabSourced Peptides" aria-label="$41.65 for Selank, 10mg at LabSourced Peptides"></a><span class="price-size"><span class="size">Selank, 10mg</span><span class="vendor">LabSourced Peptides</span><span class="disc">Enter SAMMYC at checkout (15% off)</span></span><span class="price-amount"><span class="amt">$41.65</span><span class="permg">$4.17/mg</span><span class="row-actions"><button class="row-copy" type="button" data-copy-code="SAMMYC" data-vendor="LabSourced Peptides" data-product="Selank" data-copy-location="compound_price_table"><span class="supplier-copy-text">Copy SAMMYC</span></button><span class="go">View listing</span></span></span></div>
+<div class="price-row"><a class="row-hit" href="https://www.labsourced.com/products/selank-10mg?ref=SammyC" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="Selank" data-category="Cognitive &amp; Nootropic" data-vendor="LabSourced Peptides" data-code="SAMMYC" data-cta="View listing, 15% off at LabSourced Peptides" aria-label="$41.65 for Selank, 10mg at LabSourced Peptides"></a><span class="price-size"><span class="size">Selank, 10mg</span><span class="vendor">LabSourced Peptides</span><span class="disc">Enter SAMMYC at checkout (15% off)</span></span><span class="price-amount"><span class="amt">$41.65</span><span class="permg">$4.17/mg</span><span class="row-actions"><button class="row-copy" type="button" data-copy-code="SAMMYC" data-vendor="LabSourced Peptides" data-product="Selank" data-copy-location="compound_price_table"><span class="supplier-copy-text">Copy SAMMYC</span></button><span class="go">View listing</span></span></span></div>
 </div>
 <p class="snap-note">Prices are drawn from third-party vendor listings and reflect a known discount code where one applies. They change over time; confirm the current price, size, and stock on the vendor site. MyPeptidePrice.com does not sell these materials. For laboratory research use only.</p>
 </div></section>
@@ -198,9 +212,9 @@ of 126 pages that promise was not kept. -->
     <div class="snap-head"><h2>Selank price history</h2><span class="snap-meta"><span class="dot"></span><span data-ph-range>Last 90 days</span></span></div>
     <div class="ph-card">
       <div class="ph-figures">
-        <div><span>Lowest</span><strong data-ph-low>&mdash;</strong></div>
-        <div><span>Highest</span><strong data-ph-high>&mdash;</strong></div>
-        <div><span>Today</span><strong data-ph-now>&mdash;</strong></div>
+        <div><span>Lowest</span><strong data-ph-low>&nbsp;</strong></div>
+        <div><span>Highest</span><strong data-ph-high>&nbsp;</strong></div>
+        <div><span>Today</span><strong data-ph-now>&nbsp;</strong></div>
       </div>
       <div class="ph-chart" data-ph-chart></div>
       <p class="snap-note" data-ph-caption></p>
@@ -208,7 +222,7 @@ of 126 pages that promise was not kept. -->
   </div>
 </section>
 <section class="section compact"><div class="copy"><span class="research-tag">What this page is</span><h2>About Selank on this page</h2><p>Selank is tracked across the vendors compared on this site. Vendors list it as a research material, typically as lyophilized powder in a vial. This page reports the prices those vendors list and the resulting cost per mg. It does not describe what Selank does, how it is used, or how it is handled.</p><p>Every listing referenced here is sold by independent third-party vendors for laboratory research use only and is not for human consumption. MyPeptidePrice.com is an independent price comparison reference. It does not sell products, ship orders, or provide medical, dosing, or usage guidance of any kind.</p></div></section>
-<div class="xlink-wrap"><h2>Other Cognitive &amp; Nootropic compounds</h2><div class="xlink-grid"><a href="/compounds/adamax">Adamax</a><a href="/compounds/cerebrolysin">Cerebrolysin</a><a href="/compounds/dihexa">Dihexa</a><a href="/compounds/dsip">DSIP</a><a href="/compounds/na-selank-amidate">NA-Selank Amidate</a><a href="/compounds/na-semax-amidate">NA-Semax Amidate</a><a href="/compounds/neuromatrix">NeuroMatrix</a><a href="/compounds/pe-22-28">PE-22-28</a></div></div>
+<div class="xlink-wrap"><h2>Other Cognitive &amp; Nootropic compounds</h2><div class="xlink-grid"><a href="/compounds/adamax">Adamax</a><a href="/compounds/cerebrolysin">Cerebrolysin</a><a href="/compounds/dihexa">Dihexa</a><a href="/compounds/dsip">DSIP</a><a href="/compounds/na-selank-amidate">NA-Selank Amidate</a><a href="/compounds/neuromatrix">NeuroMatrix</a><a href="/compounds/pe-22-28">PE-22-28</a><a href="/compounds/pm-matrix">PM Matrix</a></div></div>
 <section class="section"><div class="container"><span class="eyebrow" style="background:var(--forest);color:var(--sand)">Selank FAQ</span><h2>Selank questions</h2><div class="faq-list">
 <article class="faq-item"><h3>What is Selank?</h3><p>Selank is a research compound tracked on MyPeptidePrice.com. It is supplied by third-party vendors as a research material for laboratory use only. This page reports listed prices and does not describe effects, uses, or handling.</p></article>
 <article class="faq-item"><h3>What does Selank cost across vendors?</h3><p>Listed prices range from $21.25 to $270.94 per listing across 13 tracked vendors, depending on size and format. Cost per mg ranges from $2.11/mg to $21.06/mg. Prices shown are drawn from vendor listings and change over time; confirm the current price on the vendor site.</p></article>
@@ -227,7 +241,7 @@ of 126 pages that promise was not kept. -->
   <div class="footer-inner">
     <div class="footer-col footer-col-brand">
       <div class="footer-brand premium-footer-brand">
-        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260930-history-modal-v192" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
+        <span class="footer-mark-wrap" aria-hidden="true"><img class="footer-mark" src="/assets/brand/logo-symbol.png?v=20260930-history-chart-v193" alt="" style="width:100%;height:100%;object-fit:contain;"/></span>
         <div><div class="footer-wordmark"><span class="footer-brand-my">my</span><span class="footer-brand-peptide">peptide</span><span class="footer-brand-price">price</span><span class="footer-brand-dot">.com</span></div><div class="footer-tagline">Research. Compare. Save.</div></div>
       </div>
       <div class="footer-note">Independent research peptide price comparison. Prices are estimates based on vendor listings and known discounts. Confirm final pricing, stock, testing documentation, and terms directly with each vendor. For laboratory research purposes only. Not medical advice.</div>
@@ -238,7 +252,7 @@ of 126 pages that promise was not kept. -->
   </div>
   <div class="footer-base"><span>&copy; 2026 MyPeptidePrice.com. Independent price comparison. For research use only.</span></div>
 </footer>
-<script src="/assets/site.js?v=20260930-history-modal-v192"></script>
+<script src="/assets/site.js?v=20260930-history-chart-v193"></script>
 
 </body>
 </html>
