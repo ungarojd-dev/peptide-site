@@ -236,7 +236,7 @@
     update();
   }
 
-  const PROMOTIONS_URL="/data/promotions.json?v=20260930-history-modal-v192";
+  const PROMOTIONS_URL="/data/promotions.json?v=20260930-history-chart-v193";
   const promoState={all:[],active:[],loaded:false};
   const promotionTime=value=>value?new Date(value).getTime():null;
   const isPromotionActive=(promotion,when=Date.now())=>{
@@ -1262,18 +1262,36 @@ function renderSignupProof(promotions){
   });
 })();
 
+
 /* ---------------------------------------------------------------------------
-   Price history: one renderer, two surfaces.
+   Price history chart: one renderer, two surfaces.
    The compound pages fill a section in place; the catalog cards open the same
-   chart in a dialog. Both draw from /.netlify/functions/price-history, and the
-   drawing code lives here rather than being written twice, because the two were
-   going to drift the moment one of them was tweaked.
+   chart in a dialog, so the drawing code lives here once instead of twice.
+
+   This replaced a bare sparkline. A line with no scale shows that something
+   moved but not when, or to what, so it now carries a dollar axis, a date
+   axis, a crosshair that snaps to the nearest day, and a table. The readout
+   enhances and never gates: every number it shows is also in the figures row,
+   on the labelled high and low, or in the table.
 --------------------------------------------------------------------------- */
 (function(global){
   "use strict";
   var CACHE = {};
+  // Ink and grid come from the site tokens; the line is the brand olive, which
+  // passes the contrast and CVD checks against both the card and dialog white.
+  var INK = "#1f2a21", MUTED = "#66706a", LINE = "#6A7929", GRID = "#e6e7e2";
+  var H = 190, ML = 46, MR = 12, MT = 12, MB = 26;   // bottom band holds the dates
+  var MONTHS = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
 
   function money(n){ return "$" + Number(n).toFixed(2); }
+  function money0(n){ var v = Number(n); return "$" + (v % 1 === 0 ? v.toFixed(0) : v.toFixed(2)); }
+  // Authored dates are compared and formatted as strings. Never build a Date
+  // from a YYYY-MM-DD, which shifts a day in negative offsets.
+  function shortDate(iso){
+    var p = String(iso).split("-");
+    if (p.length !== 3) return String(iso);
+    return MONTHS[Number(p[1]) - 1] + " " + Number(p[2]);
+  }
 
   function load(id){
     if (CACHE[id]) return CACHE[id];
@@ -1283,45 +1301,162 @@ function renderSignupProof(promotions){
     return CACHE[id];
   }
 
-  // Returns null when there is nothing honest to draw. Two readings is the
-  // minimum that can be called a history; one is a dot, not a trend.
+  // Null when there is nothing honest to draw. Two readings is the minimum that
+  // can be called a history; one is a dot, not a trend.
   function summarise(data){
     if (!data || !data.rows || data.rows.length < 2) return null;
-    var lows = data.rows.map(function(r){ return Number(r.low); }).filter(isFinite);
-    if (lows.length < 2) return null;
+    var rows = data.rows.filter(function(r){ return r && isFinite(Number(r.low)); });
+    if (rows.length < 2) return null;
+    var lows = rows.map(function(r){ return Number(r.low); });
     var min = Math.min.apply(null, lows), max = Math.max.apply(null, lows);
     var first = lows[0], last = lows[lows.length - 1];
-    var pct = first ? Math.round(((last - first) / first) * 100) : 0;
     return {
-      lows: lows, days: lows.length, min: min, max: max, first: first, last: last, pct: pct,
-      // "At a low" is generous by 2%: a reading a few cents above the floor is
-      // the same news to a buyer, and exact-equality would almost never fire.
-      atLow: min > 0 && (last - min) / min <= 0.02
+      rows: rows, lows: lows, days: rows.length,
+      min: min, max: max, first: first, last: last,
+      minAt: lows.indexOf(min), maxAt: lows.indexOf(max),
+      pct: first ? Math.round(((last - first) / first) * 100) : 0
     };
   }
 
-  function chartSvg(s){
-    var W = 680, H = 120, P = 6, span = (s.max - s.min) || 1;
-    var pts = s.lows.map(function(v, i){
-      var x = P + (i / (s.lows.length - 1)) * (W - P * 2);
-      var y = s.max === s.min ? H / 2 : P + (1 - ((v - s.min) / span)) * (H - P * 2);
-      return x.toFixed(1) + "," + y.toFixed(1);
-    }).join(" ");
-    var area = "M" + P + "," + (H - P) + " L" + pts.split(" ").join(" L") + " L" + (W - P) + "," + (H - P) + " Z";
-    return '<svg viewBox="0 0 ' + W + ' ' + H + '" preserveAspectRatio="none" role="img" aria-label="Lowest tracked price over '
-      + s.days + ' days, from ' + money(s.first) + ' to ' + money(s.last) + '">'
-      + '<path d="' + area + '" fill="rgba(106,121,41,.13)"/>'
-      + '<polyline points="' + pts + '" fill="none" stroke="#6A7929" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>'
+  // A price that barely moved must not be drawn as a cliff. When the real span
+  // is under 4% of the price, the domain widens to that floor, so a flat month
+  // reads flat instead of filling the plot with noise.
+  function domain(min, max){
+    var mid = (min + max) / 2;
+    var floor = Math.max(Math.abs(mid) * 0.04, 0.5);
+    if (max - min >= floor) return [min, max];
+    return [mid - floor / 2, mid + floor / 2];
+  }
+
+  // Rounded tick values that fall inside the domain, so the line still uses the
+  // full height and the axis reads 20 / 22.50 / 25 rather than 19.37 / 22.96.
+  function ticks(lo, hi, want){
+    var span = hi - lo;
+    if (span <= 0) return [lo];
+    function pick(n){
+      var raw = span / Math.max(2, n);
+      var mag = Math.pow(10, Math.floor(Math.log(raw) / Math.LN10));
+      var out = 10 * mag;
+      [1, 2, 2.5, 5, 10].forEach(function(m){ if (m * mag >= raw && m * mag < out) out = m * mag; });
+      return out;
+    }
+    // Up to two finer passes, for the case where a rounded step lands only once
+    // or twice inside a narrow domain.
+    var st = pick(want || 3), inside = [];
+    for (var attempt = 0; attempt < 3; attempt++) {
+      inside = [];
+      for (var t = Math.ceil(lo / st) * st; t <= hi + st * 0.001; t += st) {
+        var v = Math.round(t * 1000) / 1000;
+        if (v >= lo - 0.001 && v <= hi + 0.001) inside.push(v);
+      }
+      if (inside.length >= 3) break;
+      st = st / 2;
+    }
+    return inside.length ? inside : [lo, hi];
+  }
+
+  // One scale, built once and handed to both the drawing and the pointer
+  // handler, so the crosshair can never land somewhere the line is not.
+  function scale(s, width){
+    var W = Math.max(280, Math.round(width || 640));
+    var narrow = W < 420;
+    var ml = narrow ? 42 : ML;
+    var PW = W - ml - MR, PH = H - MT - MB;
+    var d = domain(s.min, s.max);
+    // 14% of headroom at each end. Without it the high sits on the top edge and
+    // its label gets pushed down onto the line it is labelling.
+    var pad = (d[1] - d[0]) * 0.14;
+    var lo = d[0] - pad, hi = d[1] + pad, span = (hi - lo) || 1;
+    var tk = ticks(lo, hi, narrow ? 2 : 3);
+    return {
+      W: W, H: H, ML: ml, PW: PW, PH: PH, narrow: narrow, ticks: tk,
+      // Mixed decimals in one column read as a mistake, so if any tick
+      // needs cents they all show cents.
+      cents: tk.some(function(v){ return Math.abs(v % 1) > 0.001; }),
+      base: MT + PH,
+      X: function(i){ return ml + (s.days === 1 ? PW / 2 : (i / (s.days - 1)) * PW); },
+      Y: function(v){ return MT + (1 - ((v - lo) / span)) * PH; },
+      // Nearest day for a viewBox x. Snapping means the reader aims at a date,
+      // not at a 2px line.
+      nearest: function(px){
+        var t = PW ? (px - ml) / PW : 0;
+        return Math.max(0, Math.min(s.days - 1, Math.round(t * (s.days - 1))));
+      }
+    };
+  }
+
+  function chart(s, g){
+    var pts = s.lows.map(function(v, i){ return g.X(i).toFixed(1) + "," + g.Y(v).toFixed(1); });
+    var area = "M" + g.X(0).toFixed(1) + "," + g.base + " L" + pts.join(" L")
+      + " L" + g.X(s.days - 1).toFixed(1) + "," + g.base + " Z";
+
+    // Hairline, solid, one step off the surface. Never dashed.
+    var grid = g.ticks.map(function(v){
+      var y = g.Y(v).toFixed(1);
+      return '<line x1="' + g.ML + '" x2="' + (g.W - MR) + '" y1="' + y + '" y2="' + y + '" stroke="' + GRID + '" stroke-width="1"/>'
+        + '<text x="' + (g.ML - 8) + '" y="' + (g.Y(v) + 4).toFixed(1) + '" text-anchor="end" fill="' + MUTED + '" font-size="11">' + (g.cents ? money(v) : money0(v)) + '</text>';
+    }).join("");
+
+    // Two dates on a phone, three on a wide card. More than that collides, and
+    // the crosshair carries every day in between.
+    var idx = s.days <= 2 || g.narrow ? [0, s.days - 1] : [0, Math.floor((s.days - 1) / 2), s.days - 1];
+    var xlab = idx.map(function(i, n){
+      return '<text x="' + g.X(i).toFixed(1) + '" y="' + (H - 7) + '" text-anchor="'
+        + (n === 0 ? "start" : n === idx.length - 1 ? "end" : "middle")
+        + '" fill="' + MUTED + '" font-size="11">' + shortDate(s.rows[i].d) + '</text>';
+    }).join("");
+
+    // The high and the low are direct-labelled, so the two numbers that matter
+    // are readable without hovering anything. Labels are pushed away from the
+    // line and clamped inside the plot so they cannot run off the edge.
+    function mark(i, v, up){
+      var x = g.X(i), y = g.Y(v);
+      var anchor = x < g.ML + 34 ? "start" : x > g.W - MR - 34 ? "end" : "middle";
+      var lx = anchor === "start" ? g.ML : anchor === "end" ? g.W - MR : x;
+      var ly = up ? Math.max(11, y - 9) : Math.min(g.base + 2, y + 16);
+      return '<circle cx="' + x.toFixed(1) + '" cy="' + y.toFixed(1) + '" r="3.5" fill="' + LINE + '" stroke="#fff" stroke-width="2"/>'
+        + '<text x="' + lx.toFixed(1) + '" y="' + ly.toFixed(1) + '" text-anchor="' + anchor + '" fill="' + INK
+        + '" font-size="11" font-weight="700" paint-order="stroke" stroke="#fff" stroke-width="3">' + money(v) + '</text>';
+    }
+    var extremes = s.max > s.min ? mark(s.maxAt, s.max, true) + mark(s.minAt, s.min, false) : mark(0, s.min, true);
+
+    return '<svg viewBox="0 0 ' + g.W + ' ' + H + '" width="100%" height="' + H + '" role="img" data-ph-svg'
+      + ' aria-label="Lowest tracked price per day over ' + s.days + ' days, from ' + money(s.first) + ' on ' + shortDate(s.rows[0].d)
+      + ' to ' + money(s.last) + ' on ' + shortDate(s.rows[s.days - 1].d) + '. Lowest ' + money(s.min) + ', highest ' + money(s.max) + '.">'
+      + grid + xlab
+      + '<path d="' + area + '" fill="rgba(106,121,41,.12)"/>'
+      + '<polyline points="' + pts.join(" ") + '" fill="none" stroke="' + LINE + '" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/>'
+      + extremes
+      + '<g data-ph-cross hidden><line y1="' + MT + '" y2="' + g.base + '" stroke="' + INK + '" stroke-width="1" opacity=".38"/>'
+      + '<circle r="4.5" fill="' + LINE + '" stroke="#fff" stroke-width="2"/></g>'
       + '</svg>';
   }
 
-  // The caption says the direction in words. A sparkline with no axis labels is
-  // a shape; the sentence is what makes it a fact.
   function caption(s){
     var dir = Math.abs(s.pct) < 1 ? "held steady" : ((s.last < s.first ? "fallen " : "risen ") + Math.abs(s.pct) + "%");
+    var band = (s.max - s.min) > Math.abs(s.last - s.first) * 1.5 && s.max > s.min
+      ? ", ranging between " + money(s.min) + " and " + money(s.max) : "";
     return "Lowest tracked price across all vendors, one reading per day. Over the last " + s.days
       + " day" + (s.days === 1 ? "" : "s") + " it has " + dir + ", from " + money(s.first) + " to " + money(s.last)
-      + ". Prices change without notice; confirm at the vendor.";
+      + band + ". Prices change without notice, so confirm at the vendor.";
+  }
+
+  // The table is the chart without a pointer: same numbers, newest first. It is
+  // why the readout is allowed to be a hover in the first place.
+  function tableHtml(s){
+    var rows = s.rows.slice().reverse().map(function(r){
+      return "<tr><td>" + shortDate(r.d) + "</td><td>" + money(r.low) + "</td><td>" + (Number(r.vendors) || 0) + "</td></tr>";
+    }).join("");
+    return '<details class="ph-table"><summary>View as table</summary>'
+      + '<div class="ph-table-scroll"><table><thead><tr><th scope="col">Date</th><th scope="col">Lowest</th><th scope="col">Vendors</th></tr></thead><tbody>'
+      + rows + '</tbody></table></div></details>';
+  }
+
+  function plotHtml(s, width){
+    var g = scale(s, width);
+    return '<div class="ph-plot" data-ph-plot>'
+      + '<div class="ph-tip" data-ph-tip hidden aria-hidden="true"></div>'
+      + chart(s, g) + '</div>';
   }
 
   function figures(s){
@@ -1331,7 +1466,88 @@ function renderSignupProof(promotions){
       + '<div><span>Today</span><strong>' + money(s.last) + '</strong></div></div>';
   }
 
-  // ---- compound pages: fill the section that the generator emitted ----
+  function wire(host, s, width){
+    var svg = host.querySelector("[data-ph-svg]");
+    var plot = host.querySelector("[data-ph-plot]");
+    var cross = host.querySelector("[data-ph-cross]");
+    var tip = host.querySelector("[data-ph-tip]");
+    if (!svg || !plot || !cross || !tip) return;
+    var g = scale(s, width);
+    var line = cross.querySelector("line"), dot = cross.querySelector("circle");
+    var active = -1;
+
+    function show(i){
+      if (i < 0 || i >= s.days) return;
+      active = i;
+      var x = g.X(i), y = g.Y(s.lows[i]);
+      line.setAttribute("x1", x.toFixed(1)); line.setAttribute("x2", x.toFixed(1));
+      dot.setAttribute("cx", x.toFixed(1)); dot.setAttribute("cy", y.toFixed(1));
+      cross.removeAttribute("hidden");
+      // Value leads, label follows: the reader already knows the compound and
+      // came for the number. textContent throughout, never innerHTML.
+      while (tip.firstChild) tip.removeChild(tip.firstChild);
+      var v = document.createElement("strong"); v.textContent = money(s.lows[i]);
+      var d = document.createElement("span");
+      d.textContent = shortDate(s.rows[i].d) + ", " + (Number(s.rows[i].vendors) || 0) + " vendors";
+      tip.appendChild(v); tip.appendChild(d);
+      // The readout sits in its own band above the plot, so it can never cover
+      // the line it describes. Clamped against its own measured width rather
+      // than a guessed percentage, which overflowed the card on a phone.
+      tip.removeAttribute("hidden");
+      var pw = plot.clientWidth || g.W;
+      var half = (tip.offsetWidth || 90) / 2;
+      var want = (x / g.W) * pw;
+      tip.style.left = Math.round(Math.max(half, Math.min(pw - half, want))) + "px";
+    }
+    function hide(){ active = -1; cross.setAttribute("hidden", ""); tip.setAttribute("hidden", ""); }
+
+    function at(e){
+      var r = svg.getBoundingClientRect();
+      if (!r.width) return;
+      show(g.nearest(((e.clientX - r.left) / r.width) * g.W));
+    }
+    // The whole plot is the hit target, not the 2px line.
+    plot.addEventListener("pointermove", at);
+    plot.addEventListener("pointerdown", at);
+    plot.addEventListener("pointerleave", hide);
+    svg.setAttribute("tabindex", "0");
+    svg.addEventListener("focus", function(){ show(active < 0 ? s.days - 1 : active); });
+    svg.addEventListener("blur", hide);
+    svg.addEventListener("keydown", function(e){
+      var i = active < 0 ? s.days - 1 : active;
+      if (e.key === "ArrowRight") { e.preventDefault(); show(Math.min(s.days - 1, i + 1)); }
+      else if (e.key === "ArrowLeft") { e.preventDefault(); show(Math.max(0, i - 1)); }
+      else if (e.key === "Home") { e.preventDefault(); show(0); }
+      else if (e.key === "End") { e.preventDefault(); show(s.days - 1); }
+      else if (e.key === "Escape") hide();
+    });
+  }
+
+  // Render into a host at the host's own width, so the axis text comes out at
+  // its real size instead of being scaled down with the viewBox.
+  function paint(host, s){
+    var w = host.clientWidth || 640;
+    host.innerHTML = plotHtml(s, w);
+    wire(host, s, w);
+    host.__phW = w;
+  }
+  // Rotating a phone changes the width enough to matter; a few pixels does not.
+  var painted = [];
+  function repaintOnResize(host, s){
+    painted.push({ host: host, s: s });
+  }
+  var rt = 0;
+  window.addEventListener("resize", function(){
+    clearTimeout(rt);
+    rt = setTimeout(function(){
+      painted = painted.filter(function(p){ return p.host.isConnected; });
+      painted.forEach(function(p){
+        var w = p.host.clientWidth || 640;
+        if (Math.abs(w - (p.host.__phW || 0)) > 40) paint(p.host, p.s);
+      });
+    }, 180);
+  });
+
   function fillSection(){
     var root = document.querySelector("[data-price-history]");
     if (!root) return;
@@ -1339,61 +1555,62 @@ function renderSignupProof(promotions){
     if (!id) return;
     load(id).then(function(data){
       var s = summarise(data);
-      if (!s) return;                       // stays hidden; no empty frame
+      if (!s) return;
       var set = function(sel, v){ var el = root.querySelector(sel); if (el) el.textContent = v; };
-      set("[data-ph-low]", money(s.min));
-      set("[data-ph-high]", money(s.max));
-      set("[data-ph-now]", money(s.last));
+      set("[data-ph-low]", money(s.min)); set("[data-ph-high]", money(s.max)); set("[data-ph-now]", money(s.last));
       set("[data-ph-range]", s.days + " day" + (s.days === 1 ? "" : "s") + " tracked");
-      var chart = root.querySelector("[data-ph-chart]"); if (chart) chart.innerHTML = chartSvg(s);
       set("[data-ph-caption]", caption(s));
+      var cap = root.querySelector("[data-ph-caption]");
+      if (cap && !root.querySelector(".ph-table")) cap.insertAdjacentHTML("afterend", tableHtml(s));
       root.removeAttribute("hidden");
+      var chartEl = root.querySelector("[data-ph-chart]");
+      // Painted after the section is shown, so clientWidth is the real width
+      // and not zero from a hidden parent.
+      if (chartEl) { paint(chartEl, s); repaintOnResize(chartEl, s); }
     });
   }
 
-  // ---- catalog cards: the same chart in a dialog ----
   var modal = null, lastFocus = null;
-
   function closeModal(){
     if (!modal) return;
     modal.hidden = true;
     document.body.classList.remove("ph-modal-open");
     if (lastFocus && lastFocus.focus) lastFocus.focus();
   }
-
   function ensureModal(){
     if (modal) return modal;
     modal = document.createElement("div");
-    modal.className = "ph-modal-backdrop";
-    modal.hidden = true;
+    modal.className = "ph-modal-backdrop"; modal.hidden = true;
     modal.innerHTML = '<section class="ph-modal" role="dialog" aria-modal="true" aria-labelledby="ph-modal-title">'
-      + '<button type="button" class="ph-modal-close" aria-label="Close">×</button>'
+      + '<button type="button" class="ph-modal-close" aria-label="Close">&times;</button>'
       + '<h2 id="ph-modal-title" data-ph-title>Price history</h2>'
-      + '<div data-ph-body><p class="ph-modal-loading">Loading price history…</p></div>'
-      + '</section>';
+      + '<div data-ph-body><p class="ph-modal-note">Loading price history...</p></div></section>';
     document.body.appendChild(modal);
     modal.addEventListener("click", function(e){ if (e.target === modal) closeModal(); });
     modal.querySelector(".ph-modal-close").addEventListener("click", closeModal);
-    document.addEventListener("keydown", function(e){ if (e.key === "Escape") closeModal(); });
+    document.addEventListener("keydown", function(e){ if (e.key === "Escape" && modal && !modal.hidden) closeModal(); });
     return modal;
   }
-
   function openModal(id, name){
     lastFocus = document.activeElement;
     var m = ensureModal();
     m.querySelector("[data-ph-title]").textContent = (name || "Price") + " price history";
-    var bodyEl = m.querySelector("[data-ph-body]");
-    bodyEl.innerHTML = '<p class="ph-modal-loading">Loading price history…</p>';
+    var body = m.querySelector("[data-ph-body]");
+    body.innerHTML = '<p class="ph-modal-note">Loading price history...</p>';
     m.hidden = false;
     document.body.classList.add("ph-modal-open");
     m.querySelector(".ph-modal-close").focus();
     load(id).then(function(data){
+      if (m.hidden) return;
       var s = summarise(data);
-      bodyEl.innerHTML = s
-        ? figures(s) + '<div class="ph-chart">' + chartSvg(s) + '</div><p class="ph-modal-note">' + caption(s) + '</p>'
-        // A compound added this week genuinely has no history. Saying so is
-        // better than an empty chart frame the visitor has to interpret.
-        : '<p class="ph-modal-note">We have not tracked this compound long enough to show a price history yet. It starts once there are at least two daily readings.</p>';
+      if (!s) {
+        body.innerHTML = '<p class="ph-modal-note">We have not tracked this compound long enough to show a price history yet. It starts once there are at least two daily readings.</p>';
+        return;
+      }
+      body.innerHTML = figures(s) + '<div data-ph-chart></div>'
+        + '<p class="ph-modal-note">' + caption(s) + '</p>' + tableHtml(s);
+      var chartEl = body.querySelector("[data-ph-chart]");
+      paint(chartEl, s); repaintOnResize(chartEl, s);
     });
   }
 

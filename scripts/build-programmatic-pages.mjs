@@ -6,7 +6,7 @@ import { dirname, resolve } from "node:path";
 // any checkout. It previously pointed at a hardcoded scratch directory, which
 // silently read a stale snapshot and wrote pages outside the repo.
 const W = resolve(dirname(fileURLToPath(import.meta.url)), "..");
-const VER = "20260930-history-modal-v192";
+const VER = "20260930-history-chart-v193";
 const BASE = "https://mypeptideprice.com";
 // Files are written with .html, but every URL we publish (canonical, og:url,
 // schema, internal links, sitemap) uses the clean form. Google was indexing both
@@ -233,9 +233,23 @@ const PAGE_CSS = `<style>
 .ph-figures div{display:flex;flex-direction:column;gap:2px}
 .ph-figures span{font-size:.7rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
 .ph-figures strong{font-family:var(--font-body);font-size:1.25rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest)}
-.ph-chart{height:120px;margin:4px 0 10px}
-.ph-chart svg{display:block;width:100%;height:120px}
-@media(max-width:520px){.ph-figures{gap:16px}.ph-figures strong{font-size:1.1rem}.ph-chart,.ph-chart svg{height:96px}}
+.ph-chart{margin:4px 0 10px}
+.ph-plot{position:relative;padding-top:38px}
+.ph-plot svg{display:block;width:100%;height:auto;touch-action:pan-y}
+.ph-plot svg:focus-visible{outline:2px solid var(--olive);outline-offset:3px;border-radius:10px}
+.ph-tip{position:absolute;top:0;transform:translateX(-50%);z-index:2;display:flex;flex-direction:column;align-items:center;gap:1px;border:1px solid var(--line);border-radius:10px;background:#fff;padding:4px 10px;white-space:nowrap;pointer-events:none;box-shadow:0 6px 18px rgba(13,13,13,.12)}
+.ph-tip strong{font-size:.94rem;font-weight:900;font-variant-numeric:tabular-nums;color:var(--forest);line-height:1.15}
+.ph-tip span{font-size:.69rem;font-weight:700;color:var(--muted)}
+.ph-table{margin:8px 0 0}
+.ph-table summary{cursor:pointer;font-size:.78rem;font-weight:800;color:var(--forest)}
+.ph-table summary:focus-visible{outline:2px solid var(--olive);outline-offset:2px}
+.ph-table-scroll{max-height:230px;overflow:auto;margin-top:8px;border:1px solid var(--line);border-radius:10px}
+.ph-table table{width:100%;border-collapse:collapse;font-size:.8rem}
+.ph-table th,.ph-table td{padding:6px 10px;text-align:left;border-bottom:1px solid var(--line)}
+.ph-table th{position:sticky;top:0;background:var(--soft);font-size:.64rem;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.ph-table td{font-variant-numeric:tabular-nums}
+.ph-table tbody tr:last-child td{border-bottom:0}
+@media(max-width:520px){.ph-figures{gap:16px}.ph-figures strong{font-size:1.1rem}.ph-plot{padding-top:34px}.ph-tip{padding:3px 8px}}
 .hub-section-title{max-width:1120px;margin:22px auto 0;padding:0 20px;font-family:var(--font-display);color:var(--forest);font-size:1.15rem}
 @media(max-width:520px){.snap-head h2{font-size:1.3rem}.answer-box .inner p{font-size:.95rem}
 .price-row{flex-direction:column;align-items:flex-start;gap:10px}
@@ -531,9 +545,9 @@ ${rowsHtml}
     <div class="snap-head"><h2>${esc(c.name)} price history</h2><span class="snap-meta"><span class="dot"></span><span data-ph-range>Last 90 days</span></span></div>
     <div class="ph-card">
       <div class="ph-figures">
-        <div><span>Lowest</span><strong data-ph-low>&mdash;</strong></div>
-        <div><span>Highest</span><strong data-ph-high>&mdash;</strong></div>
-        <div><span>Today</span><strong data-ph-now>&mdash;</strong></div>
+        <div><span>Lowest</span><strong data-ph-low>&nbsp;</strong></div>
+        <div><span>Highest</span><strong data-ph-high>&nbsp;</strong></div>
+        <div><span>Today</span><strong data-ph-now>&nbsp;</strong></div>
       </div>
       <div class="ph-chart" data-ph-chart></div>
       <p class="snap-note" data-ph-caption></p>
