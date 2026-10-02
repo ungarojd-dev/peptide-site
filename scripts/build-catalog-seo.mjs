@@ -9,7 +9,7 @@
 // Run after build-catalog-fallback so the snapshot is current.
 
 import { readFile, writeFile } from "node:fs/promises";
-import { readdirSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 
 const W = process.cwd();
 const START = "<!--CATALOG_SEO_START-->";
@@ -42,7 +42,17 @@ if (!cards.length) {
   process.exit(1);
 }
 
-const pages = new Set(readdirSync(`${W}/compounds`).map(f => f.replace(/\.html$/, "")));
+// A compound page is linkable only if it exists AND is not redirected away in
+// _redirects. Retired pages linger on disk until someone deletes them, and
+// linking to one sends crawlers into a 301 from the homepage.
+const retired = new Set();
+try {
+  for (const line of readFileSync(`${W}/_redirects`, "utf8").split("\n")) {
+    const m = line.match(/^\/compounds\/([a-z0-9-]+)(?:\.html)?\s+\S+\s+301!?/);
+    if (m) retired.add(m[1]);
+  }
+} catch {}
+const pages = new Set(readdirSync(`${W}/compounds`).map(f => f.replace(/\.html$/, "")).filter(sg => !retired.has(sg)));
 
 const rows = cards
   .slice()
@@ -55,7 +65,7 @@ const rows = cards
       ? card.format_labels.join(", ")
       : card.format || "";
     const title = sg
-      ? `<a class="seo-card-name" href="/compounds/${esc(sg)}.html">${esc(card.name)}</a>`
+      ? `<a class="seo-card-name" href="/compounds/${esc(sg)}">${esc(card.name)}</a>`
       : `<span class="seo-card-name">${esc(card.name)}</span>`;
     const priceBit = low
       ? `<span class="seo-card-price">from <strong>${esc(low)}</strong></span>`
@@ -78,7 +88,7 @@ const offerCount = Number(snapshot.normalized_offer_count) || 0;
 
 const block = `${START}
 <div class="seo-catalog" data-seo-catalog>
-  <p class="seo-catalog-intro">Tracking ${cards.length} research compounds across ${vendorCount} vendors${offerCount ? `, ${offerCount.toLocaleString("en-US")} listings` : ""}. Prices shown are the lowest tracked estimate after known discount codes. Full comparison loads below.</p>
+  <p class="seo-catalog-intro">Tracking ${vendorCount} partner vendors. The current price snapshot covers ${cards.length} research compounds${offerCount ? ` and ${offerCount.toLocaleString("en-US")} listings` : ""}. Prices shown are the lowest tracked estimate after known discount codes. Full comparison loads below.</p>
   <ul class="seo-catalog-list">${rows}</ul>
 </div>
 ${END}`;

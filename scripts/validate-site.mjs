@@ -200,6 +200,34 @@ for (const asset of ["assets/site.js", "assets/catalog-ui.js"]) {
 }
 
 // ---------------------------------------------------------------------------
+// Homepage SEO intro. It quotes three numbers from two sources: the vendor
+// count is the roster (vendor-config), the compound and listing counts are the
+// snapshot. They drifted when the snapshot was two months behind the roster and
+// the sentence read as if 1,489 listings came from 18 vendors when 13 fed them.
+// The copy now keeps the two claims apart; this check keeps each one honest.
+// ---------------------------------------------------------------------------
+if (indexHtml) {
+  const intro = indexHtml.match(/<p class="seo-catalog-intro">([^<]*)<\/p>/);
+  if (intro) {
+    const text = intro[1];
+    const num = re => { const m = text.match(re); return m ? Number(m[1].replace(/,/g, "")) : null; };
+    const introVendors = num(/Tracking (\d[\d,]*) partner vendors/);
+    const introCompounds = num(/(\d[\d,]*) research compounds/);
+    const introListings = num(/(\d[\d,]*) listings/);
+    if (introVendors !== null && introVendors !== vendors.length) fail(`index.html intro says ${introVendors} partner vendors but vendor-config has ${vendors.length}`);
+    if (introCompounds !== null && snapshot.product_card_count && introCompounds !== snapshot.product_card_count) fail(`index.html intro says ${introCompounds} compounds but the snapshot has ${snapshot.product_card_count}`);
+    if (introListings !== null && snapshot.normalized_offer_count && introListings !== snapshot.normalized_offer_count) fail(`index.html intro says ${introListings} listings but the snapshot has ${snapshot.normalized_offer_count}`);
+    const stat = indexHtml.match(/id="statVendors">(\d+)</);
+    if (stat && Number(stat[1]) !== vendors.length) fail(`index.html statVendors says ${stat[1]} but vendor-config has ${vendors.length}`);
+  } else {
+    note("index.html has no seo-catalog-intro paragraph, the homepage count check was skipped");
+  }
+  if (snapshot.vendors_loaded && snapshot.vendors_loaded < vendors.length) {
+    note(`snapshot carries ${snapshot.vendors_loaded} of ${vendors.length} roster vendors (generated ${String(snapshot.generated_at).slice(0, 10)}); if build-catalog-live keeps rejecting the live pull, lower CATALOG_MIN_VENDORS or set launch_date on the vendors whose feeds are not live yet`);
+  }
+}
+
+// ---------------------------------------------------------------------------
 if (fatals.length) {
   console.error(`\nvalidate-site: ${fatals.length} BLOCKING issue(s), the site would ship contradicting itself\n`);
   for (const problem of fatals) console.error(`  - ${problem}`);

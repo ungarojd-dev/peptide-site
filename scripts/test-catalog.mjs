@@ -24,7 +24,6 @@ const ids = rebuilt.products.map(card => card.id);
 assert.equal(new Set(ids).size, ids.length, "Product card ids must be unique");
 const productIds = rebuilt.products.map(card => card.product_id);
 assert.equal(new Set(productIds).size, productIds.length, "Each compound must produce exactly one card");
-assert.equal(normalizeOffer({ company: "Bioedge Research Labs", product: "BPC-157 10mg", listing: "BPC-157 10mg", price: "$100.00" }).effective_price_label, "$85.00");
 assert.equal(normalizeOffer({ company: "Ion Peptide", product: "BPC-157 10mg", listing: "BPC-157 10mg", price: "$100.00" }).effective_price_label, "$85.00");
 const saleFeedOffer = normalizeOffer({
   company: "Glow Aminos",
@@ -48,7 +47,6 @@ const expectedSammycRates = {
   "Oneday Compounds": 10,
   "Ion Peptide": 15,
   "Coffee and Peppers": 15,
-  "Bioedge Research Labs": 15,
   "High Tide Compounds": 10,
   "Disguised Alpha": 10
 };

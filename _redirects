@@ -1,5 +1,7 @@
 /faq /faq.html 200
 /vendors /vendors.html 200
+/compounds /compounds.html 200
+/deals /deals.html 200
 /blog /blog/index.html 200
 /glp-weight-loss /glp-weight-loss.html 200
 /catalog-status /admin/catalog-status.html 200
@@ -8,24 +10,34 @@
 # dropped below the two-vendor threshold once their listings came out. All three
 # were indexed, so they 301 to the nearest live index rather than 404. Both URL
 # forms, because Google had indexed the .html variants too.
-/vendors/southern-aminos        /vendors     301
-/vendors/southern-aminos.html   /vendors     301
-/compounds/hgh-fragment-176-191       /compounds   301
-/compounds/hgh-fragment-176-191.html  /compounds   301
-/compounds/vial-caps-and-covers       /compounds   301
-/compounds/vial-caps-and-covers.html  /compounds   301
+/vendors/southern-aminos        /vendors     301!
+/vendors/southern-aminos.html   /vendors     301!
+/compounds/hgh-fragment-176-191       /compounds   301!
+/compounds/hgh-fragment-176-191.html  /compounds   301!
+/compounds/vial-caps-and-covers       /compounds   301!
+/compounds/vial-caps-and-covers.html  /compounds   301!
 
 # Retired with the Southern Aminos and Bioedge removal: no vendor carries
 # these any more, so the page is no longer generated.
-/compounds/bronchogen               /compounds   301
-/compounds/bronchogen.html          /compounds   301
-/compounds/ghrp-6                   /compounds   301
-/compounds/ghrp-6.html              /compounds   301
-/compounds/livagen                  /compounds   301
-/compounds/livagen.html             /compounds   301
-/compounds/na-semax-amidate         /compounds   301
-/compounds/na-semax-amidate.html    /compounds   301
-/compounds/prostamax                /compounds   301
-/compounds/prostamax.html           /compounds   301
-/compounds/thymagen                 /compounds   301
-/compounds/thymagen.html            /compounds   301
+/compounds/bronchogen               /compounds   301!
+/compounds/bronchogen.html          /compounds   301!
+/compounds/ghrp-6                   /compounds   301!
+/compounds/ghrp-6.html              /compounds   301!
+/compounds/livagen                  /compounds   301!
+/compounds/livagen.html             /compounds   301!
+/compounds/na-semax-amidate         /compounds   301!
+/compounds/na-semax-amidate.html    /compounds   301!
+/compounds/prostamax                /compounds   301!
+/compounds/prostamax.html           /compounds   301!
+/compounds/thymagen                 /compounds   301!
+/compounds/thymagen.html            /compounds   301!
+
+# Pages the generator stopped producing (vendor dropped or fewer than two
+# vendors list the compound). Forced (301!) so the redirect wins even while the
+# old .html file is still in the repo. Delete the files when convenient.
+/compounds/orforglipron            /compounds   301!
+/compounds/orforglipron.html       /compounds   301!
+/compounds/vitamin-c               /compounds   301!
+/compounds/vitamin-c.html          /compounds   301!
+/vendors/bioedge-research-labs       /vendors     301!
+/vendors/bioedge-research-labs.html  /vendors     301!

@@ -1,5 +1,5 @@
 {
-  "version": "3.0.1",
+  "version": "2026-10-02-adalank-elora-cjc-aliases",
   "products": [
     {
       "id": "5-amino-1mq",
@@ -9,7 +9,9 @@
         "5-amino-1mq",
         "5 amino 1mq",
         "5Amino-1MQ",
-        "5Amino 1MQ"
+        "5Amino 1MQ",
+        "5AMINO",
+        "5-AMINO"
       ]
     },
     {
@@ -430,7 +432,9 @@
       "name": "CJC-1295 with DAC",
       "category": "Growth Hormone Research",
       "aliases": [
-        "CJC-1295 with DAC"
+        "CJC-1295 with DAC",
+        "CJC With Dac",
+        "CJC with DAC"
       ]
     },
     {
@@ -1951,6 +1955,24 @@
         "palmitoyl pentapeptide-4 raw",
         "pal-kttks",
         "matrixyl"
+      ]
+    },
+    {
+      "id": "adalank",
+      "name": "Adalank",
+      "category": "Repair & Recovery",
+      "aliases": [
+        "Adalank",
+        "ADALANK"
+      ]
+    },
+    {
+      "id": "eloralintide",
+      "name": "Eloralintide",
+      "category": "GLP-1 & Incretin",
+      "aliases": [
+        "Eloralintide",
+        "Elora"
       ]
     }
   ]

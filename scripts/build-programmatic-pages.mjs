@@ -128,7 +128,7 @@ function codeNote(vendorKey, code, discount) {
     : `Code ${esc(code)} applies (${discount}% off)`;
 }
 
-const NONPEP = ["Acetic Acid", "Bacteriostatic", "Travel Case", "Starter Kit", "Research Starter", "Case ONLY", "Protective Travel"];
+const NONPEP = ["Acetic Acid", "Bacteriostatic", "Travel Case", "Starter Kit", "Research Starter", "Case ONLY", "Protective Travel", "Bench Towel", "Shaker Bottle", "Cold Pack"];
 const HAND_BUILT = new Map([
   ["semaglutide", "/semaglutide-price-comparison"],
   ["tirzepatide", "/tirzepatide-price-comparison"],
@@ -291,6 +291,7 @@ function header() {
           <a href="/tirzepatide-price-comparison">Tirzepatide</a>
           <a href="/retatrutide-price-comparison">Retatrutide</a>
           <a href="/bpc-157-price-comparison">BPC-157</a>
+          <a href="/glp-weight-loss">GLP weight loss</a>
           <a href="/compounds">All compounds</a>
         </div>
       </div>
@@ -301,7 +302,7 @@ function header() {
     </nav>
   </div>
 </header>
-<div class="coupon-strip">Independent research peptide price reference. Prices reflect the <span class="code-pill">SAMMYC</span> code where a vendor supports it. For laboratory research use only.</div>\n<div class="rou-strip" role="note">For laboratory and research use only. Not for human consumption. Not medical advice.</div>`;
+<div class="coupon-strip">Independent research peptide price reference. Prices reflect the <span class="code-pill">SAMMYC</span> code where a vendor supports it.</div>\n<div class="rou-strip" role="note">For laboratory and research use only. Not for human consumption. Not medical advice.</div>`;
 }
 
 function footer() {
@@ -537,7 +538,7 @@ for (const c of compoundPages) {
       ]},
       { "@type": "Product", name: `${c.name} (Research Material)`, category: "Research compound",
         description: `${c.name} listed by third-party vendors for laboratory research use only. Not for human consumption. This page is an independent price reference.`,
-        ...(c.lo != null ? { offers: { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: c.lo.toFixed(2), highPrice: (c.hi ?? c.lo).toFixed(2), availability: "https://schema.org/InStock", offerCount: String(offerCount) } } : {}) },
+        ...(c.lo != null ? { offers: { "@type": "AggregateOffer", priceCurrency: "USD", lowPrice: c.lo.toFixed(2), highPrice: (c.hi ?? c.lo).toFixed(2), availability: c.priced.some(o => o.inStock) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock", offerCount: String(offerCount), url: canonical } } : {}) },
       { "@type": "FAQPage", mainEntity: faq.map(([q, a]) => ({ "@type": "Question", name: q, acceptedAnswer: { "@type": "Answer", text: a } })) },
     ],
   }, null, 0).replace(/&/g, "&amp;");
@@ -999,7 +1000,13 @@ for (const [key, hubPath] of HAND_BUILT) {
       const ends = d.end_date
         ? `<span class="deal-ends">Ends ${esc(endLabel(d.end_date))}</span>`
         : (d.ongoing ? `<span class="deal-ends deal-ends--open">Ongoing</span>` : "");
-      const compare = match ? `<a class="vendor-out" href="${esc(clean("/vendors/" + slug(match.cfg.id || match.key) + ".html"))}">See ${esc(name)} prices &#8250;</a>` : "";
+      // Link to the vendor page only when this build generated one. A vendor
+      // with no listings in the snapshot has no page, and linking to it sent
+      // deals traffic to a 404. Those cards get the affiliate link instead.
+      const hasPage = match && generated.vendors.some(g => g.key === match.key);
+      const compare = hasPage
+        ? `<a class="vendor-out" href="${esc(clean("/vendors/" + slug(match.cfg.id || match.key) + ".html"))}">See ${esc(name)} prices &#8250;</a>`
+        : (d.affiliate_url ? `<a class="vendor-out" href="${esc(d.affiliate_url)}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="1" data-product="${esc(d.headline)}" data-category="promotion" data-vendor="${esc(d.vendor)}" data-code="${esc(d.code || d.sale_code || "")}" data-cta="Deals page, ${esc(name)}, visit">Visit ${esc(name)} &#8250;</a>` : "");
 
       // Anchored so the ticker can land on the exact offer someone tapped rather
       // than the top of the page. scroll-margin keeps it clear of the sticky header.
@@ -1186,7 +1193,18 @@ for (const g of generated.vendors) extra.push([g.path, "0.6"]);
 extra.push(["/compounds.html", "0.8"]);
 // /alerts.html left out of the sitemap while email signups are paused.
 
-const lastmod = new Date().toISOString().slice(0, 10);
+// lastmod is the date the price data changed, not the date the build ran.
+// Stamping every URL with the build date on every deploy meant the whole
+// sitemap said "changed today" daily, which search engines learn to ignore.
+// Data-driven pages take the snapshot date; hand-written copy pages carry no
+// lastmod rather than a wrong one.
+const snapIso = Number.isNaN(snapStamp.getTime()) ? new Date().toISOString() : snapStamp.toISOString();
+const lastmod = snapIso.slice(0, 10);
+const DATA_DRIVEN = new Set(["/", "/deals.html", "/vendors.html", "/compounds.html", "/glp-weight-loss.html", ...HAND_BUILT.values()].map(p => p.endsWith(".html") || p === "/" || p.endsWith("/") ? p : `${p}.html`));
+// /deals is rebuilt from deals.json on every run, so its date is the build date.
+const buildDate = new Date().toISOString().slice(0, 10);
+const lastmodFor = p => p === "/deals.html" ? `<lastmod>${buildDate}</lastmod>`
+  : (DATA_DRIVEN.has(p) || p.startsWith("/compounds/") || p.startsWith("/vendors/")) ? `<lastmod>${lastmod}</lastmod>` : "";
 const seenUrl = new Set();
 const allUrls = [...CORE_URLS, ...extra].filter(([p]) => {
   if (seenUrl.has(p)) return false;
@@ -1195,7 +1213,7 @@ const allUrls = [...CORE_URLS, ...extra].filter(([p]) => {
 });
 const sitemapXml = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-${allUrls.map(([p, pr]) => `<url><loc>${BASE}${clean(p)}</loc><lastmod>${lastmod}</lastmod><priority>${pr}</priority></url>`).join("\n")}
+${allUrls.map(([p, pr]) => `<url><loc>${BASE}${clean(p)}</loc>${lastmodFor(p)}<priority>${pr}</priority></url>`).join("\n")}
 </urlset>
 `;
 await writeFile(`${W}/sitemap.xml`, sitemapXml);

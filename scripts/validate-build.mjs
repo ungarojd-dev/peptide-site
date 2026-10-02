@@ -18,9 +18,18 @@ for (const file of htmlFiles) {
   const html = await readFile(file, "utf8");
   for (const match of html.matchAll(/(?:src|href)=["']([^"'#?]+)["']/g)) {
     const ref = match[1];
-    if (/^(https?:|mailto:|tel:|data:|\/\/.+)/.test(ref) || ref.startsWith("/.netlify/")) continue;
+    if (/^(https?:|mailto:|tel:|data:|\/\/.+|\{\{)/.test(ref) || ref.startsWith("/.netlify/")) continue;
     const target = ref.startsWith("/") ? resolve(root, ref.slice(1)) : resolve(dirname(file), ref);
-    try { await stat(target); } catch { missing.push(`${file.replace(root, "")}: ${ref}`); }
+    // Internal links are extensionless (clean URLs, see _redirects and the
+    // canonical tags), so /vendors resolves to vendors.html and /blog/ to
+    // blog/index.html. Checking only the literal path flagged every clean link
+    // as missing and made this validator fail on a correct build.
+    const candidates = [target, `${target}.html`, resolve(target, "index.html")];
+    let found = false;
+    for (const candidate of candidates) {
+      try { await stat(candidate); found = true; break; } catch {}
+    }
+    if (!found) missing.push(`${file.replace(root, "")}: ${ref}`);
   }
 }
 assert.deepEqual(missing, [], `Missing referenced files:\n${missing.join("\n")}`);
