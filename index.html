@@ -366,13 +366,14 @@
     if(!worthIt) return;
     function announceDetail(p){
       var text=String(p.announce_offer||p.headline||p.strip_offer||'').trim();
-      if(text.length>84){
-        var parts=text.split(',').map(function(x){return x.trim();}).filter(Boolean);
-        var acc='';
-        for(var i=0;i<parts.length;i++){ var tryText=acc?acc+', '+parts[i]:parts[i]; if(tryText.length>84) break; acc=tryText; }
-        text=acc||text.slice(0,81).replace(/\s+\S*$/,'')+'\u2026';
-      }
-      return text;
+      var MAX=64;
+      if(text.length<=MAX) return text;
+      var parts=text.split(',').map(function(x){return x.trim();}).filter(Boolean);
+      var acc='';
+      for(var i=0;i<parts.length;i++){ var tryText=acc?acc+', '+parts[i]:parts[i]; if(tryText.length>MAX) break; acc=tryText; }
+      if(acc) return acc;
+      // First clause alone is too long: fall back to the first sentence-sized chunk, whole words only.
+      return text.slice(0,MAX).replace(/\s+\S*$/,'').replace(/[\s,;:]+$/,'');
     }
     var slides=eligible.slice(0,4).map(function(p){
       var badge=announceShortLabel(p);
@@ -438,7 +439,7 @@
       cur.setAttribute('aria-hidden','true'); cur.setAttribute('tabindex','-1');
       setTimeout(function(){ show((idx+1)%slots.length); }, reduced?0:300);
     }
-    function start(){ if(slots.length>1&&!reduced&&!timer) timer=setInterval(next,7000); }
+    function start(){ if(slots.length>1&&!reduced&&!timer) timer=setInterval(next,5000); }
     function stop(){ if(timer){clearInterval(timer);timer=null;} }
     bar.addEventListener('mouseenter',function(){paused=true;});
     bar.addEventListener('mouseleave',function(){paused=false;});

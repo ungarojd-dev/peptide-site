@@ -2343,8 +2343,8 @@ body.ph-modal-open { overflow: hidden; }
   background: #fff; object-fit: contain; padding: 2px;
 }
 .announce-slot-vendor {
-  font-size: 13.5px; font-weight: 800; letter-spacing: .1px; color: #fffdf8;
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+  flex: none; font-size: 13.5px; font-weight: 800; letter-spacing: .1px; color: #fffdf8;
+  white-space: nowrap;
 }
 .announce-slot-badge {
   flex: none;
@@ -2353,8 +2353,8 @@ body.ph-modal-open { overflow: hidden; }
   padding: 3px 10px; font-size: 12.5px; font-weight: 900; letter-spacing: .2px; white-space: nowrap;
 }
 .announce-slot-detail {
-  font-size: 13px; font-weight: 600; color: rgba(247,243,234,.92);
-  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; max-width: 46ch;
+  flex: 0 1 auto; font-size: 13px; font-weight: 600; color: rgba(247,243,234,.92);
+  white-space: nowrap; overflow: hidden; text-overflow: clip; min-width: 0;
 }
 .announce-slot-ends {
   flex: none; font-size: 12px; font-weight: 800; color: #e9f3c9; white-space: nowrap;
@@ -2383,8 +2383,10 @@ body.ph-modal-open { overflow: hidden; }
 @media (prefers-reduced-motion: reduce) {
   .announce-slot, .announce-slot.is-active, .announce-slot-cta { transition: none; }
 }
+/* Below this the detail line is what would get squeezed, so it goes rather
+   than being clipped mid-word. The vendor name is never truncated. */
 @media (max-width: 1000px) {
-  .announce-slot-detail { max-width: 30ch; }
+  .announce-slot-detail { display: none; }
 }
 @media (max-width: 720px) {
   .announce-calm { padding: 0 12px; }
@@ -2394,12 +2396,18 @@ body.ph-modal-open { overflow: hidden; }
   .announce-slot-main { gap: 8px; }
   .announce-slot-vendor { font-size: 12.5px; }
   .announce-slot-badge { font-size: 11.5px; padding: 3px 9px; }
-  .announce-slot-detail { display: none; }
   .announce-slot-ends { font-size: 11.5px; padding-left: 8px; }
   .announce-slot-cta { min-height: 30px; padding: 0 11px; font-size: 11.5px; }
   .announce-dots { display: none; }
   .announce-all-link { display: none; }
 }
-@media (max-width: 400px) {
+@media (max-width: 480px) {
   .announce-slot-logo { display: none; }
+  /* Narrow phones: the end date drops under the vendor line instead of
+     squeezing against the button. Nothing is ever clipped. */
+  .announce-slot { gap: 8px; }
+  .announce-slot-main { flex-wrap: wrap; justify-content: center; row-gap: 2px; }
+  .announce-slot-ends { flex-basis: 100%; text-align: center; padding-left: 0; border-left: 0; font-size: 11px; color: rgba(247,243,234,.78); }
+  .announce-calm-inner, .announce-slot-wrap { min-height: 52px; }
+  .announce-slot { padding: 6px 0; }
 }
