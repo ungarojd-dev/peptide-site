@@ -132,6 +132,46 @@ settled.forEach((result, index) => {
 console.log(`  loaded ${loaded.length}/${configured.length} vendors, ${rows.length} rows`);
 for (const w of warnings) console.log(`  warning: ${w}`);
 
+// Some vendors answer the serverless refresh but block Netlify's build servers
+// (Peptira returns an HTML challenge page, Zenith a 403). The refresh keeps its
+// raw rows in Blobs and /.netlify/functions/catalog-raw-rows serves them, so a
+// vendor that failed here is borrowed from the live site rather than dropped
+// from every static page until the next deploy happens to get through.
+//   CATALOG_LIVE_SITE_URL   override the site to borrow from (default production)
+//   CATALOG_NO_BORROW=1     disable the borrow step
+if (failed.length && process.env.CATALOG_NO_BORROW !== "1") {
+  const site = (process.env.CATALOG_LIVE_SITE_URL || process.env.URL || "https://mypeptideprice.com").replace(/\/+$/, "");
+  const endpoint = `${site}/.netlify/functions/catalog-raw-rows?vendor=${encodeURIComponent(failed.join(","))}`;
+  try {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), 20000);
+    const res = await fetch(endpoint, { signal: ctrl.signal, headers: { Accept: "application/json" } });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    const borrowed = await res.json();
+    const byVendor = borrowed?.rows_by_vendor || {};
+    for (const vendor of [...failed]) {
+      const vendorRows = Array.isArray(byVendor[vendor]) ? byVendor[vendor] : [];
+      if (!vendorRows.length) continue;
+      const tagged = vendorRows.map(row => ({ ...row, source_layer: "live-site-retained" }));
+      rows.push(...tagged);
+      vendorStatus[vendor] = {
+        status: "live_site_retained",
+        row_count: tagged.length,
+        fetched_at: borrowed.last_live_refresh_at || borrowed.snapshot_updated_at || new Date().toISOString(),
+        error: vendorStatus[vendor]?.error || "",
+        metadata: { borrowed_from: site }
+      };
+      failed.splice(failed.indexOf(vendor), 1);
+      loaded.push(vendor);
+      console.log(`  borrowed ${vendor}: ${tagged.length} rows from the live site snapshot`);
+    }
+    if (failed.length) console.log(`  still missing after borrow: ${failed.join(", ")}`);
+  } catch (error) {
+    console.log(`  borrow step skipped (${error.message}${error.cause ? ": " + (error.cause.message || error.cause) : ""}); failed vendors stay failed this build`);
+  }
+}
+
 const missingBlocking = failed.filter(v => !allowMissing.has(v));
 
 if (!rows.length) {
