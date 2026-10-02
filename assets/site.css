@@ -1444,7 +1444,7 @@ body.deals-panel-open { overflow: hidden; }
     position: relative;
     width: 100px; height: 14px;
     overflow: hidden;
-    background: url("/assets/brand/logo-wordmark.png?v=20260930-history-chart-v193") left center / contain no-repeat;
+    background: url("/assets/brand/logo-wordmark.png?v=20261002-calm-announce-v194") left center / contain no-repeat;
   }
   /* font-size: 0 on the parent does NOT hide these: .brand-my, .brand-peptide,
      .brand-price and .brand-dot each set their own font-size, so the text kept
@@ -2299,4 +2299,87 @@ body.ph-modal-open { overflow: hidden; }
   .ph-tip { padding: 3px 8px; }
   .ph-tip strong { font-size: 14px; }
   .ph-plot { padding-top: 34px; }
+}
+
+/* ---------------------------------------------------------------------------
+   Announcement bar, calm version (2026-10-02). Replaces the scrolling neon belt.
+   One offer visible at a time, crossfading every 7s, paused on hover, focus and
+   touch, no rotation at all under prefers-reduced-motion. One accent color for
+   every vendor rather than a brand color per chip. Not sticky: it sits above the
+   hero and scrolls away. Rendered only when a deal is ending within 7 days or is
+   flagged featured; standing discounts live behind the Deals button.
+   --------------------------------------------------------------------------- */
+.announce-calm {
+  --ac: #a9d13a;
+  position: relative;
+  background: #141b16;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  color: #F7F3EA;
+  padding: 0 16px;
+}
+.announce-calm[hidden] { display: none; }
+.announce-calm-inner {
+  max-width: 1280px; margin: 0 auto;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  min-height: 44px;
+}
+.announce-slot-wrap { position: relative; flex: 1 1 auto; min-width: 0; min-height: 44px; }
+.announce-slot {
+  position: absolute; inset: 0;
+  display: flex; align-items: center; gap: 10px;
+  min-width: 0; text-decoration: none; color: inherit;
+  opacity: 0; pointer-events: none;
+  transition: opacity .5s ease;
+}
+.announce-slot.is-active { opacity: 1; pointer-events: auto; }
+.announce-slot:focus-visible { outline: 2px solid #fff; outline-offset: -2px; border-radius: 6px; }
+.announce-slot-logo {
+  width: 20px; height: 20px; flex: none; border-radius: 5px;
+  background: #fff; object-fit: contain; padding: 2px;
+}
+.announce-slot-vendor {
+  font-size: 13px; font-weight: 800; letter-spacing: .1px; color: #fffdf8;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
+}
+.announce-slot-offer {
+  flex: none;
+  border: 1px solid color-mix(in srgb, var(--ac) 45%, transparent);
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--ac) 14%, transparent);
+  color: #eef5d6; padding: 3px 10px; font-size: 12px; font-weight: 800; white-space: nowrap;
+}
+.announce-slot:hover .announce-slot-offer { background: color-mix(in srgb, var(--ac) 26%, transparent); }
+.announce-slot-ends {
+  flex: none; font-size: 12px; font-weight: 700; color: rgba(247,243,234,.72); white-space: nowrap;
+}
+.announce-calm-side { display: flex; align-items: center; gap: 12px; flex: none; }
+.announce-dots { display: inline-flex; gap: 5px; }
+.announce-dot-i {
+  width: 5px; height: 5px; border-radius: 50%; background: rgba(255,255,255,.22);
+  transition: background .3s ease;
+}
+.announce-dot-i.is-active { background: var(--ac); }
+.announce-all-link {
+  display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px;
+  border-radius: 999px; border: 1px solid rgba(255,255,255,.14);
+  color: #fffdf8; font-size: 12px; font-weight: 800; text-decoration: none; white-space: nowrap;
+}
+.announce-all-link:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.05); }
+@media (prefers-reduced-motion: reduce) {
+  .announce-slot { transition: none; }
+}
+@media (max-width: 720px) {
+  .announce-calm { padding: 0 12px; }
+  .announce-calm-inner { gap: 8px; }
+  .announce-slot { gap: 8px; }
+  .announce-slot-vendor { font-size: 12.5px; }
+  .announce-slot-offer { font-size: 11.5px; padding: 3px 9px; }
+  .announce-slot-ends { font-size: 11.5px; }
+  .announce-dots { display: none; }
+  .announce-all-link { font-size: 11.5px; padding: 0 10px; }
+}
+@media (max-width: 400px) {
+  .announce-slot-logo { display: none; }
+  /* The header Deals button already covers this on a narrow phone. */
+  .announce-all-link { display: none; }
 }

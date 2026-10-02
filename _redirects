@@ -41,3 +41,7 @@
 /compounds/vitamin-c.html          /compounds   301!
 /vendors/bioedge-research-labs       /vendors     301!
 /vendors/bioedge-research-labs.html  /vendors     301!
+
+# Stale copy of the homepage that was sitting in /assets/. Delete the file.
+/assets/index.html   /   301!
+/assets/             /   301!
