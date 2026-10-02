@@ -364,12 +364,30 @@
     // Standing discounts live behind the Deals button in the header.
     var worthIt=eligible.some(function(p){return endsInMs(p)<=7*DAY||p.featured===true;});
     if(!worthIt) return;
+    function announceDetail(p){
+      var text=String(p.announce_offer||p.headline||p.strip_offer||'').trim();
+      if(text.length>84){
+        var parts=text.split(',').map(function(x){return x.trim();}).filter(Boolean);
+        var acc='';
+        for(var i=0;i<parts.length;i++){ var tryText=acc?acc+', '+parts[i]:parts[i]; if(tryText.length>84) break; acc=tryText; }
+        text=acc||text.slice(0,81).replace(/\s+\S*$/,'')+'\u2026';
+      }
+      return text;
+    }
     var slides=eligible.slice(0,4).map(function(p){
+      var badge=announceShortLabel(p);
+      var detail=announceDetail(p);
+      if(badge&&detail.toLowerCase().indexOf(badge.toLowerCase())===0){
+        detail=detail.slice(badge.length).replace(/^[\s,:-]+/,'');
+        if(detail) detail=detail.charAt(0).toUpperCase()+detail.slice(1);
+      }
+      if(detail.toLowerCase()===badge.toLowerCase()) detail='';
       return {
         vendor:p.display_vendor||p.vendor||'',
         vendorKey:p.vendor||'',
         logo:announceLogoPath(p.vendor),
-        offer:announceShortLabel(p),
+        badge:badge,
+        detail:detail,
         ends:announceUrgencyLabel(p),
         href:p.id?('/deals#deal-'+encodeURIComponent(p.id)):'/deals'
       };
@@ -378,13 +396,18 @@
     announceState.built=true;
 
     function slotHtml(s,i){
-      var logo=s.logo?'<img class="announce-slot-logo" src="'+announceEscape(s.logo)+'" alt="" width="20" height="20" loading="lazy"/>':'';
+      var logo=s.logo?'<img class="announce-slot-logo" src="'+announceEscape(s.logo)+'" alt="" width="22" height="22" loading="lazy"/>':'';
+      var detail=s.detail?'<span class="announce-slot-detail">'+announceEscape(s.detail)+'</span>':'';
       var ends=s.ends?'<span class="announce-slot-ends">'+announceEscape(s.ends)+'</span>':'';
       return '<a class="announce-slot'+(i===0?' is-active':'')+'" href="'+announceEscape(s.href)+'" data-announce-vendor="'+announceEscape(s.vendorKey)+'"'+(i===0?'':' aria-hidden="true" tabindex="-1"')+'>'
+        +'<span class="announce-slot-main">'
         +logo
         +'<span class="announce-slot-vendor">'+announceEscape(s.vendor)+'</span>'
-        +'<span class="announce-slot-offer">'+announceEscape(s.offer)+'</span>'
+        +'<span class="announce-slot-badge">'+announceEscape(s.badge)+'</span>'
+        +detail
         +ends
+        +'</span>'
+        +'<span class="announce-slot-cta">Get deal \u203a</span>'
         +'</a>';
     }
     wrap.innerHTML=slides.map(slotHtml).join('');
@@ -407,7 +430,14 @@
       dotEls.forEach(function(el,i){el.classList.toggle('is-active',i===n);});
       idx=n;
     }
-    function next(){ if(!paused&&!document.hidden) show((idx+1)%slots.length); }
+    function next(){
+      if(paused||document.hidden) return;
+      var cur=slots[idx];
+      if(!cur){ show((idx+1)%slots.length); return; }
+      cur.classList.remove('is-active');
+      cur.setAttribute('aria-hidden','true'); cur.setAttribute('tabindex','-1');
+      setTimeout(function(){ show((idx+1)%slots.length); }, reduced?0:300);
+    }
     function start(){ if(slots.length>1&&!reduced&&!timer) timer=setInterval(next,7000); }
     function stop(){ if(timer){clearInterval(timer);timer=null;} }
     bar.addEventListener('mouseenter',function(){paused=true;});

@@ -2302,56 +2302,71 @@ body.ph-modal-open { overflow: hidden; }
 }
 
 /* ---------------------------------------------------------------------------
-   Announcement bar, calm version (2026-10-02). Replaces the scrolling neon belt.
-   One offer visible at a time, crossfading every 7s, paused on hover, focus and
-   touch, no rotation at all under prefers-reduced-motion. One accent color for
-   every vendor rather than a brand color per chip. Not sticky: it sits above the
-   hero and scrolls away. Rendered only when a deal is ending within 7 days or is
-   flagged featured; standing discounts live behind the Deals button.
+   Announcement bar (2026-10-02). Replaces the scrolling neon belt. One offer at
+   a time, swapped every 7s as a fade out then fade in so two offers are never
+   on screen together. Paused on hover, focus and touch; no rotation under
+   prefers-reduced-motion. One accent (lime) for every vendor: a top rule, the
+   discount badge and the filled Get deal button. Not sticky. Rendered only when
+   a deal is ending within 7 days or is flagged featured.
    --------------------------------------------------------------------------- */
 .announce-calm {
   --ac: #a9d13a;
   position: relative;
-  background: #141b16;
-  border-bottom: 1px solid rgba(255,255,255,.07);
+  background: linear-gradient(90deg, #121a14 0%, #182519 50%, #121a14 100%);
+  border-top: 3px solid var(--ac);
+  border-bottom: 1px solid rgba(255,255,255,.08);
   color: #F7F3EA;
   padding: 0 16px;
 }
 .announce-calm[hidden] { display: none; }
 .announce-calm-inner {
   max-width: 1280px; margin: 0 auto;
-  display: flex; align-items: center; justify-content: space-between; gap: 12px;
-  min-height: 44px;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
+  min-height: 52px;
 }
-.announce-slot-wrap { position: relative; flex: 1 1 auto; min-width: 0; min-height: 44px; }
+.announce-slot-wrap { position: relative; display: grid; min-width: 0; min-height: 52px; }
 .announce-slot {
-  position: absolute; inset: 0;
-  display: flex; align-items: center; gap: 10px;
+  grid-area: 1 / 1;
+  display: flex; align-items: center; justify-content: center; gap: 14px;
   min-width: 0; text-decoration: none; color: inherit;
-  opacity: 0; pointer-events: none;
-  transition: opacity .5s ease;
+  opacity: 0; visibility: hidden; pointer-events: none;
+  transition: opacity .28s ease, visibility 0s linear .28s;
 }
-.announce-slot.is-active { opacity: 1; pointer-events: auto; }
-.announce-slot:focus-visible { outline: 2px solid #fff; outline-offset: -2px; border-radius: 6px; }
+.announce-slot.is-active {
+  opacity: 1; visibility: visible; pointer-events: auto;
+  transition: opacity .28s ease, visibility 0s;
+}
+.announce-slot:focus-visible { outline: 2px solid #fff; outline-offset: -2px; border-radius: 8px; }
+.announce-slot-main { display: flex; align-items: center; gap: 10px; min-width: 0; }
 .announce-slot-logo {
-  width: 20px; height: 20px; flex: none; border-radius: 5px;
+  width: 22px; height: 22px; flex: none; border-radius: 6px;
   background: #fff; object-fit: contain; padding: 2px;
 }
 .announce-slot-vendor {
-  font-size: 13px; font-weight: 800; letter-spacing: .1px; color: #fffdf8;
+  font-size: 13.5px; font-weight: 800; letter-spacing: .1px; color: #fffdf8;
   white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0;
 }
-.announce-slot-offer {
+.announce-slot-badge {
   flex: none;
-  border: 1px solid color-mix(in srgb, var(--ac) 45%, transparent);
   border-radius: 999px;
-  background: color-mix(in srgb, var(--ac) 14%, transparent);
-  color: #eef5d6; padding: 3px 10px; font-size: 12px; font-weight: 800; white-space: nowrap;
+  background: var(--ac); color: #0d120e;
+  padding: 3px 10px; font-size: 12.5px; font-weight: 900; letter-spacing: .2px; white-space: nowrap;
 }
-.announce-slot:hover .announce-slot-offer { background: color-mix(in srgb, var(--ac) 26%, transparent); }
+.announce-slot-detail {
+  font-size: 13px; font-weight: 600; color: rgba(247,243,234,.92);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; min-width: 0; max-width: 46ch;
+}
 .announce-slot-ends {
-  flex: none; font-size: 12px; font-weight: 700; color: rgba(247,243,234,.72); white-space: nowrap;
+  flex: none; font-size: 12px; font-weight: 800; color: #e9f3c9; white-space: nowrap;
+  padding-left: 10px; border-left: 1px solid rgba(255,255,255,.16);
 }
+.announce-slot-cta {
+  flex: none; display: inline-flex; align-items: center; min-height: 32px; padding: 0 14px;
+  border-radius: 999px; background: #fffdf8; color: #0d120e;
+  font-size: 12.5px; font-weight: 900; white-space: nowrap;
+  transition: transform .15s ease, background .15s ease;
+}
+.announce-slot:hover .announce-slot-cta { background: var(--ac); transform: translateY(-1px); }
 .announce-calm-side { display: flex; align-items: center; gap: 12px; flex: none; }
 .announce-dots { display: inline-flex; gap: 5px; }
 .announce-dot-i {
@@ -2361,25 +2376,30 @@ body.ph-modal-open { overflow: hidden; }
 .announce-dot-i.is-active { background: var(--ac); }
 .announce-all-link {
   display: inline-flex; align-items: center; min-height: 32px; padding: 0 12px;
-  border-radius: 999px; border: 1px solid rgba(255,255,255,.14);
-  color: #fffdf8; font-size: 12px; font-weight: 800; text-decoration: none; white-space: nowrap;
+  border-radius: 999px; border: 1px solid rgba(255,255,255,.16);
+  color: rgba(255,253,248,.85); font-size: 12px; font-weight: 800; text-decoration: none; white-space: nowrap;
 }
-.announce-all-link:hover { border-color: rgba(255,255,255,.3); background: rgba(255,255,255,.05); }
+.announce-all-link:hover { border-color: rgba(255,255,255,.34); color: #fff; background: rgba(255,255,255,.05); }
 @media (prefers-reduced-motion: reduce) {
-  .announce-slot { transition: none; }
+  .announce-slot, .announce-slot.is-active, .announce-slot-cta { transition: none; }
+}
+@media (max-width: 1000px) {
+  .announce-slot-detail { max-width: 30ch; }
 }
 @media (max-width: 720px) {
   .announce-calm { padding: 0 12px; }
-  .announce-calm-inner { gap: 8px; }
-  .announce-slot { gap: 8px; }
+  .announce-calm-inner { gap: 10px; min-height: 48px; }
+  .announce-slot-wrap { min-height: 48px; }
+  .announce-slot { gap: 10px; }
+  .announce-slot-main { gap: 8px; }
   .announce-slot-vendor { font-size: 12.5px; }
-  .announce-slot-offer { font-size: 11.5px; padding: 3px 9px; }
-  .announce-slot-ends { font-size: 11.5px; }
+  .announce-slot-badge { font-size: 11.5px; padding: 3px 9px; }
+  .announce-slot-detail { display: none; }
+  .announce-slot-ends { font-size: 11.5px; padding-left: 8px; }
+  .announce-slot-cta { min-height: 30px; padding: 0 11px; font-size: 11.5px; }
   .announce-dots { display: none; }
-  .announce-all-link { font-size: 11.5px; padding: 0 10px; }
+  .announce-all-link { display: none; }
 }
 @media (max-width: 400px) {
   .announce-slot-logo { display: none; }
-  /* The header Deals button already covers this on a narrow phone. */
-  .announce-all-link { display: none; }
 }
